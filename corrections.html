@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report a correction — Pickleball Bay Area</title>
+<meta name="description" content="Spot stale hours, a closed court, or a wrong address? Tell us and we'll check it — this guide is hand-maintained, not a database.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#123340">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pickleball Bay Area">
+<meta property="og:title" content="Report a correction — Pickleball Bay Area">
+<meta property="og:description" content="Spot stale hours, a closed court, or a wrong address? Tell us and we'll check it — this guide is hand-maintained, not a database.">
+<meta property="og:url" content="https://reidbrawer-ops.github.io/corrections.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Report a correction — Pickleball Bay Area">
+<meta name="twitter:description" content="Spot stale hours, a closed court, or a wrong address? Tell us and we'll check it — this guide is hand-maintained, not a database.">
+<link rel="canonical" href="https://reidbrawer-ops.github.io/corrections.html">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  /* ---------- Corrections form (scoped to this page) ---------- */
+  .corr-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+    max-width: 640px;
+  }
+
+  .corr-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .corr-field label {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+  }
+
+  .corr-field .hint {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-top: -0.1rem;
+  }
+
+  .corr-field input,
+  .corr-field select,
+  .corr-field textarea {
+    font-family: var(--font-body);
+    font-size: 0.98rem;
+    color: var(--ink);
+    background: var(--glass);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-s);
+    padding: 0.7em 0.9em;
+    width: 100%;
+  }
+
+  .corr-field textarea {
+    resize: vertical;
+    min-height: 7rem;
+    font-family: var(--font-body);
+  }
+
+  .corr-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2393aaa8' stroke-width='1.6'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8em center;
+    background-size: 1em;
+    padding-right: 2.4em;
+  }
+
+  .corr-field input:focus,
+  .corr-field select:focus,
+  .corr-field textarea:focus {
+    outline: 3px solid var(--optic);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+
+  .corr-field input::placeholder,
+  .corr-field textarea::placeholder {
+    color: rgba(147, 170, 168, 0.6);
+  }
+
+  .corr-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.3rem;
+  }
+
+  @media (max-width: 640px) {
+    .corr-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .corr-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .corr-submit {
+    align-self: flex-start;
+    cursor: pointer;
+    font-family: var(--font-display);
+  }
+
+  .corr-thanks {
+    display: none;
+    background: rgba(79, 214, 140, 0.1);
+    border-left: 4px solid var(--kitchen);
+    border-radius: var(--radius-s);
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .corr-thanks.show {
+    display: block;
+  }
+
+  .corr-thanks .eyebrow {
+    color: var(--kitchen);
+  }
+
+  .corr-thanks p:last-child {
+    margin-bottom: 0;
+  }
+
+  .corr-form.hide {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/index.html"><span class="dot"></span>Pickleball Bay Area</a>
+    <nav class="main-nav">
+      <a href="/index.html">Home</a>
+      <a href="/cities/index.html">Cities</a>
+      <a href="/about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Corrections</p>
+    <h1>Something out of date? Tell us.</h1>
+    <p class="lede">This guide is checked by hand against city recreation pages, not pulled live from a database — which means it goes stale exactly the way any hand-maintained thing does. If you played somewhere on this site recently and something didn't match what's written, this is the fastest way to get it fixed.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="corr-thanks" id="corr-thanks">
+      <p class="eyebrow">Got it</p>
+      <p>Thanks — that's been sent over and we'll check it against the source before updating the page.</p>
+    </div>
+
+    <!--
+      Wired to Formspree (https://formspree.io/f/mykqawea). The hidden
+      _next field redirects back here with ?sent=1 on success, which the
+      inline script at the bottom checks for to show the "Got it" banner.
+    -->
+    <form class="corr-form" id="corr-form" action="https://formspree.io/f/mykqawea" method="POST">
+      <input type="hidden" name="_next" value="https://reidbrawer-ops.github.io/corrections.html?sent=1">
+      <input type="hidden" name="_subject" value="Pickleball Bay Area correction">
+
+      <div class="corr-honeypot" aria-hidden="true">
+        <label for="corr-hp">Leave this field blank</label>
+        <input type="text" id="corr-hp" name="_gotcha" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="corr-row">
+        <div class="corr-field">
+          <label for="corr-city">City</label>
+          <select id="corr-city" name="city" required>
+            <option value="">Select a city…</option>
+            <optgroup label="San Francisco">
+              <option>San Francisco</option>
+            </optgroup>
+            <optgroup label="Peninsula">
+              <option>Palo Alto</option>
+              <option>Menlo Park</option>
+              <option>Redwood City</option>
+              <option>San Mateo</option>
+            </optgroup>
+            <optgroup label="South Bay">
+              <option>San Jose</option>
+              <option>Santa Clara</option>
+              <option>Sunnyvale</option>
+              <option>Cupertino</option>
+              <option>Mountain View</option>
+            </optgroup>
+            <optgroup label="East Bay">
+              <option>Oakland</option>
+              <option>Berkeley</option>
+              <option>Walnut Creek</option>
+              <option>Fremont</option>
+              <option>Pleasanton</option>
+            </optgroup>
+            <optgroup label="North Bay">
+              <option>San Rafael</option>
+              <option>Novato</option>
+            </optgroup>
+            <option value="Not sure / general">Not sure / general site feedback</option>
+          </select>
+        </div>
+
+        <div class="corr-field">
+          <label for="corr-venue">Venue name</label>
+          <input type="text" id="corr-venue" name="venue" placeholder="e.g. Mitchell Park, Bushrod Park">
+          <p class="hint">Whichever court or park this is about.</p>
+        </div>
+      </div>
+
+      <div class="corr-field">
+        <label for="corr-type">What needs updating</label>
+        <select id="corr-type" name="issue_type" required>
+          <option value="">Select one…</option>
+          <option>Hours are wrong</option>
+          <option>Court closed or removed</option>
+          <option>New courts not listed</option>
+          <option>Fees or reservation system changed</option>
+          <option>Address or directions wrong</option>
+          <option>Booking/contact link broken</option>
+          <option>Rating or description seems off</option>
+          <option>Something else</option>
+        </select>
+      </div>
+
+      <div class="corr-field">
+        <label for="corr-details">Details</label>
+        <textarea id="corr-details" name="details" required placeholder="What's changed, and how do you know? (e.g. played there last week, saw a sign, city website update, etc.)"></textarea>
+      </div>
+
+      <div class="corr-field">
+        <label for="corr-email">Your email <span style="text-transform:none; letter-spacing:0;">(optional)</span></label>
+        <input type="email" id="corr-email" name="email" placeholder="only if you want a reply">
+        <p class="hint">We won't use this for anything else.</p>
+      </div>
+
+      <button type="submit" class="btn corr-submit">Send correction</button>
+    </form>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="callout">
+      <p class="eyebrow">Why bother</p>
+      <p>Every city page on this site exists because someone did the legwork once. Corrections are the same idea running in reverse — you're the one standing on the court when a city quietly changes its hours or a club goes members-only, long before that shows up anywhere we'd think to look. Small reports like that are what keep a hand-built guide honest instead of just old.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Regions</h4>
+        <ul>
+          <li><a href="/cities/index.html#san-francisco">San Francisco</a></li>
+          <li><a href="/cities/index.html#peninsula">Peninsula</a></li>
+          <li><a href="/cities/index.html#south-bay">South Bay</a></li>
+          <li><a href="/cities/index.html#east-bay">East Bay</a></li>
+          <li><a href="/cities/index.html#north-bay">North Bay</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/cities/index.html">All 17 cities</a></li>
+          <li><a href="/about.html">About this guide</a></li>
+          <li><a href="/map.html">Map</a></li>
+          <li><a href="/learn.html">Learn to play</a></li>
+          <li><a href="/gear.html">Gear &amp; rentals</a></li>
+          <li><a href="/visiting.html">Visiting the Bay</a></li>
+          <li><a href="/corrections.html">Report a correction</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Popular</h4>
+        <ul>
+          <li><a href="/cities/san-jose.html">San Jose</a></li>
+          <li><a href="/cities/san-francisco.html">San Francisco</a></li>
+          <li><a href="/cities/oakland.html">Oakland</a></li>
+          <li><a href="/cities/palo-alto.html">Palo Alto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-note">
+      <span>An independent, unaffiliated directory. No ads, no sponsored listings.</span>
+      <span>Court info verified against city rec department pages, July 2026.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  if (new URLSearchParams(window.location.search).get('sent') === '1') {
+    document.getElementById('corr-thanks').classList.add('show');
+    document.getElementById('corr-form').classList.add('hide');
+  }
+</script>
+
+</body>
+</html>

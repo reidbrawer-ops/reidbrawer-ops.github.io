@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://reidbrawer-ops.github.io/sitemap.xml

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Map of every Bay Area pickleball court — Pickleball Bay Area</title>
+<meta name="description" content="All 84 courts across the Bay Area on one real map — every pin geocoded from the addresses on this site, click through to a city's full writeup.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#123340">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pickleball Bay Area">
+<meta property="og:title" content="Map of every Bay Area pickleball court">
+<meta property="og:description" content="All 84 courts across the Bay Area on one real map — every pin geocoded from the addresses on this site, click through to a city's full writeup.">
+<meta property="og:url" content="https://reidbrawer-ops.github.io/map.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Map of every Bay Area pickleball court">
+<meta name="twitter:description" content="All 84 courts across the Bay Area on one real map — every pin geocoded from the addresses on this site, click through to a city's full writeup.">
+<link rel="canonical" href="https://reidbrawer-ops.github.io/map.html">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/map.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/index.html"><span class="dot"></span>Pickleball Bay Area</a>
+    <nav class="main-nav">
+      <a href="/index.html">Home</a>
+      <a href="/cities/index.html">Cities</a>
+      <a href="/map.html" aria-current="page">Map</a>
+      <a href="/about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Interactive map</p>
+    <h1>Every court, one map.</h1>
+    <p class="lede">All 84 venues on this site, plotted at their real geocoded coordinates across the Bay. Click a pin for the address and a link to that city's full writeup — surface, level, wait, and how to book.</p>
+    <div class="stat-strip">
+      <span class="stat-chip"><b>84</b> venues</span>
+      <span class="stat-chip"><b>17</b> cities</span>
+      <span class="stat-chip"><b>5</b> regions</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div id="map-status" class="map-status">Loading map data…</div>
+    <div id="venue-map" class="venue-map" role="application" aria-label="Map of Bay Area pickleball courts"></div>
+    <p class="map-caveat">Pins are geocoded automatically from the addresses printed on each city page (OpenStreetMap Nominatim). A handful of venues — mostly indoor clubs and community centers without a precise published street address — are placed at their best-known location rather than an exact building; treat those as approximate and check the city page for the details that matter before you drive out.</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Regions</h4>
+        <ul>
+          <li><a href="/cities/index.html#san-francisco">San Francisco</a></li>
+          <li><a href="/cities/index.html#peninsula">Peninsula</a></li>
+          <li><a href="/cities/index.html#south-bay">South Bay</a></li>
+          <li><a href="/cities/index.html#east-bay">East Bay</a></li>
+          <li><a href="/cities/index.html#north-bay">North Bay</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/cities/index.html">All 17 cities</a></li>
+          <li><a href="/about.html">About this guide</a></li>
+          <li><a href="/map.html">Map</a></li>
+          <li><a href="/learn.html">Learn to play</a></li>
+          <li><a href="/gear.html">Gear &amp; rentals</a></li>
+          <li><a href="/visiting.html">Visiting the Bay</a></li>
+          <li><a href="/corrections.html">Report a correction</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Popular</h4>
+        <ul>
+          <li><a href="/cities/san-jose.html">San Jose</a></li>
+          <li><a href="/cities/san-francisco.html">San Francisco</a></li>
+          <li><a href="/cities/oakland.html">Oakland</a></li>
+          <li><a href="/cities/palo-alto.html">Palo Alto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-note">
+      <span>An independent, unaffiliated directory. No ads, no sponsored listings.</span>
+      <span>Court info verified against city rec department pages, July 2026.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="/assets/map.js"></script>
+</body>
+</html>
