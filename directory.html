@@ -32,6 +32,7 @@
       <a href="/cities/index.html">Cities</a>
       <a href="/map.html">Map</a>
       <a href="/directory.html" aria-current="page">Directory</a>
+      <a href="/rankings.html">Rankings</a>
       <details class="nav-dropdown">
         <summary>More</summary>
         <div class="nav-dropdown-menu">
@@ -55,6 +56,10 @@
       <span class="stat-chip"><b>84</b> venues</span>
       <span class="stat-chip"><b>17</b> cities</span>
       <span class="stat-chip"><b>5</b> regions</span>
+    </div>
+    <div class="callout">
+      <p class="eyebrow">Have a favorite?</p>
+      <p>Vote for it and rate it on beginner-friendliness, surface, wait time, and more on the <a href="/rankings.html">Rankings page →</a>. Look for the ★ Top rated tag below on courts the community rates highest.</p>
     </div>
   </div>
 </section>
@@ -147,6 +152,8 @@
             <th scope="col" data-sort="indoorOutdoor" tabindex="0" role="button" aria-sort="none">Indoor/Outdoor</th>
             <th scope="col" data-sort="surface" tabindex="0" role="button" aria-sort="none">Surface</th>
             <th scope="col" data-sort="reservable" tabindex="0" role="button" aria-sort="none">Reservable</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Favorite</th>
           </tr>
         </thead>
         <tbody id="directory-tbody"></tbody>
@@ -177,6 +184,7 @@
           <li><a href="/cities/index.html">All 17 cities</a></li>
           <li><a href="/about.html">About this guide</a></li>
           <li><a href="/map.html">Map</a></li>
+          <li><a href="/rankings.html">Rankings</a></li>
           <li><a href="/learn.html">Learn to play</a></li>
           <li><a href="/gear.html">Gear &amp; rentals</a></li>
           <li><a href="/visiting.html">Visiting the Bay</a></li>
@@ -201,6 +209,9 @@
   </div>
 </footer>
 
+<script type="module" src="/assets/court-ratings.js"></script>
+<script src="/assets/rating-widgets.js"></script>
+<script src="/assets/regions.js"></script>
 <script src="/assets/directory.js"></script>
 <script src="/assets/nav.js" defer></script>
 </body>

@@ -18,6 +18,33 @@
   color: var(--poppy-deep);
 }
 
+.region-subhead {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  color: var(--kitchen-deep);
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+.region-subhead:first-child {
+  margin-top: 0;
+}
+
+.city-leaderboard {
+  margin-bottom: var(--space-3);
+}
+
+.city-leaderboard .region-head {
+  margin-bottom: 0.8rem;
+  align-items: baseline;
+}
+
+.city-leaderboard .region-head h3 {
+  font-size: 1.3rem;
+  margin: 0;
+}
+
 .leaderboard {
   display: flex;
   flex-direction: column;

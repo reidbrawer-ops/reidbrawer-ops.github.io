@@ -26,7 +26,7 @@ if (!keyPathArg) {
 }
 
 const serviceAccount = JSON.parse(readFileSync(path.resolve(keyPathArg), "utf8"));
-const seedData = JSON.parse(readFileSync(path.join(__dirname, "firestore-seed-data.json"), "utf8"));
+const seedData = JSON.parse(readFileSync(path.join(__dirname, "../assets/rating-seed-data.json"), "utf8"));
 
 admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 const db = admin.firestore();

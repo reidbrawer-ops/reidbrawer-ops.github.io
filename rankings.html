@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Map of every Bay Area pickleball court — Pickleball Bay Area</title>
-<meta name="description" content="All 84 courts across the Bay Area on one real map — every pin geocoded from the addresses on this site, click through to a city's full writeup.">
+<title>Rankings — vote for your favorite Bay Area pickleball court</title>
+<meta name="description" content="Vote for your favorite Bay Area pickleball court and rate courts on beginner-friendliness, surface, wait time, and advanced play. Live rankings by city.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,16 +12,15 @@
 <meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Pickleball Bay Area">
-<meta property="og:title" content="Map of every Bay Area pickleball court">
-<meta property="og:description" content="All 84 courts across the Bay Area on one real map — every pin geocoded from the addresses on this site, click through to a city's full writeup.">
-<meta property="og:url" content="https://reidbrawer-ops.github.io/map.html">
+<meta property="og:title" content="Rankings — vote for your favorite Bay Area pickleball court">
+<meta property="og:description" content="Vote for your favorite Bay Area pickleball court and rate courts on beginner-friendliness, surface, wait time, and advanced play. Live rankings by city.">
+<meta property="og:url" content="https://reidbrawer-ops.github.io/rankings.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Map of every Bay Area pickleball court">
-<meta name="twitter:description" content="All 84 courts across the Bay Area on one real map — every pin geocoded from the addresses on this site, click through to a city's full writeup.">
-<link rel="canonical" href="https://reidbrawer-ops.github.io/map.html">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<meta name="twitter:title" content="Rankings — vote for your favorite Bay Area pickleball court">
+<meta name="twitter:description" content="Vote for your favorite Bay Area pickleball court and rate courts on beginner-friendliness, surface, wait time, and advanced play. Live rankings by city.">
+<link rel="canonical" href="https://reidbrawer-ops.github.io/rankings.html">
 <link rel="stylesheet" href="/assets/style.css">
-<link rel="stylesheet" href="/assets/map.css">
+<link rel="stylesheet" href="/assets/rankings.css">
 </head>
 <body>
 
@@ -31,9 +30,9 @@
     <nav class="main-nav">
       <a href="/index.html">Home</a>
       <a href="/cities/index.html">Cities</a>
-      <a href="/map.html" aria-current="page">Map</a>
+      <a href="/map.html">Map</a>
       <a href="/directory.html">Directory</a>
-      <a href="/rankings.html">Rankings</a>
+      <a href="/rankings.html" aria-current="page">Rankings</a>
       <details class="nav-dropdown">
         <summary>More</summary>
         <div class="nav-dropdown-menu">
@@ -50,29 +49,43 @@
 
 <section class="page-hero">
   <div class="container">
-    <p class="eyebrow">Interactive map</p>
-    <h1>Every court, one map.</h1>
-    <p class="lede">All 84 venues on this site, plotted at their real geocoded coordinates across the Bay. Click a pin for the address and a link to that city's full writeup — surface, level, wait, and how to book.</p>
+    <p class="eyebrow">Community rankings</p>
+    <h1>Vote for your favorite court.</h1>
+    <p class="lede">Every court on this site can be voted for as a favorite and rated on six factors — beginner friendliness, court surface, wait time, advanced play, amenities, and atmosphere. No login needed. Rankings update live as votes come in, grouped by city so you can see what your own local scene actually thinks.</p>
     <div class="stat-strip">
-      <span class="stat-chip"><b>84</b> venues</span>
-      <span class="stat-chip"><b>17</b> cities</span>
-      <span class="stat-chip"><b>5</b> regions</span>
+      <span class="stat-chip"><b>84</b> courts to rate</span>
+      <span class="stat-chip"><b>6</b> rating factors</span>
+      <span class="stat-chip"><b>17</b> city leaderboards</span>
+    </div>
+    <div class="rankings-cta">
+      <a class="btn" href="#top-10">See the Bay Area Top 10 →</a>
+      <a class="btn" href="#city-leaderboards" style="background:var(--kitchen)">Jump to your city →</a>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="top-10">
   <div class="container">
-    <div id="map-status" class="map-status">Loading map data…</div>
-    <div class="map-legend" aria-label="Map legend: court type and top picks">
-      <span class="legend-item"><span class="legend-dot pba-pin--outdoor"></span>Outdoor</span>
-      <span class="legend-item"><span class="legend-dot pba-pin--indoor"></span>Indoor</span>
-      <span class="legend-item"><span class="legend-dot pba-pin--both"></span>Both</span>
-      <span class="legend-item"><span class="legend-dot pba-pin--unknown"></span>Unknown</span>
-      <span class="legend-item"><span class="legend-dot legend-dot--top-pick"></span>Top pick</span>
+    <div class="region-head">
+      <div>
+        <h2>Bay Area Top 10</h2>
+        <p>Ranked by favorite votes across all 17 cities, ties broken by overall rating. Cast the first vote for a court and watch it climb.</p>
+      </div>
     </div>
-    <div id="venue-map" class="venue-map" role="application" aria-label="Map of Bay Area pickleball courts"></div>
-    <p class="map-caveat">Pins are geocoded automatically from the addresses printed on each city page (OpenStreetMap Nominatim). A handful of venues — mostly indoor clubs and community centers without a precise published street address — are placed at their best-known location rather than an exact building; treat those as approximate and check the city page for the details that matter before you drive out.</p>
+    <div id="rankings-status" class="rankings-status">Loading rankings…</div>
+    <div id="top10-list" class="leaderboard"></div>
+  </div>
+</section>
+
+<section class="section" id="city-leaderboards">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Rankings by city</h2>
+        <p>Every court, ranked within its own city. Vote for a favorite or leave a star rating on any of the six factors below.</p>
+      </div>
+    </div>
+    <div id="rankings-cities"></div>
   </div>
 </section>
 
@@ -116,13 +129,15 @@
     </div>
     <div class="footer-note">
       <span>An independent, unaffiliated directory. No ads, no sponsored listings.</span>
-      <span>Court info verified against city rec department pages, July 2026.</span>
+      <span>Favorite votes and ratings are community-submitted and unverified.</span>
     </div>
   </div>
 </footer>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="/assets/map.js"></script>
+<script type="module" src="/assets/court-ratings.js"></script>
+<script src="/assets/rating-widgets.js"></script>
+<script src="/assets/regions.js"></script>
+<script src="/assets/rankings.js"></script>
 <script src="/assets/nav.js" defer></script>
 </body>
 </html>

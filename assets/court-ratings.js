@@ -23,7 +23,11 @@ export const FACTORS = [
 ];
 
 const SEED_COUNT_PER_FACTOR = 3; // matches scripts that generated the Firestore seed
-const TOP_RATED_MIN_AVG = 4.3;
+// 3.9 sits just above the seeded baseline's natural cluster (most courts land
+// 3.6-3.8; only a couple of standout venues clear 3.9 on seed data alone) —
+// picked from the actual distribution, not an arbitrary round number, so the
+// tag is selective from day one instead of requiring real votes to ever fire.
+const TOP_RATED_MIN_AVG = 3.9;
 const TOP_RATED_MIN_VOTES = SEED_COUNT_PER_FACTOR; // at least the seed baseline present
 
 const LS_FAVORITES = "pba_favorites_v1";
@@ -87,7 +91,20 @@ class LocalDemoBackend {
   }
 
   async loadAll() {
-    return readJson(LS_DEMO_STATS, {});
+    let store = readJson(LS_DEMO_STATS, null);
+    if (store) return store;
+
+    // First run in this browser: bootstrap from the same baseline values the
+    // real Firestore seed script uses, so demo mode isn't a blank slate.
+    store = {};
+    try {
+      const res = await fetch("/assets/rating-seed-data.json");
+      if (res.ok) store = await res.json();
+    } catch {
+      /* offline or blocked — fall back to an empty store, courts start at 0 */
+    }
+    writeJson(LS_DEMO_STATS, store);
+    return store;
   }
 
   async ensureDoc(store, courtId) {

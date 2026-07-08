@@ -169,6 +169,7 @@
     }
   });
 
+  document.addEventListener("pbratings:ready", () => refreshAll());
   document.addEventListener("pbratings:update", () => refreshAll());
 
   window.PBWidgets = {

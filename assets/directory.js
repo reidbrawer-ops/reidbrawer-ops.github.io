@@ -12,25 +12,7 @@
   const hoursRangeFillEl = document.getElementById("hours-slider-range");
   if (!formEl) return;
 
-  const CITY_REGION = {
-    "San Francisco": "San Francisco",
-    "Palo Alto": "Peninsula",
-    "Menlo Park": "Peninsula",
-    "Redwood City": "Peninsula",
-    "San Mateo": "Peninsula",
-    "San Jose": "South Bay",
-    "Santa Clara": "South Bay",
-    "Sunnyvale": "South Bay",
-    "Cupertino": "South Bay",
-    "Mountain View": "South Bay",
-    "Oakland": "East Bay",
-    "Berkeley": "East Bay",
-    "Walnut Creek": "East Bay",
-    "Fremont": "East Bay",
-    "Pleasanton": "East Bay",
-    "San Rafael": "North Bay",
-    "Novato": "North Bay",
-  };
+  const CITY_REGION = window.PB_CITY_REGION;
 
   const WAIT_ORDER = { Low: 0, Medium: 1, High: 2, "Not specified": 3 };
 
@@ -145,7 +127,7 @@
 
   function passesHours(row) {
     if (hoursRange[0] === HOURS_MIN && hoursRange[1] === HOURS_MAX) return true;
-    if (!row.hoursRange) return false;
+    if (!row.hoursRange) return true; // hours not specified — don't hide it, we just can't confirm the window
     return row.hoursRange[0] <= hoursRange[1] && row.hoursRange[1] >= hoursRange[0];
   }
 
@@ -299,7 +281,7 @@
         .map(
           (row) => `
         <tr>
-          <td><a href="${row.url}">${escapeHtml(row.name)}</a>${row.topPick ? ' <span class="rank-badge top">Top pick</span>' : ""}${actionLinksHtml(row)}</td>
+          <td><a href="${row.url}">${escapeHtml(row.name)}</a>${row.topPick ? ' <span class="rank-badge top">Top pick</span>' : ""} ${window.PBWidgets.badgesHtml(row.id)}${actionLinksHtml(row)}</td>
           <td>${escapeHtml(row.city)}</td>
           <td>${escapeHtml(row.neighborhood)}</td>
           <td>${escapeHtml(row.price)}</td>
@@ -311,6 +293,8 @@
           <td>${escapeHtml(row.indoorOutdoor)}</td>
           <td>${escapeHtml(row.surface)}</td>
           <td>${escapeHtml(row.reservable)}</td>
+          <td><a href="/rankings.html#${row.id}">${window.PBWidgets.overallRatingHtml(row.id)}</a></td>
+          <td>${window.PBWidgets.favoriteButtonHtml(row.id)}</td>
         </tr>`
         )
         .join("");
@@ -322,13 +306,20 @@
           <div class="name-row">
             <h3><a href="${row.url}">${escapeHtml(row.name)}</a></h3>
             ${row.topPick ? '<span class="rank-badge top">Top pick</span>' : ""}
+            ${window.PBWidgets.badgesHtml(row.id)}
           </div>
           <span class="addr">${escapeHtml(row.neighborhood)}</span>
           ${actionLinksHtml(row)}
           <div class="facts">${rowHtmlFacts(row)}</div>
+          <div class="vote-actions">
+            <a href="/rankings.html#${row.id}">${window.PBWidgets.overallRatingHtml(row.id)}</a>
+            ${window.PBWidgets.favoriteButtonHtml(row.id)}
+          </div>
         </article>`
         )
         .join("");
+
+      if (window.PBWidgets) window.PBWidgets.refreshAll();
     }
 
     formEl.addEventListener("change", render);

@@ -31,6 +31,7 @@
       <a href="/cities/index.html" aria-current="page">Cities</a>
       <a href="/map.html">Map</a>
       <a href="/directory.html">Directory</a>
+      <a href="/rankings.html">Rankings</a>
       <details class="nav-dropdown">
         <summary>More</summary>
         <div class="nav-dropdown-menu">
@@ -63,8 +64,8 @@
     <h2>Where to play</h2>
     <div class="venue-list">
 
-      <div class="venue-card top-pick" id="larsen-playground">
-        <div class="name-row"><h3>Larsen Playground</h3><span class="rank-badge top">Top pick</span><span class="rank-badge">Beginner-friendly</span></div>
+      <div class="venue-card top-pick" id="larsen-playground" data-court-id="larsen-playground">
+        <div class="name-row"><h3>Larsen Playground</h3><span class="rank-badge top">Top pick</span><span class="rank-badge">Beginner-friendly</span><span class="badges" data-court-id="larsen-playground" data-role="top-badge"></span></div>
         <span class="addr">850 Vicente St, San Francisco, CA 94116</span>
         <div class="facts">
           <span class="stat-chip"><b>8</b> dedicated courts</span>
@@ -80,10 +81,14 @@
         </div>
         <p>The city's newest purpose-built complex and, at 8 courts, the biggest single dedicated block in San Francisco. One of only three SF locations with permanent pickleball nets rather than portable ones. No reservation required — just show up.</p>
         <a class="book-btn" href="https://www.google.com/maps/search/?api=1&amp;query=850%20Vicente%20St%2C%20San%20Francisco%2C%20CA%2094116" target="_blank" rel="noopener">Get directions →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#larsen-playground"><span class="rating-summary" data-court-id="larsen-playground" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="larsen-playground" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
-      <div class="venue-card" id="louis-sutter-playground">
-        <div class="name-row"><h3>Louis Sutter Playground</h3><span class="rank-badge">All levels</span></div>
+      <div class="venue-card" id="louis-sutter-playground" data-court-id="louis-sutter-playground">
+        <div class="name-row"><h3>Louis Sutter Playground</h3><span class="rank-badge">All levels</span><span class="badges" data-court-id="louis-sutter-playground" data-role="top-badge"></span></div>
         <span class="addr">614 University St, McLaren Park, San Francisco, CA 94134</span>
         <div class="facts">
           <span class="stat-chip"><b>6</b> dedicated courts</span>
@@ -99,10 +104,14 @@
         </div>
         <p>One of the three SF locations with permanent nets, and the only one that assigns specific courts to specific skill levels — useful if you want to land on a court that actually matches how you play instead of guessing.</p>
         <a class="book-btn" href="https://www.google.com/maps/search/?api=1&amp;query=614%20University%20St%2C%20McLaren%20Park%2C%20San%20Francisco%2C%20CA%2094134" target="_blank" rel="noopener">Get directions →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#louis-sutter-playground"><span class="rating-summary" data-court-id="louis-sutter-playground" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="louis-sutter-playground" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
-      <div class="venue-card" id="goldman-tennis-center">
-        <div class="name-row"><h3>Goldman Tennis Center</h3><span class="rank-badge">All levels</span></div>
+      <div class="venue-card" id="goldman-tennis-center" data-court-id="goldman-tennis-center">
+        <div class="name-row"><h3>Goldman Tennis Center</h3><span class="rank-badge">All levels</span><span class="badges" data-court-id="goldman-tennis-center" data-role="top-badge"></span></div>
         <span class="addr">Bowling Green Dr &amp; JFK Drive, Golden Gate Park, San Francisco, CA 94117</span>
         <div class="facts">
           <span class="stat-chip"><b>5</b> dedicated courts</span>
@@ -119,10 +128,14 @@
         <p>The third of SF's three permanent-net locations, run as a paid, reservation-based facility rather than free drop-in — $8–15/hour depending on time and residency. That fee is exactly why it tends to have the shortest waits on this list.</p>
         <a class="book-btn" href="https://www.lifetimeactivities.com/san-francisco/pickleball/" target="_blank" rel="noopener">Book a court →</a>
         <a class="book-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Bowling%20Green%20Dr%20%26%20JFK%20Drive%2C%20Golden%20Gate%20Park%2C%20San%20Francisco%2C%20CA%2094117" target="_blank" rel="noopener">Get directions →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#goldman-tennis-center"><span class="rating-summary" data-court-id="goldman-tennis-center" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="goldman-tennis-center" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
-      <div class="venue-card" id="presidio-wall-playground">
-        <div class="name-row"><h3>Presidio Wall Playground</h3><span class="rank-badge">All levels</span></div>
+      <div class="venue-card" id="presidio-wall-playground" data-court-id="presidio-wall-playground">
+        <div class="name-row"><h3>Presidio Wall Playground</h3><span class="rank-badge">All levels</span><span class="badges" data-court-id="presidio-wall-playground" data-role="top-badge"></span></div>
         <span class="addr">West Pacific Ave &amp; Spruce St, San Francisco, CA 94118</span>
         <div class="facts">
           <span class="stat-chip"><b>12</b> courts total</span>
@@ -139,10 +152,14 @@
         <p>The largest total court count in the city once you count the shared tennis courts, though only half are pickleball's alone. Reservations are optional here rather than required.</p>
         <a class="book-btn" href="https://sfrecpark.org/1591/Reservable-Pickleball-Courts" target="_blank" rel="noopener">Reserve (optional) →</a>
         <a class="book-btn" href="https://www.google.com/maps/search/?api=1&amp;query=West%20Pacific%20Ave%20%26%20Spruce%20St%2C%20San%20Francisco%2C%20CA%2094118" target="_blank" rel="noopener">Get directions →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#presidio-wall-playground"><span class="rating-summary" data-court-id="presidio-wall-playground" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="presidio-wall-playground" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
-      <div class="venue-card" id="parkside-square">
-        <div class="name-row"><h3>Parkside Square</h3><span class="rank-badge">Beginner-friendly</span></div>
+      <div class="venue-card" id="parkside-square" data-court-id="parkside-square">
+        <div class="name-row"><h3>Parkside Square</h3><span class="rank-badge">Beginner-friendly</span><span class="badges" data-court-id="parkside-square" data-role="top-badge"></span></div>
         <span class="addr">2680 28th Ave, San Francisco, CA 94116</span>
         <div class="facts">
           <span class="stat-chip"><b>8</b> courts</span>
@@ -159,10 +176,14 @@
         <p>Four courts are held for guaranteed drop-in play during a fixed midday window; the rest can be reserved outside it. Good option if beginner-focused play matters more to you than court count.</p>
         <a class="book-btn" href="https://sfrecpark.org/1591/Reservable-Pickleball-Courts" target="_blank" rel="noopener">Reserve outside drop-in hours →</a>
         <a class="book-btn" href="https://www.google.com/maps/search/?api=1&amp;query=2680%2028th%20Ave%2C%20San%20Francisco%2C%20CA%2094116" target="_blank" rel="noopener">Get directions →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#parkside-square"><span class="rating-summary" data-court-id="parkside-square" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="parkside-square" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
-      <div class="venue-card" id="crossing-east-cut">
-        <div class="name-row"><h3>The Crossing at East Cut</h3><span class="rank-badge">Competitive</span></div>
+      <div class="venue-card" id="crossing-east-cut" data-court-id="the-crossing-at-east-cut">
+        <div class="name-row"><h3>The Crossing at East Cut</h3><span class="rank-badge">Competitive</span><span class="badges" data-court-id="the-crossing-at-east-cut" data-role="top-badge"></span></div>
         <span class="addr">200 Folsom St, San Francisco, CA 94105</span>
         <div class="facts">
           <span class="stat-chip"><b>5</b> courts</span>
@@ -176,6 +197,10 @@
         </div>
         <p>A downtown plaza court rather than a park — small, but reported as an easy, low-drama first-come-first-served scene, and the only spot on this list that's meaningfully sheltered from the city's coastal fog.</p>
         <a class="book-btn" href="https://www.google.com/maps/search/?api=1&amp;query=200%20Folsom%20St%2C%20San%20Francisco%2C%20CA%2094105" target="_blank" rel="noopener">Get directions →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#the-crossing-at-east-cut"><span class="rating-summary" data-court-id="the-crossing-at-east-cut" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="the-crossing-at-east-cut" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
     </div>
@@ -307,6 +332,7 @@
           <li><a href="/cities/index.html">All 17 cities</a></li>
           <li><a href="/about.html">About this guide</a></li>
           <li><a href="/map.html">Map</a></li>
+          <li><a href="/rankings.html">Rankings</a></li>
           <li><a href="/learn.html">Learn to play</a></li>
           <li><a href="/gear.html">Gear &amp; rentals</a></li>
           <li><a href="/visiting.html">Visiting the Bay</a></li>
@@ -499,6 +525,8 @@
 }
 </script>
 
+<script type="module" src="/assets/court-ratings.js"></script>
+<script src="/assets/rating-widgets.js"></script>
 <script src="/assets/nav.js" defer></script>
 </body>
 </html>

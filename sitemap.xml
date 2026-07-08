@@ -21,6 +21,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://reidbrawer-ops.github.io/rankings.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://reidbrawer-ops.github.io/learn.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

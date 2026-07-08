@@ -31,6 +31,7 @@
       <a href="/cities/index.html" aria-current="page">Cities</a>
       <a href="/map.html">Map</a>
       <a href="/directory.html">Directory</a>
+      <a href="/rankings.html">Rankings</a>
       <details class="nav-dropdown">
         <summary>More</summary>
         <div class="nav-dropdown-menu">
@@ -63,8 +64,8 @@
     <h2>Where to play</h2>
     <div class="venue-list">
 
-      <div class="venue-card">
-        <div class="name-row"><h3>Bushrod Park</h3><span class="level-badge beginner">Beginner-friendly</span><span class="level-badge competitive">Competitive</span></div>
+      <div class="venue-card" data-court-id="bushrod-park">
+        <div class="name-row"><h3>Bushrod Park</h3><span class="level-badge beginner">Beginner-friendly</span><span class="level-badge competitive">Competitive</span><span class="badges" data-court-id="bushrod-park" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">560 59th St, Oakland, CA 94609</span>
           <a class="directions-link" href="https://www.google.com/maps/place/Tennis+Courts+%7C+Bushrod+Park/@37.8462746,-122.2644106,18z/data=!4m6!3m5!1s0x80857d2b9eb2c20d:0x5486d5bf4d71ce11!8m2!3d37.8453494!4d-122.2642081" target="_blank" rel="noopener">Directions ↗</a>
@@ -83,10 +84,14 @@
         </div>
         <p>One of the most popular public pickleball hubs in Oakland, with an active volunteer-run community behind it. Court count is genuinely disputed across sources: one lists 4 permanent courts plus 2 with portable nets, others describe 6 total dedicated courts — we're presenting it as "4–6" rather than picking a number. The core 4 use blended, shared tennis-court lines rather than dedicated pickleball striping, and the courts are lighted. Play runs on scheduled, skill-tagged sessions rather than open access: Beginner/Intermediate Sunday and Monday 4:30–7:30pm, Tuesday/Thursday 7:30–9:30pm; Intermediate 3.0–3.5 Wednesday 10:30am–1:30pm; Beginners Wednesday 5:30–9pm (one source's day-by-day details conflict slightly with others, so confirm the current schedule before you go). No reservation for general play; a $2 drop-in fee covers equipment and maintenance. Courts can also be reserved through the City of Oakland's PerfectMind system. Contact: PickleballDar@gmail.com, (510) 520-9440.</p>
         <a class="book-btn" href="https://cityofoakland.perfectmind.com/" target="_blank" rel="noopener">Reserve via PerfectMind →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#bushrod-park"><span class="rating-summary" data-court-id="bushrod-park" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="bushrod-park" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
-      <div class="venue-card top-pick">
-        <div class="name-row"><h3>Montclair Pickleball Courts</h3><span class="rank-badge top">Top pick</span><span class="level-badge beginner">Beginner-friendly</span><span class="level-badge competitive">Competitive</span></div>
+      <div class="venue-card top-pick" data-court-id="montclair-pickleball-courts">
+        <div class="name-row"><h3>Montclair Pickleball Courts</h3><span class="rank-badge top">Top pick</span><span class="level-badge beginner">Beginner-friendly</span><span class="level-badge competitive">Competitive</span><span class="badges" data-court-id="montclair-pickleball-courts" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">6226 Moraga Ave, Oakland, CA 94611</span>
           <a class="directions-link" href="https://www.google.com/maps/place/Pickleball+Courts+%7C+Montclair+Park/@37.8290095,-122.2122883,17.99z/data=!4m6!3m5!1s0x808f870a30bf1b6d:0x6860574ae20393c6!8m2!3d37.8285648!4d-122.2110028" target="_blank" rel="noopener">Directions ↗</a>
@@ -105,10 +110,14 @@
         </div>
         <p>Four dedicated courts with permanent nets, lighted for all-day play — one court is generally kept open for walk-ons even though reservations are available, which keeps it accessible even at peak times. Roughly $10/hr for residents. This is the top pick here for popularity and all-day access, edging out Bushrod's larger scheduled program mainly because you don't have to plan around a session block to get on court. One source lists the address as 1955 Mountain Blvd instead — likely the same complex, but confirm before you drive over.</p>
         <a class="book-btn" href="https://cityofoakland.perfectmind.com/" target="_blank" rel="noopener">Reserve via PerfectMind →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#montclair-pickleball-courts"><span class="rating-summary" data-court-id="montclair-pickleball-courts" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="montclair-pickleball-courts" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
-      <div class="venue-card">
-        <div class="name-row"><h3>Pickle Athletics</h3><span class="level-badge beginner">Beginner-friendly</span></div>
+      <div class="venue-card" data-court-id="pickle-athletics">
+        <div class="name-row"><h3>Pickle Athletics</h3><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="pickle-athletics" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">4000 Telegraph Ave, Oakland, CA 94609</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&query=Pickle+Athletics,+4000+Telegraph+Ave,+Oakland,+CA+94609" target="_blank" rel="noopener">Directions ↗</a>
@@ -127,6 +136,10 @@
         </div>
         <p>Billed as Northern California's first pickleball social club, and Oakland's only indoor dedicated option — four courts on cushioned acrylic, a real advantage on days the weather doesn't cooperate. Programming spans "Pickleball 101" for beginners, "Live Ball Clinics" for 3.5-and-up players, and dedicated beginner, intermediate, afternoon, and evening open-play slots. Access runs through membership/paid-session tiers (Clubhouse, Players, Ballers, Founding 50) rather than a flat drop-in fee.</p>
         <a class="book-btn" href="https://book.pickleathletics.com/" target="_blank" rel="noopener">Book a session →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#pickle-athletics"><span class="rating-summary" data-court-id="pickle-athletics" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="pickle-athletics" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
     </div>
@@ -296,6 +309,7 @@
           <li><a href="/cities/index.html">All 17 cities</a></li>
           <li><a href="/about.html">About this guide</a></li>
           <li><a href="/map.html">Map</a></li>
+          <li><a href="/rankings.html">Rankings</a></li>
           <li><a href="/learn.html">Learn to play</a></li>
           <li><a href="/gear.html">Gear &amp; rentals</a></li>
           <li><a href="/visiting.html">Visiting the Bay</a></li>
@@ -320,6 +334,8 @@
   </div>
 </footer>
 
+<script type="module" src="/assets/court-ratings.js"></script>
+<script src="/assets/rating-widgets.js"></script>
 <script src="/assets/nav.js" defer></script>
 </body>
 </html>

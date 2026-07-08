@@ -31,6 +31,7 @@
       <a href="/cities/index.html" aria-current="page">Cities</a>
       <a href="/map.html">Map</a>
       <a href="/directory.html">Directory</a>
+      <a href="/rankings.html">Rankings</a>
       <details class="nav-dropdown">
         <summary>More</summary>
         <div class="nav-dropdown-menu">
@@ -62,8 +63,8 @@
     <h2>Where to play</h2>
     <div class="venue-list">
 
-      <div class="venue-card top-pick">
-        <div class="name-row"><h3>Community Recreation Center at Central Park</h3><span class="rank-badge top">Top pick</span><span class="level-badge beginner">Beginner-friendly</span></div>
+      <div class="venue-card top-pick" data-court-id="community-recreation-center-at-central-park">
+        <div class="name-row"><h3>Community Recreation Center at Central Park</h3><span class="rank-badge top">Top pick</span><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="community-recreation-center-at-central-park" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">2625 Hayward Drive, Santa Clara, CA 95051</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&amp;query=2625%20Hayward%20Drive%2C%20Santa%20Clara%2C%20CA%2095051" target="_blank" rel="noopener">Get directions →</a>
@@ -82,10 +83,14 @@
         </div>
         <p>Six outdoor hard courts with lines blended into the existing tennis courts, portable nets, city-run reservation system open to residents and non-residents alike. Open play drop-in runs $6 residents/$7 non-residents; reserved courts run $8/hr residents, $10/hr non-residents. You must check in by phone at 408-247-0178 or in person before heading to your assigned court — this isn't a walk-up venue. Class tiers ("New Learners &amp; Beginners 0–1.5," "Advanced Beginner 2.0–2.5") are lesson levels, not requirements for open play. Hours vary noticeably by day, so check before you go: Monday and Wednesday run latest, at 9:30 p.m.</p>
         <a class="book-btn" href="https://app.courtreserve.com/Online/Portal/Index/13234" target="_blank" rel="noopener">Book a court →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#community-recreation-center-at-central-park"><span class="rating-summary" data-court-id="community-recreation-center-at-central-park" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="community-recreation-center-at-central-park" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
-      <div class="venue-card">
-        <div class="name-row"><h3>Bay Club Santa Clara</h3><span class="level-badge competitive">Competitive</span></div>
+      <div class="venue-card" data-court-id="bay-club-santa-clara">
+        <div class="name-row"><h3>Bay Club Santa Clara</h3><span class="level-badge competitive">Competitive</span><span class="badges" data-court-id="bay-club-santa-clara" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">3250 Central Expy, Santa Clara, CA 95051</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&amp;query=3250%20Central%20Expy%2C%20Santa%20Clara%2C%20CA%2095051" target="_blank" rel="noopener">Get directions →</a>
@@ -104,6 +109,10 @@
         </div>
         <p>A private club rather than a public facility — membership required, though guest memberships are available. Court count depends on the source: most consistently cited at 6, with some listings claiming as many as 10, so treat that upper figure with caution. Lines are dedicated to pickleball rather than shared with tennis, and lighted for evening play. The listed programmed times (Monday/Wednesday/Friday evenings, Saturday late morning) are scheduled pickleball sessions, not the full facility's open hours. It's described as one of the most popular pickleball scenes in the city, so expect the programmed sessions to be busy.</p>
         <a class="book-btn" href="https://www.bayclubs.com/amenity/pickleball" target="_blank" rel="noopener">Membership &amp; booking info →</a>
+        <div class="vote-actions">
+          <a href="/rankings.html#bay-club-santa-clara"><span class="rating-summary" data-court-id="bay-club-santa-clara" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="bay-club-santa-clara" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
     </div>
@@ -138,6 +147,7 @@
           <li><a href="/cities/index.html">All 17 cities</a></li>
           <li><a href="/about.html">About this guide</a></li>
           <li><a href="/map.html">Map</a></li>
+          <li><a href="/rankings.html">Rankings</a></li>
           <li><a href="/learn.html">Learn to play</a></li>
           <li><a href="/gear.html">Gear &amp; rentals</a></li>
           <li><a href="/visiting.html">Visiting the Bay</a></li>
@@ -184,6 +194,8 @@
 }
 </script>
 
+<script type="module" src="/assets/court-ratings.js"></script>
+<script src="/assets/rating-widgets.js"></script>
 <script src="/assets/nav.js" defer></script>
 </body>
 </html>

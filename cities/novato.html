@@ -31,6 +31,7 @@
       <a href="/cities/index.html" aria-current="page">Cities</a>
       <a href="/map.html">Map</a>
       <a href="/directory.html">Directory</a>
+      <a href="/rankings.html">Rankings</a>
       <details class="nav-dropdown">
         <summary>More</summary>
         <div class="nav-dropdown-menu">
@@ -62,8 +63,8 @@
     <h2>Where to play</h2>
     <div class="venue-list">
 
-      <div class="venue-card top-pick">
-        <div class="name-row"><h3>Hill Recreation Pickleball Courts</h3><span class="rank-badge top">Top pick</span><span class="level-badge beginner">Beginner-friendly</span></div>
+      <div class="venue-card top-pick" data-court-id="hill-recreation-pickleball-courts">
+        <div class="name-row"><h3>Hill Recreation Pickleball Courts</h3><span class="rank-badge top">Top pick</span><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="hill-recreation-pickleball-courts" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">500 Crescent Drive, Novato, CA 94949</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&query=Hill%20Recreation%20Pickleball%20Courts%2C%20500%20Crescent%20Drive%2C%20Novato%2C%20CA%2094949" target="_blank" rel="noopener">Directions →</a>
@@ -80,10 +81,14 @@
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue caution">High — reportedly one of Novato's most popular spots, no reservation option</span></div>
         </div>
         <p>Six dedicated courts behind Novato High, expandable to eight if demand needs it, with a paddle-rack rotation once every court is full. Free, first-come-first-served, no way to reserve ahead. An older listing under the name "Thigpen Courts" cites shorter hours and a $3 Saturday fee — that looks stale next to the more current 8am–10pm daily description, but worth a call if you're planning around it.</p>
+        <div class="vote-actions">
+          <a href="/rankings.html#hill-recreation-pickleball-courts"><span class="rating-summary" data-court-id="hill-recreation-pickleball-courts" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="hill-recreation-pickleball-courts" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
-      <div class="venue-card">
-        <div class="name-row"><h3>Pioneer Park</h3><span class="level-badge mixed">Mixed levels</span></div>
+      <div class="venue-card" data-court-id="pioneer-park">
+        <div class="name-row"><h3>Pioneer Park</h3><span class="level-badge mixed">Mixed levels</span><span class="badges" data-court-id="pioneer-park" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">1007 Simmons Ln, Novato, CA 94945</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&query=Pioneer%20Park%2C%201007%20Simmons%20Ln%2C%20Novato%2C%20CA%2094945" target="_blank" rel="noopener">Directions →</a>
@@ -100,6 +105,10 @@
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue good">Low — smaller, less-known option</span></div>
         </div>
         <p>A smaller, quieter alternative to Hill Recreation. Free, first-come-first-served, no lights so no evening play. One aggregator's claim of indoor courts at this address conflicts with the city's own facility directory — treat that as likely an error.</p>
+        <div class="vote-actions">
+          <a href="/rankings.html#pioneer-park"><span class="rating-summary" data-court-id="pioneer-park" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
+          <button type="button" class="favorite-btn" data-court-id="pioneer-park" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
+        </div>
       </div>
 
     </div>
@@ -133,6 +142,7 @@
           <li><a href="/cities/index.html">All 17 cities</a></li>
           <li><a href="/about.html">About this guide</a></li>
           <li><a href="/map.html">Map</a></li>
+          <li><a href="/rankings.html">Rankings</a></li>
           <li><a href="/learn.html">Learn to play</a></li>
           <li><a href="/gear.html">Gear &amp; rentals</a></li>
           <li><a href="/visiting.html">Visiting the Bay</a></li>
@@ -193,6 +203,8 @@
 }
 </script>
 
+<script type="module" src="/assets/court-ratings.js"></script>
+<script src="/assets/rating-widgets.js"></script>
 <script src="/assets/nav.js" defer></script>
 </body>
 </html>
