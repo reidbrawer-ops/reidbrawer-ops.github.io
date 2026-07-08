@@ -1223,6 +1223,12 @@ a.google-rating-badge:hover {
   text-decoration: none;
 }
 
+.google-rating-asof {
+  margin-left: 0.45em;
+  font-weight: 400;
+  opacity: 0.65;
+}
+
 /* ---------- City quick-jump tags ---------- */
 
 .city-quick-jump {

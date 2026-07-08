@@ -58,6 +58,77 @@ async function searchPlace(court) {
   return data.places && data.places[0] ? data.places[0] : null;
 }
 
+// Simple mismatch heuristic: flag a match only when its name shares no
+// *distinctive* word with the venue name we searched for — a cheap signal,
+// not a verdict, meant to shorten the manual spot-check. Generic facility
+// words are excluded from "distinctive" because they're nearly useless as a
+// signal here: "park" alone appears in 39 of this site's 84 venue names and
+// "center" in 17, so two unrelated parks would otherwise share a "word" and
+// never get flagged.
+const GENERIC_WORDS = new Set([
+  "park", "center", "centre", "playground", "courts", "court", "rec",
+  "recreation", "recreational", "community", "club", "complex", "facility",
+  "facilities", "sports", "athletic", "athletics", "field", "fields", "gym",
+  "gymnasium", "area", "the", "and", "of", "at",
+]);
+
+function normalizeName(s) {
+  return (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function distinctiveWords(s) {
+  return new Set(
+    normalizeName(s)
+      .split(" ")
+      .filter((w) => w.length > 2 && !GENERIC_WORDS.has(w))
+  );
+}
+
+function looksLikeMismatch(courtName, matchedName) {
+  if (!matchedName) return false;
+  const a = normalizeName(courtName);
+  const b = normalizeName(matchedName);
+  if (!a || !b || a === b || a.includes(b) || b.includes(a)) return false;
+  const aWords = distinctiveWords(courtName);
+  const bWords = distinctiveWords(matchedName);
+  // Neither name has a distinctive word to compare (e.g. "Community Park") —
+  // not enough signal either way, so don't flag it.
+  if (aWords.size === 0 || bWords.size === 0) return false;
+  for (const w of aWords) {
+    if (bWords.has(w)) return false;
+  }
+  return true;
+}
+
+function printDiffSummary(existing, out, courtById) {
+  const gained = [];
+  const lost = [];
+  const suspicious = [];
+
+  const allIds = new Set([...Object.keys(existing), ...Object.keys(out)]);
+  for (const id of allIds) {
+    const before = existing[id];
+    const after = out[id];
+    const name = courtById[id] ? courtById[id].name : id;
+    if (!before && after) gained.push(`${name} (${after.rating}★, ${after.userRatingCount || 0} reviews)`);
+    if (before && !after) lost.push(name);
+    if (after && looksLikeMismatch(name, after.matchedName)) {
+      suspicious.push(`${name} -> "${after.matchedName}"`);
+    }
+  }
+
+  console.log("\n--- Diff vs. previous assets/google-ratings.json ---");
+  console.log(
+    gained.length ? `Gained a rating (${gained.length}):\n  ${gained.join("\n  ")}` : "Gained a rating: none"
+  );
+  console.log(lost.length ? `Lost a rating (${lost.length}):\n  ${lost.join("\n  ")}` : "Lost a rating: none");
+  console.log(
+    suspicious.length
+      ? `Possibly wrong match — shares no words with the venue name (${suspicious.length}), check these first:\n  ${suspicious.join("\n  ")}`
+      : "Possibly wrong matches: none flagged"
+  );
+}
+
 async function run() {
   const existing = (() => {
     try {
@@ -66,6 +137,7 @@ async function run() {
       return {};
     }
   })();
+  const courtById = Object.fromEntries(courts.map((c) => [c.id, c]));
 
   const out = {};
   let found = 0;
@@ -102,6 +174,9 @@ async function run() {
   writeFileSync(outPath, JSON.stringify(out, null, 2) + "\n");
   console.log(`\nDone. ${found} found, ${missing} not found, ${errors} errors.`);
   console.log(`Wrote ${outPath}`);
+
+  printDiffSummary(existing, out, courtById);
+
   console.log(`\nSpot-check a few "matchedName" values above against the real venue names before trusting this data —`);
   console.log(`text search can occasionally match the wrong nearby place.`);
 }

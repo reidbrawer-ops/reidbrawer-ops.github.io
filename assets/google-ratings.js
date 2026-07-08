@@ -40,10 +40,13 @@
     const entry = get(courtId);
     if (!entry || typeof entry.rating !== "number") return "";
     const label = `<span class="google-rating-label">Google ${entry.rating.toFixed(1)}★ (${entry.userRatingCount || 0})</span>`;
+    const asOf = entry.fetchedAt
+      ? `<span class="google-rating-asof">as of ${entry.fetchedAt}</span>`
+      : "";
     const url = mapsUrl(entry);
     return url
-      ? `<a class="google-rating-badge" href="${url}" target="_blank" rel="noopener">${label}</a>`
-      : `<span class="google-rating-badge">${label}</span>`;
+      ? `<a class="google-rating-badge" href="${url}" target="_blank" rel="noopener">${label}${asOf}</a>`
+      : `<span class="google-rating-badge">${label}${asOf}</span>`;
   }
 
   // Rewrites "Get directions"-style links from a free-text address search to
