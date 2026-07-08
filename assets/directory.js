@@ -6,6 +6,10 @@
   const tbodyEl = document.getElementById("directory-tbody");
   const cardsEl = document.getElementById("directory-cards");
   const formEl = document.getElementById("directory-filters");
+  const hoursStartEl = document.getElementById("f-hours-start");
+  const hoursEndEl = document.getElementById("f-hours-end");
+  const hoursLabelEl = document.getElementById("hours-slider-label");
+  const hoursRangeFillEl = document.getElementById("hours-slider-range");
   if (!formEl) return;
 
   const CITY_REGION = {
@@ -29,6 +33,10 @@
   };
 
   const WAIT_ORDER = { Low: 0, Medium: 1, High: 2, "Not specified": 3 };
+
+  const HOURS_MIN = 0;
+  const HOURS_MAX = 1440;
+  let hoursRange = [HOURS_MIN, HOURS_MAX];
 
   function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, (c) => ({
@@ -70,13 +78,6 @@
     return "6+ courts";
   }
 
-  function hoursBucket(venue) {
-    const raw = venue.hours || "Not specified";
-    if (/not specified/i.test(raw)) return "Not specified";
-    if (/24\/7|24 hours/i.test(raw)) return "Open 24/7";
-    return "Set hours";
-  }
-
   function weatherBucket(venue) {
     const raw = venue.weather || "Not specified";
     if (/not specified/i.test(raw)) return "Not specified";
@@ -86,30 +87,109 @@
     return "Other";
   }
 
+  // Standardized surface categories — the raw "surface" text is free prose
+  // extracted per-venue and is almost never unique-comparable, so filtering
+  // uses this bucket while the table/card display still shows the raw text.
+  function surfaceBucket(venue) {
+    const raw = (venue.surface || "Not specified").toLowerCase();
+    if (raw === "not specified") return "Not specified";
+    if (/indoor|wood floor|\bgym\b/.test(raw)) return "Indoor court";
+    if (/tennis|dual-striped|dual-purpose|blended|shared|basketball|volleyball|mixed/.test(raw)) return "Converted / shared courts";
+    if (/dedicated|permanent net|permanent line|acrylic/.test(raw)) return "Dedicated pickleball courts";
+    if (/portable|byo|bring your own/.test(raw)) return "Portable nets / BYO";
+    return "Other / unclear";
+  }
+
+  function toMinutes(hour, minute, meridiem) {
+    let h = parseInt(hour, 10) % 12;
+    if (meridiem === "pm") h += 12;
+    return h * 60 + (minute ? parseInt(minute, 10) : 0);
+  }
+
+  // Best-effort extraction of an overall [open, close] window (in minutes
+  // since midnight) from free-text hours. Returns null when the text gives
+  // us nothing concrete to go on (e.g. "Not specified", "Dawn-dusk") —
+  // callers treat null as "unknown, don't claim it's open in a given window."
+  function parseHoursRange(text) {
+    if (!text || /not specified/i.test(text)) return null;
+    if (/24\/7|24 hours?/i.test(text)) return [HOURS_MIN, HOURS_MAX];
+
+    const times = [];
+    const rangeRe = /(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[-–—]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)/gi;
+    let m;
+    while ((m = rangeRe.exec(text))) {
+      const endMeridiem = m[6].toLowerCase();
+      const startMeridiem = (m[3] || endMeridiem).toLowerCase();
+      times.push(toMinutes(m[1], m[2], startMeridiem));
+      times.push(toMinutes(m[4], m[5], endMeridiem));
+    }
+    if (times.length < 2) {
+      const singleRe = /(\d{1,2})(?::(\d{2}))?\s*(am|pm)/gi;
+      while ((m = singleRe.exec(text))) {
+        times.push(toMinutes(m[1], m[2], m[3].toLowerCase()));
+      }
+    }
+    if (times.length < 2) return null;
+    return [Math.min.apply(null, times), Math.max.apply(null, times)];
+  }
+
+  function formatClock(min) {
+    min = min % 1440;
+    let h = Math.floor(min / 60);
+    const m = min % 60;
+    const ampm = h < 12 ? "AM" : "PM";
+    h = h % 12;
+    if (h === 0) h = 12;
+    return `${h}:${String(m).padStart(2, "0")} ${ampm}`;
+  }
+
+  function passesHours(row) {
+    if (hoursRange[0] === HOURS_MIN && hoursRange[1] === HOURS_MAX) return true;
+    if (!row.hoursRange) return false;
+    return row.hoursRange[0] <= hoursRange[1] && row.hoursRange[1] >= hoursRange[0];
+  }
+
+  function directionsUrl(row) {
+    const query = row.address && row.address !== "Not specified"
+      ? `${row.name}, ${row.address}`
+      : `${row.name}, ${row.city}`;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  }
+
+  function actionLinksHtml(row) {
+    const links = [
+      `<a class="row-action" href="${escapeHtml(directionsUrl(row))}" target="_blank" rel="noopener">Directions ↗</a>`,
+    ];
+    if (row.bookingUrl) {
+      links.push(
+        `<a class="row-action row-action-book" href="${escapeHtml(row.bookingUrl)}" target="_blank" rel="noopener">Book →</a>`
+      );
+    }
+    return `<div class="row-actions">${links.join("")}</div>`;
+  }
+
   function uniqueSorted(values) {
     return Array.from(new Set(values.filter((v) => v && v !== "Not specified"))).sort((a, b) =>
       a.localeCompare(b)
     );
   }
 
-  function populateSelect(select, values, { withNotSpecified } = {}) {
-    const opts = uniqueSorted(values);
-    if (withNotSpecified && values.includes("Not specified")) opts.push("Not specified");
-    opts.forEach((v) => {
-      const opt = document.createElement("option");
-      opt.value = v;
-      opt.textContent = v;
-      select.appendChild(opt);
-    });
-  }
-
-  function rowMatchesFilters(row, filters) {
-    return Object.keys(filters).every((key) => {
-      const wanted = filters[key];
-      if (!wanted) return true;
-      return row[key] === wanted;
-    });
-  }
+  // Fields driving the standard <select> filters. `withNotSpecified` mirrors
+  // the previous behavior: location fields never offer "Not specified" as a
+  // choice, everything else does.
+  const FILTER_FIELDS = [
+    { key: "region", elId: "f-region", allLabel: "All regions", withNotSpecified: false },
+    { key: "city", elId: "f-city", allLabel: "All cities", withNotSpecified: false },
+    { key: "neighborhood", elId: "f-neighborhood", allLabel: "All neighborhoods", withNotSpecified: false },
+    { key: "indoorOutdoor", elId: "f-indoor", allLabel: "All", withNotSpecified: true },
+    { key: "surfaceBucket", elId: "f-surface", allLabel: "All surfaces", withNotSpecified: true },
+    { key: "reservable", elId: "f-reservable", allLabel: "All", withNotSpecified: true },
+    { key: "skillBucket", elId: "f-skill", allLabel: "All skill levels", withNotSpecified: true },
+    { key: "priceBucket", elId: "f-price", allLabel: "All prices", withNotSpecified: true },
+    { key: "courtsBucket", elId: "f-courts", allLabel: "Any", withNotSpecified: true },
+    { key: "waitTime", elId: "f-wait", allLabel: "All", withNotSpecified: true },
+    { key: "weatherBucket", elId: "f-weather", allLabel: "All", withNotSpecified: true },
+  ];
 
   function sortValue(row, key) {
     if (key === "courts") return typeof row.courts === "number" ? row.courts : -1;
@@ -124,47 +204,60 @@
       priceBucket: priceBucket(v),
       skillBucket: skillBucket(v),
       courtsBucket: courtsBucket(v),
-      hoursBucket: hoursBucket(v),
       weatherBucket: weatherBucket(v),
+      surfaceBucket: surfaceBucket(v),
+      hoursRange: parseHoursRange(v.hours),
     }));
 
-    populateSelect(document.getElementById("f-region"), rows.map((r) => r.region));
-    populateSelect(document.getElementById("f-city"), rows.map((r) => r.city));
-    populateSelect(document.getElementById("f-neighborhood"), rows.map((r) => r.neighborhood));
-    populateSelect(document.getElementById("f-indoor"), rows.map((r) => r.indoorOutdoor), { withNotSpecified: true });
-    populateSelect(document.getElementById("f-surface"), rows.map((r) => r.surface), { withNotSpecified: true });
-    populateSelect(document.getElementById("f-reservable"), rows.map((r) => r.reservable), { withNotSpecified: true });
-    populateSelect(document.getElementById("f-skill"), rows.map((r) => r.skillBucket), { withNotSpecified: true });
-    populateSelect(document.getElementById("f-price"), rows.map((r) => r.priceBucket), { withNotSpecified: true });
-    populateSelect(document.getElementById("f-courts"), rows.map((r) => r.courtsBucket), { withNotSpecified: true });
-    populateSelect(document.getElementById("f-wait"), rows.map((r) => r.waitTime), { withNotSpecified: true });
-    populateSelect(document.getElementById("f-hours"), rows.map((r) => r.hoursBucket), { withNotSpecified: true });
-    populateSelect(document.getElementById("f-weather"), rows.map((r) => r.weatherBucket), { withNotSpecified: true });
-
-    const filterMap = {
-      region: "f-region",
-      city: "f-city",
-      neighborhood: "f-neighborhood",
-      indoorOutdoor: "f-indoor",
-      surface: "f-surface",
-      reservable: "f-reservable",
-      skillBucket: "f-skill",
-      priceBucket: "f-price",
-      courtsBucket: "f-courts",
-      waitTime: "f-wait",
-      hoursBucket: "f-hours",
-      weatherBucket: "f-weather",
-    };
+    const fieldEls = {};
+    FILTER_FIELDS.forEach((f) => {
+      fieldEls[f.key] = document.getElementById(f.elId);
+    });
 
     let sortKey = "name";
     let sortDir = 1;
 
     function currentFilters() {
       const filters = {};
-      Object.keys(filterMap).forEach((key) => {
-        filters[key] = document.getElementById(filterMap[key]).value;
+      FILTER_FIELDS.forEach((f) => {
+        filters[f.key] = fieldEls[f.key].value;
       });
       return filters;
+    }
+
+    function rowMatchesFilters(row, filters, excludeKey) {
+      return FILTER_FIELDS.every((f) => {
+        if (f.key === excludeKey) return true;
+        const wanted = filters[f.key];
+        if (!wanted) return true;
+        return row[f.key] === wanted;
+      });
+    }
+
+    // Rows compatible with every active filter except `excludeKey` (and,
+    // always, the hours slider) — this is the "leave-one-out" set used to
+    // decide which options a given dropdown should even offer, so picking
+    // any listed option can never produce zero results.
+    function rowsMatchingAllExcept(filters, excludeKey) {
+      return rows.filter((r) => rowMatchesFilters(r, filters, excludeKey) && passesHours(r));
+    }
+
+    function refreshFilterOptions() {
+      const snapshot = currentFilters();
+      FILTER_FIELDS.forEach((f) => {
+        const el = fieldEls[f.key];
+        const currentValue = el.value;
+        const eligible = rowsMatchingAllExcept(snapshot, f.key);
+        const values = eligible.map((r) => r[f.key]);
+        const opts = uniqueSorted(values);
+        if (f.withNotSpecified && values.includes("Not specified")) opts.push("Not specified");
+
+        el.innerHTML =
+          `<option value="">${escapeHtml(f.allLabel)}</option>` +
+          opts.map((v) => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
+
+        el.value = opts.includes(currentValue) ? currentValue : "";
+      });
     }
 
     function rowHtmlFacts(row) {
@@ -183,8 +276,9 @@
     }
 
     function render() {
+      refreshFilterOptions();
       const filters = currentFilters();
-      let filtered = rows.filter((r) => rowMatchesFilters(r, filters));
+      let filtered = rows.filter((r) => rowMatchesFilters(r, filters) && passesHours(r));
 
       filtered = filtered.slice().sort((a, b) => {
         const av = sortValue(a, sortKey);
@@ -205,7 +299,7 @@
         .map(
           (row) => `
         <tr>
-          <td><a href="${row.url}">${escapeHtml(row.name)}</a>${row.topPick ? ' <span class="rank-badge top">Top pick</span>' : ""}</td>
+          <td><a href="${row.url}">${escapeHtml(row.name)}</a>${row.topPick ? ' <span class="rank-badge top">Top pick</span>' : ""}${actionLinksHtml(row)}</td>
           <td>${escapeHtml(row.city)}</td>
           <td>${escapeHtml(row.neighborhood)}</td>
           <td>${escapeHtml(row.price)}</td>
@@ -230,6 +324,7 @@
             ${row.topPick ? '<span class="rank-badge top">Top pick</span>' : ""}
           </div>
           <span class="addr">${escapeHtml(row.neighborhood)}</span>
+          ${actionLinksHtml(row)}
           <div class="facts">${rowHtmlFacts(row)}</div>
         </article>`
         )
@@ -238,12 +333,21 @@
 
     formEl.addEventListener("change", render);
 
+    function resetHoursSlider() {
+      hoursRange = [HOURS_MIN, HOURS_MAX];
+      hoursStartEl.value = HOURS_MIN;
+      hoursEndEl.value = HOURS_MAX;
+      updateHoursVisual();
+    }
+
     document.getElementById("f-clear").addEventListener("click", () => {
       formEl.reset();
+      resetHoursSlider();
       render();
     });
     document.getElementById("empty-clear").addEventListener("click", () => {
       formEl.reset();
+      resetHoursSlider();
       render();
     });
 
@@ -273,6 +377,37 @@
       });
     });
 
+    function updateHoursVisual() {
+      const start = parseInt(hoursStartEl.value, 10);
+      const end = parseInt(hoursEndEl.value, 10);
+      hoursLabelEl.textContent =
+        start === HOURS_MIN && end === HOURS_MAX ? "Any time" : `${formatClock(start)} – ${formatClock(end)}`;
+      const pct = (v) => ((v - HOURS_MIN) / (HOURS_MAX - HOURS_MIN)) * 100;
+      hoursRangeFillEl.style.left = pct(start) + "%";
+      hoursRangeFillEl.style.right = 100 - pct(end) + "%";
+    }
+
+    function handleHoursInput(e) {
+      let start = parseInt(hoursStartEl.value, 10);
+      let end = parseInt(hoursEndEl.value, 10);
+      if (start > end) {
+        if (e.target === hoursStartEl) {
+          end = start;
+          hoursEndEl.value = String(end);
+        } else {
+          start = end;
+          hoursStartEl.value = String(start);
+        }
+      }
+      hoursRange = [start, end];
+      updateHoursVisual();
+      render();
+    }
+
+    hoursStartEl.addEventListener("input", handleHoursInput);
+    hoursEndEl.addEventListener("input", handleHoursInput);
+
+    updateHoursVisual();
     tableEl.hidden = false;
     render();
     setStatus(`Showing all ${rows.length} venues.`);

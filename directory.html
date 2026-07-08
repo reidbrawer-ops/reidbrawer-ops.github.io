@@ -66,75 +66,58 @@
     <form id="directory-filters" class="directory-filters" aria-label="Filter venues">
       <div class="filter-field">
         <label for="f-region">Region</label>
-        <select id="f-region" name="region">
-          <option value="">All regions</option>
-        </select>
+        <select id="f-region" name="region"></select>
       </div>
       <div class="filter-field">
         <label for="f-city">City</label>
-        <select id="f-city" name="city">
-          <option value="">All cities</option>
-        </select>
+        <select id="f-city" name="city"></select>
       </div>
       <div class="filter-field">
         <label for="f-neighborhood">Neighborhood</label>
-        <select id="f-neighborhood" name="neighborhood">
-          <option value="">All neighborhoods</option>
-        </select>
+        <select id="f-neighborhood" name="neighborhood"></select>
       </div>
       <div class="filter-field">
         <label for="f-indoor">Indoor / Outdoor</label>
-        <select id="f-indoor" name="indoorOutdoor">
-          <option value="">All</option>
-        </select>
+        <select id="f-indoor" name="indoorOutdoor"></select>
       </div>
       <div class="filter-field">
         <label for="f-surface">Surface</label>
-        <select id="f-surface" name="surface">
-          <option value="">All surfaces</option>
-        </select>
+        <select id="f-surface" name="surface"></select>
       </div>
       <div class="filter-field">
         <label for="f-reservable">Reservable</label>
-        <select id="f-reservable" name="reservable">
-          <option value="">All</option>
-        </select>
+        <select id="f-reservable" name="reservable"></select>
       </div>
       <div class="filter-field">
         <label for="f-skill">Skill level</label>
-        <select id="f-skill" name="skill">
-          <option value="">All skill levels</option>
-        </select>
+        <select id="f-skill" name="skill"></select>
       </div>
       <div class="filter-field">
         <label for="f-price">Price</label>
-        <select id="f-price" name="price">
-          <option value="">All prices</option>
-        </select>
+        <select id="f-price" name="price"></select>
       </div>
       <div class="filter-field">
         <label for="f-courts">Number of courts</label>
-        <select id="f-courts" name="courts">
-          <option value="">Any</option>
-        </select>
+        <select id="f-courts" name="courts"></select>
       </div>
       <div class="filter-field">
         <label for="f-wait">Wait time</label>
-        <select id="f-wait" name="waitTime">
-          <option value="">All</option>
-        </select>
-      </div>
-      <div class="filter-field">
-        <label for="f-hours">Hours</label>
-        <select id="f-hours" name="hours">
-          <option value="">All</option>
-        </select>
+        <select id="f-wait" name="waitTime"></select>
       </div>
       <div class="filter-field">
         <label for="f-weather">Typical weather</label>
-        <select id="f-weather" name="weather">
-          <option value="">All</option>
-        </select>
+        <select id="f-weather" name="weather"></select>
+      </div>
+      <div class="filter-field filter-field-hours">
+        <label for="f-hours-start">Open during</label>
+        <div class="hours-slider" id="hours-slider">
+          <div class="hours-slider-track">
+            <div class="hours-slider-range" id="hours-slider-range"></div>
+          </div>
+          <input type="range" id="f-hours-start" class="hours-thumb" min="0" max="1440" step="15" value="0" aria-label="Earliest open time">
+          <input type="range" id="f-hours-end" class="hours-thumb" min="0" max="1440" step="15" value="1440" aria-label="Latest open time">
+        </div>
+        <span id="hours-slider-label" class="hours-slider-label">Any time</span>
       </div>
       <div class="filter-field filter-field-clear">
         <button type="button" id="f-clear" class="clear-btn">Clear filters</button>

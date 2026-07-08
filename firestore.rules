@@ -1,0 +1,114 @@
+rules_version = '2';
+
+// Security rules for the Pickleball Bay Area voting/ratings feature.
+// Paste this into: Firebase console → Firestore Database → Rules.
+//
+// Design: anyone can read aggregate court stats (public rankings). Writes
+// are restricted to the exact shape a single vote or rating produces —
+// counts only ever go up by 1, star sums only move by a bounded amount, and
+// favorite votes only move by 1 in either direction (a toggle). Documents
+// can never be deleted, and no field outside the known set can be added.
+//
+// This is client-side abuse resistance, not airtight fraud prevention —
+// anyone determined enough could still script repeated legitimate-shaped
+// votes from a browser console. For a hobby directory site that's an
+// acceptable tradeoff; if abuse becomes a real problem, move writes behind
+// a Cloud Function that also checks App Check / rate limits.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /courtVotes/{courtId} {
+      allow read: if true;
+      allow delete: if false;
+
+      allow create: if isWellFormed(request.resource.data) && isSingleSeedWrite(request.resource.data);
+
+      allow update: if isWellFormed(request.resource.data)
+                    && onlyKnownFieldsChanged()
+                    && favoriteDeltaOk()
+                    && factorDeltaOk('beginnerFriendlySum', 'beginnerFriendlyCount')
+                    && factorDeltaOk('courtSurfaceSum', 'courtSurfaceCount')
+                    && factorDeltaOk('waitTimeScoreSum', 'waitTimeScoreCount')
+                    && factorDeltaOk('advancedPlaySum', 'advancedPlayCount')
+                    && factorDeltaOk('amenitiesSum', 'amenitiesCount')
+                    && factorDeltaOk('atmosphereSum', 'atmosphereCount');
+
+      function knownFields() {
+        return [
+          'favoriteVotes',
+          'beginnerFriendlySum', 'beginnerFriendlyCount',
+          'courtSurfaceSum', 'courtSurfaceCount',
+          'waitTimeScoreSum', 'waitTimeScoreCount',
+          'advancedPlaySum', 'advancedPlayCount',
+          'amenitiesSum', 'amenitiesCount',
+          'atmosphereSum', 'atmosphereCount'
+        ];
+      }
+
+      function isWellFormed(data) {
+        return data.keys().hasOnly(knownFields())
+          && data.favoriteVotes is number
+          && data.beginnerFriendlySum is number && data.beginnerFriendlyCount is number
+          && data.courtSurfaceSum is number && data.courtSurfaceCount is number
+          && data.waitTimeScoreSum is number && data.waitTimeScoreCount is number
+          && data.advancedPlaySum is number && data.advancedPlayCount is number
+          && data.amenitiesSum is number && data.amenitiesCount is number
+          && data.atmosphereSum is number && data.atmosphereCount is number;
+      }
+
+      // A brand-new court document is created by exactly one user action:
+      // either a favorite vote (favoriteVotes == 1, everything else 0) or a
+      // single star rating (one factor's Count == 1 and Sum in [1,5], every
+      // other field 0). Matches what court-ratings.js actually writes.
+      function isSingleSeedWrite(data) {
+        let favOnly = data.favoriteVotes == 1
+          && data.beginnerFriendlySum == 0 && data.beginnerFriendlyCount == 0
+          && data.courtSurfaceSum == 0 && data.courtSurfaceCount == 0
+          && data.waitTimeScoreSum == 0 && data.waitTimeScoreCount == 0
+          && data.advancedPlaySum == 0 && data.advancedPlayCount == 0
+          && data.amenitiesSum == 0 && data.amenitiesCount == 0
+          && data.atmosphereSum == 0 && data.atmosphereCount == 0;
+
+        let ratingOnly = data.favoriteVotes == 0 && (
+          (data.beginnerFriendlyCount == 1 && data.beginnerFriendlySum >= 1 && data.beginnerFriendlySum <= 5
+            && data.courtSurfaceCount == 0 && data.waitTimeScoreCount == 0 && data.advancedPlayCount == 0
+            && data.amenitiesCount == 0 && data.atmosphereCount == 0)
+          || (data.courtSurfaceCount == 1 && data.courtSurfaceSum >= 1 && data.courtSurfaceSum <= 5
+            && data.beginnerFriendlyCount == 0 && data.waitTimeScoreCount == 0 && data.advancedPlayCount == 0
+            && data.amenitiesCount == 0 && data.atmosphereCount == 0)
+          || (data.waitTimeScoreCount == 1 && data.waitTimeScoreSum >= 1 && data.waitTimeScoreSum <= 5
+            && data.beginnerFriendlyCount == 0 && data.courtSurfaceCount == 0 && data.advancedPlayCount == 0
+            && data.amenitiesCount == 0 && data.atmosphereCount == 0)
+          || (data.advancedPlayCount == 1 && data.advancedPlaySum >= 1 && data.advancedPlaySum <= 5
+            && data.beginnerFriendlyCount == 0 && data.courtSurfaceCount == 0 && data.waitTimeScoreCount == 0
+            && data.amenitiesCount == 0 && data.atmosphereCount == 0)
+          || (data.amenitiesCount == 1 && data.amenitiesSum >= 1 && data.amenitiesSum <= 5
+            && data.beginnerFriendlyCount == 0 && data.courtSurfaceCount == 0 && data.waitTimeScoreCount == 0
+            && data.advancedPlayCount == 0 && data.atmosphereCount == 0)
+          || (data.atmosphereCount == 1 && data.atmosphereSum >= 1 && data.atmosphereSum <= 5
+            && data.beginnerFriendlyCount == 0 && data.courtSurfaceCount == 0 && data.waitTimeScoreCount == 0
+            && data.advancedPlayCount == 0 && data.amenitiesCount == 0)
+        );
+
+        return favOnly || ratingOnly;
+      }
+
+      function onlyKnownFieldsChanged() {
+        return request.resource.data.diff(resource.data).affectedKeys().hasOnly(knownFields());
+      }
+
+      function favoriteDeltaOk() {
+        let d = request.resource.data.favoriteVotes - resource.data.favoriteVotes;
+        return d == 0 || d == 1 || d == -1;
+      }
+
+      function factorDeltaOk(sumField, countField) {
+        let sumDelta = request.resource.data[sumField] - resource.data[sumField];
+        let countDelta = request.resource.data[countField] - resource.data[countField];
+        return (countDelta == 0 && sumDelta == 0)
+          || (countDelta == 1 && sumDelta >= 1 && sumDelta <= 5)
+          || (countDelta == 0 && sumDelta >= -4 && sumDelta <= 4);
+      }
+    }
+  }
+}

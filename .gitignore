@@ -2,3 +2,4 @@
 node_modules/
 .vercel/
 .netlify/
+scripts/serviceAccountKey.json

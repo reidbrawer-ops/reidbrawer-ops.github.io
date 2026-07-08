@@ -60,6 +60,97 @@
   justify-content: flex-end;
 }
 
+/* ---------- Hours range slider ---------- */
+
+.filter-field-hours {
+  grid-column: span 2;
+  min-width: 220px;
+}
+
+.hours-slider {
+  position: relative;
+  height: 28px;
+}
+
+.hours-slider-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  background: var(--line);
+  border-radius: 999px;
+}
+
+.hours-slider-range {
+  position: absolute;
+  top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
+  background: var(--bay);
+  border-radius: 999px;
+}
+
+.hours-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  height: 28px;
+  background: transparent;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.hours-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bay);
+  border: 2px solid var(--paper);
+  box-shadow: 0 1px 4px rgba(23, 35, 43, 0.35);
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.hours-thumb::-moz-range-thumb {
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bay);
+  border: 2px solid var(--paper);
+  box-shadow: 0 1px 4px rgba(23, 35, 43, 0.35);
+  cursor: pointer;
+}
+
+.hours-thumb::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 28px;
+}
+
+.hours-thumb::-moz-range-track {
+  background: transparent;
+  height: 28px;
+}
+
+.hours-thumb:focus-visible::-webkit-slider-thumb {
+  outline: 3px solid var(--bay);
+  outline-offset: 2px;
+}
+
+.hours-slider-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
 .clear-btn {
   font-family: var(--font-mono);
   font-size: 0.8rem;
@@ -212,6 +303,36 @@
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* ---------- Directions / booking action links ---------- */
+
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.row-action {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--bay);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.row-action:hover {
+  text-decoration: underline;
+}
+
+.row-action-book {
+  color: var(--kitchen-deep);
+}
+
+.directory-table td .row-actions {
+  white-space: normal;
 }
 
 @media (max-width: 640px) {

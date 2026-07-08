@@ -979,3 +979,217 @@ img, svg {
     flex-direction: column;
   }
 }
+
+/* ---------- Voting & ratings ---------- */
+
+.star-rating {
+  display: inline-flex;
+  gap: 1px;
+  vertical-align: middle;
+}
+
+.star-rating .star {
+  position: relative;
+  width: 1em;
+  height: 1em;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.star-rating .star::before,
+.star-rating .star::after {
+  content: "\2605";
+  position: absolute;
+  inset: 0;
+  font-size: 1em;
+  line-height: 1;
+}
+
+.star-rating .star::before {
+  color: var(--line);
+}
+
+.star-rating .star::after {
+  width: var(--fill, 0%);
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--optic-deep);
+}
+
+.star-rating.size-sm .star {
+  font-size: 0.8rem;
+}
+
+.star-rating.size-lg .star {
+  font-size: 1.15rem;
+}
+
+.rating-value-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin-left: 0.4em;
+}
+
+.star-picker {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  gap: 1px;
+}
+
+.star-picker button {
+  background: none;
+  border: none;
+  padding: 0.05em;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--line);
+}
+
+.star-picker button::before {
+  content: "\2605";
+}
+
+.star-picker button:hover,
+.star-picker button:hover ~ button,
+.star-picker button.is-selected,
+.star-picker button.is-selected ~ button {
+  color: var(--optic-deep);
+}
+
+.favorite-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--poppy-deep);
+  background: var(--paper);
+  border: 1.5px solid var(--poppy);
+  border-radius: 999px;
+  padding: 0.4em 0.95em;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.favorite-btn::before {
+  content: "\2661";
+  font-size: 1.05em;
+}
+
+.favorite-btn:hover {
+  background: var(--poppy-tint);
+}
+
+.favorite-btn.is-favorited {
+  background: var(--poppy);
+  color: #fff;
+}
+
+.favorite-btn.is-favorited::before {
+  content: "\2665";
+}
+
+.badge-top-rated,
+.badge-most-loved {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  padding: 0.2em 0.75em;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.badge-top-rated {
+  background: var(--optic);
+  color: var(--bay-deep);
+  border-color: var(--optic-deep);
+}
+
+.badge-most-loved {
+  background: var(--poppy-tint);
+  color: var(--poppy-deep);
+  border-color: rgba(181, 75, 44, 0.3);
+}
+
+.rating-form {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--line);
+}
+
+.rating-form-toggle {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--bay);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--optic-deep);
+  text-underline-offset: 3px;
+}
+
+.rating-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+}
+
+.rating-form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.rating-form-row .rf-label {
+  font-size: 0.85rem;
+  color: var(--ink);
+  flex: 1 1 160px;
+}
+
+.rating-form-row .rf-hint {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+.rating-form-row .rf-control {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.rating-form-row .rf-your-rating {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+.vote-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-top: 0.7rem;
+}
+
+@media (max-width: 560px) {
+  .rating-form-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

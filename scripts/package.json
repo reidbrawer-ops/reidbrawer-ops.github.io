@@ -1,0 +1,12 @@
+{
+  "name": "pickleball-bay-area-scripts",
+  "private": true,
+  "type": "module",
+  "description": "One-off admin scripts for Pickleball Bay Area. Not part of the site build.",
+  "scripts": {
+    "seed": "node seed-firestore.mjs"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.6.0"
+  }
+}
