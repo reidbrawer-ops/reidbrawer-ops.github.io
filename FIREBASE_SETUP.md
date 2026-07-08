@@ -39,8 +39,9 @@ that file for the full reasoning.
 
 1. In the Firebase console, click the gear icon → **Project settings**.
 2. Under **Your apps**, click the **</>** (web) icon to add a web app.
-3. Give it any nickname (e.g. `pickleball-bay-area-web`). You don't need
-   Firebase Hosting — this site already deploys via GitHub Pages.
+3. Give it any nickname (e.g. `pickleball-bay-area-web`). Firebase Hosting is
+   optional — see the section below if you also want Firebase to serve the
+   site itself, alongside GitHub Pages.
 4. Firebase will show a `firebaseConfig` object. Copy those values into
    [`assets/firebase-config.js`](assets/firebase-config.js), replacing the
    `YOUR_...` placeholders.
@@ -51,6 +52,37 @@ Open `directory.html` or `rankings.html` in a browser, open the console, and
 confirm you no longer see the `[PBRatings] Firebase isn't configured yet`
 warning. Cast a test vote and check the Firestore console
 (**Firestore Database → Data → courtVotes**) to see it land.
+
+## 6. (Optional) Also host the site on Firebase Hosting
+
+This keeps GitHub Pages as the canonical, live URL (reidbrawer-ops.github.io —
+the canonical/og:url tags on every page still point there) and adds Firebase
+Hosting as a second copy of the same static site, served from the same
+Firebase project as your Firestore database. Useful for previewing changes
+on a Firebase URL, or as a stepping stone if you ever want to move canonical
+hosting there later.
+
+1. Install the Firebase CLI: `npm install -g firebase-tools` (or prefix every
+   command below with `npx` instead of installing globally).
+2. `firebase login` — opens a browser to authenticate with the same Google
+   account that owns the Firebase project.
+3. Open [`.firebaserc`](.firebaserc) and replace `YOUR_FIREBASE_PROJECT_ID`
+   with the project ID from step 1 (find it in the Firebase console under
+   **Project settings → General → Project ID**).
+4. From the repo root: `firebase deploy --only hosting`.
+5. The CLI prints a **Hosting URL** — something like
+   `https://YOUR_PROJECT_ID.web.app`. That's the Firebase-hosted mirror.
+
+[`firebase.json`](firebase.json) is already configured to serve every file at
+the repo root except `scripts/`, dotfiles, and markdown docs — `scripts/` is
+excluded specifically so a local `scripts/serviceAccountKey.json`, if you've
+created one for the seed/admin scripts, never gets uploaded to public
+hosting.
+
+To publish future changes, just re-run `firebase deploy --only hosting`
+(GitHub Pages updates on its own whenever you push to the repo — the two
+deploy independently and can drift out of sync between deploys, which is
+fine for a preview mirror but worth knowing).
 
 ## Notes on abuse resistance
 

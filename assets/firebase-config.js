@@ -17,12 +17,14 @@
 // site is affected — this file only powers the voting/ranking feature.
 
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyDaIHifXRrkVcAC6vkI6iHK7IF1BfuRAxM",
+  authDomain: "pickleball-bay-area.firebaseapp.com",
+  projectId: "pickleball-bay-area",
+  storageBucket: "pickleball-bay-area.firebasestorage.app",
+  messagingSenderId: "613626696867",
+  appId: "1:613626696867:web:c7b91559d0a3ac56769b16"
 };
 
 export const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+
+

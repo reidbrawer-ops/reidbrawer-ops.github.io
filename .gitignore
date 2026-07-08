@@ -2,3 +2,5 @@
 node_modules/
 .vercel/
 .netlify/
+.firebase/
+scripts/serviceAccountKey.json
