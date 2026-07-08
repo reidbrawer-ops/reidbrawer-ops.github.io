@@ -78,14 +78,14 @@
     });
   }
 
-  function rowHtml(court, index, { showCity, isMostLoved, rowId }) {
+  function rowHtml(court, index, { showCity, isMostLoved, rowId, compact }) {
     const stats = window.PBRatings.getStats(court.id);
     const badges = [];
     if (stats.isTopRated) badges.push('<span class="badge-top-rated">★ Top rated</span>');
     if (isMostLoved) badges.push('<span class="badge-most-loved">♥ Most loved</span>');
 
     return `
-      <div class="leaderboard-row"${rowId ? ` id="${rowId}"` : ""}>
+      <div class="leaderboard-row${compact ? " is-compact" : ""}"${rowId ? ` id="${rowId}"` : ""}>
         <div class="rank-number ${rankClass(index)}">#${index + 1}</div>
         <div class="leaderboard-main">
           <div class="leaderboard-name-row">
@@ -96,9 +96,10 @@
           <div class="leaderboard-rating-row">
             ${window.PBWidgets.overallRatingHtml(court.id)}
           </div>
-          ${window.PBWidgets.ratingFormHtml(court.id)}
+          ${compact ? "" : window.PBWidgets.ratingFormHtml(court.id)}
         </div>
         <div class="leaderboard-side">
+          ${compact ? `<a class="review-link" href="${court.url}#${court.id}">Review →</a>` : ""}
           ${window.PBWidgets.favoriteButtonHtml(court.id, "favorites")}
         </div>
       </div>`;
@@ -109,7 +110,7 @@
 
     top10El.innerHTML = sortedAll
       .slice(0, 10)
-      .map((c, i) => rowHtml(c, i, { showCity: true, isMostLoved: false, rowId: `top10-${c.id}` }))
+      .map((c, i) => rowHtml(c, i, { showCity: true, isMostLoved: false, rowId: `top10-${c.id}`, compact: true }))
       .join("");
 
     const byCity = {};

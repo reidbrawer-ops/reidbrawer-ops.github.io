@@ -1111,7 +1111,7 @@ img, svg {
   text-underline-offset: 3px;
 }
 
-.rating-form-body {
+.rating-form-body:not([hidden]) {
   display: flex;
   flex-direction: column;
   gap: 0.55rem;

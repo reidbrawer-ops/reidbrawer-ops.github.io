@@ -192,6 +192,47 @@
   margin-top: 0.6rem;
 }
 
+/* Compact Top 10 rows: skip the full 6-factor rating form (that lives in
+   the by-city leaderboards below) and lay name + rating on one line, so
+   the Top 10 reads as a scannable leaderboard rather than stacked cards. */
+.leaderboard-row.is-compact {
+  align-items: center;
+  padding: 0.7rem 1.2rem;
+}
+
+.leaderboard-row.is-compact .leaderboard-main {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 0.9rem;
+}
+
+.leaderboard-row.is-compact .leaderboard-name-row,
+.leaderboard-row.is-compact .leaderboard-rating-row {
+  margin: 0;
+}
+
+.leaderboard-row.is-compact .leaderboard-side {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.review-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--bay);
+  text-decoration: underline;
+  text-decoration-color: var(--optic-deep);
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.review-link:hover {
+  color: var(--kitchen-deep);
+}
+
 @media (max-width: 640px) {
   .leaderboard-row {
     flex-wrap: wrap;
@@ -199,5 +240,8 @@
   .leaderboard-side {
     align-items: flex-start;
     flex: 1 1 100%;
+  }
+  .leaderboard-row.is-compact .leaderboard-side {
+    flex-direction: row;
   }
 }
