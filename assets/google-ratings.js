@@ -46,6 +46,21 @@
       : `<span class="google-rating-badge">${label}</span>`;
   }
 
+  // Rewrites "Get directions"-style links from a free-text address search to
+  // a verified Google Place once one is known for that venue. Only touches
+  // anchors whose venue has a resolved placeId — every other Directions link
+  // is left exactly as-is (a text search can match the wrong nearby place,
+  // so we never guess).
+  function rewriteDirectionsLinks(root) {
+    (root || document).querySelectorAll(".directions-link, .mv-directions").forEach((a) => {
+      const card = a.closest("[data-court-id]");
+      if (!card) return;
+      const entry = get(card.dataset.courtId);
+      const url = entry && mapsUrl(entry);
+      if (url) a.href = url;
+    });
+  }
+
   function injectAll(root) {
     (root || document).querySelectorAll('[data-role="overall-rating"][data-court-id]').forEach((el) => {
       const html = badgeHtml(el.dataset.courtId);
@@ -78,13 +93,15 @@
     await ensureLoaded();
     hookIntoWidgetRefresh();
     injectAll();
+    rewriteDirectionsLinks();
   }
 
   document.addEventListener("pbratings:ready", () => {
     hookIntoWidgetRefresh();
     injectAll();
+    rewriteDirectionsLinks();
   });
 
-  window.PBGoogleRatings = { get, badgeHtml, injectAll };
+  window.PBGoogleRatings = { get, badgeHtml, injectAll, rewriteDirectionsLinks };
   init();
 })();
