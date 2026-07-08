@@ -7,6 +7,59 @@
   margin-top: var(--space-2);
 }
 
+.city-jump {
+  margin-top: var(--space-3);
+}
+
+.city-jump-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin: 0 0 0.5rem;
+}
+
+.city-jump-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.city-jump-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.city-jump-region {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--kitchen-deep);
+  min-width: 6.5em;
+}
+
+.city-jump-tag {
+  display: inline-flex;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3em 0.85em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+
+.city-jump-tag:hover {
+  background: var(--bay-tint);
+  color: var(--bay-deep);
+  border-color: var(--bay);
+}
+
 .rankings-status {
   font-family: var(--font-mono);
   font-size: 0.85rem;
@@ -63,6 +116,12 @@
 
 .leaderboard-row + .leaderboard-row {
   border-top: 1px solid var(--line);
+}
+
+.leaderboard-row.is-jump-target {
+  background: var(--bay-tint);
+  box-shadow: inset 3px 0 0 var(--bay);
+  transition: background 2s var(--ease), box-shadow 2s var(--ease);
 }
 
 .rank-number {
