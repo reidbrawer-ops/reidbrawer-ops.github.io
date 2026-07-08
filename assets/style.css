@@ -30,6 +30,12 @@
   --kitchen-tint: #e7f3ec;
   --poppy-tint: #f7eae4;
 
+  /* Map-only pin colors: bay/kitchen sit only ~40° apart in hue and read as
+     near-identical at 9-16px, so indoor/outdoor pins get their own wider-
+     spread blue/green pair (~80° apart) instead of reusing the brand tokens. */
+  --pin-outdoor: #2166a8;
+  --pin-indoor: #3a8a4a;
+
   --radius-s: 10px;
   --radius-m: 16px;
   --space-1: 0.5rem;

@@ -5,7 +5,7 @@
     "address": "1300 Rose St, Berkeley, CA 94702",
     "lat": 37.8765974,
     "lon": -122.2887435,
-    "url": "/cities/berkeley.html",
+    "url": "/cities/berkeley",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -15,7 +15,7 @@
     "address": "1720 8th Street, Berkeley, CA 94710",
     "lat": 37.8720298,
     "lon": -122.2975094,
-    "url": "/cities/berkeley.html",
+    "url": "/cities/berkeley",
     "indoor": "outdoor"
   },
   {
@@ -24,7 +24,7 @@
     "address": "1730 Oregon Street, Berkeley, CA 94703",
     "lat": 37.8565345,
     "lon": -122.2735435,
-    "url": "/cities/berkeley.html",
+    "url": "/cities/berkeley",
     "indoor": "outdoor"
   },
   {
@@ -33,7 +33,7 @@
     "address": "2800 Park Street, Berkeley, CA 94702",
     "lat": 37.8565158,
     "lon": -122.2833503,
-    "url": "/cities/berkeley.html",
+    "url": "/cities/berkeley",
     "indoor": "outdoor"
   },
   {
@@ -42,7 +42,7 @@
     "address": "21121 Stevens Creek Blvd, Cupertino, CA 95014",
     "lat": 37.3227003,
     "lon": -122.0468305,
-    "url": "/cities/cupertino.html",
+    "url": "/cities/cupertino",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -52,7 +52,7 @@
     "address": "21111 Stevens Creek Blvd, Cupertino, CA 95014",
     "lat": 37.3236065,
     "lon": -122.0429004,
-    "url": "/cities/cupertino.html",
+    "url": "/cities/cupertino",
     "indoor": "both"
   },
   {
@@ -61,7 +61,7 @@
     "address": "21250 Stevens Creek Blvd, Cupertino, CA 95014",
     "lat": 37.3177007,
     "lon": -122.0445571,
-    "url": "/cities/cupertino.html",
+    "url": "/cities/cupertino",
     "indoor": "outdoor"
   },
   {
@@ -70,7 +70,7 @@
     "address": "Central Park, off Civic Center Dr, Fremont, CA 94539 (between Fremont PD and the Fremont Main Library)",
     "lat": 37.5502415,
     "lon": -121.9631016,
-    "url": "/cities/fremont.html",
+    "url": "/cities/fremont",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -80,7 +80,7 @@
     "address": "40000 Paseo Padre Pkwy, Fremont, CA 94538",
     "lat": 37.548401,
     "lon": -121.9575428,
-    "url": "/cities/fremont.html",
+    "url": "/cities/fremont",
     "indoor": "outdoor"
   },
   {
@@ -89,7 +89,7 @@
     "address": "46650 Landing Pkwy, Fremont, CA 94538",
     "lat": 37.4832307,
     "lon": -121.942142,
-    "url": "/cities/fremont.html",
+    "url": "/cities/fremont",
     "indoor": "outdoor"
   },
   {
@@ -98,7 +98,7 @@
     "address": "Fremont, CA",
     "lat": 37.5482697,
     "lon": -121.988571,
-    "url": "/cities/fremont.html",
+    "url": "/cities/fremont",
     "approx": true,
     "indoor": "outdoor"
   },
@@ -108,7 +108,7 @@
     "address": "100 Terminal Ave, Menlo Park, CA 94025",
     "lat": 37.4783161,
     "lon": -122.1674571,
-    "url": "/cities/menlo-park.html",
+    "url": "/cities/menlo-park",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -118,7 +118,7 @@
     "address": "800 Middle Ave, Menlo Park, CA 94025",
     "lat": 37.447922,
     "lon": -122.179417,
-    "url": "/cities/menlo-park.html",
+    "url": "/cities/menlo-park",
     "indoor": "outdoor"
   },
   {
@@ -127,7 +127,7 @@
     "address": "201 S. Rengstorff Avenue, Mountain View, CA 94040",
     "lat": 37.401203,
     "lon": -122.098457,
-    "url": "/cities/mountain-view.html",
+    "url": "/cities/mountain-view",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -137,7 +137,7 @@
     "address": "1185 Castro St, Mountain View, CA 94040",
     "lat": 37.3818314,
     "lon": -122.086321,
-    "url": "/cities/mountain-view.html",
+    "url": "/cities/mountain-view",
     "indoor": "indoor"
   },
   {
@@ -146,7 +146,7 @@
     "address": "500 Crescent Drive, Novato, CA 94949",
     "lat": 38.0530871,
     "lon": -122.5187715,
-    "url": "/cities/novato.html",
+    "url": "/cities/novato",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -156,7 +156,7 @@
     "address": "1007 Simmons Ln, Novato, CA 94945",
     "lat": 38.1132784,
     "lon": -122.5885233,
-    "url": "/cities/novato.html",
+    "url": "/cities/novato",
     "indoor": "outdoor"
   },
   {
@@ -165,7 +165,7 @@
     "address": "560 59th St, Oakland, CA 94609",
     "lat": 37.8454332,
     "lon": -122.2635557,
-    "url": "/cities/oakland.html",
+    "url": "/cities/oakland",
     "indoor": "outdoor"
   },
   {
@@ -174,7 +174,7 @@
     "address": "6226 Moraga Ave, Oakland, CA 94611",
     "lat": 37.8296197,
     "lon": -122.2129266,
-    "url": "/cities/oakland.html",
+    "url": "/cities/oakland",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -184,7 +184,7 @@
     "address": "4000 Telegraph Ave, Oakland, CA 94609",
     "lat": 37.8294815,
     "lon": -122.2640593,
-    "url": "/cities/oakland.html",
+    "url": "/cities/oakland",
     "indoor": "indoor"
   },
   {
@@ -193,7 +193,7 @@
     "address": "900 Fallon St, Oakland, CA 94607",
     "lat": 37.7942491,
     "lon": -122.2607931,
-    "url": "/cities/oakland.html",
+    "url": "/cities/oakland",
     "indoor": "outdoor"
   },
   {
@@ -202,7 +202,7 @@
     "address": "5475 Redwood Rd, Oakland, CA 94619",
     "lat": 37.7975289,
     "lon": -122.1718552,
-    "url": "/cities/oakland.html",
+    "url": "/cities/oakland",
     "indoor": "outdoor"
   },
   {
@@ -211,7 +211,7 @@
     "address": "Oakland, CA",
     "lat": 37.8044557,
     "lon": -122.271356,
-    "url": "/cities/oakland.html",
+    "url": "/cities/oakland",
     "approx": true,
     "indoor": "unknown"
   },
@@ -221,7 +221,7 @@
     "address": "1651 Adeline St, Oakland, CA 94607",
     "lat": 37.8114216,
     "lon": -122.285346,
-    "url": "/cities/oakland.html",
+    "url": "/cities/oakland",
     "indoor": "unknown"
   },
   {
@@ -230,7 +230,7 @@
     "address": "600 E Meadow Dr, Palo Alto, CA 94303",
     "lat": 37.4232558,
     "lon": -122.1163817,
-    "url": "/cities/palo-alto.html",
+    "url": "/cities/palo-alto",
     "indoor": "outdoor"
   },
   {
@@ -239,7 +239,7 @@
     "address": "4701 Muirwood Drive, Pleasanton, CA 94588",
     "lat": 37.6842961,
     "lon": -121.9182676,
-    "url": "/cities/pleasanton.html",
+    "url": "/cities/pleasanton",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -249,7 +249,7 @@
     "address": "5801 Valley Ave, Pleasanton, CA 94566",
     "lat": 37.6756,
     "lon": -121.8995005,
-    "url": "/cities/pleasanton.html",
+    "url": "/cities/pleasanton",
     "indoor": "outdoor"
   },
   {
@@ -258,7 +258,7 @@
     "address": "5001 Case Ave (Bernal Avenue), Pleasanton, CA 94566",
     "lat": 37.6546993,
     "lon": -121.8838621,
-    "url": "/cities/pleasanton.html",
+    "url": "/cities/pleasanton",
     "indoor": "indoor"
   },
   {
@@ -267,7 +267,7 @@
     "address": "7090 Johnson Dr, Pleasanton, CA 94588",
     "lat": 37.6997546,
     "lon": -121.9180836,
-    "url": "/cities/pleasanton.html",
+    "url": "/cities/pleasanton",
     "indoor": "both"
   },
   {
@@ -276,7 +276,7 @@
     "address": "Near 7090 Johnson Dr (exact address unconfirmed — distinct facility from Bay Club), Pleasanton, CA",
     "lat": 37.6997546,
     "lon": -121.9180836,
-    "url": "/cities/pleasanton.html",
+    "url": "/cities/pleasanton",
     "indoor": "both"
   },
   {
@@ -285,7 +285,7 @@
     "address": "1400 Roosevelt Ave, Redwood City, CA 94061",
     "lat": 37.4708368,
     "lon": -122.2370457,
-    "url": "/cities/redwood-city.html",
+    "url": "/cities/redwood-city",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -295,7 +295,7 @@
     "address": "1120 Roosevelt Ave, Redwood City, CA 94061",
     "lat": 37.4720186,
     "lon": -122.235494,
-    "url": "/cities/redwood-city.html",
+    "url": "/cities/redwood-city",
     "indoor": "indoor"
   },
   {
@@ -304,7 +304,7 @@
     "address": "1445 Hudson St, Redwood City, CA 94061",
     "lat": 37.4706264,
     "lon": -122.2265097,
-    "url": "/cities/redwood-city.html",
+    "url": "/cities/redwood-city",
     "indoor": "indoor"
   },
   {
@@ -313,7 +313,7 @@
     "address": "850 Vicente St, San Francisco, CA 94116",
     "lat": 37.7395945,
     "lon": -122.4761735,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -323,7 +323,7 @@
     "address": "614 University St, McLaren Park, San Francisco, CA 94134",
     "lat": 37.7224769,
     "lon": -122.4136718,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -332,7 +332,7 @@
     "address": "Bowling Green Dr & JFK Drive, Golden Gate Park, San Francisco, CA 94117",
     "lat": 37.7679691,
     "lon": -122.4600782,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -341,7 +341,7 @@
     "address": "West Pacific Ave & Spruce St, San Francisco, CA 94118",
     "lat": 37.791124,
     "lon": -122.4540269,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -350,7 +350,7 @@
     "address": "2680 28th Ave, San Francisco, CA 94116",
     "lat": 37.7383463,
     "lon": -122.4837811,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -359,7 +359,7 @@
     "address": "200 Folsom St, San Francisco, CA 94105",
     "lat": 37.78934,
     "lon": -122.392042,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -368,7 +368,7 @@
     "address": "Buena Vista E & Duboce Ave, San Francisco, CA 94144",
     "lat": 37.7683632,
     "lon": -122.4412774,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -377,7 +377,7 @@
     "address": "600 Arguello Blvd, San Francisco, CA 94118",
     "lat": 37.7790653,
     "lon": -122.4582804,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -386,7 +386,7 @@
     "address": "1800 Chestnut St, San Francisco, CA 94102",
     "lat": 37.801298,
     "lon": -122.433128,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -395,7 +395,7 @@
     "address": "5210 Diamond Heights Blvd, San Francisco, CA 94131",
     "lat": 37.7439969,
     "lon": -122.4402468,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -404,7 +404,7 @@
     "address": "1441 Ellis St, San Francisco, CA 94115",
     "lat": 37.78255,
     "lon": -122.4303339,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -413,7 +413,7 @@
     "address": "86 States St, San Francisco, CA 94114",
     "lat": 37.7634558,
     "lon": -122.4367435,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -422,7 +422,7 @@
     "address": "630 Sloat Blvd, San Francisco, CA 94132",
     "lat": 37.7347235,
     "lon": -122.4790292,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "outdoor"
   },
   {
@@ -431,7 +431,7 @@
     "address": "295 Day St, San Francisco, CA 94131",
     "lat": 37.742388,
     "lon": -122.4284382,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "both"
   },
   {
@@ -440,7 +440,7 @@
     "address": "100 Collingwood St, San Francisco, CA 94114",
     "lat": 37.760695,
     "lon": -122.436205,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "indoor"
   },
   {
@@ -449,7 +449,7 @@
     "address": "1900 Geary Blvd, San Francisco, CA 94115",
     "lat": 37.7845624,
     "lon": -122.4353242,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "indoor"
   },
   {
@@ -458,7 +458,7 @@
     "address": "650 Capitol Ave, San Francisco, CA 94112",
     "lat": 37.7161871,
     "lon": -122.4589561,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "indoor"
   },
   {
@@ -467,7 +467,7 @@
     "address": "251 18th Ave, San Francisco, CA 94121",
     "lat": 37.7833156,
     "lon": -122.4781116,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "indoor"
   },
   {
@@ -476,7 +476,7 @@
     "address": "4080 Mission St, San Francisco, CA 94112",
     "lat": 37.7322268,
     "lon": -122.428003,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "indoor"
   },
   {
@@ -485,7 +485,7 @@
     "address": "Bosworth St & O'Shaughnessy Blvd, San Francisco, CA 94131",
     "lat": 37.7370367,
     "lon": -122.4409309,
-    "url": "/cities/san-francisco.html",
+    "url": "/cities/san-francisco",
     "indoor": "indoor"
   },
   {
@@ -494,7 +494,7 @@
     "address": "1426 Hillsdale Ave, San Jose, CA 95118",
     "lat": 37.2722482,
     "lon": -121.8906164,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -504,7 +504,7 @@
     "address": "2995 Yerba Buena Rd, San Jose, CA 95135",
     "lat": 37.2977099,
     "lon": -121.764086,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "outdoor"
   },
   {
@@ -513,7 +513,7 @@
     "address": "5400 Camden Ave, San Jose, CA 95124",
     "lat": 37.2405661,
     "lon": -121.9040212,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "outdoor"
   },
   {
@@ -522,7 +522,7 @@
     "address": "Vintner Way & Dalton Drive, San Jose, CA 95124",
     "lat": 37.2453326,
     "lon": -121.9107436,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "outdoor"
   },
   {
@@ -531,7 +531,7 @@
     "address": "6816 Rainbow Dr, San Jose, CA 95129",
     "lat": 37.3008909,
     "lon": -122.0241562,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "outdoor"
   },
   {
@@ -540,7 +540,7 @@
     "address": "594 Park Meadow Drive, San Jose, CA 95129",
     "lat": 37.316042,
     "lon": -121.990926,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "outdoor"
   },
   {
@@ -549,7 +549,7 @@
     "address": "2900 Cataldi Dr, San Jose, CA 95132",
     "lat": 37.402118,
     "lon": -121.86946,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "outdoor"
   },
   {
@@ -558,7 +558,7 @@
     "address": "200 Edenvale Ave, San Jose, CA 95136",
     "lat": 37.2622283,
     "lon": -121.8200002,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "outdoor"
   },
   {
@@ -567,7 +567,7 @@
     "address": "Klein Rd & Cedardale Dr, San Jose, CA 95148",
     "lat": 37.3368231,
     "lon": -121.7787516,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "outdoor"
   },
   {
@@ -576,7 +576,7 @@
     "address": "1600 Parkside Ave, San Jose, CA 95125",
     "lat": 37.3014396,
     "lon": -121.8872937,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "outdoor"
   },
   {
@@ -585,7 +585,7 @@
     "address": "Tupolo Drive, San Jose, CA 95124",
     "lat": 37.2543853,
     "lon": -121.9062101,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "outdoor"
   },
   {
@@ -594,7 +594,7 @@
     "address": "1000 Bascom Ave, San Jose, CA 95128",
     "lat": 37.3075348,
     "lon": -121.9311591,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "indoor"
   },
   {
@@ -603,7 +603,7 @@
     "address": "3369 Union Ave, San Jose, CA 95124",
     "lat": 37.2638767,
     "lon": -121.9330502,
-    "url": "/cities/san-jose.html",
+    "url": "/cities/san-jose",
     "indoor": "indoor"
   },
   {
@@ -612,7 +612,7 @@
     "address": "50 E 5th Ave, San Mateo, CA 94401",
     "lat": 37.562149,
     "lon": -122.3236032,
-    "url": "/cities/san-mateo.html",
+    "url": "/cities/san-mateo",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -622,7 +622,7 @@
     "address": "551 28th Avenue, San Mateo, CA 94403",
     "lat": 37.5372956,
     "lon": -122.3133347,
-    "url": "/cities/san-mateo.html",
+    "url": "/cities/san-mateo",
     "indoor": "outdoor"
   },
   {
@@ -631,7 +631,7 @@
     "address": "2111 Kehoe Ave, San Mateo, CA",
     "lat": 37.565461,
     "lon": -122.29421,
-    "url": "/cities/san-mateo.html",
+    "url": "/cities/san-mateo",
     "indoor": "outdoor"
   },
   {
@@ -640,7 +640,7 @@
     "address": "1837 Bahia St, San Mateo, CA 94403",
     "lat": 37.5429132,
     "lon": -122.2808086,
-    "url": "/cities/san-mateo.html",
+    "url": "/cities/san-mateo",
     "indoor": "outdoor"
   },
   {
@@ -649,7 +649,7 @@
     "address": "950 Ocean View Avenue, San Mateo, CA 94401",
     "lat": 37.569542,
     "lon": -122.303177,
-    "url": "/cities/san-mateo.html",
+    "url": "/cities/san-mateo",
     "indoor": "outdoor"
   },
   {
@@ -658,7 +658,7 @@
     "address": "506 N. Delaware Street, San Mateo, CA 94401",
     "lat": 37.5760358,
     "lon": -122.3296619,
-    "url": "/cities/san-mateo.html",
+    "url": "/cities/san-mateo",
     "indoor": "indoor"
   },
   {
@@ -667,7 +667,7 @@
     "address": "440 Smith Ranch Rd, San Rafael, CA 94903",
     "lat": 38.0179004,
     "lon": -122.5216061,
-    "url": "/cities/san-rafael.html",
+    "url": "/cities/san-rafael",
     "topPick": true,
     "indoor": "both"
   },
@@ -677,7 +677,7 @@
     "address": "Hacienda Way, Santa Venetia, San Rafael, CA 94901",
     "lat": 38.0160147,
     "lon": -122.5146595,
-    "url": "/cities/san-rafael.html",
+    "url": "/cities/san-rafael",
     "indoor": "outdoor"
   },
   {
@@ -686,7 +686,7 @@
     "address": "155 Anderson Dr, San Rafael, CA 94901",
     "lat": 37.9690661,
     "lon": -122.5285588,
-    "url": "/cities/san-rafael.html",
+    "url": "/cities/san-rafael",
     "indoor": "outdoor"
   },
   {
@@ -695,7 +695,7 @@
     "address": "San Rafael, CA",
     "lat": 38.0191541,
     "lon": -122.5243124,
-    "url": "/cities/san-rafael.html",
+    "url": "/cities/san-rafael",
     "indoor": "outdoor"
   },
   {
@@ -704,7 +704,7 @@
     "address": "San Rafael, CA (Marin County Parks)",
     "lat": 37.9928278,
     "lon": -122.4535469,
-    "url": "/cities/san-rafael.html",
+    "url": "/cities/san-rafael",
     "indoor": "outdoor"
   },
   {
@@ -713,7 +713,7 @@
     "address": "San Rafael, CA",
     "lat": 37.9994442,
     "lon": -122.5231339,
-    "url": "/cities/san-rafael.html",
+    "url": "/cities/san-rafael",
     "indoor": "both"
   },
   {
@@ -722,7 +722,7 @@
     "address": "2625 Hayward Drive, Santa Clara, CA 95051",
     "lat": 37.3448223,
     "lon": -121.9716919,
-    "url": "/cities/santa-clara.html",
+    "url": "/cities/santa-clara",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -732,7 +732,7 @@
     "address": "3250 Central Expy, Santa Clara, CA 95051",
     "lat": 37.3775115,
     "lon": -121.9860477,
-    "url": "/cities/santa-clara.html",
+    "url": "/cities/santa-clara",
     "indoor": "outdoor"
   },
   {
@@ -741,7 +741,7 @@
     "address": "755 S Mathilda Ave, Sunnyvale, CA 94087",
     "lat": 37.3650942,
     "lon": -122.0342751,
-    "url": "/cities/sunnyvale.html",
+    "url": "/cities/sunnyvale",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -751,7 +751,7 @@
     "address": "550 E Remington Drive, Sunnyvale, CA 94087",
     "lat": 37.357704,
     "lon": -122.0264951,
-    "url": "/cities/sunnyvale.html",
+    "url": "/cities/sunnyvale",
     "indoor": "indoor"
   },
   {
@@ -760,7 +760,7 @@
     "address": "2261 Dapplegray Lane, Walnut Creek, CA 94596",
     "lat": 37.8761923,
     "lon": -122.0271175,
-    "url": "/cities/walnut-creek.html",
+    "url": "/cities/walnut-creek",
     "topPick": true,
     "indoor": "outdoor"
   },
@@ -770,7 +770,7 @@
     "address": "1751 Heather Dr, Walnut Creek, CA 94598",
     "lat": 37.9177343,
     "lon": -122.0411544,
-    "url": "/cities/walnut-creek.html",
+    "url": "/cities/walnut-creek",
     "indoor": "outdoor"
   }
 ]

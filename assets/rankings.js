@@ -136,7 +136,7 @@
           <div class="city-leaderboard" id="${citySlug(city)}">
             <div class="region-head">
               <div><h3>${escapeHtml(city)}</h3></div>
-              <a class="overview-link" href="/cities/${citySlug(city)}.html">City guide →</a>
+              <a class="overview-link" href="/cities/${citySlug(city)}">City guide →</a>
             </div>
             <div class="leaderboard">
               ${cityCourts

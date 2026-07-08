@@ -96,15 +96,15 @@
 }
 
 .pba-pin--outdoor {
-  background: var(--bay);
+  background: var(--pin-outdoor);
 }
 
 .pba-pin--indoor {
-  background: var(--kitchen);
+  background: var(--pin-indoor);
 }
 
 .pba-pin--both {
-  background: linear-gradient(90deg, var(--bay) 50%, var(--kitchen) 50%);
+  background: linear-gradient(90deg, var(--pin-outdoor) 50%, var(--pin-indoor) 50%);
 }
 
 .pba-pin--unknown {

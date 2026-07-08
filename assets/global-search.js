@@ -84,7 +84,7 @@
           type: "city",
           label: city,
           sublabel: (window.PB_CITY_REGION[city] || "") + " · region",
-          href: "/cities/index.html#" + citySlug(city),
+          href: "/cities/#" + citySlug(city),
         };
       });
 

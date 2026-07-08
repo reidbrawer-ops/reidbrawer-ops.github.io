@@ -53,14 +53,15 @@ confirm you no longer see the `[PBRatings] Firebase isn't configured yet`
 warning. Cast a test vote and check the Firestore console
 (**Firestore Database → Data → courtVotes**) to see it land.
 
-## 6. (Optional) Also host the site on Firebase Hosting
+## 6. Host the site on Firebase Hosting (canonical)
 
-This keeps GitHub Pages as the canonical, live URL (reidbrawer-ops.github.io —
-the canonical/og:url tags on every page still point there) and adds Firebase
-Hosting as a second copy of the same static site, served from the same
-Firebase project as your Firestore database. Useful for previewing changes
-on a Firebase URL, or as a stepping stone if you ever want to move canonical
-hosting there later.
+Firebase Hosting is the canonical, live home for this site — the
+canonical/og:url tags, sitemap.xml, and robots.txt on every page point to
+`https://pickleball-bay-area.com`, which is meant to resolve here via a
+custom domain. GitHub Pages, if it's still being deployed to, is a stale
+mirror with old `.html`-suffixed links and should either be pointed at the
+same domain or retired — its plain static serving has no equivalent to
+`firebase.json`'s `cleanUrls` rewrite, so extension-less links 404 there.
 
 1. Install the Firebase CLI: `npm install -g firebase-tools` (or prefix every
    command below with `npx` instead of installing globally).
@@ -71,18 +72,18 @@ hosting there later.
    **Project settings → General → Project ID**).
 4. From the repo root: `firebase deploy --only hosting`.
 5. The CLI prints a **Hosting URL** — something like
-   `https://YOUR_PROJECT_ID.web.app`. That's the Firebase-hosted mirror.
+   `https://YOUR_PROJECT_ID.web.app`. Once `pickleball-bay-area.com` is
+   registered, connect it under **Hosting → Add custom domain** in the
+   Firebase console and point its DNS at the values Firebase gives you.
 
 [`firebase.json`](firebase.json) is already configured to serve every file at
 the repo root except `scripts/`, dotfiles, and markdown docs — `scripts/` is
 excluded specifically so a local `scripts/serviceAccountKey.json`, if you've
 created one for the seed/admin scripts, never gets uploaded to public
-hosting.
+hosting. It also sets `cleanUrls: true`, so `/about.html` redirects to
+`/about` and `/cities/index.html` is served at `/cities/`.
 
-To publish future changes, just re-run `firebase deploy --only hosting`
-(GitHub Pages updates on its own whenever you push to the repo — the two
-deploy independently and can drift out of sync between deploys, which is
-fine for a preview mirror but worth knowing).
+To publish future changes, just re-run `firebase deploy --only hosting`.
 
 ## Notes on abuse resistance
 

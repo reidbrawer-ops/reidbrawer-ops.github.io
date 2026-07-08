@@ -293,7 +293,7 @@
           <td>${escapeHtml(row.indoorOutdoor)}</td>
           <td>${escapeHtml(row.surface)}</td>
           <td>${escapeHtml(row.reservable)}</td>
-          <td><a href="/rankings.html#${row.id}">${window.PBWidgets.overallRatingHtml(row.id)}</a></td>
+          <td><a href="/rankings#${row.id}">${window.PBWidgets.overallRatingHtml(row.id)}</a></td>
           <td>${window.PBWidgets.favoriteButtonHtml(row.id)}</td>
         </tr>`
         )
@@ -312,7 +312,7 @@
           ${actionLinksHtml(row)}
           <div class="facts">${rowHtmlFacts(row)}</div>
           <div class="vote-actions">
-            <a href="/rankings.html#${row.id}">${window.PBWidgets.overallRatingHtml(row.id)}</a>
+            <a href="/rankings#${row.id}">${window.PBWidgets.overallRatingHtml(row.id)}</a>
             ${window.PBWidgets.favoriteButtonHtml(row.id)}
           </div>
         </article>`
