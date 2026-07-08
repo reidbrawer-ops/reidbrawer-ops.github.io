@@ -105,7 +105,34 @@
       </div>`;
   }
 
+  // render() rebuilds every row's HTML from scratch on every rating/favorite
+  // update (needed since a new vote can change sort order) — which would
+  // otherwise silently re-collapse any rating form the visitor had open
+  // mid-click, since ratingFormHtml() always renders it hidden by default.
+  // Snapshot which court ids are currently expanded and re-apply that after
+  // the rebuild.
+  function expandedRatingFormIds() {
+    const ids = new Set();
+    citiesEl.querySelectorAll(".rating-form[data-court-id]").forEach((form) => {
+      const body = form.querySelector('[data-role="body"]');
+      if (body && !body.hidden) ids.add(form.dataset.courtId);
+    });
+    return ids;
+  }
+
+  function restoreExpandedRatingForms(ids) {
+    ids.forEach((courtId) => {
+      const form = citiesEl.querySelector(`.rating-form[data-court-id="${courtId}"]`);
+      if (!form) return;
+      const body = form.querySelector('[data-role="body"]');
+      const toggle = form.querySelector(".rating-form-toggle");
+      if (body) body.hidden = false;
+      if (toggle) toggle.textContent = "Hide rating form";
+    });
+  }
+
   function render(courts) {
+    const expandedIds = expandedRatingFormIds();
     const sortedAll = sortCourts(courts);
 
     top10El.innerHTML = sortedAll
@@ -148,6 +175,7 @@
       });
     });
     citiesEl.innerHTML = html;
+    restoreExpandedRatingForms(expandedIds);
 
     window.PBWidgets.refreshAll();
   }
