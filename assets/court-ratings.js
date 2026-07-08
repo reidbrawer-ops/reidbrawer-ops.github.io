@@ -28,9 +28,9 @@ export const FACTORS = [
 const TOP_RATED_MIN_AVG = 4.2;
 const TOP_RATED_MIN_VOTES = 5;
 
-const LS_FAVORITES = "pba_favorites_v1";
-const LS_USER_RATINGS = "pba_user_ratings_v1";
-const LS_DEMO_STATS = "pba_demo_stats_v1";
+const LS_FAVORITES = "pba_favorites_v2";
+const LS_USER_RATINGS = "pba_user_ratings_v2";
+const LS_DEMO_STATS = "pba_demo_stats_v2";
 
 function readJson(key, fallback) {
   try {
