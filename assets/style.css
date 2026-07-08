@@ -300,13 +300,6 @@ img, svg {
   padding: var(--space-5) 0 var(--space-4);
 }
 
-.hero .container {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
-  gap: var(--space-4);
-  align-items: center;
-}
-
 .hero h1 {
   font-size: clamp(2.3rem, 5vw, 3.6rem);
   animation: rise 0.6s var(--ease) both;
@@ -326,10 +319,6 @@ img, svg {
 @keyframes rise {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.hero-map {
-  animation: rise 0.7s var(--ease) 0.1s both;
 }
 
 .page-hero {
@@ -907,61 +896,9 @@ img, svg {
   color: var(--ink-soft);
 }
 
-/* ---------- Bay map graphic ---------- */
-
-.bay-map {
-  width: 100%;
-  height: auto;
-}
-
-.bay-map .land {
-  fill: var(--paper);
-  stroke: var(--line);
-  stroke-width: 1;
-}
-
-.bay-map .water {
-  fill: #d3e8ee;
-  stroke: var(--bay);
-  stroke-width: 1.75;
-}
-
-.bay-map .bridge {
-  stroke: var(--ink-soft);
-  stroke-width: 1.5;
-  stroke-dasharray: 2 4;
-  stroke-linecap: round;
-  opacity: 0.6;
-}
-
-.bay-map .pin circle {
-  fill: var(--poppy);
-  stroke: var(--paper);
-  stroke-width: 2;
-}
-
-.bay-map .pin text {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  fill: var(--ink);
-  paint-order: stroke;
-  stroke: var(--paper);
-  stroke-width: 4px;
-  stroke-linejoin: round;
-}
-
 /* ---------- Responsive ---------- */
 
 @media (max-width: 860px) {
-  .hero .container {
-    grid-template-columns: 1fr;
-  }
-  .hero-map {
-    order: -1;
-    max-width: 320px;
-    margin: 0 auto;
-  }
   .footer-grid {
     grid-template-columns: 1fr 1fr;
   }
