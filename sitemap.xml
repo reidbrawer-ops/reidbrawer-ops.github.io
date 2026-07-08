@@ -16,6 +16,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://reidbrawer-ops.github.io/directory.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://reidbrawer-ops.github.io/learn.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -29,6 +34,11 @@
     <loc>https://reidbrawer-ops.github.io/visiting.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://reidbrawer-ops.github.io/privacy.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
   </url>
   <url>
     <loc>https://reidbrawer-ops.github.io/corrections.html</loc>

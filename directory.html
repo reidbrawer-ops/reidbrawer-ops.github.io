@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directory of every Bay Area pickleball court — Pickleball Bay Area</title>
+<meta name="description" content="Filter and sort all 84 Bay Area pickleball venues by city, price, skill level, hours, courts, wait time, weather, indoor/outdoor, neighborhood, surface, and reservable status.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pickleball Bay Area">
+<meta property="og:title" content="Directory of every Bay Area pickleball court">
+<meta property="og:description" content="Filter and sort all 84 Bay Area pickleball venues by city, price, skill level, hours, courts, wait time, weather, indoor/outdoor, neighborhood, surface, and reservable status.">
+<meta property="og:url" content="https://reidbrawer-ops.github.io/directory.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Directory of every Bay Area pickleball court">
+<meta name="twitter:description" content="Filter and sort all 84 Bay Area pickleball venues by city, price, skill level, hours, courts, wait time, weather, indoor/outdoor, neighborhood, surface, and reservable status.">
+<link rel="canonical" href="https://reidbrawer-ops.github.io/directory.html">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/directory.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/index.html"><span class="dot"></span>Pickleball Bay Area</a>
+    <nav class="main-nav">
+      <a href="/index.html">Home</a>
+      <a href="/cities/index.html">Cities</a>
+      <a href="/map.html">Map</a>
+      <a href="/directory.html" aria-current="page">Directory</a>
+      <details class="nav-dropdown">
+        <summary>More</summary>
+        <div class="nav-dropdown-menu">
+          <a href="/learn.html">Learn to play</a>
+          <a href="/gear.html">Gear &amp; rentals</a>
+          <a href="/visiting.html">Visiting the Bay</a>
+          <a href="/corrections.html">Report a correction</a>
+        </div>
+      </details>
+      <a href="/about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Full directory</p>
+    <h1>Every venue, filtered your way.</h1>
+    <p class="lede">All 84 courts across the Bay in one sortable table — filter by city, price, skill level, hours, courts, wait time, weather, indoor/outdoor, neighborhood, surface, or reservable status to find exactly what you're looking for.</p>
+    <div class="stat-strip">
+      <span class="stat-chip"><b>84</b> venues</span>
+      <span class="stat-chip"><b>17</b> cities</span>
+      <span class="stat-chip"><b>5</b> regions</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div id="directory-status" class="directory-status">Loading venue data…</div>
+
+    <form id="directory-filters" class="directory-filters" aria-label="Filter venues">
+      <div class="filter-field">
+        <label for="f-region">Region</label>
+        <select id="f-region" name="region">
+          <option value="">All regions</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-city">City</label>
+        <select id="f-city" name="city">
+          <option value="">All cities</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-neighborhood">Neighborhood</label>
+        <select id="f-neighborhood" name="neighborhood">
+          <option value="">All neighborhoods</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-indoor">Indoor / Outdoor</label>
+        <select id="f-indoor" name="indoorOutdoor">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-surface">Surface</label>
+        <select id="f-surface" name="surface">
+          <option value="">All surfaces</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-reservable">Reservable</label>
+        <select id="f-reservable" name="reservable">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-skill">Skill level</label>
+        <select id="f-skill" name="skill">
+          <option value="">All skill levels</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-price">Price</label>
+        <select id="f-price" name="price">
+          <option value="">All prices</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-courts">Number of courts</label>
+        <select id="f-courts" name="courts">
+          <option value="">Any</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-wait">Wait time</label>
+        <select id="f-wait" name="waitTime">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-hours">Hours</label>
+        <select id="f-hours" name="hours">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label for="f-weather">Typical weather</label>
+        <select id="f-weather" name="weather">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="filter-field filter-field-clear">
+        <button type="button" id="f-clear" class="clear-btn">Clear filters</button>
+      </div>
+    </form>
+
+    <p id="directory-count" class="directory-count"></p>
+
+    <div id="directory-empty" class="directory-empty" hidden>
+      <p>No venues match these filters.</p>
+      <button type="button" id="empty-clear" class="clear-btn">Clear filters</button>
+    </div>
+
+    <div class="table-scroll">
+      <table id="directory-table" class="directory-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" data-sort="name" tabindex="0" role="button" aria-sort="none">Name</th>
+            <th scope="col" data-sort="city" tabindex="0" role="button" aria-sort="none">City</th>
+            <th scope="col" data-sort="neighborhood" tabindex="0" role="button" aria-sort="none">Neighborhood</th>
+            <th scope="col" data-sort="price" tabindex="0" role="button" aria-sort="none">Price</th>
+            <th scope="col" data-sort="skill" tabindex="0" role="button" aria-sort="none">Skill</th>
+            <th scope="col" data-sort="hours" tabindex="0" role="button" aria-sort="none">Hours</th>
+            <th scope="col" data-sort="courts" tabindex="0" role="button" aria-sort="none">Courts</th>
+            <th scope="col" data-sort="waitTime" tabindex="0" role="button" aria-sort="none">Wait</th>
+            <th scope="col" data-sort="weather" tabindex="0" role="button" aria-sort="none">Weather</th>
+            <th scope="col" data-sort="indoorOutdoor" tabindex="0" role="button" aria-sort="none">Indoor/Outdoor</th>
+            <th scope="col" data-sort="surface" tabindex="0" role="button" aria-sort="none">Surface</th>
+            <th scope="col" data-sort="reservable" tabindex="0" role="button" aria-sort="none">Reservable</th>
+          </tr>
+        </thead>
+        <tbody id="directory-tbody"></tbody>
+      </table>
+    </div>
+
+    <div id="directory-cards" class="directory-cards"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Regions</h4>
+        <ul>
+          <li><a href="/cities/index.html#san-francisco">San Francisco</a></li>
+          <li><a href="/cities/index.html#peninsula">Peninsula</a></li>
+          <li><a href="/cities/index.html#south-bay">South Bay</a></li>
+          <li><a href="/cities/index.html#east-bay">East Bay</a></li>
+          <li><a href="/cities/index.html#north-bay">North Bay</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/cities/index.html">All 17 cities</a></li>
+          <li><a href="/about.html">About this guide</a></li>
+          <li><a href="/map.html">Map</a></li>
+          <li><a href="/learn.html">Learn to play</a></li>
+          <li><a href="/gear.html">Gear &amp; rentals</a></li>
+          <li><a href="/visiting.html">Visiting the Bay</a></li>
+          <li><a href="/corrections.html">Report a correction</a></li>
+          <li><a href="/privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Popular</h4>
+        <ul>
+          <li><a href="/cities/san-jose.html">San Jose</a></li>
+          <li><a href="/cities/san-francisco.html">San Francisco</a></li>
+          <li><a href="/cities/oakland.html">Oakland</a></li>
+          <li><a href="/cities/palo-alto.html">Palo Alto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-note">
+      <span>An independent, unaffiliated directory. No ads, no sponsored listings.</span>
+      <span>Court info verified against city rec department pages, July 2026.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/directory.js"></script>
+<script src="/assets/nav.js" defer></script>
+</body>
+</html>

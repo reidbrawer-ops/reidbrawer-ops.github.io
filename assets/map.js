@@ -9,10 +9,31 @@
     statusEl.classList.toggle("is-error", !!isError);
   }
 
-  function pinIcon(topPick) {
+  function indoorClass(indoor) {
+    return ["indoor", "outdoor", "both"].includes(indoor)
+      ? `pba-pin--${indoor}`
+      : "pba-pin--unknown";
+  }
+
+  function indoorLabel(indoor) {
+    switch (indoor) {
+      case "indoor":
+        return "Indoor courts";
+      case "outdoor":
+        return "Outdoor courts";
+      case "both":
+        return "Indoor & outdoor courts";
+      default:
+        return "Indoor/outdoor: not specified";
+    }
+  }
+
+  function pinIcon(venue) {
+    const classes = ["pba-pin", indoorClass(venue.indoor)];
+    if (venue.topPick) classes.push("top-pick");
     return L.divIcon({
       className: "",
-      html: `<span class="pba-pin${topPick ? " top-pick" : ""}"></span>`,
+      html: `<span class="${classes.join(" ")}"></span>`,
       iconSize: [16, 16],
       iconAnchor: [8, 8],
       popupAnchor: [0, -8],
@@ -33,6 +54,7 @@
       <div class="pba-popup">
         <div class="p-name">${escapeHtml(venue.name)}</div>
         <span class="p-addr">${escapeHtml(venue.address)}</span>
+        <span class="p-indoor"><span class="p-indoor-dot ${indoorClass(venue.indoor)}"></span>${indoorLabel(venue.indoor)}</span>
         <a class="p-link" href="${venue.url}">View ${escapeHtml(venue.city)} page →</a>
         ${approxNote}
       </div>
@@ -57,7 +79,7 @@
       }).addTo(map);
 
       const markers = plottable.map((venue) => {
-        const marker = L.marker([venue.lat, venue.lon], { icon: pinIcon(venue.topPick) });
+        const marker = L.marker([venue.lat, venue.lon], { icon: pinIcon(venue) });
         marker.bindPopup(popupHtml(venue));
         return marker;
       });

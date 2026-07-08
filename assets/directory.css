@@ -1,0 +1,236 @@
+/* Directory page — scoped styles layered on top of style.css */
+
+.directory-status {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-bottom: 1rem;
+}
+
+.directory-status.is-error {
+  color: var(--poppy);
+}
+
+/* ---------- Filter panel ---------- */
+
+.directory-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.9rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 1.3rem 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.filter-field label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+.filter-field select {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: var(--fog);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  padding: 0.5em 0.6em;
+}
+
+.filter-field select:focus-visible {
+  outline: 3px solid var(--bay);
+  outline-offset: 1px;
+}
+
+.filter-field-clear {
+  justify-content: flex-end;
+}
+
+.clear-btn {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bay);
+  background: transparent;
+  border: 1.5px solid var(--bay);
+  border-radius: 999px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.clear-btn:hover {
+  background: var(--bay);
+  color: #fff;
+}
+
+/* ---------- Result count / empty state ---------- */
+
+.directory-count {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-bottom: 1rem;
+}
+
+.directory-empty {
+  background: var(--fog-dim);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-m);
+  padding: 2rem;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.directory-empty p {
+  margin-bottom: 1rem;
+}
+
+/* ---------- Table (wide viewports) ---------- */
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.directory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  font-size: 0.85rem;
+}
+
+.directory-table th,
+.directory-table td {
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.directory-table td {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.directory-table td:first-child {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--ink);
+  white-space: normal;
+}
+
+.directory-table td:first-child a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.directory-table td:first-child a:hover {
+  color: var(--bay);
+  text-decoration: underline;
+}
+
+.directory-table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  background: var(--fog);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.directory-table thead th:hover {
+  color: var(--ink);
+}
+
+.directory-table thead th::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  margin-left: 0.3em;
+}
+
+.directory-table thead th.sort-asc::after {
+  content: "\2191";
+}
+
+.directory-table thead th.sort-desc::after {
+  content: "\2193";
+}
+
+.directory-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.directory-table tbody tr:hover {
+  background: var(--fog);
+}
+
+/* ---------- Cards (narrow viewports) ---------- */
+
+.directory-cards {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.directory-card .name-row h3 {
+  font-size: 1.05rem;
+}
+
+.directory-card .name-row h3 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.directory-card .name-row h3 a:hover {
+  color: var(--bay);
+  text-decoration: underline;
+}
+
+.directory-card .facts .stat-chip {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 640px) {
+  .table-scroll {
+    display: none;
+  }
+  .directory-cards {
+    display: flex;
+  }
+  .directory-filters {
+    grid-template-columns: 1fr 1fr;
+    padding: 1rem;
+  }
+  .filter-field-clear {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+  .filter-field-clear .clear-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
