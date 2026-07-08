@@ -45,31 +45,7 @@ that file for the full reasoning.
    [`assets/firebase-config.js`](assets/firebase-config.js), replacing the
    `YOUR_...` placeholders.
 
-## 5. Seed starting values (recommended, one-time)
-
-Without this, every court starts at 0 votes/0 ratings, which is a fine but
-blank-feeling launch state. This step pre-populates each court with a
-baseline score derived from data already on the site (e.g. courts already
-described as having a dedicated, well-kept surface start with a higher
-"Court surface" baseline) — so rankings look meaningful on day one, and get
-overtaken by real votes as visitors weigh in. See `scripts/seed-firestore.mjs`
-for exactly how each baseline was derived.
-
-1. Get a service account key:
-   - Project settings → **Service accounts** tab → **Generate new private key**.
-   - Save the downloaded file as `scripts/serviceAccountKey.json`
-     (this filename is already git-ignored — never commit it).
-2. Install and run the seed script:
-   ```sh
-   cd scripts
-   npm install
-   node seed-firestore.mjs ./serviceAccountKey.json
-   ```
-3. You should see `Created 84 new documents, skipped 0 existing ones.`
-   Re-running it later is safe — it only fills in courts that don't have a
-   document yet, so it will never overwrite real votes.
-
-## 6. Verify
+## 5. Verify
 
 Open `directory.html` or `rankings.html` in a browser, open the console, and
 confirm you no longer see the `[PBRatings] Firebase isn't configured yet`

@@ -1193,3 +1193,32 @@ img, svg {
     align-items: flex-start;
   }
 }
+
+/* ---------- Google rating badge (shown alongside, never blended with,
+   the community rating above) ---------- */
+
+.google-rating-slot {
+  display: inline-block;
+  margin-left: 0.6em;
+}
+
+.google-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: var(--fog);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.15em 0.7em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+a.google-rating-badge:hover {
+  color: var(--bay-deep);
+  border-color: var(--bay);
+  text-decoration: none;
+}
