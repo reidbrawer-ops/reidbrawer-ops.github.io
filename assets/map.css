@@ -18,6 +18,7 @@
   border: 1px solid var(--line);
   overflow: hidden;
   background: var(--fog-dim);
+  box-shadow: 0 16px 32px -20px rgba(23, 35, 43, 0.25);
 }
 
 @media (max-width: 640px) {
@@ -34,7 +35,7 @@
   max-width: 70ch;
 }
 
-/* ---------- Leaflet overrides to match the "night bay" theme ---------- */
+/* ---------- Leaflet overrides to match the site's light theme ---------- */
 
 .leaflet-container {
   background: var(--fog-dim);
@@ -43,9 +44,8 @@
 }
 
 .leaflet-control-attribution {
-  background: var(--glass-strong) !important;
+  background: var(--paper) !important;
   color: var(--ink-soft) !important;
-  backdrop-filter: blur(8px);
 }
 
 .leaflet-control-attribution a {
@@ -53,14 +53,14 @@
 }
 
 .leaflet-control-zoom a {
-  background: var(--glass-strong) !important;
+  background: var(--paper) !important;
   color: var(--ink) !important;
   border-color: var(--line) !important;
 }
 
 .leaflet-control-zoom a:hover {
-  background: var(--glass-hover) !important;
-  color: var(--optic) !important;
+  background: var(--fog) !important;
+  color: var(--bay-deep) !important;
 }
 
 .pba-pin {
@@ -68,27 +68,25 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--optic);
-  border: 2px solid var(--fog);
-  box-shadow: 0 0 8px rgba(215, 233, 75, 0.75);
+  background: var(--poppy);
+  border: 2px solid var(--paper);
+  box-shadow: 0 1px 4px rgba(23, 35, 43, 0.35);
 }
 
 .pba-pin.top-pick {
-  background: var(--kitchen);
-  box-shadow: 0 0 10px rgba(79, 214, 140, 0.8);
+  background: var(--optic-deep);
 }
 
 .leaflet-popup-content-wrapper {
-  background: var(--glass-strong);
+  background: var(--paper);
   color: var(--ink);
   border: 1px solid var(--line);
   border-radius: var(--radius-s);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 28px -10px rgba(23, 35, 43, 0.3);
 }
 
 .leaflet-popup-tip {
-  background: var(--glass-strong);
+  background: var(--paper);
 }
 
 .leaflet-popup-content {
