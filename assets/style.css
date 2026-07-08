@@ -52,6 +52,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* --header-h is kept live by assets/nav.js (ResizeObserver on
+     .site-header); the fallback covers the brief window before that JS
+     runs and the mobile-wrapped header height if it somehow doesn't. */
+  scroll-padding-top: calc(var(--header-h, 130px) + 12px);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -41,3 +41,23 @@ document.addEventListener("keydown", function (e) {
     });
   }
 });
+
+// Keep --header-h in sync with the sticky header's real height so
+// scroll-padding-top (style.css) can stop anchor jumps (venue cards, city
+// cards, rankings rows) from landing under the header and hiding the
+// target's title. A ResizeObserver, not a one-time measurement, because the
+// header's height changes for reasons outside this file's control: text
+// wrapping at narrow widths, and global-search.js appending a search box
+// into .main-nav after this script has already run.
+var siteHeader = document.querySelector(".site-header");
+if (siteHeader) {
+  var syncHeaderHeight = function () {
+    document.documentElement.style.setProperty("--header-h", siteHeader.offsetHeight + "px");
+  };
+  syncHeaderHeight();
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(syncHeaderHeight).observe(siteHeader);
+  } else {
+    window.addEventListener("resize", syncHeaderHeight);
+  }
+}
