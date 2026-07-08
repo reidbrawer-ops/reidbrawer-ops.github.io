@@ -10,7 +10,7 @@
 // rather than sending events under a fake ID. See /SEARCH_CONSOLE_SETUP.md
 // for how this connects to Search Console verification.
 
-var GA_MEASUREMENT_ID = "G-XXXXXXXXXX";
+var GA_MEASUREMENT_ID = "G-DX4PVCWB8H";
 
 if (GA_MEASUREMENT_ID.indexOf("XXXXXXXXXX") === -1) {
   var gaScript = document.createElement("script");
