@@ -111,6 +111,20 @@ function isTournamentLegal(paddle) {
   return paddle.approvalBody === "USAP" || paddle.approvalBody === "USAP/UPA-A";
 }
 
+// vendorSearchBase is only set for brands whose on-site search was directly
+// verified to return real product results (see assets/paddles.json prep
+// script) — for the rest, link to the vendor's site itself rather than
+// guess at a search URL that might 404.
+function vendorLinkFor(paddle) {
+  if (paddle.vendorSearchBase) {
+    return { href: paddle.vendorSearchBase + encodeURIComponent(paddle.name), label: `Search ${paddle.brand}` };
+  }
+  if (paddle.vendorUrl) {
+    return { href: paddle.vendorUrl, label: `Visit ${paddle.brand}` };
+  }
+  return null;
+}
+
 // Results are grouped by price instead of asked as a question — everyone
 // sees their top 3 at each budget tier rather than picking one upfront.
 const PRICE_BUCKETS = [
@@ -122,14 +136,6 @@ const PRICE_BUCKETS = [
 // Deliberately generic/paraphrased — never cites the exact proprietary
 // lab-tested labels (spin rating, percentiles, "Firepower" tier) those
 // numbers come from, even though they inform the ranking internally.
-//
-// Every paddle recommended for a given priority shares that priority's
-// category (that's the point), so leading with "Power paddle" for every
-// power pick just repeats itself across the results. Shape, core
-// thickness, and impact feel are physical construction facts that vary
-// paddle-to-paddle even within the same category — those are what
-// actually distinguish one recommendation from the next, so they get
-// pulled in ahead of the more generic, always-true-for-this-bucket stuff.
 const FEEL_COPY = {
   "Soft/Dense": "Soft, dense core — muted and control-friendly",
   "Soft/Hollow": "Soft, hollow core — plush feel with a bit of pop",
@@ -145,43 +151,124 @@ const SHAPE_COPY = {
   Hybrid: "Hybrid shape, splitting the difference between reach and sweet spot",
 };
 
-function reasonsFor(paddle, fullAnswers) {
-  const reasons = [];
+// One-line summary of what's true of every paddle in a bucket — shown once
+// per bucket instead of repeated on every card, since restating "built for
+// power" on all 3 power-priority cards doesn't help tell them apart.
+function bucketIntro(fullAnswers) {
+  const priorityCopy = {
+    power: "built for power",
+    control: "built for control and touch",
+    spin: "built to generate spin",
+    allcourt: "built to be well-rounded",
+  }[fullAnswers.priority];
+  const parts = [priorityCopy, fullAnswers.tournament === "yes" ? "tournament-legal" : null].filter(Boolean);
+  return parts.length ? `All 3 below are ${parts.join(" and ")} — here's what sets each one apart:` : "";
+}
 
-  if (fullAnswers.tournament === "yes" && isTournamentLegal(paddle)) {
-    reasons.push("Tournament-legal");
-  }
-
-  // Power/Control/All-Court is already shown as a chip next to the price, so
-  // restating "built as a power paddle" here would just repeat that same
-  // line on every card in a power-priority result. Spin isn't shown as a
-  // chip anywhere, so it's the one priority worth calling out explicitly.
-  if (fullAnswers.priority === "spin" && (paddle.spinRating === "Very High" || paddle.spinRating === "High")) {
-    reasons.push("A textured surface built to grip the ball and generate spin");
-  }
+// Candidate facts for one paddle, keyed so reasonsForBucket can tell which
+// keys actually vary across a bucket's 3 picks and lead with those, instead
+// of a fixed order that often surfaces the same fact on every card (e.g.
+// scoring already biases "control" picks toward a soft impact feel, so
+// impact feel alone isn't always a distinguishing fact either — it depends
+// on the specific 3 paddles in front of the user).
+function factsFor(paddle, fullAnswers) {
+  const facts = {};
 
   const construction = FEEL_COPY[paddle.impactFeel] || SHAPE_COPY[paddle.shape];
-  if (construction && reasons.length < 3) reasons.push(construction);
+  if (construction) facts.construction = construction;
 
-  if (reasons.length < 3 && paddle.coreThicknessMm != null) {
-    if (paddle.coreThicknessMm >= 16) reasons.push(`${paddle.coreThicknessMm}mm core, on the thicker/quieter side`);
-    else if (paddle.coreThicknessMm <= 13) reasons.push(`${paddle.coreThicknessMm}mm core, on the thinner/poppier side`);
+  if (paddle.coreThicknessMm != null) {
+    if (paddle.coreThicknessMm >= 16) facts.thickness = `${paddle.coreThicknessMm}mm core, on the thicker/quieter side`;
+    else if (paddle.coreThicknessMm <= 13) facts.thickness = `${paddle.coreThicknessMm}mm core, on the thinner/poppier side`;
+  }
+
+  if (fullAnswers.weight !== "nopref" && paddle.weightOz != null) {
+    facts.weight = `${paddle.weightOz}oz, matching your weight preference`;
   }
 
   if (
-    reasons.length < 3 &&
     fullAnswers.forgiveness !== "low" &&
     paddle.twistWeightPercentile != null &&
     paddle.twistWeightPercentile >= 0.6
   ) {
-    reasons.push("Forgiving on off-center hits");
+    facts.forgiveness = "Forgiving on off-center hits";
   }
 
-  if (reasons.length < 3 && fullAnswers.weight !== "nopref" && paddle.weightOz != null) {
-    reasons.push(`${paddle.weightOz}oz, matching your weight preference`);
+  // Spin isn't shown as a chip anywhere else on the card, so it's worth
+  // calling out on its own even when it doesn't vary within the bucket.
+  if (fullAnswers.priority === "spin" && (paddle.spinRating === "Very High" || paddle.spinRating === "High")) {
+    facts.spin = "A textured surface built to grip the ball and generate spin";
   }
 
-  return reasons.slice(0, 3);
+  return facts;
+}
+
+// Absolute facts (construction, thickness, spin) can legitimately be
+// identical across a whole bucket — scoring specifically biases "control"
+// picks toward a soft impact feel and a thicker, quieter core, so 3 control
+// paddles at the same price tier can genuinely share every one of those
+// traits. Relative facts fix that: they compare the 3 paddles actually in
+// front of the user on price/weight/balance and only fire for whichever is
+// the lightest/heaviest, cheapest/priciest, etc. — guaranteed to differ
+// whenever the underlying numbers aren't literally tied.
+const RELATIVE_FIELDS = [
+  { key: "price", get: (p) => p.price, low: "The most affordable of these 3", high: "The priciest of these 3, if budget allows" },
+  { key: "weightRel", get: (p) => p.weightOz, low: "The lightest of these 3 — quicker hands", high: "The heaviest of these 3 — more mass behind the ball" },
+  {
+    key: "balance",
+    get: (p) => p.balancePointMm,
+    low: "Handle-light balance relative to the others here — quicker resets",
+    high: "Head-heavy balance relative to the others here — more mass through contact",
+  },
+];
+
+function relativeFactsFor(bucketTop) {
+  const perPaddle = bucketTop.map(() => ({}));
+  RELATIVE_FIELDS.forEach(({ key, get, low, high }) => {
+    const values = bucketTop.map((s) => get(s.paddle)).filter((v) => v != null);
+    if (values.length < 2) return;
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    if (min === max) return;
+    bucketTop.forEach((s, i) => {
+      const v = get(s.paddle);
+      if (v === min) perPaddle[i][key] = low;
+      else if (v === max) perPaddle[i][key] = high;
+    });
+  });
+  return perPaddle;
+}
+
+const FACT_PRIORITY = ["price", "weightRel", "balance", "construction", "thickness", "forgiveness", "weight"];
+
+function reasonsForBucket(bucketTop, fullAnswers) {
+  const absoluteFacts = bucketTop.map((s) => factsFor(s.paddle, fullAnswers));
+  const relativeFacts = relativeFactsFor(bucketTop);
+  const factsPerPaddle = bucketTop.map((_, i) => ({ ...absoluteFacts[i], ...relativeFacts[i] }));
+
+  // A fact only earns priority placement if it's not identical across every
+  // paddle in this bucket — an identical fact doesn't help distinguish #1
+  // from #2 from #3, however true it is. Relative facts are sparse by
+  // construction (only the min/max paddle gets one), so they already count
+  // as "varying" whenever a low/high pair exists.
+  const varying = FACT_PRIORITY.filter((key) => {
+    const values = factsPerPaddle.map((f) => f[key]).filter(Boolean);
+    return new Set(values).size >= 2;
+  });
+  const order = [...varying, ...FACT_PRIORITY.filter((key) => !varying.includes(key))];
+
+  return bucketTop.map((s, i) => {
+    // Spin gets a guaranteed slot ahead of the varying/relative facts —
+    // unlike those, it isn't shown anywhere else on the card (no chip for
+    // it), so it's worth stating even when every pick in the bucket shares
+    // it, the same way the bucket intro states the shared priority once.
+    const reasons = factsPerPaddle[i].spin ? [factsPerPaddle[i].spin] : [];
+    for (const key of order) {
+      if (reasons.length >= 3) break;
+      if (factsPerPaddle[i][key]) reasons.push(factsPerPaddle[i][key]);
+    }
+    return { paddle: s.paddle, reasons };
+  });
 }
 
 export function computeMatches(paddles, answers) {
@@ -196,15 +283,18 @@ export function computeMatches(paddles, answers) {
       weightPrefScore(paddle, fullAnswers.weight) * WEIGHTS.weight,
   }));
 
-  const buckets = PRICE_BUCKETS.map((bucket) => ({
-    key: bucket.key,
-    label: bucket.label,
-    top: scored
+  const buckets = PRICE_BUCKETS.map((bucket) => {
+    const top = scored
       .filter((s) => bucket.inRange(s.paddle.price))
       .sort((a, b) => b.score - a.score)
-      .slice(0, 3)
-      .map((s) => ({ paddle: s.paddle, reasons: reasonsFor(s.paddle, fullAnswers) })),
-  }));
+      .slice(0, 3);
+    return {
+      key: bucket.key,
+      label: bucket.label,
+      intro: bucketIntro(fullAnswers),
+      top: reasonsForBucket(top, fullAnswers),
+    };
+  });
 
   return { fullAnswers, buckets };
 }
@@ -272,6 +362,8 @@ class PaddleQuizApp {
   }
 
   render() {
+    const isResults = this.step > QUESTIONS.length;
+    this.root.classList.toggle("pq-shell--wide", isResults);
     if (this.step < QUESTIONS.length) this.root.innerHTML = this.renderQuestion(QUESTIONS[this.step]);
     else if (this.step === QUESTIONS.length) this.root.innerHTML = this.renderEmailStep();
     else this.root.innerHTML = this.renderResults();
@@ -329,8 +421,9 @@ class PaddleQuizApp {
     const sections = this.matches.buckets
       .map((bucket) => {
         const cards = bucket.top
-          .map(
-            ({ paddle, reasons }, i) => `
+          .map(({ paddle, reasons }, i) => {
+            const link = vendorLinkFor(paddle);
+            return `
           <div class="venue-card pq-paddle-card ${i === 0 ? "top-pick" : ""}">
             <div class="name-row">
               <h3>${paddle.name}</h3>
@@ -339,13 +432,14 @@ class PaddleQuizApp {
             <span class="addr">${paddle.brand} · $${paddle.price}</span>
             ${paddle.paddleType ? `<div class="facts"><span class="stat-chip">${paddle.paddleType}</span></div>` : ""}
             ${reasons.length ? `<ul class="know-list">${reasons.map((r) => `<li>${r}</li>`).join("")}</ul>` : ""}
-            ${paddle.vendorUrl ? `<a class="book-btn" href="${paddle.vendorUrl}" target="_blank" rel="noopener nofollow">Visit ${paddle.brand} →</a>` : ""}
-          </div>`
-          )
+            ${link ? `<a class="book-btn" href="${link.href}" target="_blank" rel="noopener nofollow">${link.label} →</a>` : ""}
+          </div>`;
+          })
           .join("");
         return `
         <div class="pq-bucket">
           <h3 class="pq-bucket-title">${bucket.label}</h3>
+          ${bucket.intro && cards ? `<p class="pq-bucket-intro">${bucket.intro}</p>` : ""}
           <div class="pq-results-grid">${cards || `<p class="pq-empty">No matches in this range — try adjusting your other answers.</p>`}</div>
         </div>`;
       })
@@ -356,7 +450,7 @@ class PaddleQuizApp {
         <p class="eyebrow">Your matches</p>
         <h3 class="pq-prompt">Your top picks, by budget</h3>
       </div>
-      ${sections}
+      <div class="pq-buckets-grid">${sections}</div>
       <button type="button" class="clear-btn pq-retake" data-action="retake">Retake the quiz</button>
     `;
   }

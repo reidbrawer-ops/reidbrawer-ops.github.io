@@ -5,6 +5,12 @@
   margin: 0 auto;
 }
 
+/* Results need real width for 3 side-by-side price-tier columns — the
+   640px question-step width would squeeze them uncomfortably. */
+.pq-shell.pq-shell--wide {
+  max-width: 100%;
+}
+
 .pq-progress {
   display: flex;
   align-items: center;
@@ -168,12 +174,35 @@
   margin-bottom: 1.2rem;
 }
 
+/* 3 price tiers side by side so all 9 picks are visible without a long
+   vertical scroll — collapses to one column below 900px, where 3 columns
+   of paddle cards would be too cramped to read comfortably. */
+.pq-buckets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .pq-buckets-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .pq-bucket {
-  margin-bottom: var(--space-3);
+  margin-bottom: 0;
+  min-width: 0;
 }
 
 .pq-bucket-title {
   font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.pq-bucket-intro {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
   margin-bottom: 0.8rem;
 }
 

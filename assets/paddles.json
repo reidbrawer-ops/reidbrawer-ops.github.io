@@ -25,7 +25,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-power-2-pegasus",
@@ -53,7 +54,8 @@
   "popMph": 36.6,
   "popPercentile": 0.66,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-power-2-ultre",
@@ -81,7 +83,8 @@
   "popMph": 37.2,
   "popPercentile": 0.96,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-power-2-vapor",
@@ -109,7 +112,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-all-court-hurache-x",
@@ -137,7 +141,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-all-court-pegasus",
@@ -165,7 +170,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-all-court-vapor",
@@ -193,7 +199,8 @@
   "popMph": 35.4,
   "popPercentile": 0.17,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-alpha-pro-power-hurache-x",
@@ -221,7 +228,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-alpha-pro-power-pegasus",
@@ -249,7 +257,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-alpha-pro-power-vapor",
@@ -277,7 +286,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-jelly-bean-vapor",
@@ -305,7 +315,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-power-hurache-x",
@@ -333,7 +344,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-power-pegasus",
@@ -361,7 +373,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-power-vapor",
@@ -389,7 +402,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "11six24-jelly-bean-hurache-x",
@@ -417,7 +431,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://11six24.com/"
+  "vendorUrl": "https://11six24.com/",
+  "vendorSearchBase": "https://11six24.com/search?q="
  },
  {
   "id": "adidas-metalbone-eva-16mm-red-no-weights",
@@ -641,7 +656,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.aireo-sports.com/"
+  "vendorUrl": "https://www.aireo-sports.com/",
+  "vendorSearchBase": "https://www.aireo-sports.com/search?q="
  },
  {
   "id": "babolat-baller",
@@ -669,7 +685,8 @@
   "popMph": 35.8,
   "popPercentile": 0.3,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.babolat.com/us/pickleball/paddles.html"
+  "vendorUrl": "https://www.babolat.com/us/pickleball/paddles.html",
+  "vendorSearchBase": "https://www.babolat.com/search?q="
  },
  {
   "id": "babolat-strkr",
@@ -697,7 +714,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.babolat.com/us/pickleball/paddles.html"
+  "vendorUrl": "https://www.babolat.com/us/pickleball/paddles.html",
+  "vendorSearchBase": "https://www.babolat.com/search?q="
  },
  {
   "id": "babolat-wzrd",
@@ -725,7 +743,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.babolat.com/us/pickleball/paddles.html"
+  "vendorUrl": "https://www.babolat.com/us/pickleball/paddles.html",
+  "vendorSearchBase": "https://www.babolat.com/search?q="
  },
  {
   "id": "body-helix-flik-f1-terracore-xc-elongated",
@@ -753,7 +772,8 @@
   "popMph": 38.0,
   "popPercentile": 1.0,
   "firepowerTier": "Firepower Elite",
-  "vendorUrl": "https://www.bodyhelix.com/"
+  "vendorUrl": "https://www.bodyhelix.com/",
+  "vendorSearchBase": "https://www.bodyhelix.com/search?q="
  },
  {
   "id": "body-helix-x4-gold-kevlar",
@@ -781,7 +801,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.bodyhelix.com/"
+  "vendorUrl": "https://www.bodyhelix.com/",
+  "vendorSearchBase": "https://www.bodyhelix.com/search?q="
  },
  {
   "id": "body-helix-x2-lite",
@@ -809,7 +830,8 @@
   "popMph": 33.7,
   "popPercentile": 0.01,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.bodyhelix.com/"
+  "vendorUrl": "https://www.bodyhelix.com/",
+  "vendorSearchBase": "https://www.bodyhelix.com/search?q="
  },
  {
   "id": "body-helix-x2-pro",
@@ -837,7 +859,8 @@
   "popMph": 34.8,
   "popPercentile": 0.07,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.bodyhelix.com/"
+  "vendorUrl": "https://www.bodyhelix.com/",
+  "vendorSearchBase": "https://www.bodyhelix.com/search?q="
  },
  {
   "id": "body-helix-x3-lite",
@@ -865,7 +888,8 @@
   "popMph": 34.8,
   "popPercentile": 0.07,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.bodyhelix.com/"
+  "vendorUrl": "https://www.bodyhelix.com/",
+  "vendorSearchBase": "https://www.bodyhelix.com/search?q="
  },
  {
   "id": "body-helix-x3-pro",
@@ -893,7 +917,8 @@
   "popMph": 34.2,
   "popPercentile": 0.03,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.bodyhelix.com/"
+  "vendorUrl": "https://www.bodyhelix.com/",
+  "vendorSearchBase": "https://www.bodyhelix.com/search?q="
  },
  {
   "id": "bread-butter-filth-elongated",
@@ -921,7 +946,8 @@
   "popMph": 35.7,
   "popPercentile": 0.27,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.bnbpickleball.com/"
+  "vendorUrl": "https://www.bnbpickleball.com/",
+  "vendorSearchBase": "https://www.bnbpickleball.com/search?q="
  },
  {
   "id": "bread-butter-filth-hybrid",
@@ -949,7 +975,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.bnbpickleball.com/"
+  "vendorUrl": "https://www.bnbpickleball.com/",
+  "vendorSearchBase": "https://www.bnbpickleball.com/search?q="
  },
  {
   "id": "bread-butter-filth-standard",
@@ -977,7 +1004,8 @@
   "popMph": 35.8,
   "popPercentile": 0.3,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.bnbpickleball.com/"
+  "vendorUrl": "https://www.bnbpickleball.com/",
+  "vendorSearchBase": "https://www.bnbpickleball.com/search?q="
  },
  {
   "id": "bread-butter-loco-elongated",
@@ -1005,7 +1033,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.bnbpickleball.com/"
+  "vendorUrl": "https://www.bnbpickleball.com/",
+  "vendorSearchBase": "https://www.bnbpickleball.com/search?q="
  },
  {
   "id": "bread-butter-loco-hybrid",
@@ -1033,7 +1062,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.bnbpickleball.com/"
+  "vendorUrl": "https://www.bnbpickleball.com/",
+  "vendorSearchBase": "https://www.bnbpickleball.com/search?q="
  },
  {
   "id": "bread-butter-loco-standard",
@@ -1061,7 +1091,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.bnbpickleball.com/"
+  "vendorUrl": "https://www.bnbpickleball.com/",
+  "vendorSearchBase": "https://www.bnbpickleball.com/search?q="
  },
  {
   "id": "bread-butter-wild-thing",
@@ -1089,7 +1120,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.bnbpickleball.com/"
+  "vendorUrl": "https://www.bnbpickleball.com/",
+  "vendorSearchBase": "https://www.bnbpickleball.com/search?q="
  },
  {
   "id": "bread-butter-fat-boy",
@@ -1117,7 +1149,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.bnbpickleball.com/"
+  "vendorUrl": "https://www.bnbpickleball.com/",
+  "vendorSearchBase": "https://www.bnbpickleball.com/search?q="
  },
  {
   "id": "bread-butter-invader",
@@ -1145,7 +1178,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.bnbpickleball.com/"
+  "vendorUrl": "https://www.bnbpickleball.com/",
+  "vendorSearchBase": "https://www.bnbpickleball.com/search?q="
  },
  {
   "id": "bread-butter-shogun",
@@ -1173,7 +1207,8 @@
   "popMph": 35.4,
   "popPercentile": 0.17,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.bnbpickleball.com/"
+  "vendorUrl": "https://www.bnbpickleball.com/",
+  "vendorSearchBase": "https://www.bnbpickleball.com/search?q="
  },
  {
   "id": "callaway-inertia",
@@ -1229,7 +1264,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://choruspickleball.com/"
+  "vendorUrl": "https://choruspickleball.com/",
+  "vendorSearchBase": "https://choruspickleball.com/search?q="
  },
  {
   "id": "chorus-supercourt-ex",
@@ -1257,7 +1293,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://choruspickleball.com/"
+  "vendorUrl": "https://choruspickleball.com/",
+  "vendorSearchBase": "https://choruspickleball.com/search?q="
  },
  {
   "id": "chorus-supercourt-hx",
@@ -1285,7 +1322,8 @@
   "popMph": 35.8,
   "popPercentile": 0.3,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://choruspickleball.com/"
+  "vendorUrl": "https://choruspickleball.com/",
+  "vendorSearchBase": "https://choruspickleball.com/search?q="
  },
  {
   "id": "chorus-supercourt-sx",
@@ -1313,7 +1351,8 @@
   "popMph": 35.7,
   "popPercentile": 0.27,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://choruspickleball.com/"
+  "vendorUrl": "https://choruspickleball.com/",
+  "vendorSearchBase": "https://choruspickleball.com/search?q="
  },
  {
   "id": "chorus-shapeshifter-ex",
@@ -1341,7 +1380,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://choruspickleball.com/"
+  "vendorUrl": "https://choruspickleball.com/",
+  "vendorSearchBase": "https://choruspickleball.com/search?q="
  },
  {
   "id": "chorus-shapeshifter-hx",
@@ -1369,7 +1409,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://choruspickleball.com/"
+  "vendorUrl": "https://choruspickleball.com/",
+  "vendorSearchBase": "https://choruspickleball.com/search?q="
  },
  {
   "id": "chorus-shapeshifter-sx",
@@ -1397,7 +1438,8 @@
   "popMph": 35.1,
   "popPercentile": 0.13,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://choruspickleball.com/"
+  "vendorUrl": "https://choruspickleball.com/",
+  "vendorSearchBase": "https://choruspickleball.com/search?q="
  },
  {
   "id": "crbn-trufoam-barrage-2",
@@ -1425,7 +1467,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-trufoam-barrage-4",
@@ -1453,7 +1496,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-trufoam-genesis-1",
@@ -1481,7 +1525,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-trufoam-genesis-2",
@@ -1509,7 +1554,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-trufoam-genesis-3",
@@ -1537,7 +1583,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-trufoam-genesis-4",
@@ -1565,7 +1612,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-trufoam-waves-1",
@@ -1593,7 +1641,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-trufoam-waves-2",
@@ -1621,7 +1670,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-trufoam-waves-3",
@@ -1649,7 +1699,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-trufoam-waves-4",
@@ -1677,7 +1728,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-crbn-1x-power-series-14-mm",
@@ -1705,7 +1757,8 @@
   "popMph": 35.4,
   "popPercentile": 0.17,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-crbn-1x-power-series-16-mm",
@@ -1733,7 +1786,8 @@
   "popMph": 34.9,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-crbn-2x-power-series-14-mm",
@@ -1761,7 +1815,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-crbn-2x-power-series-16-mm",
@@ -1789,7 +1844,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-crbn-3x-power-series-14-mm",
@@ -1817,7 +1873,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-crbn-3x-power-series-16-mm",
@@ -1845,7 +1902,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-crbn-1-orginal-16-mm",
@@ -1873,7 +1931,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "crbn-crbn-2-orignal-16-mm",
@@ -1901,7 +1960,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://crbnpickleball.com/"
+  "vendorUrl": "https://crbnpickleball.com/",
+  "vendorSearchBase": "https://crbnpickleball.com/search?q="
  },
  {
   "id": "diadem-blucore-max-19mm",
@@ -1929,7 +1989,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "diadem-blucore-pro-16mm",
@@ -1957,7 +2018,8 @@
   "popMph": 35.0,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "diadem-blucore-standard-14mm",
@@ -1985,7 +2047,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "diadem-edge-blucore-hybrid-14",
@@ -2013,7 +2076,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "diadem-edge-blucore-hybrid-16",
@@ -2041,7 +2105,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "diadem-edge-blucore-pro-14",
@@ -2069,7 +2134,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "diadem-edge-blucore-pro-16",
@@ -2097,7 +2163,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "diadem-edge-18k-power-max",
@@ -2125,7 +2192,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "diadem-edge-18k-speed-pro",
@@ -2153,7 +2221,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "diadem-icon-infinity-max",
@@ -2181,7 +2250,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "diadem-edge-18k",
@@ -2209,7 +2279,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://diademsports.com/collections/paddles"
+  "vendorUrl": "https://diademsports.com/collections/paddles",
+  "vendorSearchBase": "https://diademsports.com/search?q="
  },
  {
   "id": "dunlop-ag-thr33",
@@ -2237,7 +2308,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://us.dunlopsports.com/dunlop/pickleball.html"
+  "vendorUrl": "https://us.dunlopsports.com/dunlop/pickleball.html",
+  "vendorSearchBase": "https://us.dunlopsports.com/search?q="
  },
  {
   "id": "dunlop-cr-thr33",
@@ -2265,7 +2337,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://us.dunlopsports.com/dunlop/pickleball.html"
+  "vendorUrl": "https://us.dunlopsports.com/dunlop/pickleball.html",
+  "vendorSearchBase": "https://us.dunlopsports.com/search?q="
  },
  {
   "id": "dunlop-tt-thr33",
@@ -2293,7 +2366,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://us.dunlopsports.com/dunlop/pickleball.html"
+  "vendorUrl": "https://us.dunlopsports.com/dunlop/pickleball.html",
+  "vendorSearchBase": "https://us.dunlopsports.com/search?q="
  },
  {
   "id": "element-6-zephyr",
@@ -2405,7 +2479,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-alpha-pro-14",
@@ -2433,7 +2508,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-alpha-pro-16",
@@ -2461,7 +2537,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-profoam",
@@ -2489,7 +2566,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro1-6-0-hybrid",
@@ -2517,7 +2595,8 @@
   "popMph": 35.0,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro1-6-0-widebody",
@@ -2545,7 +2624,8 @@
   "popMph": 35.0,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro1-hybrid",
@@ -2573,7 +2653,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro1-innovation-12-7",
@@ -2601,7 +2682,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro1-innovation-15-2",
@@ -2629,7 +2711,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro1-widebody",
@@ -2657,7 +2740,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro1-lite",
@@ -2685,7 +2769,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro1-standard",
@@ -2713,7 +2798,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro1-6-0-lite",
@@ -2741,7 +2827,8 @@
   "popMph": 37.1,
   "popPercentile": 0.93,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro1-6-0-standard",
@@ -2769,7 +2856,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-v2",
@@ -2797,7 +2885,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro-ex",
@@ -2825,7 +2914,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro-ex-6-0",
@@ -2853,7 +2943,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro-mx",
@@ -2881,7 +2972,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-pursuit-pro-mx-6-0",
@@ -2909,7 +3001,8 @@
   "popMph": 35.7,
   "popPercentile": 0.27,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "engage-x2-elongated",
@@ -2937,7 +3030,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://engagepickleball.com/"
+  "vendorUrl": "https://engagepickleball.com/",
+  "vendorSearchBase": "https://engagepickleball.com/search?q="
  },
  {
   "id": "enhance-duo-widebody",
@@ -2965,7 +3059,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://enhancepickleball.com/"
+  "vendorUrl": "https://enhancepickleball.com/",
+  "vendorSearchBase": "https://enhancepickleball.com/search?q="
  },
  {
   "id": "enhance-turbo-epp-elongated",
@@ -2993,7 +3088,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://enhancepickleball.com/"
+  "vendorUrl": "https://enhancepickleball.com/",
+  "vendorSearchBase": "https://enhancepickleball.com/search?q="
  },
  {
   "id": "enhance-turbo-epp-hybrid",
@@ -3021,7 +3117,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://enhancepickleball.com/"
+  "vendorUrl": "https://enhancepickleball.com/",
+  "vendorSearchBase": "https://enhancepickleball.com/search?q="
  },
  {
   "id": "enhance-turbo-epp-widebody",
@@ -3049,7 +3146,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://enhancepickleball.com/"
+  "vendorUrl": "https://enhancepickleball.com/",
+  "vendorSearchBase": "https://enhancepickleball.com/search?q="
  },
  {
   "id": "enhance-turbo-mpp-elongated",
@@ -3077,7 +3175,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://enhancepickleball.com/"
+  "vendorUrl": "https://enhancepickleball.com/",
+  "vendorSearchBase": "https://enhancepickleball.com/search?q="
  },
  {
   "id": "enhance-turbo-mpp-widebody",
@@ -3105,7 +3204,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://enhancepickleball.com/"
+  "vendorUrl": "https://enhancepickleball.com/",
+  "vendorSearchBase": "https://enhancepickleball.com/search?q="
  },
  {
   "id": "enhance-duo-elongated",
@@ -3133,7 +3233,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://enhancepickleball.com/"
+  "vendorUrl": "https://enhancepickleball.com/",
+  "vendorSearchBase": "https://enhancepickleball.com/search?q="
  },
  {
   "id": "enhance-turbo-mpp-hybrid",
@@ -3161,7 +3262,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://enhancepickleball.com/"
+  "vendorUrl": "https://enhancepickleball.com/",
+  "vendorSearchBase": "https://enhancepickleball.com/search?q="
  },
  {
   "id": "enhnace-duo-hybrid-lh",
@@ -3189,7 +3291,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://enhancepickleball.com/"
+  "vendorUrl": "https://enhancepickleball.com/",
+  "vendorSearchBase": "https://enhancepickleball.com/search?q="
  },
  {
   "id": "f-b-runout-e",
@@ -3217,7 +3320,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://fandbsports.com/"
+  "vendorUrl": "https://fandbsports.com/",
+  "vendorSearchBase": "https://fandbsports.com/search?q="
  },
  {
   "id": "f-b-runout-h",
@@ -3245,7 +3349,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://fandbsports.com/"
+  "vendorUrl": "https://fandbsports.com/",
+  "vendorSearchBase": "https://fandbsports.com/search?q="
  },
  {
   "id": "f-b-runout-s",
@@ -3273,7 +3378,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://fandbsports.com/"
+  "vendorUrl": "https://fandbsports.com/",
+  "vendorSearchBase": "https://fandbsports.com/search?q="
  },
  {
   "id": "flik-f3-elongated",
@@ -3301,7 +3407,8 @@
   "popMph": 36.7,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://flikpickleball.com/"
+  "vendorUrl": "https://flikpickleball.com/",
+  "vendorSearchBase": "https://flikpickleball.com/search?q="
  },
  {
   "id": "flik-f3-hybrid",
@@ -3329,7 +3436,8 @@
   "popMph": 36.6,
   "popPercentile": 0.66,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://flikpickleball.com/"
+  "vendorUrl": "https://flikpickleball.com/",
+  "vendorSearchBase": "https://flikpickleball.com/search?q="
  },
  {
   "id": "flik-f3-widebody",
@@ -3357,7 +3465,8 @@
   "popMph": 36.9,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://flikpickleball.com/"
+  "vendorUrl": "https://flikpickleball.com/",
+  "vendorSearchBase": "https://flikpickleball.com/search?q="
  },
  {
   "id": "franklin-aurelius-alw-12-7",
@@ -3777,7 +3886,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://fridaypickle.com/"
+  "vendorUrl": "https://fridaypickle.com/",
+  "vendorSearchBase": "https://fridaypickle.com/search?q="
  },
  {
   "id": "friday-aura-hybrid",
@@ -3805,7 +3915,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://fridaypickle.com/"
+  "vendorUrl": "https://fridaypickle.com/",
+  "vendorSearchBase": "https://fridaypickle.com/search?q="
  },
  {
   "id": "friday-aura-pro-elongated",
@@ -3833,7 +3944,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://fridaypickle.com/"
+  "vendorUrl": "https://fridaypickle.com/",
+  "vendorSearchBase": "https://fridaypickle.com/search?q="
  },
  {
   "id": "friday-aura-pro-hybrid",
@@ -3861,7 +3973,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://fridaypickle.com/"
+  "vendorUrl": "https://fridaypickle.com/",
+  "vendorSearchBase": "https://fridaypickle.com/search?q="
  },
  {
   "id": "friday-aura-pro-widebody",
@@ -3889,7 +4002,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://fridaypickle.com/"
+  "vendorUrl": "https://fridaypickle.com/",
+  "vendorSearchBase": "https://fridaypickle.com/search?q="
  },
  {
   "id": "friday-aura-widebody",
@@ -3917,7 +4031,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://fridaypickle.com/"
+  "vendorUrl": "https://fridaypickle.com/",
+  "vendorSearchBase": "https://fridaypickle.com/search?q="
  },
  {
   "id": "friday-fever",
@@ -3945,7 +4060,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://fridaypickle.com/"
+  "vendorUrl": "https://fridaypickle.com/",
+  "vendorSearchBase": "https://fridaypickle.com/search?q="
  },
  {
   "id": "friday-fever-2",
@@ -3973,7 +4089,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://fridaypickle.com/"
+  "vendorUrl": "https://fridaypickle.com/",
+  "vendorSearchBase": "https://fridaypickle.com/search?q="
  },
  {
   "id": "friday-challenger",
@@ -4001,7 +4118,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://fridaypickle.com/"
+  "vendorUrl": "https://fridaypickle.com/",
+  "vendorSearchBase": "https://fridaypickle.com/search?q="
  },
  {
   "id": "friday-original",
@@ -4029,7 +4147,8 @@
   "popMph": 35.3,
   "popPercentile": 0.15,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://fridaypickle.com/"
+  "vendorUrl": "https://fridaypickle.com/",
+  "vendorSearchBase": "https://fridaypickle.com/search?q="
  },
  {
   "id": "gamma-rcf-airbender-16",
@@ -4057,7 +4176,8 @@
   "popMph": 34.9,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://gammasports.com/collections/pickleball"
+  "vendorUrl": "https://gammasports.com/collections/pickleball",
+  "vendorSearchBase": "https://gammasports.com/search?q="
  },
  {
   "id": "gamma-rcf-obsidian-10",
@@ -4085,7 +4205,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://gammasports.com/collections/pickleball"
+  "vendorUrl": "https://gammasports.com/collections/pickleball",
+  "vendorSearchBase": "https://gammasports.com/search?q="
  },
  {
   "id": "gamma-rcf-obsidian-13",
@@ -4113,7 +4234,8 @@
   "popMph": 34.8,
   "popPercentile": 0.07,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://gammasports.com/collections/pickleball"
+  "vendorUrl": "https://gammasports.com/collections/pickleball",
+  "vendorSearchBase": "https://gammasports.com/search?q="
  },
  {
   "id": "gamma-rcf-obsidian-16",
@@ -4141,7 +4263,8 @@
   "popMph": 34.6,
   "popPercentile": 0.05,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://gammasports.com/collections/pickleball"
+  "vendorUrl": "https://gammasports.com/collections/pickleball",
+  "vendorSearchBase": "https://gammasports.com/search?q="
  },
  {
   "id": "gearbox-gbx-power-elongated",
@@ -4169,7 +4292,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-gbx-power-hybrid",
@@ -4197,7 +4321,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-gx2-elongated",
@@ -4225,7 +4350,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-gx2-hyper",
@@ -4253,7 +4379,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-gx2-integra-xl",
@@ -4281,7 +4408,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-gx2-power-elongated",
@@ -4309,7 +4437,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-gx2-power-hybrid",
@@ -4337,7 +4466,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-pro-ultimate-elongated-14",
@@ -4365,7 +4495,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-pro-ultimate-elongated-16",
@@ -4393,7 +4524,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-pro-ultimate-hyper",
@@ -4421,7 +4553,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-cx14h-ultimate-power",
@@ -4449,7 +4582,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-pro-control-elongated",
@@ -4477,7 +4611,8 @@
   "popMph": 34.2,
   "popPercentile": 0.03,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-pro-control-integra",
@@ -4505,7 +4640,8 @@
   "popMph": 34.8,
   "popPercentile": 0.07,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-pro-power-elongated",
@@ -4533,7 +4669,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower Elite",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gearbox-pro-power-integra",
@@ -4561,7 +4698,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://gearboxsports.com/pages/pickleball"
+  "vendorUrl": "https://gearboxsports.com/pages/pickleball",
+  "vendorSearchBase": "https://gearboxsports.com/search?q="
  },
  {
   "id": "gherkin-draco-elongated",
@@ -4589,7 +4727,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.gherkinusa.com/"
+  "vendorUrl": "https://www.gherkinusa.com/",
+  "vendorSearchBase": "https://www.gherkinusa.com/search?q="
  },
  {
   "id": "gherkin-draco-hybrid",
@@ -4617,7 +4756,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.gherkinusa.com/"
+  "vendorUrl": "https://www.gherkinusa.com/",
+  "vendorSearchBase": "https://www.gherkinusa.com/search?q="
  },
  {
   "id": "gherkin-draco-widebody",
@@ -4645,7 +4785,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.gherkinusa.com/"
+  "vendorUrl": "https://www.gherkinusa.com/",
+  "vendorSearchBase": "https://www.gherkinusa.com/search?q="
  },
  {
   "id": "gherkin-nightshade-e",
@@ -4673,7 +4814,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.gherkinusa.com/"
+  "vendorUrl": "https://www.gherkinusa.com/",
+  "vendorSearchBase": "https://www.gherkinusa.com/search?q="
  },
  {
   "id": "gherkin-nightshade-h",
@@ -4701,7 +4843,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.gherkinusa.com/"
+  "vendorUrl": "https://www.gherkinusa.com/",
+  "vendorSearchBase": "https://www.gherkinusa.com/search?q="
  },
  {
   "id": "gherkin-wraith-e",
@@ -4729,7 +4872,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.gherkinusa.com/"
+  "vendorUrl": "https://www.gherkinusa.com/",
+  "vendorSearchBase": "https://www.gherkinusa.com/search?q="
  },
  {
   "id": "gherkin-wraith-h",
@@ -4757,7 +4901,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.gherkinusa.com/"
+  "vendorUrl": "https://www.gherkinusa.com/",
+  "vendorSearchBase": "https://www.gherkinusa.com/search?q="
  },
  {
   "id": "gherkin-wraith-s",
@@ -4785,7 +4930,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.gherkinusa.com/"
+  "vendorUrl": "https://www.gherkinusa.com/",
+  "vendorSearchBase": "https://www.gherkinusa.com/search?q="
  },
  {
   "id": "gruvn-lazr-16hd-full-foam",
@@ -4813,7 +4959,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://gruvn.co/"
+  "vendorUrl": "https://gruvn.co/",
+  "vendorSearchBase": "https://gruvn.co/search?q="
  },
  {
   "id": "gruvn-lazr-16x-full-foam",
@@ -4841,7 +4988,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://gruvn.co/"
+  "vendorUrl": "https://gruvn.co/",
+  "vendorSearchBase": "https://gruvn.co/search?q="
  },
  {
   "id": "gruvn-muvn-16hd-full-foam",
@@ -4869,7 +5017,8 @@
   "popMph": 35.8,
   "popPercentile": 0.3,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://gruvn.co/"
+  "vendorUrl": "https://gruvn.co/",
+  "vendorSearchBase": "https://gruvn.co/search?q="
  },
  {
   "id": "gruvn-lazr-16s",
@@ -4897,7 +5046,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://gruvn.co/"
+  "vendorUrl": "https://gruvn.co/",
+  "vendorSearchBase": "https://gruvn.co/search?q="
  },
  {
   "id": "gruvn-lazr-16x",
@@ -4925,7 +5075,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://gruvn.co/"
+  "vendorUrl": "https://gruvn.co/",
+  "vendorSearchBase": "https://gruvn.co/search?q="
  },
  {
   "id": "gruvn-muvn-13s",
@@ -4953,7 +5104,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://gruvn.co/"
+  "vendorUrl": "https://gruvn.co/",
+  "vendorSearchBase": "https://gruvn.co/search?q="
  },
  {
   "id": "head-gravity-pro-ex15",
@@ -5149,7 +5301,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-fuze-elongated-16",
@@ -5177,7 +5330,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-fuze-hybrid-16",
@@ -5205,7 +5359,8 @@
   "popMph": 37.1,
   "popPercentile": 0.93,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-fuze-widebody-16",
@@ -5233,7 +5388,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-arma-s",
@@ -5261,7 +5417,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-arma-t",
@@ -5289,7 +5446,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-arma-x",
@@ -5317,7 +5475,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-aero-metallic-ti-16mm",
@@ -5345,7 +5504,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-aero-s-16mm",
@@ -5373,7 +5533,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-aero-t-14mm",
@@ -5401,7 +5562,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-aero-t-16mm",
@@ -5429,7 +5591,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-aero-x-14mm",
@@ -5457,7 +5620,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-aero-x-16mm",
@@ -5485,7 +5649,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-mav-pro",
@@ -5513,7 +5678,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-power-pro",
@@ -5541,7 +5707,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "holbrook-pro-power-e",
@@ -5569,7 +5736,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://holbrookpickleball.com/"
+  "vendorUrl": "https://holbrookpickleball.com/",
+  "vendorSearchBase": "https://holbrookpickleball.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j2cr-cbe",
@@ -5597,7 +5765,8 @@
   "popMph": 37.1,
   "popPercentile": 0.93,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j2cr-cbe-lh",
@@ -5625,7 +5794,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j3cr-cbe",
@@ -5653,7 +5823,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j6cr",
@@ -5681,7 +5852,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j6cr-cbe",
@@ -5709,7 +5881,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j2fc",
@@ -5737,7 +5910,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j2nf",
@@ -5765,7 +5939,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j2nf-lh",
@@ -5793,7 +5968,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j2nfk",
@@ -5821,7 +5997,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j2nft",
@@ -5849,7 +6026,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j3nf",
@@ -5877,7 +6055,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j6fc",
@@ -5905,7 +6084,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-j6nf",
@@ -5933,7 +6113,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-sword-shield-j2k",
@@ -5961,7 +6142,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-sword-shield-j2ti",
@@ -5989,7 +6171,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-sword-shield-j2",
@@ -6017,7 +6200,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-sword-shield-j2k-2",
@@ -6045,7 +6229,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-sword-shield-j2ti-2",
@@ -6073,7 +6258,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-sword-shield-j3k",
@@ -6101,7 +6287,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "honolulu-pickleball-sword-shield-j7k",
@@ -6129,7 +6316,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://808pickle.com/"
+  "vendorUrl": "https://808pickle.com/",
+  "vendorSearchBase": "https://808pickle.com/search?q="
  },
  {
   "id": "hudef-mage-pro",
@@ -6157,7 +6345,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://hudefsport.com/"
+  "vendorUrl": "https://hudefsport.com/",
+  "vendorSearchBase": "https://hudefsport.com/search?q="
  },
  {
   "id": "hudef-viva-pro-gen-3",
@@ -6185,7 +6374,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://hudefsport.com/"
+  "vendorUrl": "https://hudefsport.com/",
+  "vendorSearchBase": "https://hudefsport.com/search?q="
  },
  {
   "id": "hudef-viva-pro-gen-2",
@@ -6213,7 +6403,8 @@
   "popMph": 35.4,
   "popPercentile": 0.17,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://hudefsport.com/"
+  "vendorUrl": "https://hudefsport.com/",
+  "vendorSearchBase": "https://hudefsport.com/search?q="
  },
  {
   "id": "joola-agassi-pro-v-16mm",
@@ -6241,7 +6432,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-hyperion-pro-v-14mm",
@@ -6269,7 +6461,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-hyperion-pro-v-16mm",
@@ -6297,7 +6490,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-kosmos-pro-v-16mm",
@@ -6325,7 +6519,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-perseus-pro-v-16mm",
@@ -6353,7 +6548,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-perseus-pro-v-14",
@@ -6381,7 +6577,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-scorpeus-pro-v-14mm",
@@ -6409,7 +6606,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-scorpeus-pro-v-16mm",
@@ -6437,7 +6635,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-agassi-edge-16mm",
@@ -6465,7 +6664,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-agassi-pro-14mm",
@@ -6493,7 +6693,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-agassi-pro-16mm",
@@ -6521,7 +6722,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-perseus-pro-iv-14mm",
@@ -6549,7 +6751,8 @@
   "popMph": 37.1,
   "popPercentile": 0.93,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-perseus-pro-iv-16mm",
@@ -6577,7 +6780,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-scorpeus-pro-iv-14mm",
@@ -6605,7 +6809,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-scorpeus-pro-iv-16-mm",
@@ -6633,7 +6838,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-hyperion-3s-14mm",
@@ -6661,7 +6867,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-hyperion-3s-16mm",
@@ -6689,7 +6896,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-magnus-3s-14mm",
@@ -6717,7 +6925,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-magnus-3s-16mm",
@@ -6745,7 +6954,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-mod-ta-15-16mm",
@@ -6773,7 +6983,8 @@
   "popMph": 37.2,
   "popPercentile": 0.96,
   "firepowerTier": "Firepower Elite",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-mod-ta-15-14mm",
@@ -6801,7 +7012,8 @@
   "popMph": 37.9,
   "popPercentile": 0.99,
   "firepowerTier": "Firepower Elite",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-perseus-3s-14mm",
@@ -6829,7 +7041,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-scorpeus-3s-14mm",
@@ -6857,7 +7070,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-scorpeus-3s-16mm",
@@ -6885,7 +7099,8 @@
   "popMph": 37.2,
   "popPercentile": 0.96,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-perseus-14-mm",
@@ -6913,7 +7128,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-perseus-16-mm",
@@ -6941,7 +7157,8 @@
   "popMph": 34.8,
   "popPercentile": 0.07,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-scorpeus-14-mm",
@@ -6969,7 +7186,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-scorpeus-16-mm",
@@ -6997,7 +7215,8 @@
   "popMph": 34.6,
   "popPercentile": 0.05,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-hyperion-3s-16mm-2",
@@ -7025,7 +7244,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "joola-perseus-3s-16mm",
@@ -7053,7 +7273,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://joola.com/pages/pickleball"
+  "vendorUrl": "https://joola.com/pages/pickleball",
+  "vendorSearchBase": "https://joola.com/search?q="
  },
  {
   "id": "luzz-frozen-inferno",
@@ -7081,7 +7302,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://luzzpickleball.com/"
+  "vendorUrl": "https://luzzpickleball.com/",
+  "vendorSearchBase": "https://luzzpickleball.com/search?q="
  },
  {
   "id": "luzz-glider-2026",
@@ -7109,7 +7331,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://luzzpickleball.com/"
+  "vendorUrl": "https://luzzpickleball.com/",
+  "vendorSearchBase": "https://luzzpickleball.com/search?q="
  },
  {
   "id": "luzz-pro-blade-2",
@@ -7137,7 +7360,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://luzzpickleball.com/"
+  "vendorUrl": "https://luzzpickleball.com/",
+  "vendorSearchBase": "https://luzzpickleball.com/search?q="
  },
  {
   "id": "luzz-glider",
@@ -7165,7 +7389,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://luzzpickleball.com/"
+  "vendorUrl": "https://luzzpickleball.com/",
+  "vendorSearchBase": "https://luzzpickleball.com/search?q="
  },
  {
   "id": "luzz-pro-cannon",
@@ -7193,7 +7418,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://luzzpickleball.com/"
+  "vendorUrl": "https://luzzpickleball.com/",
+  "vendorSearchBase": "https://luzzpickleball.com/search?q="
  },
  {
   "id": "luzz-pro-4-inferno",
@@ -7221,7 +7447,8 @@
   "popMph": 37.1,
   "popPercentile": 0.93,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://luzzpickleball.com/"
+  "vendorUrl": "https://luzzpickleball.com/",
+  "vendorSearchBase": "https://luzzpickleball.com/search?q="
  },
  {
   "id": "luzz-tornazo",
@@ -7249,7 +7476,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://luzzpickleball.com/"
+  "vendorUrl": "https://luzzpickleball.com/",
+  "vendorSearchBase": "https://luzzpickleball.com/search?q="
  },
  {
   "id": "mark-02-r3",
@@ -7277,7 +7505,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://markpickleball.com/"
+  "vendorUrl": "https://markpickleball.com/",
+  "vendorSearchBase": "https://markpickleball.com/search?q="
  },
  {
   "id": "mark-one",
@@ -7305,7 +7534,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://markpickleball.com/"
+  "vendorUrl": "https://markpickleball.com/",
+  "vendorSearchBase": "https://markpickleball.com/search?q="
  },
  {
   "id": "mark-onex",
@@ -7333,7 +7563,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://markpickleball.com/"
+  "vendorUrl": "https://markpickleball.com/",
+  "vendorSearchBase": "https://markpickleball.com/search?q="
  },
  {
   "id": "mark-two",
@@ -7361,7 +7592,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://markpickleball.com/"
+  "vendorUrl": "https://markpickleball.com/",
+  "vendorSearchBase": "https://markpickleball.com/search?q="
  },
  {
   "id": "maverix-havik-2",
@@ -7389,7 +7621,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.maverixpickleball.com/"
+  "vendorUrl": "https://www.maverixpickleball.com/",
+  "vendorSearchBase": "https://www.maverixpickleball.com/search?q="
  },
  {
   "id": "maverix-havik-15-all-court",
@@ -7417,7 +7650,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.maverixpickleball.com/"
+  "vendorUrl": "https://www.maverixpickleball.com/",
+  "vendorSearchBase": "https://www.maverixpickleball.com/search?q="
  },
  {
   "id": "maverix-havik-15-pro",
@@ -7445,7 +7679,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.maverixpickleball.com/"
+  "vendorUrl": "https://www.maverixpickleball.com/",
+  "vendorSearchBase": "https://www.maverixpickleball.com/search?q="
  },
  {
   "id": "neonic-frost-flx-hybrid",
@@ -7473,7 +7708,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://neonicpickleball.com/"
+  "vendorUrl": "https://neonicpickleball.com/",
+  "vendorSearchBase": "https://neonicpickleball.com/search?q="
  },
  {
   "id": "neonic-swift-flx-elongated",
@@ -7501,7 +7737,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://neonicpickleball.com/"
+  "vendorUrl": "https://neonicpickleball.com/",
+  "vendorSearchBase": "https://neonicpickleball.com/search?q="
  },
  {
   "id": "neonic-flare-prime-x",
@@ -7529,7 +7766,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://neonicpickleball.com/"
+  "vendorUrl": "https://neonicpickleball.com/",
+  "vendorSearchBase": "https://neonicpickleball.com/search?q="
  },
  {
   "id": "neonic-flare-titanium-16mm",
@@ -7557,7 +7795,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://neonicpickleball.com/"
+  "vendorUrl": "https://neonicpickleball.com/",
+  "vendorSearchBase": "https://neonicpickleball.com/search?q="
  },
  {
   "id": "neonic-flow",
@@ -7585,7 +7824,8 @@
   "popMph": 34.7,
   "popPercentile": 0.06,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://neonicpickleball.com/"
+  "vendorUrl": "https://neonicpickleball.com/",
+  "vendorSearchBase": "https://neonicpickleball.com/search?q="
  },
  {
   "id": "neonic-flow-prime-x",
@@ -7613,7 +7853,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://neonicpickleball.com/"
+  "vendorUrl": "https://neonicpickleball.com/",
+  "vendorSearchBase": "https://neonicpickleball.com/search?q="
  },
  {
   "id": "neonic-force",
@@ -7641,7 +7882,8 @@
   "popMph": 34.8,
   "popPercentile": 0.07,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://neonicpickleball.com/"
+  "vendorUrl": "https://neonicpickleball.com/",
+  "vendorSearchBase": "https://neonicpickleball.com/search?q="
  },
  {
   "id": "nox-x-foam",
@@ -7669,7 +7911,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://noxsport.com/en/"
+  "vendorUrl": "https://noxsport.com/en/",
+  "vendorSearchBase": "https://noxsport.com/search?q="
  },
  {
   "id": "paddletek-tko-x-16",
@@ -7697,7 +7940,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-bantam-gto-c-12-7",
@@ -7725,7 +7969,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-bantam-gto-c-14-3",
@@ -7753,7 +7998,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-bantam-alw-c-12-7",
@@ -7781,7 +8027,8 @@
   "popMph": 37.1,
   "popPercentile": 0.93,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-bantam-alw-c-14-3",
@@ -7809,7 +8056,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-bantam-esq-c-12-7",
@@ -7837,7 +8085,8 @@
   "popMph": 37.2,
   "popPercentile": 0.96,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-bantam-esq-c-14-3",
@@ -7865,7 +8114,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-bantam-tko-c-12-7",
@@ -7893,7 +8143,8 @@
   "popMph": 37.7,
   "popPercentile": 0.99,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-bantam-tko-c-14-3",
@@ -7921,7 +8172,8 @@
   "popMph": 37.4,
   "popPercentile": 0.98,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-bantam-tko-cx-12-7",
@@ -7949,7 +8201,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-bantam-tko-cx-14-3",
@@ -7977,7 +8230,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "paddletek-tempest-wave-pro-c",
@@ -8005,7 +8259,8 @@
   "popMph": 35.7,
   "popPercentile": 0.27,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.paddletek.com/"
+  "vendorUrl": "https://www.paddletek.com/",
+  "vendorSearchBase": "https://www.paddletek.com/search?q="
  },
  {
   "id": "pickleball-apes-joy-s",
@@ -8033,7 +8288,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-joy-s-2",
@@ -8061,7 +8317,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-charm-s",
@@ -8089,7 +8346,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-charm-v",
@@ -8117,7 +8375,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-charm-x",
@@ -8145,7 +8404,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-harmony-s",
@@ -8173,7 +8433,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-harmony-v",
@@ -8201,7 +8462,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-harmony-x",
@@ -8229,7 +8491,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-pulse-x",
@@ -8257,7 +8520,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-pulse-e",
@@ -8285,7 +8549,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-pulse-s",
@@ -8313,7 +8578,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-pulse-v",
@@ -8341,7 +8607,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-pro-line-energy",
@@ -8369,7 +8636,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pickleball-apes-pro-line-energy-s",
@@ -8397,7 +8665,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.pickleballapes.com/"
+  "vendorUrl": "https://www.pickleballapes.com/",
+  "vendorSearchBase": "https://www.pickleballapes.com/search?q="
  },
  {
   "id": "pikkl-hurricane-pro-14mm",
@@ -8425,7 +8694,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://pikkl.com/"
+  "vendorUrl": "https://pikkl.com/",
+  "vendorSearchBase": "https://pikkl.com/search?q="
  },
  {
   "id": "pikkl-hurricane-pro-16mm",
@@ -8453,7 +8723,8 @@
   "popMph": 35.3,
   "popPercentile": 0.15,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://pikkl.com/"
+  "vendorUrl": "https://pikkl.com/",
+  "vendorSearchBase": "https://pikkl.com/search?q="
  },
  {
   "id": "pikkl-vantage-pro-14mm",
@@ -8481,7 +8752,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://pikkl.com/"
+  "vendorUrl": "https://pikkl.com/",
+  "vendorSearchBase": "https://pikkl.com/search?q="
  },
  {
   "id": "pikkl-vantage-pro-16mm",
@@ -8509,7 +8781,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://pikkl.com/"
+  "vendorUrl": "https://pikkl.com/",
+  "vendorSearchBase": "https://pikkl.com/search?q="
  },
  {
   "id": "prokennex-black-ace-14",
@@ -8537,7 +8810,8 @@
   "popMph": 37.1,
   "popPercentile": 0.93,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://prokennex.com/"
+  "vendorUrl": "https://prokennex.com/",
+  "vendorSearchBase": "https://prokennex.com/search?q="
  },
  {
   "id": "prokennex-black-ace-16",
@@ -8565,7 +8839,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://prokennex.com/"
+  "vendorUrl": "https://prokennex.com/",
+  "vendorSearchBase": "https://prokennex.com/search?q="
  },
  {
   "id": "prokennex-black-ace-lg-14",
@@ -8593,7 +8868,8 @@
   "popMph": 37.1,
   "popPercentile": 0.93,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://prokennex.com/"
+  "vendorUrl": "https://prokennex.com/",
+  "vendorSearchBase": "https://prokennex.com/search?q="
  },
  {
   "id": "prokennex-black-ace-xf-14",
@@ -8621,7 +8897,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://prokennex.com/"
+  "vendorUrl": "https://prokennex.com/",
+  "vendorSearchBase": "https://prokennex.com/search?q="
  },
  {
   "id": "proton-peacock-elongated-13mm",
@@ -8649,7 +8926,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proton-peacock-widebody-13mm",
@@ -8677,7 +8955,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proton-peacock-widebody-15mm",
@@ -8705,7 +8984,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proton-project-flamingo",
@@ -8733,7 +9013,8 @@
   "popMph": 37.4,
   "popPercentile": 0.98,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proton-project-peacock-elongated-15mm",
@@ -8761,7 +9042,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proton-series-1-type-a-elongated-11mm",
@@ -8789,7 +9071,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proton-series-1-type-a-elongated-15mm",
@@ -8817,7 +9100,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proton-series-1-type-a-square-shape-11mm",
@@ -8845,7 +9129,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proton-series-2",
@@ -8873,7 +9158,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proton-series-3",
@@ -8901,7 +9187,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proton-series-4",
@@ -8929,7 +9216,8 @@
   "popMph": 34.6,
   "popPercentile": 0.05,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://protonsports.com/"
+  "vendorUrl": "https://protonsports.com/",
+  "vendorSearchBase": "https://protonsports.com/search?q="
  },
  {
   "id": "proxr-sweet-spot-13",
@@ -8957,7 +9245,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://proxrpickleball.com/"
+  "vendorUrl": "https://proxrpickleball.com/",
+  "vendorSearchBase": "https://proxrpickleball.com/search?q="
  },
  {
   "id": "proxr-zane-navtratil-signature",
@@ -8985,7 +9274,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://proxrpickleball.com/"
+  "vendorUrl": "https://proxrpickleball.com/",
+  "vendorSearchBase": "https://proxrpickleball.com/search?q="
  },
  {
   "id": "reload-rld-1",
@@ -9013,7 +9303,8 @@
   "popMph": 35.1,
   "popPercentile": 0.13,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.reloadpaddle.com/"
+  "vendorUrl": "https://www.reloadpaddle.com/",
+  "vendorSearchBase": "https://www.reloadpaddle.com/search?q="
  },
  {
   "id": "rev-zeus",
@@ -9041,7 +9332,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.revpickleball.com/"
+  "vendorUrl": "https://www.revpickleball.com/",
+  "vendorSearchBase": "https://www.revpickleball.com/search?q="
  },
  {
   "id": "revolin-drift-pure",
@@ -9069,7 +9361,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://revolinpickleball.com/"
+  "vendorUrl": "https://revolinpickleball.com/",
+  "vendorSearchBase": "https://revolinpickleball.com/search?q="
  },
  {
   "id": "revolin-drift-reach",
@@ -9097,7 +9390,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://revolinpickleball.com/"
+  "vendorUrl": "https://revolinpickleball.com/",
+  "vendorSearchBase": "https://revolinpickleball.com/search?q="
  },
  {
   "id": "revolin-revo-pro-pure",
@@ -9125,7 +9419,8 @@
   "popMph": 37.1,
   "popPercentile": 0.93,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://revolinpickleball.com/"
+  "vendorUrl": "https://revolinpickleball.com/",
+  "vendorSearchBase": "https://revolinpickleball.com/search?q="
  },
  {
   "id": "revolin-revo-pro-reach",
@@ -9153,7 +9448,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://revolinpickleball.com/"
+  "vendorUrl": "https://revolinpickleball.com/",
+  "vendorSearchBase": "https://revolinpickleball.com/search?q="
  },
  {
   "id": "ronbus-quanta-r1",
@@ -9181,7 +9477,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-quanta-r2",
@@ -9209,7 +9506,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-quanta-r3",
@@ -9237,7 +9535,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-quanta-r4",
@@ -9265,7 +9564,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-quanta-r5",
@@ -9293,7 +9593,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-ripple-v2-r1-14",
@@ -9321,7 +9622,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Elite",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-ripple-v2-r2-14",
@@ -9349,7 +9651,8 @@
   "popMph": 37.2,
   "popPercentile": 0.96,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-ripple-v2-r4-14",
@@ -9377,7 +9680,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-pulsar-fx-r1",
@@ -9405,7 +9709,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-pulsar-fx-r2",
@@ -9433,7 +9738,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-pulsar-fx-r3",
@@ -9461,7 +9767,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-r1-nova",
@@ -9489,7 +9796,8 @@
   "popMph": 34.2,
   "popPercentile": 0.03,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-r1-pulsar",
@@ -9517,7 +9825,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-r3-nova",
@@ -9545,7 +9854,8 @@
   "popMph": 34.8,
   "popPercentile": 0.07,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-r3-pulsar",
@@ -9573,7 +9883,8 @@
   "popMph": 35.4,
   "popPercentile": 0.17,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-r1-16",
@@ -9601,7 +9912,8 @@
   "popMph": 33.7,
   "popPercentile": 0.01,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "ronbus-r3-16",
@@ -9629,7 +9941,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://ronbus.com/"
+  "vendorUrl": "https://ronbus.com/",
+  "vendorSearchBase": "https://ronbus.com/search?q="
  },
  {
   "id": "rpm-friction-pro-v2",
@@ -9657,7 +9970,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://rpmpb.com/"
+  "vendorUrl": "https://rpmpb.com/",
+  "vendorSearchBase": "https://rpmpb.com/search?q="
  },
  {
   "id": "rpm-q2-elongated-14",
@@ -9685,7 +9999,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://rpmpb.com/"
+  "vendorUrl": "https://rpmpb.com/",
+  "vendorSearchBase": "https://rpmpb.com/search?q="
  },
  {
   "id": "rpm-q2-elongated-16",
@@ -9713,7 +10028,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://rpmpb.com/"
+  "vendorUrl": "https://rpmpb.com/",
+  "vendorSearchBase": "https://rpmpb.com/search?q="
  },
  {
   "id": "rpm-q2-widebody-14",
@@ -9741,7 +10057,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://rpmpb.com/"
+  "vendorUrl": "https://rpmpb.com/",
+  "vendorSearchBase": "https://rpmpb.com/search?q="
  },
  {
   "id": "rpm-q2-widebody-16",
@@ -9769,7 +10086,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://rpmpb.com/"
+  "vendorUrl": "https://rpmpb.com/",
+  "vendorSearchBase": "https://rpmpb.com/search?q="
  },
  {
   "id": "rpm-friction-pro-elongated-14",
@@ -9797,7 +10115,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://rpmpb.com/"
+  "vendorUrl": "https://rpmpb.com/",
+  "vendorSearchBase": "https://rpmpb.com/search?q="
  },
  {
   "id": "rpm-friction-pro-elongated-16",
@@ -9825,7 +10144,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://rpmpb.com/"
+  "vendorUrl": "https://rpmpb.com/",
+  "vendorSearchBase": "https://rpmpb.com/search?q="
  },
  {
   "id": "rpm-friction-pro-widebody-14",
@@ -9853,7 +10173,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://rpmpb.com/"
+  "vendorUrl": "https://rpmpb.com/",
+  "vendorSearchBase": "https://rpmpb.com/search?q="
  },
  {
   "id": "rpm-friction-pro-widebody-16",
@@ -9881,7 +10202,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://rpmpb.com/"
+  "vendorUrl": "https://rpmpb.com/",
+  "vendorSearchBase": "https://rpmpb.com/search?q="
  },
  {
   "id": "scoop-sidewinder-f2e",
@@ -9909,7 +10231,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://scooppickleball.com/"
+  "vendorUrl": "https://scooppickleball.com/",
+  "vendorSearchBase": "https://scooppickleball.com/search?q="
  },
  {
   "id": "selkirk-omni-elongated-w-moi",
@@ -9937,7 +10260,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-omni-elongated-w-o-moi",
@@ -9965,7 +10289,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-omni-widebody-w-moi",
@@ -9993,7 +10318,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-omni-widebody-w-o-moi",
@@ -10021,7 +10347,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-slk-dauntless-elongated",
@@ -10049,7 +10376,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-slk-dauntless-widebody",
@@ -10077,7 +10405,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-boomstik-elongated",
@@ -10105,7 +10434,8 @@
   "popMph": 37.3,
   "popPercentile": 0.98,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-boomstik-widebody",
@@ -10133,7 +10463,8 @@
   "popMph": 37.2,
   "popPercentile": 0.96,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-luxx-control-air-invikta-infinigrit",
@@ -10161,7 +10492,8 @@
   "popMph": 35.3,
   "popPercentile": 0.15,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-amped-epic-control",
@@ -10189,7 +10521,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-amped-epic-pro-air",
@@ -10217,7 +10550,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-amped-invikta-pro-air",
@@ -10245,7 +10579,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-vanguard-control-epic-midweight",
@@ -10273,7 +10608,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-vanguard-control-invikta-mideweight",
@@ -10301,7 +10637,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-vanguard-control-s2-midweight",
@@ -10329,7 +10666,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-vanguard-pro-power-invikta",
@@ -10357,7 +10695,8 @@
   "popMph": 35.2,
   "popPercentile": 0.14,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-luxx-control-air-epic",
@@ -10385,7 +10724,8 @@
   "popMph": 33.1,
   "popPercentile": 0.01,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-luxx-control-air-invikta",
@@ -10413,7 +10753,8 @@
   "popMph": 33.2,
   "popPercentile": 0.01,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-luxx-control-air-s2",
@@ -10441,7 +10782,8 @@
   "popMph": 32.9,
   "popPercentile": 0.0,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-power-air-epic",
@@ -10469,7 +10811,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-power-air-invikta",
@@ -10497,7 +10840,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.selkirk.com/"
+  "vendorUrl": "https://www.selkirk.com/",
+  "vendorSearchBase": "https://www.selkirk.com/search?q="
  },
  {
   "id": "selkirk-labs-008-epic-13mm",
@@ -10525,7 +10869,8 @@
   "popMph": 35.4,
   "popPercentile": 0.17,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.selkirklabs.com/"
+  "vendorUrl": "https://www.selkirklabs.com/",
+  "vendorSearchBase": "https://www.selkirklabs.com/search?q="
  },
  {
   "id": "selkirk-labs-008-invikta-10mm",
@@ -10553,7 +10898,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.selkirklabs.com/"
+  "vendorUrl": "https://www.selkirklabs.com/",
+  "vendorSearchBase": "https://www.selkirklabs.com/search?q="
  },
  {
   "id": "selkirk-labs-008-invikta-13mm",
@@ -10581,7 +10927,8 @@
   "popMph": 35.3,
   "popPercentile": 0.15,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.selkirklabs.com/"
+  "vendorUrl": "https://www.selkirklabs.com/",
+  "vendorSearchBase": "https://www.selkirklabs.com/search?q="
  },
  {
   "id": "selkirk-labs-008-tour-13mm",
@@ -10609,7 +10956,8 @@
   "popMph": 35.0,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.selkirklabs.com/"
+  "vendorUrl": "https://www.selkirklabs.com/",
+  "vendorSearchBase": "https://www.selkirklabs.com/search?q="
  },
  {
   "id": "selkirk-labs-008-tour-16mm",
@@ -10637,7 +10985,8 @@
   "popMph": 34.8,
   "popPercentile": 0.07,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.selkirklabs.com/"
+  "vendorUrl": "https://www.selkirklabs.com/",
+  "vendorSearchBase": "https://www.selkirklabs.com/search?q="
  },
  {
   "id": "selkirk-labs-project-007-epic-14mm",
@@ -10665,7 +11014,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.selkirklabs.com/"
+  "vendorUrl": "https://www.selkirklabs.com/",
+  "vendorSearchBase": "https://www.selkirklabs.com/search?q="
  },
  {
   "id": "selkirk-labs-project-007-invikta-14mm",
@@ -10693,7 +11043,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.selkirklabs.com/"
+  "vendorUrl": "https://www.selkirklabs.com/",
+  "vendorSearchBase": "https://www.selkirklabs.com/search?q="
  },
  {
   "id": "selkirk-labs-project-005-epic",
@@ -10721,7 +11072,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.selkirklabs.com/"
+  "vendorUrl": "https://www.selkirklabs.com/",
+  "vendorSearchBase": "https://www.selkirklabs.com/search?q="
  },
  {
   "id": "selkirk-labs-project-006-maxima",
@@ -10749,7 +11101,8 @@
   "popMph": 34.4,
   "popPercentile": 0.04,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.selkirklabs.com/"
+  "vendorUrl": "https://www.selkirklabs.com/",
+  "vendorSearchBase": "https://www.selkirklabs.com/search?q="
  },
  {
   "id": "six-zero-coral-pro-elongated",
@@ -10777,7 +11130,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-coral-pro-hybrid",
@@ -10805,7 +11159,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-coral-pro-widebody",
@@ -10833,7 +11188,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-black-opal",
@@ -10861,7 +11217,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower Elite",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-coral-elongated",
@@ -10889,7 +11246,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-coral-hybrid",
@@ -10917,7 +11275,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-coral-widebody",
@@ -10945,7 +11304,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-ruby-pro",
@@ -10973,7 +11333,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-black-diamond-14mm",
@@ -11001,7 +11362,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-double-black-diamond-elongated",
@@ -11029,7 +11391,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-infinity-ruby",
@@ -11057,7 +11420,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-quartz",
@@ -11085,7 +11449,8 @@
   "popMph": 34.8,
   "popPercentile": 0.07,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-ruby-14mm",
@@ -11113,7 +11478,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-sapphire-v2",
@@ -11141,7 +11507,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-black-diamond-16mm",
@@ -11169,7 +11536,8 @@
   "popMph": 36.3,
   "popPercentile": 0.51,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-black-diamond-amethyst-pro",
@@ -11197,7 +11565,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-black-diamond-infinity-16mm",
@@ -11225,7 +11594,8 @@
   "popMph": 35.4,
   "popPercentile": 0.17,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-double-black-diamond-14-mm",
@@ -11253,7 +11623,8 @@
   "popMph": 36.9,
   "popPercentile": 0.85,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-double-black-diamond-16-mm",
@@ -11281,7 +11652,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-double-black-diamond-infinity-16mm",
@@ -11309,7 +11681,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-ruby",
@@ -11337,7 +11710,8 @@
   "popMph": 35.3,
   "popPercentile": 0.15,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "six-zero-sapphire",
@@ -11365,7 +11739,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://www.sixzeropickleball.com/"
+  "vendorUrl": "https://www.sixzeropickleball.com/",
+  "vendorSearchBase": "https://www.sixzeropickleball.com/search?q="
  },
  {
   "id": "slk-era-power-elongated",
@@ -11393,7 +11768,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://slkpickleball.com/"
+  "vendorUrl": "https://slkpickleball.com/",
+  "vendorSearchBase": "https://slkpickleball.com/search?q="
  },
  {
   "id": "slk-era-power-widebody",
@@ -11421,7 +11797,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://slkpickleball.com/"
+  "vendorUrl": "https://slkpickleball.com/",
+  "vendorSearchBase": "https://slkpickleball.com/search?q="
  },
  {
   "id": "slk-halo-control-max-2024-version",
@@ -11449,7 +11826,8 @@
   "popMph": 34.2,
   "popPercentile": 0.03,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://slkpickleball.com/"
+  "vendorUrl": "https://slkpickleball.com/",
+  "vendorSearchBase": "https://slkpickleball.com/search?q="
  },
  {
   "id": "slk-halo-power-max-2024-version",
@@ -11477,7 +11855,8 @@
   "popMph": 35.7,
   "popPercentile": 0.27,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://slkpickleball.com/"
+  "vendorUrl": "https://slkpickleball.com/",
+  "vendorSearchBase": "https://slkpickleball.com/search?q="
  },
  {
   "id": "slk-halo-pro-max",
@@ -11505,7 +11884,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://slkpickleball.com/"
+  "vendorUrl": "https://slkpickleball.com/",
+  "vendorSearchBase": "https://slkpickleball.com/search?q="
  },
  {
   "id": "slk-halo-pro-xl",
@@ -11533,7 +11913,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://slkpickleball.com/"
+  "vendorUrl": "https://slkpickleball.com/",
+  "vendorSearchBase": "https://slkpickleball.com/search?q="
  },
  {
   "id": "slk-halo-control-max",
@@ -11561,7 +11942,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://slkpickleball.com/"
+  "vendorUrl": "https://slkpickleball.com/",
+  "vendorSearchBase": "https://slkpickleball.com/search?q="
  },
  {
   "id": "slk-halo-control-xl",
@@ -11589,7 +11971,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://slkpickleball.com/"
+  "vendorUrl": "https://slkpickleball.com/",
+  "vendorSearchBase": "https://slkpickleball.com/search?q="
  },
  {
   "id": "slk-halo-power-max",
@@ -11617,7 +12000,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://slkpickleball.com/"
+  "vendorUrl": "https://slkpickleball.com/",
+  "vendorSearchBase": "https://slkpickleball.com/search?q="
  },
  {
   "id": "slk-halo-power-xl",
@@ -11645,7 +12029,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://slkpickleball.com/"
+  "vendorUrl": "https://slkpickleball.com/",
+  "vendorSearchBase": "https://slkpickleball.com/search?q="
  },
  {
   "id": "spartus-p1-hybrid",
@@ -11673,7 +12058,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://gospartus.com/"
+  "vendorUrl": "https://gospartus.com/",
+  "vendorSearchBase": "https://gospartus.com/search?q="
  },
  {
   "id": "spartus-p1-standard",
@@ -11701,7 +12087,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://gospartus.com/"
+  "vendorUrl": "https://gospartus.com/",
+  "vendorSearchBase": "https://gospartus.com/search?q="
  },
  {
   "id": "spartus-spitfire",
@@ -11729,7 +12116,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://gospartus.com/"
+  "vendorUrl": "https://gospartus.com/",
+  "vendorSearchBase": "https://gospartus.com/search?q="
  },
  {
   "id": "spartus-odyssey-apex",
@@ -11757,7 +12145,8 @@
   "popMph": 35.2,
   "popPercentile": 0.14,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://gospartus.com/"
+  "vendorUrl": "https://gospartus.com/",
+  "vendorSearchBase": "https://gospartus.com/search?q="
  },
  {
   "id": "spartus-orion",
@@ -11785,7 +12174,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://gospartus.com/"
+  "vendorUrl": "https://gospartus.com/",
+  "vendorSearchBase": "https://gospartus.com/search?q="
  },
  {
   "id": "spartus-apollo",
@@ -11813,7 +12203,8 @@
   "popMph": 35.0,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://gospartus.com/"
+  "vendorUrl": "https://gospartus.com/",
+  "vendorSearchBase": "https://gospartus.com/search?q="
  },
  {
   "id": "spartus-olympus",
@@ -11841,7 +12232,8 @@
   "popMph": 36.5,
   "popPercentile": 0.6,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://gospartus.com/"
+  "vendorUrl": "https://gospartus.com/",
+  "vendorSearchBase": "https://gospartus.com/search?q="
  },
  {
   "id": "spartus-ballista",
@@ -11869,7 +12261,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://gospartus.com/"
+  "vendorUrl": "https://gospartus.com/",
+  "vendorSearchBase": "https://gospartus.com/search?q="
  },
  {
   "id": "spartus-gladius-centurion",
@@ -11897,7 +12290,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://gospartus.com/"
+  "vendorUrl": "https://gospartus.com/",
+  "vendorSearchBase": "https://gospartus.com/search?q="
  },
  {
   "id": "technifibre-tf-blitz",
@@ -11925,7 +12319,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://www.tecnifibre.com/en/collections/raquettes-de-pickleball"
+  "vendorUrl": "https://www.tecnifibre.com/en/collections/raquettes-de-pickleball",
+  "vendorSearchBase": "https://www.tecnifibre.com/search?q="
  },
  {
   "id": "technifibre-tf-command",
@@ -11953,7 +12348,8 @@
   "popMph": 35.7,
   "popPercentile": 0.27,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://www.tecnifibre.com/en/collections/raquettes-de-pickleball"
+  "vendorUrl": "https://www.tecnifibre.com/en/collections/raquettes-de-pickleball",
+  "vendorSearchBase": "https://www.tecnifibre.com/search?q="
  },
  {
   "id": "technifibre-tf-select",
@@ -11981,7 +12377,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://www.tecnifibre.com/en/collections/raquettes-de-pickleball"
+  "vendorUrl": "https://www.tecnifibre.com/en/collections/raquettes-de-pickleball",
+  "vendorSearchBase": "https://www.tecnifibre.com/search?q="
  },
  {
   "id": "thrive-fury-elongated",
@@ -12009,7 +12406,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://thrivepb.com/"
+  "vendorUrl": "https://thrivepb.com/",
+  "vendorSearchBase": "https://thrivepb.com/search?q="
  },
  {
   "id": "thrive-project-fury",
@@ -12037,7 +12435,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://thrivepb.com/"
+  "vendorUrl": "https://thrivepb.com/",
+  "vendorSearchBase": "https://thrivepb.com/search?q="
  },
  {
   "id": "thrive-smoke",
@@ -12065,7 +12464,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://thrivepb.com/"
+  "vendorUrl": "https://thrivepb.com/",
+  "vendorSearchBase": "https://thrivepb.com/search?q="
  },
  {
   "id": "thrive-azul-16",
@@ -12093,7 +12493,8 @@
   "popMph": 36.0,
   "popPercentile": 0.36,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://thrivepb.com/"
+  "vendorUrl": "https://thrivepb.com/",
+  "vendorSearchBase": "https://thrivepb.com/search?q="
  },
  {
   "id": "thrive-blackout-16",
@@ -12121,7 +12522,8 @@
   "popMph": 36.2,
   "popPercentile": 0.45,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://thrivepb.com/"
+  "vendorUrl": "https://thrivepb.com/",
+  "vendorSearchBase": "https://thrivepb.com/search?q="
  },
  {
   "id": "thrive-surge-16",
@@ -12149,7 +12551,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://thrivepb.com/"
+  "vendorUrl": "https://thrivepb.com/",
+  "vendorSearchBase": "https://thrivepb.com/search?q="
  },
  {
   "id": "thrive-rush-13mm",
@@ -12177,7 +12580,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://thrivepb.com/"
+  "vendorUrl": "https://thrivepb.com/",
+  "vendorSearchBase": "https://thrivepb.com/search?q="
  },
  {
   "id": "thrive-threat-16mm",
@@ -12205,7 +12609,8 @@
   "popMph": 34.6,
   "popPercentile": 0.05,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://thrivepb.com/"
+  "vendorUrl": "https://thrivepb.com/",
+  "vendorSearchBase": "https://thrivepb.com/search?q="
  },
  {
   "id": "thrive-ignite",
@@ -12233,7 +12638,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://thrivepb.com/"
+  "vendorUrl": "https://thrivepb.com/",
+  "vendorSearchBase": "https://thrivepb.com/search?q="
  },
  {
   "id": "vatic-pro-prism-bloom-14mm",
@@ -12261,7 +12667,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-prism-bloom-16mm",
@@ -12289,7 +12696,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-saga-bloom-14mm",
@@ -12317,7 +12725,8 @@
   "popMph": 35.7,
   "popPercentile": 0.27,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-saga-bloom-16mm",
@@ -12345,7 +12754,8 @@
   "popMph": 34.8,
   "popPercentile": 0.07,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-saga-flash-sh-14mm",
@@ -12373,7 +12783,8 @@
   "popMph": 35.7,
   "popPercentile": 0.27,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-saga-v7-sh-14mm",
@@ -12401,7 +12812,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-v-sol-power-bloom",
@@ -12429,7 +12841,8 @@
   "popMph": 36.4,
   "popPercentile": 0.55,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-v-sol-power-flash",
@@ -12457,7 +12870,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-v-sol-power-v7",
@@ -12485,7 +12899,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-v-sol-pro-bloom",
@@ -12513,7 +12928,8 @@
   "popMph": 36.6,
   "popPercentile": 0.67,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-v-sol-pro-flash",
@@ -12541,7 +12957,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-v-sol-pro-flash-lh",
@@ -12569,7 +12986,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-v-sol-pro-v7",
@@ -12597,7 +13015,8 @@
   "popMph": 37.1,
   "popPercentile": 0.93,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-v-sol-pro-v7-lh",
@@ -12625,7 +13044,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-prism-flash-lh-14",
@@ -12653,7 +13073,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-prism-flash-lh-16",
@@ -12681,7 +13102,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-saga-flash-lh-16mm",
@@ -12709,7 +13131,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-saga-flash-sh-16mm",
@@ -12737,7 +13160,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-saga-v7-lh",
@@ -12765,7 +13189,8 @@
   "popMph": 0.0,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-saga-v7-sh",
@@ -12793,7 +13218,8 @@
   "popMph": 35.6,
   "popPercentile": 0.23,
   "firepowerTier": "Firepower Balanced",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-flash-14-mm",
@@ -12821,7 +13247,8 @@
   "popMph": 34.4,
   "popPercentile": 0.04,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-flash-16-mm",
@@ -12849,7 +13276,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-prism-flash-14-mm",
@@ -12877,7 +13305,8 @@
   "popMph": 35.0,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-prism-flash-16-mm",
@@ -12905,7 +13334,8 @@
   "popMph": 33.7,
   "popPercentile": 0.01,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-prism-v7",
@@ -12933,7 +13363,8 @@
   "popMph": 34.6,
   "popPercentile": 0.05,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-prism-v7-lh",
@@ -12961,7 +13392,8 @@
   "popMph": 34.4,
   "popPercentile": 0.04,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-v7",
@@ -12989,7 +13421,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "vatic-pro-v-sol-power-v7-lh",
@@ -13017,7 +13450,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://vaticpro.com/"
+  "vendorUrl": "https://vaticpro.com/",
+  "vendorSearchBase": "https://vaticpro.com/search?q="
  },
  {
   "id": "versix-vector-xl",
@@ -13073,7 +13507,8 @@
   "popMph": 37.0,
   "popPercentile": 0.9,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-shift-hyb-14",
@@ -13101,7 +13536,8 @@
   "popMph": 36.7,
   "popPercentile": 0.76,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-shift-wb-14",
@@ -13129,7 +13565,8 @@
   "popMph": 36.8,
   "popPercentile": 0.8,
   "firepowerTier": "Firepower High",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-v-1f-hyb",
@@ -13157,7 +13594,8 @@
   "popMph": 35.0,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-v-1f-wb",
@@ -13185,7 +13623,8 @@
   "popMph": 35.7,
   "popPercentile": 0.27,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-ctrl-1-forza",
@@ -13213,7 +13652,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-ctrl-2-forza",
@@ -13241,7 +13681,8 @@
   "popMph": null,
   "popPercentile": null,
   "firepowerTier": null,
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-mach-1-forza-14mm",
@@ -13269,7 +13710,8 @@
   "popMph": 35.7,
   "popPercentile": 0.27,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-mach-1-forza-16mm",
@@ -13297,7 +13739,8 @@
   "popMph": 35.5,
   "popPercentile": 0.2,
   "firepowerTier": "Firepower Control+",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-mach-2-14mm",
@@ -13325,7 +13768,8 @@
   "popMph": 35.0,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-mach-2-16-mm",
@@ -13353,7 +13797,8 @@
   "popMph": 35.0,
   "popPercentile": 0.1,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-mach-2-forza-14mm",
@@ -13381,7 +13826,8 @@
   "popMph": 35.9,
   "popPercentile": 0.31,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-mach-2-forza-16mm",
@@ -13409,7 +13855,8 @@
   "popMph": 33.7,
   "popPercentile": 0.01,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-mach-1-14mm",
@@ -13437,7 +13884,8 @@
   "popMph": 36.1,
   "popPercentile": 0.4,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "volair-mach-1-16mm",
@@ -13465,7 +13913,8 @@
   "popMph": 34.7,
   "popPercentile": 0.06,
   "firepowerTier": "Firepower Soft",
-  "vendorUrl": "https://volair.com/"
+  "vendorUrl": "https://volair.com/",
+  "vendorSearchBase": "https://volair.com/search?q="
  },
  {
   "id": "vulcan-dark-matter",
