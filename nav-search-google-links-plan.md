@@ -345,6 +345,12 @@ has a working per-city anchor for all 17 cities.
 
 ## Group E — Sitewide global search (header, all pages)
 
+**Already shipped — don't re-scope this.** `assets/global-search.js` and
+`assets/global-search.css` exist and are wired into the nav (commit
+`4c39c29`, "Add sitewide global search to the nav"), post-dating this
+plan's analysis. See `audit/repo-hygiene.md` for verification. The steps
+below are left for reference only.
+
 **Goal:** The global search you asked for — type a city or venue name from
 anywhere on the site, jump straight to the right city page (and, combined
 with Group A's venue-card `id` fix, straight to the right venue card).

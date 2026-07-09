@@ -21,7 +21,8 @@ GitHub Pages has no such rewrite and would 404 on those exact URLs. GitHub
 Pages, if still deploying from this repo, should be treated as a stale
 mirror at its own `reidbrawer-ops.github.io` URL — don't point the custom
 domain at it (an earlier version of this doc and a `CNAME` file did that by
-mistake; both have been corrected/removed).
+mistake; both have been corrected/removed). `sitemap.xml` and `robots.txt`
+already point at `pickleball-bay-area.com`, not the GitHub Pages mirror.
 
 ## 1. Finish connecting the custom domain to Firebase Hosting
 
@@ -48,11 +49,9 @@ submit a sitemap once, against the real final domain.
    live domain to reflect new changes — it doesn't happen automatically
    from a git commit).
 
-**Once this is live**, `sitemap.xml` and `robots.txt` still point at
-`reidbrawer-ops.github.io` — update both to `pickleball-bay-area.com` so
-they match the canonical tags already in every page's `<head>`. That's the
-one loose end this doc intentionally doesn't fix yet, since flipping it
-before the domain resolves would just point Google at a dead URL.
+**`sitemap.xml` and `robots.txt` already point at `pickleball-bay-area.com`**,
+matching the canonical tags in every page's `<head>` — no further action
+needed on that front once the domain is live.
 
 ## 2. Add a real GA4 Measurement ID
 
@@ -84,8 +83,7 @@ even before the site fully resolves there):
    the same place you added the A records in step 1 — this can be done in
    parallel with DNS propagation, it doesn't need to wait.
 3. Once verified, go to **Sitemaps** in the left nav and submit
-   `sitemap.xml` (after you've updated it to the `pickleball-bay-area.com`
-   domain per step 1's last paragraph).
+   `sitemap.xml` (it already points at the `pickleball-bay-area.com` domain).
 4. Use **URL Inspection → Request Indexing** on the homepage and a couple
    of city pages to nudge the first crawl instead of waiting for Google to
    discover the sitemap on its own schedule.

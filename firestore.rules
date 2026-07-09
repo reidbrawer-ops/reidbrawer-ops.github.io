@@ -25,6 +25,7 @@ service cloud.firestore {
 
       allow update: if isWellFormed(request.resource.data)
                     && onlyKnownFieldsChanged()
+                    && singleGroupChanged()
                     && favoriteDeltaOk()
                     && factorDeltaOk('beginnerFriendlySum', 'beginnerFriendlyCount')
                     && factorDeltaOk('courtSurfaceSum', 'courtSurfaceCount')
@@ -95,6 +96,25 @@ service cloud.firestore {
 
       function onlyKnownFieldsChanged() {
         return request.resource.data.diff(resource.data).affectedKeys().hasOnly(knownFields());
+      }
+
+      // Restrict each update to touching exactly one "slot" — either the
+      // favorite counter or a single rating factor's Sum/Count pair —
+      // matching what court-ratings.js's incrementFavorite/applyRatingDelta
+      // ever change in one write. Without this, the per-field bounds above
+      // still hold individually, but nothing stops one write from changing
+      // several slots (e.g. a favorite toggle plus all six factors) at once.
+      function singleGroupChanged() {
+        let keys = request.resource.data.diff(resource.data).affectedKeys();
+        let groupsTouched =
+          (keys.hasAny(['favoriteVotes']) ? 1 : 0) +
+          (keys.hasAny(['beginnerFriendlySum', 'beginnerFriendlyCount']) ? 1 : 0) +
+          (keys.hasAny(['courtSurfaceSum', 'courtSurfaceCount']) ? 1 : 0) +
+          (keys.hasAny(['waitTimeScoreSum', 'waitTimeScoreCount']) ? 1 : 0) +
+          (keys.hasAny(['advancedPlaySum', 'advancedPlayCount']) ? 1 : 0) +
+          (keys.hasAny(['amenitiesSum', 'amenitiesCount']) ? 1 : 0) +
+          (keys.hasAny(['atmosphereSum', 'atmosphereCount']) ? 1 : 0);
+        return groupsTouched <= 1;
       }
 
       function favoriteDeltaOk() {

@@ -249,7 +249,7 @@
     "lat": 37.812664,
     "lon": -122.2869264,
     "url": "/cities/oakland",
-    "indoor": "unknown",
+    "indoor": "outdoor",
     "id": "de-fremery-park",
     "confirmed": false
   },
