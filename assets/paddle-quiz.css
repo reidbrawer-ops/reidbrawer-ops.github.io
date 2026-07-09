@@ -175,19 +175,17 @@
 }
 
 /* 3 price tiers side by side so all 9 picks are visible without a long
-   vertical scroll — collapses to one column below 900px, where 3 columns
-   of paddle cards would be too cramped to read comfortably. */
+   vertical scroll. auto-fit/minmax instead of a fixed media-query
+   breakpoint — a hard "3 columns above Xpx" cutoff meant a merely
+   moderate-width window (not full-screen, split-screen, a smaller
+   laptop) fell back to 1 column even though 2 or 3 would've fit fine.
+   This grows columns as space allows and only drops to fewer once a
+   260px-wide column genuinely won't fit. */
 .pq-buckets-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--space-3);
   align-items: start;
-}
-
-@media (max-width: 900px) {
-  .pq-buckets-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .pq-bucket {
