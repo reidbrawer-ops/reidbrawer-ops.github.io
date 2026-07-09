@@ -6,8 +6,9 @@
     "lat": 37.8765974,
     "lon": -122.2887435,
     "url": "/cities/berkeley",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "cedar-rose-park",
+    "confirmed": true
   },
   {
     "name": "James Kenney Park",
@@ -16,7 +17,9 @@
     "lat": 37.8720298,
     "lon": -122.2975094,
     "url": "/cities/berkeley",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "james-kenney-park",
+    "confirmed": true
   },
   {
     "name": "Grove Park",
@@ -25,7 +28,9 @@
     "lat": 37.8565345,
     "lon": -122.2735435,
     "url": "/cities/berkeley",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "grove-park",
+    "confirmed": false
   },
   {
     "name": "San Pablo Park",
@@ -34,7 +39,9 @@
     "lat": 37.8565158,
     "lon": -122.2833503,
     "url": "/cities/berkeley",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "san-pablo-park",
+    "confirmed": false
   },
   {
     "name": "Memorial Park",
@@ -43,8 +50,9 @@
     "lat": 37.3227003,
     "lon": -122.0468305,
     "url": "/cities/cupertino",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "memorial-park",
+    "confirmed": true
   },
   {
     "name": "Cupertino Sports Center",
@@ -53,7 +61,9 @@
     "lat": 37.3236065,
     "lon": -122.0429004,
     "url": "/cities/cupertino",
-    "indoor": "both"
+    "indoor": "both",
+    "id": "cupertino-sports-center",
+    "confirmed": true
   },
   {
     "name": "De Anza College",
@@ -62,7 +72,9 @@
     "lat": 37.3177007,
     "lon": -122.0445571,
     "url": "/cities/cupertino",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "de-anza-college",
+    "confirmed": false
   },
   {
     "name": "Central Park Knoll Pickleball Courts",
@@ -71,8 +83,9 @@
     "lat": 37.5502415,
     "lon": -121.9631016,
     "url": "/cities/fremont",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "central-park-knoll-pickleball-courts",
+    "confirmed": true
   },
   {
     "name": "Fremont Tennis Center",
@@ -81,7 +94,9 @@
     "lat": 37.548401,
     "lon": -121.9575428,
     "url": "/cities/fremont",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "fremont-tennis-center",
+    "confirmed": true
   },
   {
     "name": "ClubSport Fremont",
@@ -90,7 +105,9 @@
     "lat": 37.4832307,
     "lon": -121.942142,
     "url": "/cities/fremont",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "clubsport-fremont",
+    "confirmed": false
   },
   {
     "name": "Raindance Pickleball",
@@ -100,7 +117,9 @@
     "lon": -121.988571,
     "url": "/cities/fremont",
     "approx": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "raindance-pickleball",
+    "confirmed": false
   },
   {
     "name": "Kelly Park",
@@ -109,8 +128,9 @@
     "lat": 37.4783161,
     "lon": -122.1674571,
     "url": "/cities/menlo-park",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "kelly-park",
+    "confirmed": true
   },
   {
     "name": "Nealon Park",
@@ -119,7 +139,9 @@
     "lat": 37.447922,
     "lon": -122.179417,
     "url": "/cities/menlo-park",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "nealon-park",
+    "confirmed": true
   },
   {
     "name": "Rengstorff Park",
@@ -128,8 +150,9 @@
     "lat": 37.401203,
     "lon": -122.098457,
     "url": "/cities/mountain-view",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "rengstorff-park",
+    "confirmed": true
   },
   {
     "name": "Mountain View Sports Pavilion",
@@ -138,7 +161,9 @@
     "lat": 37.3818314,
     "lon": -122.086321,
     "url": "/cities/mountain-view",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "mountain-view-sports-pavilion",
+    "confirmed": true
   },
   {
     "name": "Hill Recreation Pickleball Courts",
@@ -147,8 +172,9 @@
     "lat": 38.0530871,
     "lon": -122.5187715,
     "url": "/cities/novato",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "hill-recreation-pickleball-courts",
+    "confirmed": true
   },
   {
     "name": "Pioneer Park",
@@ -157,7 +183,9 @@
     "lat": 38.1132784,
     "lon": -122.5885233,
     "url": "/cities/novato",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "pioneer-park",
+    "confirmed": true
   },
   {
     "name": "Bushrod Park",
@@ -166,7 +194,9 @@
     "lat": 37.8454332,
     "lon": -122.2635557,
     "url": "/cities/oakland",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "bushrod-park",
+    "confirmed": true
   },
   {
     "name": "Montclair Pickleball Courts",
@@ -175,8 +205,9 @@
     "lat": 37.8296197,
     "lon": -122.2129266,
     "url": "/cities/oakland",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "montclair-pickleball-courts",
+    "confirmed": true
   },
   {
     "name": "Pickle Athletics",
@@ -185,7 +216,9 @@
     "lat": 37.8294815,
     "lon": -122.2640593,
     "url": "/cities/oakland",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "pickle-athletics",
+    "confirmed": true
   },
   {
     "name": "Laney College",
@@ -194,7 +227,9 @@
     "lat": 37.7942491,
     "lon": -122.2607931,
     "url": "/cities/oakland",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "laney-college",
+    "confirmed": false
   },
   {
     "name": "Oakland Hills Tennis Club",
@@ -203,7 +238,9 @@
     "lat": 37.7975289,
     "lon": -122.1718552,
     "url": "/cities/oakland",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "oakland-hills-tennis-club",
+    "confirmed": false
   },
   {
     "name": "Burkhalter Park",
@@ -213,7 +250,9 @@
     "lon": -122.271356,
     "url": "/cities/oakland",
     "approx": true,
-    "indoor": "unknown"
+    "indoor": "unknown",
+    "id": "burkhalter-park",
+    "confirmed": false
   },
   {
     "name": "De Fremery Park",
@@ -222,7 +261,9 @@
     "lat": 37.8114216,
     "lon": -122.285346,
     "url": "/cities/oakland",
-    "indoor": "unknown"
+    "indoor": "unknown",
+    "id": "de-fremery-park",
+    "confirmed": false
   },
   {
     "name": "Mitchell Park",
@@ -231,7 +272,9 @@
     "lat": 37.4232558,
     "lon": -122.1163817,
     "url": "/cities/palo-alto",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "mitchell-park",
+    "confirmed": true
   },
   {
     "name": "Muirwood Community Park",
@@ -240,8 +283,9 @@
     "lat": 37.6842961,
     "lon": -121.9182676,
     "url": "/cities/pleasanton",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "muirwood-community-park",
+    "confirmed": true
   },
   {
     "name": "Pleasanton Tennis and Community Park",
@@ -250,7 +294,9 @@
     "lat": 37.6756,
     "lon": -121.8995005,
     "url": "/cities/pleasanton",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "pleasanton-tennis-and-community-park",
+    "confirmed": true
   },
   {
     "name": "Pleasanton Middle School Gym",
@@ -259,7 +305,9 @@
     "lat": 37.6546993,
     "lon": -121.8838621,
     "url": "/cities/pleasanton",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "pleasanton-middle-school-gym",
+    "confirmed": true
   },
   {
     "name": "Bay Club Pleasanton",
@@ -268,35 +316,42 @@
     "lat": 37.6997546,
     "lon": -121.9180836,
     "url": "/cities/pleasanton",
-    "indoor": "both"
+    "indoor": "both",
+    "id": "bay-club-pleasanton",
+    "confirmed": false
   },
   {
     "name": "ClubSport of Pleasanton",
     "city": "Pleasanton",
-    "address": "Near 7090 Johnson Dr (exact address unconfirmed — distinct facility from Bay Club), Pleasanton, CA",
+    "address": "Near 7090 Johnson Dr (exact address unconfirmed \u2014 distinct facility from Bay Club), Pleasanton, CA",
     "lat": 37.6997546,
     "lon": -121.9180836,
     "url": "/cities/pleasanton",
-    "indoor": "both"
+    "indoor": "both",
+    "id": "clubsport-of-pleasanton",
+    "confirmed": false
   },
   {
-    "name": "Red Morton Park — outdoor courts",
+    "name": "Red Morton Park \u2014 outdoor courts",
     "city": "Redwood City",
     "address": "1400 Roosevelt Ave, Redwood City, CA 94061",
     "lat": 37.4708368,
     "lon": -122.2370457,
     "url": "/cities/redwood-city",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "red-morton-park-outdoor-courts",
+    "confirmed": true
   },
   {
-    "name": "Red Morton Senior Center — indoor courts",
+    "name": "Red Morton Senior Center \u2014 indoor courts",
     "city": "Redwood City",
     "address": "1120 Roosevelt Ave, Redwood City, CA 94061",
     "lat": 37.4720186,
     "lon": -122.235494,
     "url": "/cities/redwood-city",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "red-morton-senior-center-indoor-courts",
+    "confirmed": true
   },
   {
     "name": "Sequoia YMCA",
@@ -305,7 +360,9 @@
     "lat": 37.4706264,
     "lon": -122.2265097,
     "url": "/cities/redwood-city",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "sequoia-ymca",
+    "confirmed": false
   },
   {
     "name": "Larsen Playground",
@@ -314,8 +371,9 @@
     "lat": 37.7395945,
     "lon": -122.4761735,
     "url": "/cities/san-francisco",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "larsen-playground",
+    "confirmed": true
   },
   {
     "name": "Louis Sutter Playground",
@@ -324,7 +382,9 @@
     "lat": 37.7224769,
     "lon": -122.4136718,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "louis-sutter-playground",
+    "confirmed": true
   },
   {
     "name": "Goldman Tennis Center",
@@ -333,7 +393,9 @@
     "lat": 37.7679691,
     "lon": -122.4600782,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "goldman-tennis-center",
+    "confirmed": true
   },
   {
     "name": "Presidio Wall Playground",
@@ -342,7 +404,9 @@
     "lat": 37.791124,
     "lon": -122.4540269,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "presidio-wall-playground",
+    "confirmed": true
   },
   {
     "name": "Parkside Square",
@@ -351,7 +415,9 @@
     "lat": 37.7383463,
     "lon": -122.4837811,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "parkside-square",
+    "confirmed": true
   },
   {
     "name": "The Crossing at East Cut",
@@ -360,7 +426,9 @@
     "lat": 37.78934,
     "lon": -122.392042,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "the-crossing-at-east-cut",
+    "confirmed": true
   },
   {
     "name": "Buena Vista Park",
@@ -369,7 +437,9 @@
     "lat": 37.7683632,
     "lon": -122.4412774,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "buena-vista-park",
+    "confirmed": false
   },
   {
     "name": "Rossi Playground",
@@ -378,7 +448,9 @@
     "lat": 37.7790653,
     "lon": -122.4582804,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "rossi-playground",
+    "confirmed": false
   },
   {
     "name": "Moscone Playground",
@@ -387,7 +459,9 @@
     "lat": 37.801298,
     "lon": -122.433128,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "moscone-playground",
+    "confirmed": false
   },
   {
     "name": "George Christopher Playground",
@@ -396,7 +470,9 @@
     "lat": 37.7439969,
     "lon": -122.4402468,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "george-christopher-playground",
+    "confirmed": false
   },
   {
     "name": "Rec Fillmore",
@@ -405,7 +481,9 @@
     "lat": 37.78255,
     "lon": -122.4303339,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "rec-fillmore",
+    "confirmed": false
   },
   {
     "name": "States Street Playground",
@@ -414,7 +492,9 @@
     "lat": 37.7634558,
     "lon": -122.4367435,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "states-street-playground",
+    "confirmed": false
   },
   {
     "name": "Stern Grove Playground",
@@ -423,7 +503,9 @@
     "lat": 37.7347235,
     "lon": -122.4790292,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "stern-grove-playground",
+    "confirmed": false
   },
   {
     "name": "Upper Noe Rec Center",
@@ -432,7 +514,9 @@
     "lat": 37.742388,
     "lon": -122.4284382,
     "url": "/cities/san-francisco",
-    "indoor": "both"
+    "indoor": "both",
+    "id": "upper-noe-rec-center",
+    "confirmed": false
   },
   {
     "name": "Eureka Valley Rec Center",
@@ -441,7 +525,9 @@
     "lat": 37.760695,
     "lon": -122.436205,
     "url": "/cities/san-francisco",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "eureka-valley-rec-center",
+    "confirmed": false
   },
   {
     "name": "Hamilton Rec Center",
@@ -450,7 +536,9 @@
     "lat": 37.7845624,
     "lon": -122.4353242,
     "url": "/cities/san-francisco",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "hamilton-rec-center",
+    "confirmed": false
   },
   {
     "name": "Minnie & Lovie Ward Rec Center",
@@ -459,7 +547,9 @@
     "lat": 37.7161871,
     "lon": -122.4589561,
     "url": "/cities/san-francisco",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "minnie-lovie-ward-rec-center",
+    "confirmed": false
   },
   {
     "name": "Richmond Rec Center",
@@ -468,7 +558,9 @@
     "lat": 37.7833156,
     "lon": -122.4781116,
     "url": "/cities/san-francisco",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "richmond-rec-center",
+    "confirmed": false
   },
   {
     "name": "Mission YMCA",
@@ -477,7 +569,9 @@
     "lat": 37.7322268,
     "lon": -122.428003,
     "url": "/cities/san-francisco",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "mission-ymca",
+    "confirmed": false
   },
   {
     "name": "Glen Park Rec Center",
@@ -486,7 +580,9 @@
     "lat": 37.7370367,
     "lon": -122.4409309,
     "url": "/cities/san-francisco",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "glen-park-rec-center",
+    "confirmed": false
   },
   {
     "name": "Paul Moore Park",
@@ -495,8 +591,9 @@
     "lat": 37.2722482,
     "lon": -121.8906164,
     "url": "/cities/san-jose",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "paul-moore-park",
+    "confirmed": true
   },
   {
     "name": "Evergreen Valley College",
@@ -505,7 +602,9 @@
     "lat": 37.2977099,
     "lon": -121.764086,
     "url": "/cities/san-jose",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "evergreen-valley-college",
+    "confirmed": true
   },
   {
     "name": "Almaden Valley Athletic Club",
@@ -514,7 +613,9 @@
     "lat": 37.2405661,
     "lon": -121.9040212,
     "url": "/cities/san-jose",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "almaden-valley-athletic-club",
+    "confirmed": true
   },
   {
     "name": "Lone Hill Park",
@@ -523,7 +624,9 @@
     "lat": 37.2453326,
     "lon": -121.9107436,
     "url": "/cities/san-jose",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "lone-hill-park",
+    "confirmed": true
   },
   {
     "name": "Calabazas Park",
@@ -532,7 +635,9 @@
     "lat": 37.3008909,
     "lon": -122.0241562,
     "url": "/cities/san-jose",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "calabazas-park",
+    "confirmed": false
   },
   {
     "name": "John Mise Park",
@@ -541,7 +646,9 @@
     "lat": 37.316042,
     "lon": -121.990926,
     "url": "/cities/san-jose",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "john-mise-park",
+    "confirmed": false
   },
   {
     "name": "Cataldi Park",
@@ -550,7 +657,9 @@
     "lat": 37.402118,
     "lon": -121.86946,
     "url": "/cities/san-jose",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "cataldi-park",
+    "confirmed": false
   },
   {
     "name": "Edenvale Gardens Regional Park",
@@ -559,7 +668,9 @@
     "lat": 37.2622283,
     "lon": -121.8200002,
     "url": "/cities/san-jose",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "edenvale-gardens-regional-park",
+    "confirmed": false
   },
   {
     "name": "Groesbeck Hill Park",
@@ -568,7 +679,9 @@
     "lat": 37.3368231,
     "lon": -121.7787516,
     "url": "/cities/san-jose",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "groesbeck-hill-park",
+    "confirmed": false
   },
   {
     "name": "River Glen Park",
@@ -577,7 +690,9 @@
     "lat": 37.3014396,
     "lon": -121.8872937,
     "url": "/cities/san-jose",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "river-glen-park",
+    "confirmed": false
   },
   {
     "name": "Branham Park",
@@ -586,7 +701,9 @@
     "lat": 37.2543853,
     "lon": -121.9062101,
     "url": "/cities/san-jose",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "branham-park",
+    "confirmed": false
   },
   {
     "name": "Bascom Community Center",
@@ -595,7 +712,9 @@
     "lat": 37.3075348,
     "lon": -121.9311591,
     "url": "/cities/san-jose",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "bascom-community-center",
+    "confirmed": false
   },
   {
     "name": "Camden Community Center",
@@ -604,7 +723,9 @@
     "lat": 37.2638767,
     "lon": -121.9330502,
     "url": "/cities/san-jose",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "camden-community-center",
+    "confirmed": false
   },
   {
     "name": "Central Park",
@@ -613,8 +734,9 @@
     "lat": 37.562149,
     "lon": -122.3236032,
     "url": "/cities/san-mateo",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "central-park",
+    "confirmed": true
   },
   {
     "name": "Beresford Park",
@@ -623,7 +745,9 @@
     "lat": 37.5372956,
     "lon": -122.3133347,
     "url": "/cities/san-mateo",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "beresford-park",
+    "confirmed": true
   },
   {
     "name": "Joinville/Bayside Park",
@@ -632,7 +756,9 @@
     "lat": 37.565461,
     "lon": -122.29421,
     "url": "/cities/san-mateo",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "joinville-bayside-park",
+    "confirmed": false
   },
   {
     "name": "Los Prados",
@@ -641,7 +767,9 @@
     "lat": 37.5429132,
     "lon": -122.2808086,
     "url": "/cities/san-mateo",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "los-prados",
+    "confirmed": false
   },
   {
     "name": "Shoreview Park & Recreation Center",
@@ -650,7 +778,9 @@
     "lat": 37.569542,
     "lon": -122.303177,
     "url": "/cities/san-mateo",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "shoreview-park-recreation-center",
+    "confirmed": false
   },
   {
     "name": "San Mateo High School Gym",
@@ -659,7 +789,9 @@
     "lat": 37.5760358,
     "lon": -122.3296619,
     "url": "/cities/san-mateo",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "san-mateo-high-school-gym",
+    "confirmed": false
   },
   {
     "name": "Flyte Racquet Club",
@@ -668,8 +800,9 @@
     "lat": 38.0179004,
     "lon": -122.5216061,
     "url": "/cities/san-rafael",
-    "topPick": true,
-    "indoor": "both"
+    "indoor": "both",
+    "id": "flyte-racquet-club",
+    "confirmed": true
   },
   {
     "name": "Pueblo Park",
@@ -678,7 +811,9 @@
     "lat": 38.0160147,
     "lon": -122.5146595,
     "url": "/cities/san-rafael",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "pueblo-park",
+    "confirmed": true
   },
   {
     "name": "Albert Park",
@@ -687,7 +822,9 @@
     "lat": 37.9690661,
     "lon": -122.5285588,
     "url": "/cities/san-rafael",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "albert-park",
+    "confirmed": false
   },
   {
     "name": "McInnis Park",
@@ -696,7 +833,9 @@
     "lat": 38.0191541,
     "lon": -122.5243124,
     "url": "/cities/san-rafael",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "mcinnis-park",
+    "confirmed": false
   },
   {
     "name": "McNears Beach Park",
@@ -705,7 +844,9 @@
     "lat": 37.9928278,
     "lon": -122.4535469,
     "url": "/cities/san-rafael",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "mcnears-beach-park",
+    "confirmed": false
   },
   {
     "name": "Osher Marin JCC",
@@ -714,7 +855,9 @@
     "lat": 37.9994442,
     "lon": -122.5231339,
     "url": "/cities/san-rafael",
-    "indoor": "both"
+    "indoor": "both",
+    "id": "osher-marin-jcc",
+    "confirmed": false
   },
   {
     "name": "Community Recreation Center at Central Park",
@@ -723,8 +866,9 @@
     "lat": 37.3448223,
     "lon": -121.9716919,
     "url": "/cities/santa-clara",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "community-recreation-center-at-central-park",
+    "confirmed": true
   },
   {
     "name": "Bay Club Santa Clara",
@@ -733,7 +877,9 @@
     "lat": 37.3775115,
     "lon": -121.9860477,
     "url": "/cities/santa-clara",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "bay-club-santa-clara",
+    "confirmed": true
   },
   {
     "name": "Sunnyvale Tennis Center",
@@ -742,8 +888,9 @@
     "lat": 37.3650942,
     "lon": -122.0342751,
     "url": "/cities/sunnyvale",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "sunnyvale-tennis-center",
+    "confirmed": true
   },
   {
     "name": "Sunnyvale Community Center",
@@ -752,7 +899,9 @@
     "lat": 37.357704,
     "lon": -122.0264951,
     "url": "/cities/sunnyvale",
-    "indoor": "indoor"
+    "indoor": "indoor",
+    "id": "sunnyvale-community-center",
+    "confirmed": true
   },
   {
     "name": "Rudgear Park",
@@ -761,16 +910,19 @@
     "lat": 37.8761923,
     "lon": -122.0271175,
     "url": "/cities/walnut-creek",
-    "topPick": true,
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "rudgear-park",
+    "confirmed": true
   },
   {
-    "name": "Heather Farm Park — Walnut Creek Tennis Center",
+    "name": "Heather Farm Park \u2014 Walnut Creek Tennis Center",
     "city": "Walnut Creek",
     "address": "1751 Heather Dr, Walnut Creek, CA 94598",
     "lat": 37.9177343,
     "lon": -122.0411544,
     "url": "/cities/walnut-creek",
-    "indoor": "outdoor"
+    "indoor": "outdoor",
+    "id": "heather-farm-park-walnut-creek-tennis-center",
+    "confirmed": true
   }
 ]

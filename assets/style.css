@@ -220,12 +220,11 @@ img, svg {
   color: var(--ink);
 }
 
-.brand .dot {
-  width: 0.6em;
-  height: 0.6em;
-  border-radius: 50%;
-  background: var(--optic);
-  border: 1.5px solid var(--bay-deep);
+.brand img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
   flex: none;
 }
 

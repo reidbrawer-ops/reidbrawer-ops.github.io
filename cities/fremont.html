@@ -8,7 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon-180.png">
 <meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Pickleball Bay Area">
@@ -25,7 +28,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><span class="dot"></span>Pickleball Bay Area</a>
+    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/">Home</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -64,8 +67,8 @@
     <h2>Where to play</h2>
     <div class="venue-list">
 
-      <div class="venue-card top-pick" id="central-park-knoll-pickleball-courts" data-court-id="central-park-knoll-pickleball-courts">
-        <div class="name-row"><h3>Central Park Knoll Pickleball Courts</h3><span class="rank-badge top">Top pick</span><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="central-park-knoll-pickleball-courts" data-role="top-badge"></span></div>
+      <div class="venue-card" id="central-park-knoll-pickleball-courts" data-court-id="central-park-knoll-pickleball-courts">
+        <div class="name-row"><h3>Central Park Knoll Pickleball Courts</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="central-park-knoll-pickleball-courts"></span><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="central-park-knoll-pickleball-courts" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">Central Park, off Civic Center Dr, Fremont, CA 94539 (between Fremont PD and the Fremont Main Library)</span>
           <a class="directions-link" href="https://www.google.com/maps/place/?q=place_id:ChIJW4eYYQDBj4AR37pxMTHogPE" target="_blank" rel="noopener">Directions ↗</a>
@@ -90,7 +93,7 @@
       </div>
 
       <div class="venue-card" id="fremont-tennis-center" data-court-id="fremont-tennis-center">
-        <h3>Fremont Tennis Center</h3><span class="badges" data-court-id="fremont-tennis-center" data-role="top-badge"></span>
+        <h3>Fremont Tennis Center</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="fremont-tennis-center"></span><span class="badges" data-court-id="fremont-tennis-center" data-role="top-badge"></span>
         <div class="addr-row">
           <span class="addr">40000 Paseo Padre Pkwy, Fremont, CA 94538</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&query=Fremont+Tennis+Center,+40000+Paseo+Padre+Pkwy,+Fremont,+CA+94538" target="_blank" rel="noopener">Directions ↗</a>
@@ -251,6 +254,8 @@
 <script type="module" src="/assets/court-ratings.js"></script>
 <script src="/assets/rating-widgets.js"></script>
 <script src="/assets/google-ratings.js"></script>
+<script src="/assets/top-picks.js"></script>
+<script src="/assets/city-top-pick.js"></script>
 <script src="/assets/nav.js" defer></script>
 <script src="/assets/global-search.js" defer></script>
 <script src="/assets/analytics.js" defer></script>

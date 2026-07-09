@@ -191,6 +191,16 @@
       hoursRange: parseHoursRange(v.hours),
     }));
 
+    // Recomputed from live rankings (see assets/top-picks.js) rather than a
+    // stored field, so it stays in sync with /rankings and the map without
+    // anyone hand-editing courts-data.json.
+    let topPickIds = new Set();
+    function refreshTopPicks() {
+      if (!window.PBRatings || !window.PBTopPicks) return;
+      topPickIds = window.PBTopPicks.computeTopPickIds(rows);
+    }
+    refreshTopPicks();
+
     const fieldEls = {};
     FILTER_FIELDS.forEach((f) => {
       fieldEls[f.key] = document.getElementById(f.elId);
@@ -281,7 +291,7 @@
         .map(
           (row) => `
         <tr>
-          <td><a href="${row.url}">${escapeHtml(row.name)}</a>${row.topPick ? ' <span class="rank-badge top">Top pick</span>' : ""} ${window.PBWidgets.badgesHtml(row.id)}${actionLinksHtml(row)}</td>
+          <td><a href="${row.url}">${escapeHtml(row.name)}</a>${topPickIds.has(row.id) ? ' <span class="rank-badge top">Top pick</span>' : ""} ${window.PBWidgets.badgesHtml(row.id)}${actionLinksHtml(row)}</td>
           <td>${escapeHtml(row.city)}</td>
           <td>${escapeHtml(row.neighborhood)}</td>
           <td>${escapeHtml(row.price)}</td>
@@ -302,10 +312,10 @@
       cardsEl.innerHTML = filtered
         .map(
           (row) => `
-        <article class="venue-card directory-card${row.topPick ? " top-pick" : ""}">
+        <article class="venue-card directory-card${topPickIds.has(row.id) ? " top-pick" : ""}">
           <div class="name-row">
             <h3><a href="${row.url}">${escapeHtml(row.name)}</a></h3>
-            ${row.topPick ? '<span class="rank-badge top">Top pick</span>' : ""}
+            ${topPickIds.has(row.id) ? '<span class="rank-badge top">Top pick</span>' : ""}
             ${window.PBWidgets.badgesHtml(row.id)}
           </div>
           <span class="addr">${escapeHtml(row.neighborhood)}</span>
@@ -323,6 +333,17 @@
     }
 
     formEl.addEventListener("change", render);
+
+    // Top pick badges depend on live vote/rating data, which loads async and
+    // can change after any vote — recompute and re-render whenever it does.
+    document.addEventListener("pbratings:ready", () => {
+      refreshTopPicks();
+      render();
+    });
+    document.addEventListener("pbratings:update", () => {
+      refreshTopPicks();
+      render();
+    });
 
     function resetHoursSlider() {
       hoursRange = [HOURS_MIN, HOURS_MAX];

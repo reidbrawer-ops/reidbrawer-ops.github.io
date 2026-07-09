@@ -8,7 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon-180.png">
 <meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Pickleball Bay Area">
@@ -25,7 +28,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><span class="dot"></span>Pickleball Bay Area</a>
+    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/">Home</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -64,8 +67,8 @@
     <h2>Where to play</h2>
     <div class="venue-list">
 
-      <div class="venue-card top-pick" id="paul-moore-park" data-court-id="paul-moore-park">
-        <div class="name-row"><h3>Paul Moore Park</h3><span class="rank-badge top">Top pick</span><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="paul-moore-park" data-role="top-badge"></span></div>
+      <div class="venue-card" id="paul-moore-park" data-court-id="paul-moore-park">
+        <div class="name-row"><h3>Paul Moore Park</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="paul-moore-park"></span><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="paul-moore-park" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">1426 Hillsdale Ave, San Jose, CA 95118</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&amp;query=1426%20Hillsdale%20Ave%2C%20San%20Jose%2C%20CA%2095118" target="_blank" rel="noopener">Get directions →</a>
@@ -90,7 +93,7 @@
       </div>
 
       <div class="venue-card" id="evergreen-valley-college" data-court-id="evergreen-valley-college">
-        <h3>Evergreen Valley College</h3><span class="badges" data-court-id="evergreen-valley-college" data-role="top-badge"></span>
+        <h3>Evergreen Valley College</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="evergreen-valley-college"></span><span class="badges" data-court-id="evergreen-valley-college" data-role="top-badge"></span>
         <div class="addr-row">
           <span class="addr">2995 Yerba Buena Rd, San Jose, CA 95135</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&amp;query=2995%20Yerba%20Buena%20Rd%2C%20San%20Jose%2C%20CA%2095135" target="_blank" rel="noopener">Get directions →</a>
@@ -116,7 +119,7 @@
       </div>
 
       <div class="venue-card" id="almaden-valley-athletic-club" data-court-id="almaden-valley-athletic-club">
-        <div class="name-row"><h3>Almaden Valley Athletic Club</h3><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="almaden-valley-athletic-club" data-role="top-badge"></span></div>
+        <div class="name-row"><h3>Almaden Valley Athletic Club</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="almaden-valley-athletic-club"></span><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="almaden-valley-athletic-club" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">5400 Camden Ave, San Jose, CA 95124</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&amp;query=5400%20Camden%20Ave%2C%20San%20Jose%2C%20CA%2095124" target="_blank" rel="noopener">Get directions →</a>
@@ -142,7 +145,7 @@
       </div>
 
       <div class="venue-card" id="lone-hill-park" data-court-id="lone-hill-park">
-        <h3>Lone Hill Park</h3><span class="badges" data-court-id="lone-hill-park" data-role="top-badge"></span>
+        <h3>Lone Hill Park</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="lone-hill-park"></span><span class="badges" data-court-id="lone-hill-park" data-role="top-badge"></span>
         <div class="addr-row">
           <span class="addr">Vintner Way &amp; Dalton Drive, San Jose, CA 95124</span>
           <a class="directions-link" href="https://maps.google.com/?cid=6544071507314712705" target="_blank" rel="noopener">Get directions →</a>
@@ -393,6 +396,8 @@
 <script type="module" src="/assets/court-ratings.js"></script>
 <script src="/assets/rating-widgets.js"></script>
 <script src="/assets/google-ratings.js"></script>
+<script src="/assets/top-picks.js"></script>
+<script src="/assets/city-top-pick.js"></script>
 <script src="/assets/nav.js" defer></script>
 <script src="/assets/global-search.js" defer></script>
 <script src="/assets/analytics.js" defer></script>

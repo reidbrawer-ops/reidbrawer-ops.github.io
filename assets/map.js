@@ -28,9 +28,9 @@
     }
   }
 
-  function pinIcon(venue) {
+  function pinIcon(venue, isTopPick) {
     const classes = ["pba-pin", indoorClass(venue.indoor)];
-    if (venue.topPick) classes.push("top-pick");
+    if (isTopPick) classes.push("top-pick");
     return L.divIcon({
       className: "",
       html: `<span class="${classes.join(" ")}"></span>`,
@@ -79,12 +79,30 @@
       }).addTo(map);
 
       const markers = plottable.map((venue) => {
-        const marker = L.marker([venue.lat, venue.lon], { icon: pinIcon(venue) });
+        const marker = L.marker([venue.lat, venue.lon], { icon: pinIcon(venue, false) });
         marker.bindPopup(popupHtml(venue));
+        marker.__venue = venue;
         return marker;
       });
 
       const group = L.featureGroup(markers).addTo(map);
+
+      // Top pick is computed live from community votes/ratings (see
+      // assets/top-picks.js) — recolor pins in place rather than rebuilding
+      // markers whenever the vote data (re)loads or changes.
+      function refreshTopPickPins() {
+        if (!window.PBRatings || !window.PBTopPicks) return;
+        // Ranked against every venue (not just plottable ones) so this
+        // agrees with the directory and city pages even when the actual
+        // winner in a city happens to lack geocoded coordinates.
+        const topPickIds = window.PBTopPicks.computeTopPickIds(venues);
+        markers.forEach((marker) => {
+          marker.setIcon(pinIcon(marker.__venue, topPickIds.has(marker.__venue.id)));
+        });
+      }
+      document.addEventListener("pbratings:ready", refreshTopPickPins);
+      document.addEventListener("pbratings:update", refreshTopPickPins);
+      refreshTopPickPins();
 
       function fit() {
         // Guard against a stale/zero container size (web fonts still

@@ -6,12 +6,12 @@
   </defs>
   <g clip-path="url(#roundedSquare)">
     <rect width="256" height="256" fill="#123240"></rect>
-
+    
     <rect x="49.8" y="35.6" width="24.9" height="184.9" rx="7.1" fill="#b54b2c"></rect>
     <rect x="181.3" y="35.6" width="24.9" height="184.9" rx="7.1" fill="#b54b2c"></rect>
-
+    
     <rect x="0" y="174.2" width="256" height="10.7" fill="#b54b2c"></rect>
-
+    
     <circle cx="128" cy="131.6" r="53.3" fill="#d7e94b"></circle>
     <circle cx="106.7" cy="110.2" r="5.3" fill="#9aa81e"></circle>
     <circle cx="128" cy="110.2" r="5.3" fill="#9aa81e"></circle>
@@ -22,7 +22,7 @@
     <circle cx="106.7" cy="152.9" r="5.3" fill="#9aa81e"></circle>
     <circle cx="128" cy="152.9" r="5.3" fill="#9aa81e"></circle>
     <circle cx="149.3" cy="152.9" r="5.3" fill="#9aa81e"></circle>
-
+    
     <rect x="0" y="206.2" width="256" height="49.8" fill="#f5f7f6" opacity="0.55"></rect>
   </g>
 </svg>

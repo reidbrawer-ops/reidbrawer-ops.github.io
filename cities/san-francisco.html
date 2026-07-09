@@ -8,7 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon-180.png">
 <meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Pickleball Bay Area">
@@ -25,7 +28,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><span class="dot"></span>Pickleball Bay Area</a>
+    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/">Home</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -64,8 +67,8 @@
     <h2>Where to play</h2>
     <div class="venue-list">
 
-      <div class="venue-card top-pick" id="larsen-playground" data-court-id="larsen-playground">
-        <div class="name-row"><h3>Larsen Playground</h3><span class="rank-badge top">Top pick</span><span class="rank-badge">Beginner-friendly</span><span class="badges" data-court-id="larsen-playground" data-role="top-badge"></span></div>
+      <div class="venue-card" id="larsen-playground" data-court-id="larsen-playground">
+        <div class="name-row"><h3>Larsen Playground</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="larsen-playground"></span><span class="rank-badge">Beginner-friendly</span><span class="badges" data-court-id="larsen-playground" data-role="top-badge"></span></div>
         <span class="addr">850 Vicente St, San Francisco, CA 94116</span>
         <div class="facts">
           <span class="stat-chip"><b>8</b> dedicated courts</span>
@@ -88,7 +91,7 @@
       </div>
 
       <div class="venue-card" id="louis-sutter-playground" data-court-id="louis-sutter-playground">
-        <div class="name-row"><h3>Louis Sutter Playground</h3><span class="rank-badge">All levels</span><span class="badges" data-court-id="louis-sutter-playground" data-role="top-badge"></span></div>
+        <div class="name-row"><h3>Louis Sutter Playground</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="louis-sutter-playground"></span><span class="rank-badge">All levels</span><span class="badges" data-court-id="louis-sutter-playground" data-role="top-badge"></span></div>
         <span class="addr">614 University St, McLaren Park, San Francisco, CA 94134</span>
         <div class="facts">
           <span class="stat-chip"><b>6</b> dedicated courts</span>
@@ -111,7 +114,7 @@
       </div>
 
       <div class="venue-card" id="goldman-tennis-center" data-court-id="goldman-tennis-center">
-        <div class="name-row"><h3>Goldman Tennis Center</h3><span class="rank-badge">All levels</span><span class="badges" data-court-id="goldman-tennis-center" data-role="top-badge"></span></div>
+        <div class="name-row"><h3>Goldman Tennis Center</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="goldman-tennis-center"></span><span class="rank-badge">All levels</span><span class="badges" data-court-id="goldman-tennis-center" data-role="top-badge"></span></div>
         <span class="addr">Bowling Green Dr &amp; JFK Drive, Golden Gate Park, San Francisco, CA 94117</span>
         <div class="facts">
           <span class="stat-chip"><b>5</b> dedicated courts</span>
@@ -135,7 +138,7 @@
       </div>
 
       <div class="venue-card" id="presidio-wall-playground" data-court-id="presidio-wall-playground">
-        <div class="name-row"><h3>Presidio Wall Playground</h3><span class="rank-badge">All levels</span><span class="badges" data-court-id="presidio-wall-playground" data-role="top-badge"></span></div>
+        <div class="name-row"><h3>Presidio Wall Playground</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="presidio-wall-playground"></span><span class="rank-badge">All levels</span><span class="badges" data-court-id="presidio-wall-playground" data-role="top-badge"></span></div>
         <span class="addr">West Pacific Ave &amp; Spruce St, San Francisco, CA 94118</span>
         <div class="facts">
           <span class="stat-chip"><b>12</b> courts total</span>
@@ -159,7 +162,7 @@
       </div>
 
       <div class="venue-card" id="parkside-square" data-court-id="parkside-square">
-        <div class="name-row"><h3>Parkside Square</h3><span class="rank-badge">Beginner-friendly</span><span class="badges" data-court-id="parkside-square" data-role="top-badge"></span></div>
+        <div class="name-row"><h3>Parkside Square</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="parkside-square"></span><span class="rank-badge">Beginner-friendly</span><span class="badges" data-court-id="parkside-square" data-role="top-badge"></span></div>
         <span class="addr">2680 28th Ave, San Francisco, CA 94116</span>
         <div class="facts">
           <span class="stat-chip"><b>8</b> courts</span>
@@ -183,7 +186,7 @@
       </div>
 
       <div class="venue-card" id="the-crossing-at-east-cut" data-court-id="the-crossing-at-east-cut">
-        <div class="name-row"><h3>The Crossing at East Cut</h3><span class="rank-badge">Competitive</span><span class="badges" data-court-id="the-crossing-at-east-cut" data-role="top-badge"></span></div>
+        <div class="name-row"><h3>The Crossing at East Cut</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="the-crossing-at-east-cut"></span><span class="rank-badge">Competitive</span><span class="badges" data-court-id="the-crossing-at-east-cut" data-role="top-badge"></span></div>
         <span class="addr">200 Folsom St, San Francisco, CA 94105</span>
         <div class="facts">
           <span class="stat-chip"><b>5</b> courts</span>
@@ -528,6 +531,8 @@
 <script type="module" src="/assets/court-ratings.js"></script>
 <script src="/assets/rating-widgets.js"></script>
 <script src="/assets/google-ratings.js"></script>
+<script src="/assets/top-picks.js"></script>
+<script src="/assets/city-top-pick.js"></script>
 <script src="/assets/nav.js" defer></script>
 <script src="/assets/global-search.js" defer></script>
 <script src="/assets/analytics.js" defer></script>

@@ -8,7 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon-180.png">
 <meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Pickleball Bay Area">
@@ -25,7 +28,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><span class="dot"></span>Pickleball Bay Area</a>
+    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/">Home</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -64,8 +67,8 @@
 
     <div class="venue-list">
 
-      <div class="venue-card top-pick" id="sunnyvale-tennis-center" data-court-id="sunnyvale-tennis-center">
-        <div class="name-row"><h3>Sunnyvale Tennis Center</h3><span class="rank-badge top">Top pick</span><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="sunnyvale-tennis-center" data-role="top-badge"></span></div>
+      <div class="venue-card" id="sunnyvale-tennis-center" data-court-id="sunnyvale-tennis-center">
+        <div class="name-row"><h3>Sunnyvale Tennis Center</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="sunnyvale-tennis-center"></span><span class="level-badge beginner">Beginner-friendly</span><span class="badges" data-court-id="sunnyvale-tennis-center" data-role="top-badge"></span></div>
         <div class="addr-row">
           <span class="addr">755 S Mathilda Ave, Sunnyvale, CA 94087</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&amp;query=755%20S%20Mathilda%20Ave%2C%20Sunnyvale%2C%20CA%2094087" target="_blank" rel="noopener">Get directions →</a>
@@ -91,7 +94,7 @@
       </div>
 
       <div class="venue-card" id="sunnyvale-community-center" data-court-id="sunnyvale-community-center">
-        <h3>Sunnyvale Community Center</h3><span class="badges" data-court-id="sunnyvale-community-center" data-role="top-badge"></span>
+        <h3>Sunnyvale Community Center</h3><span class="top-pick-badge" data-role="top-pick-badge" data-court-id="sunnyvale-community-center"></span><span class="badges" data-court-id="sunnyvale-community-center" data-role="top-badge"></span>
         <div class="addr-row">
           <span class="addr">550 E Remington Drive, Sunnyvale, CA 94087</span>
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&amp;query=550%20E%20Remington%20Drive%2C%20Sunnyvale%2C%20CA%2094087" target="_blank" rel="noopener">Get directions →</a>
@@ -196,6 +199,8 @@
 <script type="module" src="/assets/court-ratings.js"></script>
 <script src="/assets/rating-widgets.js"></script>
 <script src="/assets/google-ratings.js"></script>
+<script src="/assets/top-picks.js"></script>
+<script src="/assets/city-top-pick.js"></script>
 <script src="/assets/nav.js" defer></script>
 <script src="/assets/global-search.js" defer></script>
 <script src="/assets/analytics.js" defer></script>
