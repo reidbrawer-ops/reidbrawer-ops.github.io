@@ -127,6 +127,7 @@
   }
 
   function directionsUrl(row) {
+    if (row.googleMapsUrl) return row.googleMapsUrl;
     const query = row.address && row.address !== "Not specified"
       ? `${row.name}, ${row.address}`
       : `${row.name}, ${row.city}`;

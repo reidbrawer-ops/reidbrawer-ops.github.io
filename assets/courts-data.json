@@ -130,6 +130,7 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
+    "googleMapsUrl": "https://www.google.com/maps/place/Branham+Park+Pickleball+Court/@37.2535636,-121.9074069,17z/data=!4m6!3m5!1s0x808e35006cfb0f3d:0x9aa179275f897738!8m2!3d37.2535636!4d-121.9074069",
     "id": "branham-park"
   },
   {
