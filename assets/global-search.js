@@ -5,15 +5,8 @@
 // A's id fix has run) on selection. Escape/outside-click handling mirrors
 // nav.js's existing pattern for the "More" dropdown.
 (function () {
-  function citySlug(city) {
-    return city.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-+|-+$)/g, "");
-  }
-
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-    });
-  }
+  var citySlug = window.PBUtils.citySlug;
+  var escapeHtml = window.PBUtils.escapeHtml;
 
   var nav = document.querySelector(".main-nav");
   if (!nav) return;

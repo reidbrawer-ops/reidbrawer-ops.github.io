@@ -4,15 +4,7 @@
   const citiesEl = document.getElementById("rankings-cities");
   if (!citiesEl) return;
 
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, (c) => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-    }[c]));
-  }
-
-  function citySlug(city) {
-    return city.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-+|-+$)/g, "");
-  }
+  const { escapeHtml, citySlug, setStatus } = window.PBUtils;
 
   const cityJumpEl = document.getElementById("city-jump-groups");
 
@@ -235,9 +227,6 @@
     })
     .catch((err) => {
       console.error(err);
-      if (statusEl) {
-        statusEl.textContent = "Couldn't load court data for rankings. Try refreshing the page.";
-        statusEl.classList.add("is-error");
-      }
+      setStatus(statusEl, "Couldn't load court data for rankings. Try refreshing the page.", true);
     });
 })();

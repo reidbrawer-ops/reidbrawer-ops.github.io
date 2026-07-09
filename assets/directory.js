@@ -13,18 +13,13 @@
   if (!formEl) return;
 
   const CITY_REGION = window.PB_CITY_REGION;
+  const { escapeHtml, setStatus } = window.PBUtils;
 
   const WAIT_ORDER = { Low: 0, Medium: 1, High: 2, "Not specified": 3 };
 
   const HOURS_MIN = 0;
   const HOURS_MAX = 1440;
   let hoursRange = [HOURS_MIN, HOURS_MAX];
-
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, (c) => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-    }[c]));
-  }
 
   function regionFor(venue) {
     return CITY_REGION[venue.city] || "Not specified";
@@ -422,13 +417,7 @@
     updateHoursVisual();
     tableEl.hidden = false;
     render();
-    setStatus(`Showing all ${rows.length} venues.`);
-  }
-
-  function setStatus(text, isError) {
-    if (!statusEl) return;
-    statusEl.textContent = text;
-    statusEl.classList.toggle("is-error", !!isError);
+    setStatus(statusEl, `Showing all ${rows.length} venues.`);
   }
 
   fetch("/assets/courts-data.json")
@@ -441,6 +430,6 @@
     })
     .catch((err) => {
       console.error(err);
-      setStatus("Couldn't load venue data for the directory. Try refreshing the page.", true);
+      setStatus(statusEl, "Couldn't load venue data for the directory. Try refreshing the page.", true);
     });
 })();

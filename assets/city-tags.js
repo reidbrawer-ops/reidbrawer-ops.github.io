@@ -5,9 +5,7 @@
 // point tags at another page's anchors (e.g. "/cities/index.html") instead
 // of the current page's own.
 (function () {
-  function citySlug(city) {
-    return city.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-+|-+$)/g, "");
-  }
+  const { citySlug } = window.PBUtils;
 
   function render(container) {
     const order = window.PB_REGION_ORDER;

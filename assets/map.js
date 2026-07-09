@@ -3,11 +3,7 @@
   const mapEl = document.getElementById("venue-map");
   if (!mapEl) return;
 
-  function setStatus(text, isError) {
-    if (!statusEl) return;
-    statusEl.textContent = text;
-    statusEl.classList.toggle("is-error", !!isError);
-  }
+  const { escapeHtml, setStatus } = window.PBUtils;
 
   function indoorClass(indoor) {
     return ["indoor", "outdoor", "both"].includes(indoor)
@@ -38,12 +34,6 @@
       iconAnchor: [8, 8],
       popupAnchor: [0, -8],
     });
-  }
-
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, (c) => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-    }[c]));
   }
 
   function popupHtml(venue) {
@@ -130,6 +120,7 @@
 
       const skipped = venues.length - plottable.length;
       setStatus(
+        statusEl,
         skipped
           ? `Showing ${plottable.length} of ${venues.length} venues (${skipped} could not be geocoded).`
           : `Showing all ${plottable.length} venues.`
@@ -137,6 +128,6 @@
     })
     .catch((err) => {
       console.error(err);
-      setStatus("Couldn't load venue data for the map. Try refreshing the page.", true);
+      setStatus(statusEl, "Couldn't load venue data for the map. Try refreshing the page.", true);
     });
 })();
