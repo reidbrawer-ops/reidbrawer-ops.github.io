@@ -228,6 +228,13 @@
   margin-top: 0.2rem;
 }
 
+.pq-tagline {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: 0.5rem;
+  font-weight: normal;
+}
+
 .pq-compare-label {
   font-family: var(--font-mono);
   font-size: 0.78rem;

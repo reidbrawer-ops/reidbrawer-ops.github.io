@@ -162,6 +162,32 @@ function dimensionsFor(paddle, fullAnswers) {
   };
 }
 
+// One-line "at a glance" summary, built entirely from the same dot values
+// shown in the table below it — never a claim this data can't back up
+// (no fabricated review quotes, no invented awards). Compares power vs.
+// control vs. spin to describe the paddle's actual lean, in plain language.
+const LEAN_LABEL = { power: "power", control: "control", spin: "spin" };
+const LEAN_COPY = {
+  power: "more pop on drives and put-aways",
+  control: "extra touch for dinks and resets",
+  spin: "more bite on topspin and slice",
+};
+
+function taglineFor(dims) {
+  const { power, control, spin } = dims;
+  const max = Math.max(power, control, spin);
+  const min = Math.min(power, control, spin);
+  const leaders = ["power", "control", "spin"].filter((k) => dims[k] === max);
+
+  if (max - min === 0) return "A true all-court paddle — no strong lean toward power, control, or spin";
+  if (leaders.length > 1) return `Balanced between ${leaders.map((k) => LEAN_LABEL[k]).join(" and ")}`;
+
+  const lead = leaders[0];
+  return max - min >= 2
+    ? `Specializes in ${LEAN_LABEL[lead]} — ${LEAN_COPY[lead]}`
+    : `Balanced paddle with a bit more ${LEAN_LABEL[lead]} — ${LEAN_COPY[lead]}`;
+}
+
 const SKILL_LEVELS = ["Beginner", "Intermediate", "Advanced"];
 
 // An exact match to the user's stated level is worth more than the typical
@@ -360,13 +386,14 @@ class PaddleQuizApp {
 
     const cols = top
       .map(
-        ({ paddle }, i) => `
+        ({ paddle, dims }, i) => `
       <th class="pq-compare-col">
         <div class="name-row">
           <h3>${paddle.name}</h3>
           ${i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`}
         </div>
         <span class="addr">${paddle.brand} · $${paddle.price}</span>
+        <p class="pq-tagline">${taglineFor(dims)}</p>
       </th>`
       )
       .join("");
