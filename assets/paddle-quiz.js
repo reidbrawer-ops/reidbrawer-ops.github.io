@@ -59,15 +59,6 @@ const QUESTIONS = [
   },
 ];
 
-// Beginners get a forgiving, large-sweet-spot paddle by default; advanced
-// players are assumed to trade some forgiveness for a more specialized feel.
-// This keeps the quiz to 5 questions instead of asking forgiveness directly.
-const FORGIVENESS_BY_EXPERIENCE = {
-  beginner: "high",
-  intermediate: "medium",
-  advanced: "low",
-};
-
 function clamp01(n) {
   return Math.max(0, Math.min(1, n));
 }
@@ -78,33 +69,6 @@ function trapezoid(value, min, max, falloff) {
   if (value >= min && value <= max) return 1;
   if (value < min) return clamp01(1 - (min - value) / falloff);
   return clamp01(1 - (value - max) / falloff);
-}
-
-function styleScore(paddle, priority) {
-  const pt = paddle.paddleType;
-  if (priority === "power") {
-    const base = pt === "Power" ? 1 : pt === "All-Court" ? 0.55 : pt === "Control" ? 0.15 : 0.5;
-    return paddle.powerPercentile != null ? base * 0.4 + paddle.powerPercentile * 0.6 : base;
-  }
-  if (priority === "control") {
-    let base = pt === "Control" ? 1 : pt === "All-Court" ? 0.55 : pt === "Power" ? 0.15 : 0.5;
-    if (paddle.impactFeel === "Soft/Dense" || paddle.impactFeel === "Soft/Hollow") base = clamp01(base + 0.15);
-    else if (paddle.impactFeel === "Stiff/Dense" || paddle.impactFeel === "Stiff/Hollow") base = clamp01(base - 0.1);
-    return base;
-  }
-  if (priority === "spin") {
-    const bySpinRating = { "Very High": 1, High: 0.75, Medium: 0.45, Low: 0.15 };
-    return bySpinRating[paddle.spinRating] ?? 0.5;
-  }
-  // allcourt
-  return pt === "All-Court" ? 1 : pt ? 0.55 : 0.5;
-}
-
-function forgivenessScore(paddle, forgivenessPref) {
-  const twp = paddle.twistWeightPercentile;
-  if (forgivenessPref === "low") return 1; // "doesn't matter" — contributes equally to every paddle
-  if (forgivenessPref === "medium") return trapezoid(twp, 0.45, 0.75, 0.35);
-  return twp == null ? 0.5 : twp; // "high" — reward stability/forgiveness directly
 }
 
 function weightPrefScore(paddle, weightPref) {
@@ -123,7 +87,17 @@ function budgetScore(paddle, budgetPref) {
   return trapezoid(price, 220, 400, 80); // premium
 }
 
-const WEIGHTS = { style: 0.35, forgiveness: 0.25, weight: 0.15, budget: 0.25 };
+// Beginners get more weight on forgiveness (a large sweet spot matters more
+// early on); advanced players put more weight on their stated priority
+// instead. Forgiveness is never zeroed out, though — a paddle that's a poor
+// fit there still loses some ground even for advanced players, so the rank
+// always tracks the visible dot ratings rather than occasionally ignoring
+// one entirely.
+const RANK_WEIGHTS_BY_EXPERIENCE = {
+  beginner: { priority: 0.45, forgiveness: 0.35, weight: 0.1, budget: 0.1 },
+  intermediate: { priority: 0.6, forgiveness: 0.2, weight: 0.1, budget: 0.1 },
+  advanced: { priority: 0.7, forgiveness: 0.1, weight: 0.1, budget: 0.1 },
+};
 
 function isTournamentLegal(paddle) {
   return paddle.approvalBody === "USAP" || paddle.approvalBody === "USAP/UPA-A";
@@ -188,17 +162,42 @@ function dimensionsFor(paddle) {
   };
 }
 
+// Blends power/control/spin — using the exact same *quantized dots* the
+// comparison table displays (not the raw 0–1 scores) — so "Best match" is
+// mathematically guaranteed to be explainable by what's on screen. Two
+// paddles showing identical dots on a dimension contribute identically to
+// the rank, full stop; there's no hidden precision within a dot bucket
+// (e.g. 0.69 vs 0.95, both displayed as the same 2 or 3 dots) left to
+// silently override a real, visible advantage elsewhere. Whichever
+// dimension the user picked as their priority dominates the blend, but the
+// other two never drop to zero weight — "allcourt" weights all three
+// evenly instead.
+function styleBlend(paddle, priority) {
+  const p = toDots(powerRating(paddle)) / 3;
+  const c = toDots(controlRating(paddle)) / 3;
+  const s = toDots(spinRatingOf(paddle)) / 3;
+  if (priority === "power") return p * 0.7 + c * 0.15 + s * 0.15;
+  if (priority === "control") return c * 0.7 + p * 0.15 + s * 0.15;
+  if (priority === "spin") return s * 0.7 + p * 0.15 + c * 0.15;
+  return (p + c + s) / 3; // allcourt
+}
+
 export function computeMatches(paddles, answers) {
-  const fullAnswers = { ...answers, forgiveness: FORGIVENESS_BY_EXPERIENCE[answers.experience] || "medium" };
+  const fullAnswers = { ...answers };
+  const rankWeights = RANK_WEIGHTS_BY_EXPERIENCE[answers.experience] || RANK_WEIGHTS_BY_EXPERIENCE.intermediate;
   const pool = (answers.tournament === "yes" ? paddles.filter(isTournamentLegal) : paddles).filter((p) => p.price != null);
 
+  // Weight-fit and budget-fit are capped at 10% each so they can only break
+  // near-ties between visibly similar paddles — they can no longer outweigh
+  // a clear advantage on the dimensions actually shown in the table (as they
+  // could when they carried 40% combined weight between them).
   const scored = pool.map((paddle) => ({
     paddle,
     score:
-      styleScore(paddle, fullAnswers.priority) * WEIGHTS.style +
-      forgivenessScore(paddle, fullAnswers.forgiveness) * WEIGHTS.forgiveness +
-      weightPrefScore(paddle, fullAnswers.weight) * WEIGHTS.weight +
-      budgetScore(paddle, fullAnswers.budget) * WEIGHTS.budget,
+      styleBlend(paddle, fullAnswers.priority) * rankWeights.priority +
+      (toDots(forgivenessRatingOf(paddle)) / 3) * rankWeights.forgiveness +
+      weightPrefScore(paddle, fullAnswers.weight) * rankWeights.weight +
+      budgetScore(paddle, fullAnswers.budget) * rankWeights.budget,
   }));
 
   scored.sort((a, b) => b.score - a.score);
@@ -240,7 +239,6 @@ export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
       answers: {
         experience: fullAnswers.experience,
         priority: fullAnswers.priority,
-        forgiveness: fullAnswers.forgiveness,
         weight: fullAnswers.weight,
         budget: fullAnswers.budget,
         tournament: fullAnswers.tournament,

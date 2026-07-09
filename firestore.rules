@@ -149,10 +149,9 @@ service cloud.firestore {
           && data.email.size() <= 254
           && data.email.matches('^[^@\\s]+@[^@\\s]+[.][^@\\s]+$')
           && data.answers is map
-          && data.answers.keys().hasOnly(['experience', 'priority', 'forgiveness', 'weight', 'budget', 'tournament'])
+          && data.answers.keys().hasOnly(['experience', 'priority', 'weight', 'budget', 'tournament'])
           && data.answers.experience is string
           && data.answers.priority is string
-          && data.answers.forgiveness is string
           && data.answers.weight is string
           && data.answers.budget is string
           && data.answers.tournament is string
