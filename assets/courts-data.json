@@ -17,7 +17,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "albert-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Albert+Park+Tennis+Courts/@37.9694488,-122.528921,18.49z/data=!4m6!3m5!1s0x808599004415d927:0x9ad602f618db0c95!8m2!3d37.9687998!4d-122.52685"
+    "googleMapsUrl": "https://maps.google.com/?cid=11157108382859201685"
   },
   {
     "name": "Almaden Valley Athletic Club",
@@ -57,7 +57,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "bascom-community-center",
-    "googleMapsUrl": "https://www.google.com/maps/place/Bascom+Community+Center/@37.3074139,-121.9311865,17z/data=!4m6!3m5!1s0x808e34ccb481dce3:0x3bdd4219b6345ff2!8m2!3d37.3074139!4d-121.9311865"
+    "googleMapsUrl": "https://maps.google.com/?cid=4313676696289304562"
   },
   {
     "name": "Bay Club Pleasanton",
@@ -77,7 +77,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "bay-club-pleasanton",
-    "googleMapsUrl": "https://www.google.com/maps/place/Bay+Club+Pleasanton/@37.6994725,-121.9190628,17z/data=!4m6!3m5!1s0x808fec0945be7d65:0x9e1d4b21dcc41dd7!8m2!3d37.6994725!4d-121.9190628"
+    "googleMapsUrl": "https://maps.google.com/?cid=11393345241127067095"
   },
   {
     "name": "Bay Club Santa Clara",
@@ -97,7 +97,7 @@
     "confirmed": true,
     "bookingUrl": "https://www.bayclubs.com/amenity/pickleball",
     "id": "bay-club-santa-clara",
-    "googleMapsUrl": "https://www.google.com/maps/place/3250+Central+Expy+Santa+Clara+CA+95051+Bay+Club+Santa+Clara/@37.3765602,-121.9859667,17z/data=!4m6!3m5!1s0x808fc9fb69fb80cd:0x1ce57e60e6183634!8m2!3d37.3765602!4d-121.9859667"
+    "googleMapsUrl": "https://maps.google.com/?cid=2082209357371029044"
   },
   {
     "name": "Beresford Park",
@@ -117,7 +117,7 @@
     "confirmed": true,
     "bookingUrl": null,
     "id": "beresford-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Tennis+Courts+%7C+Beresford+Park/@37.5376361,-122.3147977,19z/data=!4m7!3m6!1s0x808f9e552bb461e7:0xb5d9ede7f551082a!8m2!3d37.5376363!4d-122.3142081"
+    "googleMapsUrl": "https://maps.google.com/?cid=13103766171320125482"
   },
   {
     "name": "Branham Park",
@@ -157,7 +157,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "buena-vista-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Buena+Vista+Tennis+Courts/@37.7694641,-122.4394211,17z/data=!4m6!3m5!1s0x808580a93fbeabe1:0xc8a4b4134b1a1af8!8m2!3d37.7694641!4d-122.4394211"
+    "googleMapsUrl": "https://maps.google.com/?cid=14457878698723515128"
   },
   {
     "name": "Bushrod Park",
@@ -177,7 +177,7 @@
     "confirmed": true,
     "bookingUrl": "https://cityofoakland.perfectmind.com/",
     "id": "bushrod-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Tennis+Courts+%7C+Bushrod+Park/@37.8453494,-122.2642081,17z/data=!4m6!3m5!1s0x80857d2b9eb2c20d:0x5486d5bf4d71ce11!8m2!3d37.8453494!4d-122.2642081"
+    "googleMapsUrl": "https://maps.google.com/?cid=6090790563679948305"
   },
   {
     "name": "Calabazas Park",
@@ -197,7 +197,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "calabazas-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Courts/@37.3016961,-122.0241875,17z/data=!4m6!3m5!1s0x808fb57dfff42c8b:0x2beb24ffef2bce49!8m2!3d37.3016961!4d-122.0241875"
+    "googleMapsUrl": "https://maps.google.com/?cid=3164663844805791305"
   },
   {
     "name": "Camden Community Center",
@@ -237,7 +237,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "cataldi-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Court/@37.4018061,-121.8722364,17z/data=!4m6!3m5!1s0x808fcd0048705b99:0xfa6d1d82f76dd3cb!8m2!3d37.4018061!4d-121.8722364"
+    "googleMapsUrl": "https://maps.google.com/?cid=18045111730277569483"
   },
   {
     "name": "Cedar Rose Park",
@@ -257,7 +257,7 @@
     "confirmed": true,
     "bookingUrl": "https://ca-berkeley.civicrec.com/CA/berkeley-ca/catalog/index/50900cc08e08223966673cbdc0c1b7e3?filter=c2VhcmNoPVBpY2tsZSZyZW50YWwlNUJmcm9tJTVEPSZyZW50YWwlNUJ0byU1RD0%3D",
     "id": "cedar-rose-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Cedar+Rose+Park+Pickleball+Courts/@37.8775552,-122.2890051,18.99z/data=!4m6!3m5!1s0x80857f2ebd6671e1:0x91f6bc8dee916a8!8m2!3d37.8780528!4d-122.2883828"
+    "googleMapsUrl": "https://maps.google.com/?cid=657362581096830632"
   },
   {
     "name": "Central Park",
@@ -277,7 +277,7 @@
     "confirmed": true,
     "bookingUrl": null,
     "id": "central-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Tennis+Courts+%7C+Central+Park/@37.5624573,-122.3225242,17z/data=!4m6!3m5!1s0x808f9e7ac9d84ed9:0x5b63ec6e4b1679aa!8m2!3d37.5624573!4d-122.3225242"
+    "googleMapsUrl": "https://maps.google.com/?cid=6585367038596118954"
   },
   {
     "name": "Central Park Knoll Pickleball Courts",
@@ -357,7 +357,7 @@
     "confirmed": true,
     "bookingUrl": "https://app.courtreserve.com/Online/Portal/Index/13234",
     "id": "community-recreation-center-at-central-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Santa+Clara+Tennis+Courts/@37.343644,-121.9757669,17z/data=!4m6!3m5!1s0x808fcb004a1915a1:0xa8f17ed2d52f5e8d!8m2!3d37.343644!4d-121.9757669"
+    "googleMapsUrl": "https://maps.google.com/?cid=12173650711744044685"
   },
   {
     "name": "Cupertino Sports Center",
@@ -397,7 +397,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "de-anza-college",
-    "googleMapsUrl": "https://www.google.com/maps/place/De+Anza+Tennis+Courts/@37.3180201,-122.042637,17z/data=!4m6!3m5!1s0x808fb453ed400001:0x1a941d3d6a1541b2!8m2!3d37.3180201!4d-122.042637"
+    "googleMapsUrl": "https://maps.google.com/?cid=1915187891149291954"
   },
   {
     "name": "DeFremery Park",
@@ -417,7 +417,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "de-fremery-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/DeFremery+Park+Tennis+Courts/@37.812664,-122.2869264,17z/data=!4m6!3m5!1s0x808f81e3a430cdc1:0x8d197f8f5c3c4fc2!8m2!3d37.812664!4d-122.2869264"
+    "googleMapsUrl": "https://maps.google.com/?cid=10167297887470112706"
   },
   {
     "name": "Edenvale Gardens Regional Park",
@@ -437,7 +437,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "edenvale-gardens-regional-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Edenvale+Park+-+Tennis+and+Pickleball+Courts/@37.2657281,-121.8207983,17z/data=!4m6!3m5!1s0x808e333451e6b83b:0xb03076c8104ef70f!8m2!3d37.2657281!4d-121.8207983"
+    "googleMapsUrl": "https://maps.google.com/?cid=12695777951196575503"
   },
   {
     "name": "Eureka Valley Rec Center",
@@ -457,7 +457,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "eureka-valley-rec-center",
-    "googleMapsUrl": "https://www.google.com/maps/place/Eureka+Valley+Rec+Center/@37.76017337976203,-122.4386431843861,17z/data=!4m6!3m5!1s0x808f7e04db771efd:0x7908fb528ee440bd!8m2!3d37.76017337976203!4d-122.4386431843861"
+    "googleMapsUrl": "https://maps.google.com/?cid=8721497010406179005"
   },
   {
     "name": "Evergreen Valley College",
@@ -477,7 +477,7 @@
     "confirmed": true,
     "bookingUrl": "https://www.facilitron.com/evc95135",
     "id": "evergreen-valley-college",
-    "googleMapsUrl": "https://www.google.com/maps/place/Evergreen+Valley+College+Pickleball+Courts/@37.299225,-121.7635379,17z/data=!4m6!3m5!1s0x808e2dcfab89b993:0x740fa0254a7c061!8m2!3d37.299225!4d-121.7635379"
+    "googleMapsUrl": "https://maps.google.com/?cid=522692444692136033"
   },
   {
     "name": "Flyte Racquet Club",
@@ -517,7 +517,7 @@
     "confirmed": true,
     "bookingUrl": "https://www.fremont.gov/government/departments/parks-recreation/facilities-rentals/fremont-tennis-center",
     "id": "fremont-tennis-center",
-    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Courts+%7C+Fremont+Tennis+Center/@37.5569702,-121.9594612,17z/data=!4m6!3m5!1s0x808fc100021f10db:0x995bf5839ee456c8!8m2!3d37.5569702!4d-121.9594612"
+    "googleMapsUrl": "https://maps.google.com/?cid=11050696056338929352"
   },
   {
     "name": "George Christopher Playground",
@@ -537,7 +537,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "george-christopher-playground",
-    "googleMapsUrl": "https://www.google.com/maps/place/Christopher+Tennis+Court/@37.7442828,-122.4404891,17z/data=!4m6!3m5!1s0x808f7f0ff3bd9145:0x1a5ba5be535ed600!8m2!3d37.7442828!4d-122.4404891"
+    "googleMapsUrl": "https://maps.google.com/?cid=1899293904727889408"
   },
   {
     "name": "Glen Park Rec Center",
@@ -557,7 +557,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "glen-park-rec-center",
-    "googleMapsUrl": "https://www.google.com/maps/place/Glen+Park+Tennis+Courts/@37.7366141,-122.4402076,17z/data=!4m6!3m5!1s0x808f7e7a1398de87:0xfeb2de270d34bff1!8m2!3d37.7366141!4d-122.4402076"
+    "googleMapsUrl": "https://maps.google.com/?cid=18352975690794844145"
   },
   {
     "name": "Goldman Tennis Center",
@@ -577,7 +577,7 @@
     "confirmed": true,
     "bookingUrl": "https://www.lifetimeactivities.com/san-francisco/pickleball/",
     "id": "goldman-tennis-center",
-    "googleMapsUrl": "https://www.google.com/maps/place/Goldman+Pickleball+Courts/@37.7706419,-122.4590303,17z/data=!4m6!3m5!1s0x8085877ea87b9e05:0x77210515916bb922!8m2!3d37.7706419!4d-122.4590303"
+    "googleMapsUrl": "https://maps.google.com/?cid=8584147954937084194"
   },
   {
     "name": "Groesbeck Hill Park",
@@ -597,7 +597,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "groesbeck-hill-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Courts/@37.3373652,-121.7782877,17z/data=!4m6!3m5!1s0x808e2d003ae9c161:0x10356a2f568cce65!8m2!3d37.3373652!4d-121.7782877"
+    "googleMapsUrl": "https://maps.google.com/?cid=1167956429920587365"
   },
   {
     "name": "Grove Park",
@@ -617,7 +617,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "grove-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Grove+Park+Tennis+Courts/@37.8566122,-122.2724459,19.16z/data=!4m6!3m5!1s0x80857f9e0bf024bd:0x6c7f01cded219ed8!8m2!3d37.8567752!4d-122.2717505"
+    "googleMapsUrl": "https://maps.google.com/?cid=7817969462096797400"
   },
   {
     "name": "Hamilton Rec Center",
@@ -697,7 +697,7 @@
     "confirmed": true,
     "bookingUrl": null,
     "id": "james-kenney-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+court/@37.8722958,-122.2989447,18z/data=!4m6!3m5!1s0x80857f003b283739:0x714006673d48413d!8m2!3d37.8722976!4d-122.2977615"
+    "googleMapsUrl": "https://maps.google.com/?cid=8160529565274882365"
   },
   {
     "name": "John Mise Park",
@@ -797,7 +797,7 @@
     "confirmed": true,
     "bookingUrl": null,
     "id": "larsen-playground",
-    "googleMapsUrl": "https://www.google.com/maps/place/Larsen+Pickleball+Courts/@37.74013900756836,-122.47570037841797,17z/data=!4m6!3m5!1s0x808f7d6aaa8c1cf9:0xe00cbac4b57c9bd5!8m2!3d37.74013900756836!4d-122.47570037841797"
+    "googleMapsUrl": "https://maps.google.com/?cid=16144484118237584341"
   },
   {
     "name": "Lone Hill Park",
@@ -837,7 +837,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "los-prados",
-    "googleMapsUrl": "https://www.google.com/maps/place/Los+Prados+Park/@37.5420773,-122.2820652,17z/data=!4m6!3m5!1s0x0:0xf553c459188ffd33!8m2!3d37.5420773!4d-122.2820652"
+    "googleMapsUrl": "https://maps.google.com/?cid=17677688849302551859"
   },
   {
     "name": "Louis Sutter Playground",
@@ -857,7 +857,7 @@
     "confirmed": true,
     "bookingUrl": null,
     "id": "louis-sutter-playground",
-    "googleMapsUrl": "https://www.google.com/maps/place/Louis+Sutter+Pickleball+Courts/@37.7229073,-122.4139877,17z/data=!4m6!3m5!1s0x808f7f4809dd3181:0x86c5efec723e4d1c!8m2!3d37.7229073!4d-122.4139877"
+    "googleMapsUrl": "https://maps.google.com/?cid=9711431970302348572"
   },
   {
     "name": "McInnis Park",
@@ -937,7 +937,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "minnie-lovie-ward-rec-center",
-    "googleMapsUrl": "https://www.google.com/maps/place/Minnie+Lovie+Ward+Recreational+Center/@37.715812899999996,-122.457577,17z/data=!4m6!3m5!1s0x808f7c2e25bcec69:0x13ab8622a332d073!8m2!3d37.715812899999996!4d-122.457577"
+    "googleMapsUrl": "https://maps.google.com/?cid=1417373991063179379"
   },
   {
     "name": "Mission YMCA",
@@ -977,7 +977,7 @@
     "confirmed": true,
     "bookingUrl": null,
     "id": "mitchell-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Courts/@37.4222072,-122.1146701,17z/data=!4m6!3m5!1s0x808fbb003a5e1f37:0x19ea77e84d33c966!8m2!3d37.4214904!4d-122.1140979"
+    "googleMapsUrl": "https://maps.google.com/?cid=1867436835109849446"
   },
   {
     "name": "Montclair Pickleball Courts",
@@ -997,7 +997,7 @@
     "confirmed": true,
     "bookingUrl": "https://cityofoakland.perfectmind.com/",
     "id": "montclair-pickleball-courts",
-    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Courts+%7C+Montclair+Park/@37.8290095,-122.2122883,17.99z/data=!4m6!3m5!1s0x808f870a30bf1b6d:0x6860574ae20393c6!8m2!3d37.8285648!4d-122.2110028"
+    "googleMapsUrl": "https://maps.google.com/?cid=7521107356839809990"
   },
   {
     "name": "Moscone Playground",
@@ -1077,7 +1077,7 @@
     "confirmed": true,
     "bookingUrl": null,
     "id": "nealon-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Nealon+Park/@37.4481067,-122.1805701,17z/data=!4m6!3m5!1s0x808fa4b6a9031073:0x56254b7144729e17!8m2!3d37.4481067!4d-122.1805701"
+    "googleMapsUrl": "https://maps.google.com/?cid=6207450611251846679"
   },
   {
     "name": "Oakland Hills Tennis Club",
@@ -1097,7 +1097,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "oakland-hills-tennis-club",
-    "googleMapsUrl": "https://www.google.com/maps/place/Oakland+Hills+Tennis+Club/@37.797475,-122.171627,17z/data=!4m6!3m5!1s0x808f889c52cd8235:0x477de27a1b577738!8m2!3d37.797475!4d-122.171627"
+    "googleMapsUrl": "https://maps.google.com/?cid=5151522562854319928"
   },
   {
     "name": "Osher Marin JCC",
@@ -1137,7 +1137,7 @@
     "confirmed": true,
     "bookingUrl": "https://sfrecpark.org/1591/Reservable-Pickleball-Courts",
     "id": "parkside-square",
-    "googleMapsUrl": "https://www.google.com/maps/place/Parkside+Square+Park/@37.7383458,-122.4843498,17z/data=!4m6!3m5!1s0x808f7d9bd179d8cd:0xb276acd257b8554e!8m2!3d37.7383458!4d-122.4843498"
+    "googleMapsUrl": "https://maps.google.com/?cid=12859655805417837902"
   },
   {
     "name": "Paul Moore Park",
@@ -1217,7 +1217,7 @@
     "confirmed": true,
     "bookingUrl": null,
     "id": "pleasanton-middle-school-gym",
-    "googleMapsUrl": "https://www.google.com/maps/place/Pleasanton+Middle+School/@37.6545554,-121.8839335,17z/data=!4m6!3m5!1s0x808fe996c56e333b:0xa138efd746a80b!8m2!3d37.6545554!4d-121.8839335"
+    "googleMapsUrl": "https://maps.google.com/?cid=45380074010486795"
   },
   {
     "name": "Pleasanton Tennis and Community Park",
@@ -1257,7 +1257,7 @@
     "confirmed": true,
     "bookingUrl": "https://sfrecpark.org/1591/Reservable-Pickleball-Courts",
     "id": "presidio-wall-playground",
-    "googleMapsUrl": "https://www.google.com/maps/place/Presidio+Wall+Playground/@37.7911316,-122.4543213,17z/data=!4m6!3m5!1s0x8085872e407395fb:0x23200c1ec057eb72!8m2!3d37.7911316!4d-122.4543213"
+    "googleMapsUrl": "https://maps.google.com/?cid=2531036316797758322"
   },
   {
     "name": "Pueblo Park",
@@ -1417,7 +1417,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "river-glen-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/River+Glen+Park/@37.3018694,-121.8872122,17z/data=!4m6!3m5!1s0x808e33427de59b57:0xa061190fc057f764!8m2!3d37.3018694!4d-121.8872122"
+    "googleMapsUrl": "https://maps.google.com/?cid=11556545674251597668"
   },
   {
     "name": "Rossi Playground",
@@ -1457,7 +1457,7 @@
     "confirmed": true,
     "bookingUrl": null,
     "id": "rudgear-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Rudgear+Park+Pickleball+Courts/@37.8764611,-122.027195,17z/data=!4m6!3m5!1s0x808f8bdda16449b9:0xe13fe728b7ee908a!8m2!3d37.8764611!4d-122.027195"
+    "googleMapsUrl": "https://maps.google.com/?cid=16230945744137130122"
   },
   {
     "name": "San Mateo High School Gym",
@@ -1497,7 +1497,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "san-pablo-park",
-    "googleMapsUrl": "https://www.google.com/maps/place/Tennis+Courts+%7C+San+Pablo/@37.8548743,-122.2863233,18z/data=!4m6!3m5!1s0x80857f1845ede569:0xcb7e811d3e5a65a5!8m2!3d37.8548743!4d-122.2844152"
+    "googleMapsUrl": "https://maps.google.com/?cid=14663299399365060005"
   },
   {
     "name": "Sequoia YMCA",
@@ -1557,7 +1557,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "states-street-playground",
-    "googleMapsUrl": "https://www.google.com/maps/place/States+Street+Playground/@37.763717,-122.438345,17z/data=!4m6!3m5!1s0x808f7f70fa67a921:0x4956562a77076e42!8m2!3d37.763717!4d-122.438345"
+    "googleMapsUrl": "https://maps.google.com/?cid=5284505953151446594"
   },
   {
     "name": "Stern Grove Playground",
@@ -1577,7 +1577,7 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "stern-grove-playground",
-    "googleMapsUrl": "https://www.google.com/maps/place/Stern+Grove+Playground/@37.734869,-122.4769613,17z/data=!4m6!3m5!1s0x808f7d97d60ce231:0x52de76c13bd0fea6!8m2!3d37.734869!4d-122.4769613"
+    "googleMapsUrl": "https://maps.google.com/?cid=5971340728244174502"
   },
   {
     "name": "Sunnyvale Community Center",
@@ -1637,7 +1637,7 @@
     "confirmed": true,
     "bookingUrl": null,
     "id": "the-crossing-at-east-cut",
-    "googleMapsUrl": "https://www.google.com/maps/place/The+Crossing+at+East+Cut/@37.7896984,-122.3931459,17z/data=!4m6!3m5!1s0x8085815de6436ccb:0x226fad8005b5dfe6!8m2!3d37.7896984!4d-122.3931459"
+    "googleMapsUrl": "https://maps.google.com/?cid=2481392685067657190"
   },
   {
     "name": "Upper Noe Rec Center",
@@ -1657,6 +1657,6 @@
     "confirmed": false,
     "bookingUrl": null,
     "id": "upper-noe-rec-center",
-    "googleMapsUrl": "https://www.google.com/maps/place/Upper+Noe+Recreation+Center/@37.74257047976536,-122.42997898438664,17z/data=!4m6!3m5!1s0x808f7e68e455bfbf:0x7c28f116b3877ad8!8m2!3d37.74257047976536!4d-122.42997898438664"
+    "googleMapsUrl": "https://maps.google.com/?cid=8946665739575065304"
   }
 ]
