@@ -151,6 +151,18 @@ plugin's default theme never leaks through.
   (rating-form-row), `p-` (map popup), `gsr-` (global-search-result). Match
   the existing prefix when extending a component; pick a new short prefix
   when adding one.
+- **Head/header/footer boilerplate is generated, not hand-copied**: the
+  `<head>` boilerplate (fonts, favicons, theme-color, OG/Twitter mirroring),
+  `<header class="site-header">` nav, and `<footer class="site-footer">` are
+  defined once in `scripts/build.mjs` and written back into all 30 HTML
+  pages by that script — they're no longer meant to be hand-edited
+  identically across every page. To change any of them, edit the template
+  functions in `scripts/build.mjs`, then run `node scripts/build.mjs`
+  (add `--check` for a dry run) before deploying. Per-page content — title,
+  description, canonical, extra `<head>` links/CSS, body content, and
+  script tags — is still edited directly in each page's own file; the
+  script reads that back out and leaves it untouched. See
+  `audit/html-duplication.md` for why.
 - **Accessibility**: every interactive control needs a visible
   `:focus-visible` state (the global 3px `--bay` outline covers most cases
   automatically); nav links use `aria-current="page"` rather than a
