@@ -392,7 +392,7 @@ class PaddleQuizApp {
           <h3>${paddle.name}</h3>
           ${i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`}
         </div>
-        <span class="addr">${paddle.brand} · $${paddle.price}</span>
+        <span class="addr">${paddle.brand}${paddle.price != null ? ` · $${paddle.price}` : ""}</span>
         <p class="pq-tagline">${taglineFor(dims)}</p>
       </th>`
       )
