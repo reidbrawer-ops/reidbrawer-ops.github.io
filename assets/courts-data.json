@@ -152,25 +152,6 @@
     "id": "buena-vista-park"
   },
   {
-    "name": "Burkhalter Park",
-    "city": "Oakland",
-    "neighborhood": "Not specified",
-    "address": "Oakland, CA",
-    "url": "/cities/oakland",
-    "price": "Free",
-    "skill": "Not specified",
-    "hours": "Not specified",
-    "courts": null,
-    "waitTime": "Not specified",
-    "weather": "Mild-to-warm East Bay flatland, occasional fog near the bay side",
-    "surface": "Not specified",
-    "indoorOutdoor": "Outdoor",
-    "reservable": "Not specified",
-    "confirmed": false,
-    "bookingUrl": null,
-    "id": "burkhalter-park"
-  },
-  {
     "name": "Bushrod Park",
     "city": "Oakland",
     "neighborhood": "Not specified",
@@ -399,7 +380,7 @@
     "id": "de-anza-college"
   },
   {
-    "name": "De Fremery Park",
+    "name": "DeFremery Park",
     "city": "Oakland",
     "neighborhood": "Not specified",
     "address": "1651 Adeline St, Oakland, CA 94607",
