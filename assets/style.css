@@ -308,6 +308,21 @@ img, svg {
   z-index: 20;
 }
 
+/* Invisible hover bridge: the gap above (from the "+ 0.9rem" offset) isn't
+   part of .nav-dropdown's own hit area, so moving the pointer from "More"
+   down into this menu briefly exits the element and triggers nav.js's
+   mouseleave-closes-it handler before the pointer arrives. This closes that
+   gap for hover/hit-testing purposes without changing where the menu itself
+   visually sits. */
+.nav-dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -0.9rem;
+  left: 0;
+  right: 0;
+  height: 0.9rem;
+}
+
 .nav-dropdown-menu a {
   padding: 0.55rem 0.7rem;
   border-radius: 6px;
