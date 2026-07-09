@@ -16,7 +16,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "albert-park"
+    "id": "albert-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Albert+Park+Tennis+Courts/@37.9694488,-122.528921,18.49z/data=!4m6!3m5!1s0x808599004415d927:0x9ad602f618db0c95!8m2!3d37.9687998!4d-122.52685"
   },
   {
     "name": "Almaden Valley Athletic Club",
@@ -35,7 +36,8 @@
     "reservable": "Reservable",
     "confirmed": true,
     "bookingUrl": "https://www.avac.us/club/scripts/section/section.asp?NS=PB",
-    "id": "almaden-valley-athletic-club"
+    "id": "almaden-valley-athletic-club",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.2405661,-121.9040212"
   },
   {
     "name": "Bascom Community Center",
@@ -54,7 +56,8 @@
     "reservable": "Walk-up",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "bascom-community-center"
+    "id": "bascom-community-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.3075348,-121.9311591"
   },
   {
     "name": "Bay Club Pleasanton",
@@ -73,7 +76,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "bay-club-pleasanton"
+    "id": "bay-club-pleasanton",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.6997546,-121.9180836"
   },
   {
     "name": "Bay Club Santa Clara",
@@ -92,7 +96,8 @@
     "reservable": "Reservable",
     "confirmed": true,
     "bookingUrl": "https://www.bayclubs.com/amenity/pickleball",
-    "id": "bay-club-santa-clara"
+    "id": "bay-club-santa-clara",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.3775115,-121.9860477"
   },
   {
     "name": "Beresford Park",
@@ -111,7 +116,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "beresford-park"
+    "id": "beresford-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Tennis+Courts+%7C+Beresford+Park/@37.5376361,-122.3147977,19z/data=!4m7!3m6!1s0x808f9e552bb461e7:0xb5d9ede7f551082a!8m2!3d37.5376363!4d-122.3142081"
   },
   {
     "name": "Branham Park",
@@ -150,7 +156,8 @@
     "reservable": "Reservable",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "buena-vista-park"
+    "id": "buena-vista-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Buena+Vista+Tennis+Courts/@37.7694641,-122.4394211,17z/data=!4m6!3m5!1s0x808580a93fbeabe1:0xc8a4b4134b1a1af8!8m2!3d37.7694641!4d-122.4394211"
   },
   {
     "name": "Bushrod Park",
@@ -169,7 +176,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://cityofoakland.perfectmind.com/",
-    "id": "bushrod-park"
+    "id": "bushrod-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Tennis+Courts+%7C+Bushrod+Park/@37.8453494,-122.2642081,17z/data=!4m6!3m5!1s0x80857d2b9eb2c20d:0x5486d5bf4d71ce11!8m2!3d37.8453494!4d-122.2642081"
   },
   {
     "name": "Calabazas Park",
@@ -188,7 +196,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "calabazas-park"
+    "id": "calabazas-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Courts/@37.3016961,-122.0241875,17z/data=!4m6!3m5!1s0x808fb57dfff42c8b:0x2beb24ffef2bce49!8m2!3d37.3016961!4d-122.0241875"
   },
   {
     "name": "Camden Community Center",
@@ -207,7 +216,8 @@
     "reservable": "Walk-up",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "camden-community-center"
+    "id": "camden-community-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.2638767,-121.9330502"
   },
   {
     "name": "Cataldi Park",
@@ -226,7 +236,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "cataldi-park"
+    "id": "cataldi-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Court/@37.4018061,-121.8722364,17z/data=!4m6!3m5!1s0x808fcd0048705b99:0xfa6d1d82f76dd3cb!8m2!3d37.4018061!4d-121.8722364"
   },
   {
     "name": "Cedar Rose Park",
@@ -245,7 +256,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://ca-berkeley.civicrec.com/CA/berkeley-ca/catalog/index/50900cc08e08223966673cbdc0c1b7e3?filter=c2VhcmNoPVBpY2tsZSZyZW50YWwlNUJmcm9tJTVEPSZyZW50YWwlNUJ0byU1RD0%3D",
-    "id": "cedar-rose-park"
+    "id": "cedar-rose-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Cedar+Rose+Park+Pickleball+Courts/@37.8775552,-122.2890051,18.99z/data=!4m6!3m5!1s0x80857f2ebd6671e1:0x91f6bc8dee916a8!8m2!3d37.8780528!4d-122.2883828"
   },
   {
     "name": "Central Park",
@@ -264,7 +276,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "central-park"
+    "id": "central-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Tennis+Courts+%7C+Central+Park/@37.5624573,-122.3225242,17z/data=!4m6!3m5!1s0x808f9e7ac9d84ed9:0x5b63ec6e4b1679aa!8m2!3d37.5624573!4d-122.3225242"
   },
   {
     "name": "Central Park Knoll Pickleball Courts",
@@ -283,7 +296,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "central-park-knoll-pickleball-courts"
+    "id": "central-park-knoll-pickleball-courts",
+    "googleMapsUrl": "https://www.google.com/maps/place/?q=place_id:ChIJW4eYYQDBj4AR37pxMTHogPE"
   },
   {
     "name": "ClubSport Fremont",
@@ -302,7 +316,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "clubsport-fremont"
+    "id": "clubsport-fremont",
+    "googleMapsUrl": "https://www.google.com/maps/place/?q=place_id:ChIJtx8ao07Gj4ARZfAg8FV7Jl0"
   },
   {
     "name": "ClubSport of Pleasanton",
@@ -321,7 +336,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "clubsport-of-pleasanton"
+    "id": "clubsport-of-pleasanton",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.6997546,-121.9180836"
   },
   {
     "name": "Community Recreation Center at Central Park",
@@ -340,7 +356,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://app.courtreserve.com/Online/Portal/Index/13234",
-    "id": "community-recreation-center-at-central-park"
+    "id": "community-recreation-center-at-central-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Santa+Clara+Tennis+Courts/@37.343644,-121.9757669,17z/data=!4m6!3m5!1s0x808fcb004a1915a1:0xa8f17ed2d52f5e8d!8m2!3d37.343644!4d-121.9757669"
   },
   {
     "name": "Cupertino Sports Center",
@@ -359,7 +376,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://app.courtreserve.com/Online/Portal/Index/13229",
-    "id": "cupertino-sports-center"
+    "id": "cupertino-sports-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.3236065,-122.0429004"
   },
   {
     "name": "De Anza College",
@@ -378,7 +396,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "de-anza-college"
+    "id": "de-anza-college",
+    "googleMapsUrl": "https://www.google.com/maps/place/De+Anza+Tennis+Courts/@37.3180201,-122.042637,17z/data=!4m6!3m5!1s0x808fb453ed400001:0x1a941d3d6a1541b2!8m2!3d37.3180201!4d-122.042637"
   },
   {
     "name": "DeFremery Park",
@@ -397,7 +416,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "de-fremery-park"
+    "id": "de-fremery-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/DeFremery+Park+Tennis+Courts/@37.812664,-122.2869264,17z/data=!4m6!3m5!1s0x808f81e3a430cdc1:0x8d197f8f5c3c4fc2!8m2!3d37.812664!4d-122.2869264"
   },
   {
     "name": "Edenvale Gardens Regional Park",
@@ -416,7 +436,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "edenvale-gardens-regional-park"
+    "id": "edenvale-gardens-regional-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Edenvale+Park+-+Tennis+and+Pickleball+Courts/@37.2657281,-121.8207983,17z/data=!4m6!3m5!1s0x808e333451e6b83b:0xb03076c8104ef70f!8m2!3d37.2657281!4d-121.8207983"
   },
   {
     "name": "Eureka Valley Rec Center",
@@ -435,7 +456,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "eureka-valley-rec-center"
+    "id": "eureka-valley-rec-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.760695,-122.436205"
   },
   {
     "name": "Evergreen Valley College",
@@ -454,7 +476,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://www.facilitron.com/evc95135",
-    "id": "evergreen-valley-college"
+    "id": "evergreen-valley-college",
+    "googleMapsUrl": "https://www.google.com/maps/place/Evergreen+Valley+College+Pickleball+Courts/@37.299225,-121.7635379,17z/data=!4m6!3m5!1s0x808e2dcfab89b993:0x740fa0254a7c061!8m2!3d37.299225!4d-121.7635379"
   },
   {
     "name": "Flyte Racquet Club",
@@ -473,7 +496,8 @@
     "reservable": "Reservable",
     "confirmed": true,
     "bookingUrl": "https://www.flyte-marin.com/book/flyte",
-    "id": "flyte-racquet-club"
+    "id": "flyte-racquet-club",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=38.0179004,-122.5216061"
   },
   {
     "name": "Fremont Tennis Center",
@@ -492,7 +516,8 @@
     "reservable": "Reservable",
     "confirmed": true,
     "bookingUrl": "https://www.fremont.gov/government/departments/parks-recreation/facilities-rentals/fremont-tennis-center",
-    "id": "fremont-tennis-center"
+    "id": "fremont-tennis-center",
+    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Courts+%7C+Fremont+Tennis+Center/@37.5569702,-121.9594612,17z/data=!4m6!3m5!1s0x808fc100021f10db:0x995bf5839ee456c8!8m2!3d37.5569702!4d-121.9594612"
   },
   {
     "name": "George Christopher Playground",
@@ -511,7 +536,8 @@
     "reservable": "Walk-up",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "george-christopher-playground"
+    "id": "george-christopher-playground",
+    "googleMapsUrl": "https://www.google.com/maps/place/Christopher+Tennis+Court/@37.7442828,-122.4404891,17z/data=!4m6!3m5!1s0x808f7f0ff3bd9145:0x1a5ba5be535ed600!8m2!3d37.7442828!4d-122.4404891"
   },
   {
     "name": "Glen Park Rec Center",
@@ -530,7 +556,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "glen-park-rec-center"
+    "id": "glen-park-rec-center",
+    "googleMapsUrl": "https://www.google.com/maps/place/Glen+Park+Tennis+Courts/@37.7366141,-122.4402076,17z/data=!4m6!3m5!1s0x808f7e7a1398de87:0xfeb2de270d34bff1!8m2!3d37.7366141!4d-122.4402076"
   },
   {
     "name": "Goldman Tennis Center",
@@ -549,7 +576,8 @@
     "reservable": "Reservable",
     "confirmed": true,
     "bookingUrl": "https://www.lifetimeactivities.com/san-francisco/pickleball/",
-    "id": "goldman-tennis-center"
+    "id": "goldman-tennis-center",
+    "googleMapsUrl": "https://www.google.com/maps/place/Goldman+Pickleball+Courts/@37.7706419,-122.4590303,17z/data=!4m6!3m5!1s0x8085877ea87b9e05:0x77210515916bb922!8m2!3d37.7706419!4d-122.4590303"
   },
   {
     "name": "Groesbeck Hill Park",
@@ -568,7 +596,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "groesbeck-hill-park"
+    "id": "groesbeck-hill-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Courts/@37.3373652,-121.7782877,17z/data=!4m6!3m5!1s0x808e2d003ae9c161:0x10356a2f568cce65!8m2!3d37.3373652!4d-121.7782877"
   },
   {
     "name": "Grove Park",
@@ -587,7 +616,8 @@
     "reservable": "Mixed",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "grove-park"
+    "id": "grove-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Grove+Park+Tennis+Courts/@37.8566122,-122.2724459,19.16z/data=!4m6!3m5!1s0x80857f9e0bf024bd:0x6c7f01cded219ed8!8m2!3d37.8567752!4d-122.2717505"
   },
   {
     "name": "Hamilton Rec Center",
@@ -606,7 +636,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "hamilton-rec-center"
+    "id": "hamilton-rec-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7845624,-122.4353242"
   },
   {
     "name": "Heather Farm Park \u2014 Walnut Creek Tennis Center",
@@ -625,7 +656,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://www.lifetimeactivities.com/walnut-creek/pickleball/",
-    "id": "heather-farm-park-walnut-creek-tennis-center"
+    "id": "heather-farm-park-walnut-creek-tennis-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.9177343,-122.0411544"
   },
   {
     "name": "Hill Recreation Pickleball Courts",
@@ -644,7 +676,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "hill-recreation-pickleball-courts"
+    "id": "hill-recreation-pickleball-courts",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=38.0530871,-122.5187715"
   },
   {
     "name": "James Kenney Park",
@@ -663,7 +696,8 @@
     "reservable": "Not specified",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "james-kenney-park"
+    "id": "james-kenney-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+court/@37.8722958,-122.2989447,18z/data=!4m6!3m5!1s0x80857f003b283739:0x714006673d48413d!8m2!3d37.8722976!4d-122.2977615"
   },
   {
     "name": "John Mise Park",
@@ -682,7 +716,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "john-mise-park"
+    "id": "john-mise-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.316042,-121.990926"
   },
   {
     "name": "Joinville/Bayside Park",
@@ -701,7 +736,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "joinville-bayside-park"
+    "id": "joinville-bayside-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.565461,-122.29421"
   },
   {
     "name": "Kelly Park",
@@ -720,7 +756,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://cityofmenlopark.perfectmind.com/26116/Clients/BookMe4FacilityList/List?calendarId=cd918767-63df-4159-972b-56a7bea51bd1&widgetId=286f9a84-b14e-434e-acd2-cb2016c8a3cd",
-    "id": "kelly-park"
+    "id": "kelly-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.4783161,-122.1674571"
   },
   {
     "name": "Laney College",
@@ -739,7 +776,8 @@
     "reservable": "Walk-up",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "laney-college"
+    "id": "laney-college",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7942491,-122.2607931"
   },
   {
     "name": "Larsen Playground",
@@ -758,7 +796,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "larsen-playground"
+    "id": "larsen-playground",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7395945,-122.4761735"
   },
   {
     "name": "Lone Hill Park",
@@ -777,7 +816,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "lone-hill-park"
+    "id": "lone-hill-park",
+    "googleMapsUrl": "https://maps.google.com/?cid=6544071507314712705"
   },
   {
     "name": "Los Prados",
@@ -796,7 +836,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "los-prados"
+    "id": "los-prados",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.5429132,-122.2808086"
   },
   {
     "name": "Louis Sutter Playground",
@@ -815,7 +856,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "louis-sutter-playground"
+    "id": "louis-sutter-playground",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7224769,-122.4136718"
   },
   {
     "name": "McInnis Park",
@@ -834,7 +876,8 @@
     "reservable": "Reservable",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "mcinnis-park"
+    "id": "mcinnis-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=38.0191541,-122.5243124"
   },
   {
     "name": "McNears Beach Park",
@@ -853,7 +896,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "mcnears-beach-park"
+    "id": "mcnears-beach-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.9928278,-122.4535469"
   },
   {
     "name": "Memorial Park",
@@ -872,7 +916,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "memorial-park"
+    "id": "memorial-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.3227003,-122.0468305"
   },
   {
     "name": "Minnie & Lovie Ward Rec Center",
@@ -891,7 +936,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "minnie-lovie-ward-rec-center"
+    "id": "minnie-lovie-ward-rec-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7161871,-122.4589561"
   },
   {
     "name": "Mission YMCA",
@@ -910,7 +956,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "mission-ymca"
+    "id": "mission-ymca",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7322268,-122.428003"
   },
   {
     "name": "Mitchell Park",
@@ -929,7 +976,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "mitchell-park"
+    "id": "mitchell-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Courts/@37.4222072,-122.1146701,17z/data=!4m6!3m5!1s0x808fbb003a5e1f37:0x19ea77e84d33c966!8m2!3d37.4214904!4d-122.1140979"
   },
   {
     "name": "Montclair Pickleball Courts",
@@ -948,7 +996,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://cityofoakland.perfectmind.com/",
-    "id": "montclair-pickleball-courts"
+    "id": "montclair-pickleball-courts",
+    "googleMapsUrl": "https://www.google.com/maps/place/Pickleball+Courts+%7C+Montclair+Park/@37.8290095,-122.2122883,17.99z/data=!4m6!3m5!1s0x808f870a30bf1b6d:0x6860574ae20393c6!8m2!3d37.8285648!4d-122.2110028"
   },
   {
     "name": "Moscone Playground",
@@ -967,7 +1016,8 @@
     "reservable": "Mixed",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "moscone-playground"
+    "id": "moscone-playground",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.801298,-122.433128"
   },
   {
     "name": "Mountain View Sports Pavilion",
@@ -986,7 +1036,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "mountain-view-sports-pavilion"
+    "id": "mountain-view-sports-pavilion",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.3818314,-122.086321"
   },
   {
     "name": "Muirwood Community Park",
@@ -1005,7 +1056,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "muirwood-community-park"
+    "id": "muirwood-community-park",
+    "googleMapsUrl": "https://maps.google.com/?cid=1883871451430668136"
   },
   {
     "name": "Nealon Park",
@@ -1024,7 +1076,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "nealon-park"
+    "id": "nealon-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.447922,-122.179417"
   },
   {
     "name": "Oakland Hills Tennis Club",
@@ -1043,7 +1096,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "oakland-hills-tennis-club"
+    "id": "oakland-hills-tennis-club",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7975289,-122.1718552"
   },
   {
     "name": "Osher Marin JCC",
@@ -1062,7 +1116,8 @@
     "reservable": "Reservable",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "osher-marin-jcc"
+    "id": "osher-marin-jcc",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.9994442,-122.5231339"
   },
   {
     "name": "Parkside Square",
@@ -1081,7 +1136,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://sfrecpark.org/1591/Reservable-Pickleball-Courts",
-    "id": "parkside-square"
+    "id": "parkside-square",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7383463,-122.4837811"
   },
   {
     "name": "Paul Moore Park",
@@ -1100,7 +1156,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "paul-moore-park"
+    "id": "paul-moore-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.2722482,-121.8906164"
   },
   {
     "name": "Pickle Athletics",
@@ -1119,7 +1176,8 @@
     "reservable": "Reservable",
     "confirmed": true,
     "bookingUrl": "https://book.pickleathletics.com/",
-    "id": "pickle-athletics"
+    "id": "pickle-athletics",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.8294815,-122.2640593"
   },
   {
     "name": "Pioneer Park",
@@ -1138,7 +1196,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "pioneer-park"
+    "id": "pioneer-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=38.1132784,-122.5885233"
   },
   {
     "name": "Pleasanton Middle School Gym",
@@ -1157,7 +1216,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "pleasanton-middle-school-gym"
+    "id": "pleasanton-middle-school-gym",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.6546993,-121.8838621"
   },
   {
     "name": "Pleasanton Tennis and Community Park",
@@ -1176,7 +1236,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "pleasanton-tennis-and-community-park"
+    "id": "pleasanton-tennis-and-community-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.6756,-121.8995005"
   },
   {
     "name": "Presidio Wall Playground",
@@ -1195,7 +1256,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://sfrecpark.org/1591/Reservable-Pickleball-Courts",
-    "id": "presidio-wall-playground"
+    "id": "presidio-wall-playground",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.791124,-122.4540269"
   },
   {
     "name": "Pueblo Park",
@@ -1214,7 +1276,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "pueblo-park"
+    "id": "pueblo-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=38.0160147,-122.5146595"
   },
   {
     "name": "Raindance Pickleball",
@@ -1233,7 +1296,8 @@
     "reservable": "Reservable",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "raindance-pickleball"
+    "id": "raindance-pickleball",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.5482697,-121.988571"
   },
   {
     "name": "Rec Fillmore",
@@ -1252,7 +1316,8 @@
     "reservable": "Reservable",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "rec-fillmore"
+    "id": "rec-fillmore",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.78255,-122.4303339"
   },
   {
     "name": "Red Morton Park \u2014 outdoor courts",
@@ -1271,7 +1336,8 @@
     "reservable": "Not specified",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "red-morton-park-outdoor-courts"
+    "id": "red-morton-park-outdoor-courts",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.4708368,-122.2370457"
   },
   {
     "name": "Red Morton Senior Center \u2014 indoor courts",
@@ -1290,7 +1356,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "red-morton-senior-center-indoor-courts"
+    "id": "red-morton-senior-center-indoor-courts",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.4720186,-122.235494"
   },
   {
     "name": "Rengstorff Park",
@@ -1309,7 +1376,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "rengstorff-park"
+    "id": "rengstorff-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.401203,-122.098457"
   },
   {
     "name": "Richmond Rec Center",
@@ -1328,7 +1396,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "richmond-rec-center"
+    "id": "richmond-rec-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7833156,-122.4781116"
   },
   {
     "name": "River Glen Park",
@@ -1347,7 +1416,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "river-glen-park"
+    "id": "river-glen-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.3014396,-121.8872937"
   },
   {
     "name": "Rossi Playground",
@@ -1366,7 +1436,8 @@
     "reservable": "Mixed",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "rossi-playground"
+    "id": "rossi-playground",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7790653,-122.4582804"
   },
   {
     "name": "Rudgear Park",
@@ -1385,7 +1456,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "rudgear-park"
+    "id": "rudgear-park",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.8761923,-122.0271175"
   },
   {
     "name": "San Mateo High School Gym",
@@ -1404,7 +1476,8 @@
     "reservable": "Walk-up",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "san-mateo-high-school-gym"
+    "id": "san-mateo-high-school-gym",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.5760358,-122.3296619"
   },
   {
     "name": "San Pablo Park",
@@ -1423,7 +1496,8 @@
     "reservable": "Mixed",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "san-pablo-park"
+    "id": "san-pablo-park",
+    "googleMapsUrl": "https://www.google.com/maps/place/Tennis+Courts+%7C+San+Pablo/@37.8548743,-122.2863233,18z/data=!4m6!3m5!1s0x80857f1845ede569:0xcb7e811d3e5a65a5!8m2!3d37.8548743!4d-122.2844152"
   },
   {
     "name": "Sequoia YMCA",
@@ -1442,7 +1516,8 @@
     "reservable": "Walk-up",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "sequoia-ymca"
+    "id": "sequoia-ymca",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.4706264,-122.2265097"
   },
   {
     "name": "Shoreview Park & Recreation Center",
@@ -1461,7 +1536,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "shoreview-park-recreation-center"
+    "id": "shoreview-park-recreation-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.569542,-122.303177"
   },
   {
     "name": "States Street Playground",
@@ -1480,7 +1556,8 @@
     "reservable": "Walk-up",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "states-street-playground"
+    "id": "states-street-playground",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7634558,-122.4367435"
   },
   {
     "name": "Stern Grove Playground",
@@ -1499,7 +1576,8 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "stern-grove-playground"
+    "id": "stern-grove-playground",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.7347235,-122.4790292"
   },
   {
     "name": "Sunnyvale Community Center",
@@ -1518,7 +1596,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "sunnyvale-community-center"
+    "id": "sunnyvale-community-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.357704,-122.0264951"
   },
   {
     "name": "Sunnyvale Tennis Center",
@@ -1537,7 +1616,8 @@
     "reservable": "Mixed",
     "confirmed": true,
     "bookingUrl": "https://app.courtreserve.com/Online/Portal/Index/13233",
-    "id": "sunnyvale-tennis-center"
+    "id": "sunnyvale-tennis-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.3650942,-122.0342751"
   },
   {
     "name": "The Crossing at East Cut",
@@ -1556,7 +1636,8 @@
     "reservable": "Walk-up",
     "confirmed": true,
     "bookingUrl": null,
-    "id": "the-crossing-at-east-cut"
+    "id": "the-crossing-at-east-cut",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.78934,-122.392042"
   },
   {
     "name": "Upper Noe Rec Center",
@@ -1575,6 +1656,7 @@
     "reservable": "Not specified",
     "confirmed": false,
     "bookingUrl": null,
-    "id": "upper-noe-rec-center"
+    "id": "upper-noe-rec-center",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=37.742388,-122.4284382"
   }
 ]
