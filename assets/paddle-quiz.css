@@ -168,6 +168,15 @@
   margin-bottom: 1.2rem;
 }
 
+.pq-bucket {
+  margin-bottom: var(--space-3);
+}
+
+.pq-bucket-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
 .pq-results-grid {
   display: flex;
   flex-direction: column;
@@ -177,6 +186,19 @@
 
 .pq-paddle-card .name-row {
   justify-content: space-between;
+}
+
+.pq-paddle-card .addr {
+  margin-bottom: 0.6rem;
+}
+
+.pq-paddle-card .know-list {
+  margin-bottom: 0.8rem;
+}
+
+.pq-empty {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
 }
 
 .pq-retake {

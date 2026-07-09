@@ -1,7 +1,7 @@
-// Paddle finder quiz — a short wizard that scores every paddle in
-// assets/paddles.json against the visitor's answers, shows their top 5
-// matches, and captures an email as a lead (Firestore, write-only — see
-// firestore.rules `paddleQuizLeads`).
+// Find your paddle — a short wizard that scores every paddle in
+// assets/paddles.json against the visitor's answers, shows their top 3
+// matches at each of 3 budget tiers, and captures an email as a lead
+// (Firestore, write-only — see firestore.rules `paddleQuizLeads`).
 //
 // Mounts into <div id="paddle-quiz-app"> on paddle-quiz.html. No framework —
 // a small class re-renders its own root on each step, matching the rest of
@@ -40,16 +40,6 @@ const QUESTIONS = [
     ],
   },
   {
-    key: "budget",
-    prompt: "What's your budget?",
-    options: [
-      { value: "budget", label: "Under $150", hint: "" },
-      { value: "mid", label: "$150–220", hint: "" },
-      { value: "premium", label: "$220+", hint: "" },
-      { value: "nopref", label: "No preference", hint: "" },
-    ],
-  },
-  {
     key: "tournament",
     prompt: "Do you need it tournament-legal?",
     options: [
@@ -61,7 +51,7 @@ const QUESTIONS = [
 
 // Beginners get a forgiving, large-sweet-spot paddle by default; advanced
 // players are assumed to trade some forgiveness for a more specialized feel.
-// This keeps the quiz to 5 questions instead of asking forgiveness directly.
+// This keeps the quiz to 4 questions instead of asking forgiveness directly.
 const FORGIVENESS_BY_EXPERIENCE = {
   beginner: "high",
   intermediate: "medium",
@@ -115,35 +105,74 @@ function weightPrefScore(paddle, weightPref) {
   return trapezoid(w, 8.3, 20, 0.6); // heavy
 }
 
-function budgetScore(paddle, budgetPref) {
-  const price = paddle.price;
-  if (budgetPref === "nopref") return 1;
-  if (budgetPref === "budget") return trapezoid(price, 0, 150, 80);
-  if (budgetPref === "mid") return trapezoid(price, 150, 220, 60);
-  return trapezoid(price, 220, 400, 80); // premium
-}
-
-const WEIGHTS = { style: 0.35, forgiveness: 0.3, weight: 0.15, budget: 0.2 };
+const WEIGHTS = { style: 0.45, forgiveness: 0.35, weight: 0.2 };
 
 function isTournamentLegal(paddle) {
   return paddle.approvalBody === "USAP" || paddle.approvalBody === "USAP/UPA-A";
 }
 
+// Results are grouped by price instead of asked as a question — everyone
+// sees their top 3 at each budget tier rather than picking one upfront.
+const PRICE_BUCKETS = [
+  { key: "budget", label: "Best under $150", inRange: (p) => p < 150 },
+  { key: "mid", label: "Best $150–220", inRange: (p) => p >= 150 && p <= 220 },
+  { key: "premium", label: "Best $220+", inRange: (p) => p > 220 },
+];
+
+// Deliberately generic/paraphrased — never cites the exact proprietary
+// lab-tested labels (spin rating, percentiles, "Firepower" tier) those
+// numbers come from, even though they inform the ranking internally.
+function reasonsFor(paddle, fullAnswers) {
+  const reasons = [];
+
+  if (fullAnswers.priority === "power" && paddle.paddleType === "Power") {
+    reasons.push("Built to add pace to your drives and put-aways");
+  } else if (fullAnswers.priority === "control" && paddle.paddleType === "Control") {
+    reasons.push("Soft, control-first feel for dinks and resets at the kitchen");
+  } else if (fullAnswers.priority === "allcourt" && paddle.paddleType === "All-Court") {
+    reasons.push("A well-rounded, all-court feel");
+  } else if (fullAnswers.priority === "spin" && (paddle.spinRating === "Very High" || paddle.spinRating === "High")) {
+    reasons.push("Strong spin potential for topspin and slice");
+  }
+
+  if (fullAnswers.forgiveness === "high" && paddle.twistWeightPercentile != null && paddle.twistWeightPercentile >= 0.6) {
+    reasons.push("Forgiving on off-center hits — good while you're still grooving your swing");
+  }
+
+  if (fullAnswers.weight !== "nopref" && paddle.weightOz != null) {
+    reasons.push(`${paddle.weightOz}oz, matching your weight preference`);
+  }
+
+  if (fullAnswers.tournament === "yes" && isTournamentLegal(paddle)) {
+    reasons.push("Tournament-legal");
+  }
+
+  return reasons.slice(0, 3);
+}
+
 export function computeMatches(paddles, answers) {
   const fullAnswers = { ...answers, forgiveness: FORGIVENESS_BY_EXPERIENCE[answers.experience] || "medium" };
-  const pool = answers.tournament === "yes" ? paddles.filter(isTournamentLegal) : paddles;
+  const pool = (answers.tournament === "yes" ? paddles.filter(isTournamentLegal) : paddles).filter((p) => p.price != null);
 
-  const scored = pool.map((paddle) => {
-    const score =
+  const scored = pool.map((paddle) => ({
+    paddle,
+    score:
       styleScore(paddle, fullAnswers.priority) * WEIGHTS.style +
       forgivenessScore(paddle, fullAnswers.forgiveness) * WEIGHTS.forgiveness +
-      weightPrefScore(paddle, fullAnswers.weight) * WEIGHTS.weight +
-      budgetScore(paddle, fullAnswers.budget) * WEIGHTS.budget;
-    return { paddle, score };
-  });
+      weightPrefScore(paddle, fullAnswers.weight) * WEIGHTS.weight,
+  }));
 
-  scored.sort((a, b) => b.score - a.score);
-  return { fullAnswers, top: scored.slice(0, 5) };
+  const buckets = PRICE_BUCKETS.map((bucket) => ({
+    key: bucket.key,
+    label: bucket.label,
+    top: scored
+      .filter((s) => bucket.inRange(s.paddle.price))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .map((s) => ({ paddle: s.paddle, reasons: reasonsFor(s.paddle, fullAnswers) })),
+  }));
+
+  return { fullAnswers, buckets };
 }
 
 // ---------- Lead capture (Firestore, write-only) ----------
@@ -181,7 +210,6 @@ export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
         priority: fullAnswers.priority,
         forgiveness: fullAnswers.forgiveness,
         weight: fullAnswers.weight,
-        budget: fullAnswers.budget,
         tournament: fullAnswers.tournament,
       },
       recommendedPaddleIds,
@@ -246,7 +274,7 @@ class PaddleQuizApp {
     return `
       ${this.renderProgress(QUESTIONS.length, QUESTIONS.length + 1)}
       <h3 class="pq-prompt">Where should we send your matches?</h3>
-      <p class="pq-email-hint">Enter your email to reveal your top 5 paddle picks. We'll also occasionally send new paddle drops and deals — unsubscribe anytime. See the <a href="/privacy">privacy policy</a>.</p>
+      <p class="pq-email-hint">Enter your email to reveal your top picks — 3 paddles at each budget tier. We'll also occasionally send new paddle drops and deals — unsubscribe anytime. See the <a href="/privacy">privacy policy</a>.</p>
       <form class="pq-email-form" data-role="email-form">
         <div class="pq-honeypot" aria-hidden="true">
           <label for="pq-hp">Leave this field blank</label>
@@ -264,24 +292,36 @@ class PaddleQuizApp {
   }
 
   renderResults() {
-    const cards = this.matches.top
-      .map(
-        ({ paddle }, i) => `
-        <div class="venue-card pq-paddle-card ${i === 0 ? "top-pick" : ""}">
-          <div class="name-row">
-            <h3>${paddle.name}</h3>
-            ${i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`}
-          </div>
-        </div>`
-      )
+    const sections = this.matches.buckets
+      .map((bucket) => {
+        const cards = bucket.top
+          .map(
+            ({ paddle, reasons }, i) => `
+          <div class="venue-card pq-paddle-card ${i === 0 ? "top-pick" : ""}">
+            <div class="name-row">
+              <h3>${paddle.name}</h3>
+              ${i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`}
+            </div>
+            <span class="addr">${paddle.brand} · $${paddle.price}</span>
+            ${reasons.length ? `<ul class="know-list">${reasons.map((r) => `<li>${r}</li>`).join("")}</ul>` : ""}
+            ${paddle.vendorUrl ? `<a class="book-btn" href="${paddle.vendorUrl}" target="_blank" rel="noopener nofollow">Visit ${paddle.brand} →</a>` : ""}
+          </div>`
+          )
+          .join("");
+        return `
+        <div class="pq-bucket">
+          <h3 class="pq-bucket-title">${bucket.label}</h3>
+          <div class="pq-results-grid">${cards || `<p class="pq-empty">No matches in this range — try adjusting your other answers.</p>`}</div>
+        </div>`;
+      })
       .join("");
 
     return `
       <div class="pq-results-head">
         <p class="eyebrow">Your matches</p>
-        <h3 class="pq-prompt">Your top ${this.matches.top.length} paddles</h3>
+        <h3 class="pq-prompt">Your top picks, by budget</h3>
       </div>
-      <div class="pq-results-grid">${cards}</div>
+      ${sections}
       <button type="button" class="clear-btn pq-retake" data-action="retake">Retake the quiz</button>
     `;
   }
@@ -330,7 +370,7 @@ class PaddleQuizApp {
     this.render();
 
     this.matches = computeMatches(this.paddles, this.answers);
-    const recommendedPaddleIds = this.matches.top.map((m) => m.paddle.id);
+    const recommendedPaddleIds = this.matches.buckets.flatMap((b) => b.top.map((m) => m.paddle.id));
     await submitLead(email, this.matches.fullAnswers, recommendedPaddleIds);
 
     this.submitting = false;
