@@ -153,12 +153,18 @@ function toDots(score) {
   return 1;
 }
 
-function dimensionsFor(paddle) {
+function dimensionsFor(paddle, fullAnswers) {
   return {
     power: toDots(powerRating(paddle)),
     control: toDots(controlRating(paddle)),
     spin: toDots(spinRatingOf(paddle)),
     forgiveness: toDots(forgivenessRatingOf(paddle)),
+    // Only meaningful when the user actually stated a preference — with
+    // "no preference" these score 1 (3 dots) for every paddle by design, so
+    // the row is hidden entirely in that case rather than shown as an
+    // uninformative wall of identical dots (see renderResults).
+    weightFit: toDots(weightPrefScore(paddle, fullAnswers.weight)),
+    budgetFit: toDots(budgetScore(paddle, fullAnswers.budget)),
   };
 }
 
@@ -190,18 +196,21 @@ export function computeMatches(paddles, answers) {
   // Weight-fit and budget-fit are capped at 10% each so they can only break
   // near-ties between visibly similar paddles — they can no longer outweigh
   // a clear advantage on the dimensions actually shown in the table (as they
-  // could when they carried 40% combined weight between them).
+  // could when they carried 40% combined weight between them). Quantized via
+  // toDots for the same reason everything else is: so the rank is computed
+  // from literally the same dots shown in the "Weight fit"/"Budget fit" rows,
+  // not a hidden-precision value that could disagree with them.
   const scored = pool.map((paddle) => ({
     paddle,
     score:
       styleBlend(paddle, fullAnswers.priority) * rankWeights.priority +
       (toDots(forgivenessRatingOf(paddle)) / 3) * rankWeights.forgiveness +
-      weightPrefScore(paddle, fullAnswers.weight) * rankWeights.weight +
-      budgetScore(paddle, fullAnswers.budget) * rankWeights.budget,
+      (toDots(weightPrefScore(paddle, fullAnswers.weight)) / 3) * rankWeights.weight +
+      (toDots(budgetScore(paddle, fullAnswers.budget)) / 3) * rankWeights.budget,
   }));
 
   scored.sort((a, b) => b.score - a.score);
-  const top = scored.slice(0, 3).map(({ paddle }) => ({ paddle, dims: dimensionsFor(paddle) }));
+  const top = scored.slice(0, 3).map(({ paddle }) => ({ paddle, dims: dimensionsFor(paddle, fullAnswers) }));
 
   return { fullAnswers, top };
 }
@@ -368,6 +377,17 @@ class PaddleQuizApp {
         ${top.map(({ paddle }) => `<td>${paddle.weightOz != null ? `${paddle.weightOz}oz` : "—"}</td>`).join("")}
       </tr>`;
 
+    // Only shown when the user actually stated a preference — otherwise
+    // every paddle scores the same on these by design, and the row would
+    // just be a wall of identical dots. When shown, this is what makes the
+    // rank fully explainable: literally every input to the score is now a
+    // visible row, so a cheaper/lighter pick beating a "better" one on the
+    // 4 dimensions above always has a visible reason in this table.
+    const fitRow = (label, key, pref) =>
+      pref !== "nopref"
+        ? `<tr><th class="pq-compare-label">${label}</th>${top.map(({ dims }) => `<td>${meterHtml(dims[key], label)}</td>`).join("")}</tr>`
+        : "";
+
     const linkRow = `
       <tr class="pq-compare-links">
         <th class="pq-compare-label"></th>
@@ -393,6 +413,8 @@ class PaddleQuizApp {
             ${dimRow("Spin", "spin")}
             ${dimRow("Forgiveness", "forgiveness")}
             ${weightRow}
+            ${fitRow("Weight fit", "weightFit", this.matches.fullAnswers.weight)}
+            ${fitRow("Budget fit", "budgetFit", this.matches.fullAnswers.budget)}
             ${linkRow}
           </tbody>
         </table>
