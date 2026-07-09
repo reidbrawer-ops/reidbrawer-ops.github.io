@@ -153,19 +153,47 @@ function dimensionsFor(paddle, fullAnswers) {
     // uninformative wall of identical dots (see renderResults).
     weightFit: toDots(weightPrefScore(paddle, fullAnswers.weight)),
     budgetFit: toDots(budgetScore(paddle, fullAnswers.budget)),
+    // Tagged once in assets/paddles.json from forgiveness (twist weight
+    // percentile), core thickness, and paddle type — see the prep script for
+    // the exact rule. Shown directly in the table (as a level-badge, not
+    // dots, since it's a category rather than an intensity) so the skill
+    // bonus below is as visible/auditable as everything else in the score.
+    skillLevel: paddle.skillLevel || "Intermediate",
   };
 }
 
-// The rank is a plain sum of the exact dots shown in the table — no hidden
-// weighting formula a viewer couldn't reconstruct themselves by counting
-// circles on screen. The user's stated priority (power/control/spin) counts
-// double, since that's the one thing they explicitly said matters most;
-// beginners get forgiveness counted double too, on the theory that a large
-// sweet spot matters more early on. Everything else — including
-// weight-fit/budget-fit, only added when the user actually stated a
-// preference — counts once. Every term is a positive integer, so a paddle
-// that's equal-or-better on every shown dimension (and strictly better on
-// at least one) always scores strictly higher, full stop.
+const SKILL_LEVELS = ["Beginner", "Intermediate", "Advanced"];
+
+// An exact match to the user's stated level is worth more than the typical
+// 1-2 point gap between skill tiers on raw dot totals (Advanced-tagged
+// paddles trade away forgiveness dots for specialization, so without a
+// large-enough bonus here, "Advanced" tags would never surface for
+// advanced players — the raw stat sum would always favor the more
+// forgiving, easier-rated paddle regardless of who's asking). One step off
+// (e.g. an Intermediate paddle for a Beginner) gets a small nod; the
+// opposite end of the spectrum gets nothing.
+function skillMatchScore(paddleSkillLevel, experience) {
+  const userLevel = experience === "beginner" ? "Beginner" : experience === "advanced" ? "Advanced" : "Intermediate";
+  const distance = Math.abs(SKILL_LEVELS.indexOf(paddleSkillLevel) - SKILL_LEVELS.indexOf(userLevel));
+  if (distance === 0) return 4;
+  if (distance === 1) return 1;
+  return 0;
+}
+
+// The rank is a plain sum of the exact dots/badges shown in the table — no
+// hidden weighting formula a viewer couldn't reconstruct themselves by
+// counting circles on screen. The user's stated priority (power/control/
+// spin) counts double, since that's the one thing they explicitly said
+// matters most; beginners get forgiveness counted double too, on the theory
+// that a large sweet spot matters more early on; a paddle tagged for the
+// user's exact stated skill level gets its own (larger) bonus — see
+// skillMatchScore for why it needs more than a simple double to actually
+// move the needle. Everything else — including weight-fit/budget-fit, only
+// added when the user actually stated a preference — counts once. Every
+// term is a non-negative integer, so a paddle that's equal-or-better on
+// every shown dimension (and strictly better on at least one) always scores
+// strictly
+// higher, full stop.
 function totalScore(dims, fullAnswers) {
   let score = dims.power + dims.control + dims.spin + dims.forgiveness;
   if (fullAnswers.priority === "power") score += dims.power;
@@ -174,6 +202,7 @@ function totalScore(dims, fullAnswers) {
   if (fullAnswers.experience === "beginner") score += dims.forgiveness;
   if (fullAnswers.weight !== "nopref") score += dims.weightFit;
   if (fullAnswers.budget !== "nopref") score += dims.budgetFit;
+  score += skillMatchScore(dims.skillLevel, fullAnswers.experience);
   return score;
 }
 
@@ -354,6 +383,22 @@ class PaddleQuizApp {
         ${top.map(({ paddle }) => `<td>${paddle.weightOz != null ? `${paddle.weightOz}oz` : "—"}</td>`).join("")}
       </tr>`;
 
+    // Reuses the site's existing level-badge component (already used for
+    // court skill levels) so paddles and courts share the same color
+    // language: beginner = kitchen green, advanced = poppy, intermediate =
+    // bay blue ("mixed" modifier).
+    const SKILL_BADGE_CLASS = { Beginner: "beginner", Advanced: "competitive", Intermediate: "mixed" };
+    const skillRow = `
+      <tr>
+        <th class="pq-compare-label">Best for</th>
+        ${top
+          .map(
+            ({ dims }) =>
+              `<td><span class="level-badge ${SKILL_BADGE_CLASS[dims.skillLevel]}">${dims.skillLevel}</span></td>`
+          )
+          .join("")}
+      </tr>`;
+
     // Only shown when the user actually stated a preference — otherwise
     // every paddle scores the same on these by design, and the row would
     // just be a wall of identical dots. When shown, this is what makes the
@@ -385,6 +430,7 @@ class PaddleQuizApp {
         <table class="pq-compare-table">
           <thead><tr><th></th>${cols}</tr></thead>
           <tbody>
+            ${skillRow}
             ${dimRow("Put-away power", "power")}
             ${dimRow("Resets &amp; touch", "control")}
             ${dimRow("Spin", "spin")}
