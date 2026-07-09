@@ -122,29 +122,63 @@ const PRICE_BUCKETS = [
 // Deliberately generic/paraphrased — never cites the exact proprietary
 // lab-tested labels (spin rating, percentiles, "Firepower" tier) those
 // numbers come from, even though they inform the ranking internally.
+//
+// Every paddle recommended for a given priority shares that priority's
+// category (that's the point), so leading with "Power paddle" for every
+// power pick just repeats itself across the results. Shape, core
+// thickness, and impact feel are physical construction facts that vary
+// paddle-to-paddle even within the same category — those are what
+// actually distinguish one recommendation from the next, so they get
+// pulled in ahead of the more generic, always-true-for-this-bucket stuff.
+const FEEL_COPY = {
+  "Soft/Dense": "Soft, dense core — muted and control-friendly",
+  "Soft/Hollow": "Soft, hollow core — plush feel with a bit of pop",
+  "Stiff/Dense": "Stiff, dense core — crisp and responsive",
+  "Stiff/Hollow": "Stiff, hollow core — loud and poppy",
+  Neutral: "Neutral core feel, doesn't lean soft or stiff",
+};
+
+const SHAPE_COPY = {
+  Elongated: "Elongated shape for extra reach and swing speed",
+  "Extra-elongated": "Extra-elongated shape for maximum reach",
+  Widebody: "Widebody shape for a bigger sweet spot",
+  Hybrid: "Hybrid shape, splitting the difference between reach and sweet spot",
+};
+
 function reasonsFor(paddle, fullAnswers) {
   const reasons = [];
 
-  if (fullAnswers.priority === "power" && paddle.paddleType === "Power") {
-    reasons.push("Built to add pace to your drives and put-aways");
-  } else if (fullAnswers.priority === "control" && paddle.paddleType === "Control") {
-    reasons.push("Soft, control-first feel for dinks and resets at the kitchen");
-  } else if (fullAnswers.priority === "allcourt" && paddle.paddleType === "All-Court") {
-    reasons.push("A well-rounded, all-court feel");
-  } else if (fullAnswers.priority === "spin" && (paddle.spinRating === "Very High" || paddle.spinRating === "High")) {
-    reasons.push("Strong spin potential for topspin and slice");
-  }
-
-  if (fullAnswers.forgiveness === "high" && paddle.twistWeightPercentile != null && paddle.twistWeightPercentile >= 0.6) {
-    reasons.push("Forgiving on off-center hits — good while you're still grooving your swing");
-  }
-
-  if (fullAnswers.weight !== "nopref" && paddle.weightOz != null) {
-    reasons.push(`${paddle.weightOz}oz, matching your weight preference`);
-  }
-
   if (fullAnswers.tournament === "yes" && isTournamentLegal(paddle)) {
     reasons.push("Tournament-legal");
+  }
+
+  // Power/Control/All-Court is already shown as a chip next to the price, so
+  // restating "built as a power paddle" here would just repeat that same
+  // line on every card in a power-priority result. Spin isn't shown as a
+  // chip anywhere, so it's the one priority worth calling out explicitly.
+  if (fullAnswers.priority === "spin" && (paddle.spinRating === "Very High" || paddle.spinRating === "High")) {
+    reasons.push("A textured surface built to grip the ball and generate spin");
+  }
+
+  const construction = FEEL_COPY[paddle.impactFeel] || SHAPE_COPY[paddle.shape];
+  if (construction && reasons.length < 3) reasons.push(construction);
+
+  if (reasons.length < 3 && paddle.coreThicknessMm != null) {
+    if (paddle.coreThicknessMm >= 16) reasons.push(`${paddle.coreThicknessMm}mm core, on the thicker/quieter side`);
+    else if (paddle.coreThicknessMm <= 13) reasons.push(`${paddle.coreThicknessMm}mm core, on the thinner/poppier side`);
+  }
+
+  if (
+    reasons.length < 3 &&
+    fullAnswers.forgiveness !== "low" &&
+    paddle.twistWeightPercentile != null &&
+    paddle.twistWeightPercentile >= 0.6
+  ) {
+    reasons.push("Forgiving on off-center hits");
+  }
+
+  if (reasons.length < 3 && fullAnswers.weight !== "nopref" && paddle.weightOz != null) {
+    reasons.push(`${paddle.weightOz}oz, matching your weight preference`);
   }
 
   return reasons.slice(0, 3);
@@ -303,6 +337,7 @@ class PaddleQuizApp {
               ${i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`}
             </div>
             <span class="addr">${paddle.brand} · $${paddle.price}</span>
+            ${paddle.paddleType ? `<div class="facts"><span class="stat-chip">${paddle.paddleType}</span></div>` : ""}
             ${reasons.length ? `<ul class="know-list">${reasons.map((r) => `<li>${r}</li>`).join("")}</ul>` : ""}
             ${paddle.vendorUrl ? `<a class="book-btn" href="${paddle.vendorUrl}" target="_blank" rel="noopener nofollow">Visit ${paddle.brand} →</a>` : ""}
           </div>`
