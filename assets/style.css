@@ -37,6 +37,19 @@
   --kitchen-tint: #e7f3ec;
   --poppy-tint: #f7eae4;
 
+  /* RGB triplets of the above, for rgba()/alpha use (box-shadow, overlays) —
+     CSS custom properties can't derive R/G/B components from a hex value,
+     so these exist purely so alpha colors can reference one source of
+     truth instead of hardcoding each accent's RGB triplet at every call
+     site. */
+  --ink-rgb: 23, 35, 43;
+  --bay-rgb: 29, 107, 133;
+  --bay-deep-rgb: 18, 50, 64;
+  --kitchen-rgb: 47, 122, 87;
+  --optic-rgb: 215, 233, 75;
+  --poppy-rgb: 181, 75, 44;
+  --fog-rgb: 245, 247, 246;
+
   /* Map-only pin colors: bay/kitchen sit only ~40° apart in hue and read as
      near-identical at 9-16px, so indoor/outdoor pins get their own wider-
      spread blue/green pair (~80° apart) instead of reusing the brand tokens. */
@@ -45,7 +58,6 @@
 
   --radius-s: 10px;
   --radius-m: 16px;
-  --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.75rem;
   --space-4: 3rem;
@@ -136,6 +148,13 @@ a:hover {
 :focus-visible {
   outline: 3px solid var(--bay);
   outline-offset: 2px;
+}
+
+/* Tighter ring for compact form controls (select, search input) — the
+   sitewide 2px offset reads as clipped against these smaller boxes. */
+select:focus-visible,
+input[type="search"]:focus-visible {
+  outline-offset: 1px;
 }
 
 img, svg {
@@ -303,7 +322,7 @@ img, svg {
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--radius-s);
-  box-shadow: 0 16px 32px -12px rgba(23, 35, 43, 0.18);
+  box-shadow: 0 16px 32px -12px rgba(var(--ink-rgb), 0.18);
   z-index: 20;
 }
 
@@ -334,6 +353,124 @@ img, svg {
   background: var(--fog);
   text-decoration: none;
   color: var(--ink);
+}
+
+/* ---------- Sitewide global search (assets/global-search.js) ---------- */
+
+.global-search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-left: auto;
+}
+
+.global-search-icon {
+  position: relative;
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  border: 1.5px solid var(--ink-soft);
+  border-radius: 50%;
+  flex: none;
+}
+
+.global-search-icon::after {
+  content: "";
+  position: absolute;
+  width: 0.55em;
+  height: 1.5px;
+  background: var(--ink-soft);
+  top: 95%;
+  left: 95%;
+  transform: rotate(45deg);
+  transform-origin: 0 0;
+}
+
+.global-search-input {
+  width: 128px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: var(--fog);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  padding: 0.4em 0.6em;
+  transition: width 0.15s ease;
+}
+
+.global-search-input:focus,
+.global-search-input:not(:placeholder-shown) {
+  width: 190px;
+}
+
+.global-search-results[hidden] {
+  display: none;
+}
+
+.global-search-results {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  width: 260px;
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  box-shadow: 0 8px 24px rgba(var(--ink-rgb), 0.12);
+  z-index: 20;
+}
+
+.global-search-result {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.global-search-result:hover,
+.global-search-result.is-active {
+  background: var(--fog);
+}
+
+.global-search-result .gsr-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.global-search-result .gsr-sublabel {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.global-search-empty {
+  padding: 0.55rem 0.65rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 560px) {
+  .global-search {
+    margin-left: 0;
+  }
+
+  .global-search-input,
+  .global-search-input:focus,
+  .global-search-input:not(:placeholder-shown) {
+    width: 100px;
+  }
+
+  .global-search-results {
+    right: auto;
+    left: 0;
+    width: min(260px, 80vw);
+  }
 }
 
 /* ---------- Hero ---------- */
@@ -397,7 +534,7 @@ img, svg {
   color: #fff;
   text-decoration: none;
   border: none;
-  box-shadow: 0 6px 16px -6px rgba(29, 107, 133, 0.4);
+  box-shadow: 0 6px 16px -6px rgba(var(--bay-rgb), 0.4);
   transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
 }
 
@@ -405,7 +542,7 @@ img, svg {
   color: #fff;
   background: var(--bay-deep);
   transform: translateY(-1px);
-  box-shadow: 0 10px 20px -6px rgba(18, 50, 64, 0.35);
+  box-shadow: 0 10px 20px -6px rgba(var(--bay-deep-rgb), 0.35);
 }
 
 /* ---------- Sections / regions ---------- */
@@ -473,7 +610,7 @@ img, svg {
 .city-card:hover {
   transform: translateY(-2px);
   border-color: var(--bay);
-  box-shadow: 0 16px 32px -16px rgba(23, 35, 43, 0.22);
+  box-shadow: 0 16px 32px -16px rgba(var(--ink-rgb), 0.22);
   color: var(--ink);
 }
 
@@ -549,7 +686,7 @@ img, svg {
 
 .venue-card.top-pick {
   border-left-color: var(--optic-deep);
-  background: rgba(215, 233, 75, 0.09);
+  background: rgba(var(--optic-rgb), 0.09);
 }
 
 .venue-card .name-row {
@@ -629,19 +766,19 @@ img, svg {
 .level-badge.beginner {
   background: var(--kitchen-tint);
   color: var(--kitchen-deep);
-  border-color: rgba(47, 122, 87, 0.3);
+  border-color: rgba(var(--kitchen-rgb), 0.3);
 }
 
 .level-badge.competitive {
   background: var(--poppy-tint);
   color: var(--poppy-deep);
-  border-color: rgba(181, 75, 44, 0.3);
+  border-color: rgba(var(--poppy-rgb), 0.3);
 }
 
 .level-badge.mixed {
   background: var(--bay-tint);
   color: var(--bay-deep);
-  border-color: rgba(29, 107, 133, 0.3);
+  border-color: rgba(var(--bay-rgb), 0.3);
 }
 
 /* ---------- Rating breakdown ---------- */
@@ -691,9 +828,13 @@ img, svg {
   font-weight: 500;
 }
 
-/* ---------- Booking button ---------- */
+/* ---------- Booking button / outline pill button (shared with
+   directory.css's "Clear filters" and paddle-quiz.js's "Retake the quiz"
+   buttons via .clear-btn — same outline-fills-on-hover pill, just an <a>
+   in one case and a <button> in the other) ---------- */
 
-.book-btn {
+.book-btn,
+.clear-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
@@ -706,11 +847,16 @@ img, svg {
   border-radius: 999px;
   padding: 0.4em 0.95em;
   text-decoration: none;
-  margin-top: 0.7rem;
+  cursor: pointer;
   transition: background 0.15s var(--ease), color 0.15s var(--ease);
 }
 
-.book-btn:hover {
+.book-btn {
+  margin-top: 0.7rem;
+}
+
+.book-btn:hover,
+.clear-btn:hover {
   background: var(--bay);
   color: #fff;
 }
@@ -835,7 +981,7 @@ img, svg {
 
 .region-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 32px -14px rgba(18, 50, 64, 0.45);
+  box-shadow: 0 16px 32px -14px rgba(var(--bay-deep-rgb), 0.45);
   color: var(--fog);
 }
 
@@ -849,7 +995,7 @@ img, svg {
 }
 
 .region-card p {
-  color: rgba(245, 247, 246, 0.75);
+  color: rgba(var(--fog-rgb), 0.75);
   font-size: 0.92rem;
   margin: 0;
 }
@@ -945,6 +1091,24 @@ img, svg {
   color: var(--ink-soft);
 }
 
+/* ---------- Status line (loading / error state for the three JS-driven
+   data pages — directory, map, rankings — each has its own id/class for
+   its status element, but the look is shared) ---------- */
+
+.directory-status,
+.map-status,
+.rankings-status {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.directory-status.is-error,
+.map-status.is-error,
+.rankings-status.is-error {
+  color: var(--poppy-deep);
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 860px) {
@@ -1000,14 +1164,6 @@ img, svg {
   overflow: hidden;
   white-space: nowrap;
   color: var(--optic-deep);
-}
-
-.star-rating.size-sm .star {
-  font-size: 0.8rem;
-}
-
-.star-rating.size-lg .star {
-  font-size: 1.15rem;
 }
 
 .rating-value-label {
@@ -1102,7 +1258,7 @@ img, svg {
 .badge-most-loved {
   background: var(--poppy-tint);
   color: var(--poppy-deep);
-  border-color: rgba(181, 75, 44, 0.3);
+  border-color: rgba(var(--poppy-rgb), 0.3);
 }
 
 .rating-form {
@@ -1215,7 +1371,10 @@ a.google-rating-badge:hover {
   opacity: 0.65;
 }
 
-/* ---------- City quick-jump tags ---------- */
+/* ---------- City quick-jump tags (shared with rankings.css's own
+   city-jump nav via .city-jump-tag/.city-jump-group — same pill/group,
+   independently rolled and now merged; .city-jump-region keeps its own
+   rule below since it genuinely differs in weight from .city-tag-region) ---------- */
 
 .city-quick-jump {
   display: flex;
@@ -1224,7 +1383,8 @@ a.google-rating-badge:hover {
   margin-top: var(--space-2);
 }
 
-.city-tag-group {
+.city-tag-group,
+.city-jump-group {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -1239,7 +1399,8 @@ a.google-rating-badge:hover {
   color: var(--ink-soft);
 }
 
-.city-tag {
+.city-tag,
+.city-jump-tag {
   display: inline-flex;
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -1254,7 +1415,9 @@ a.google-rating-badge:hover {
 }
 
 .city-tag:hover,
-.city-tag:focus-visible {
+.city-tag:focus-visible,
+.city-jump-tag:hover,
+.city-jump-tag:focus-visible {
   border-color: var(--bay);
   color: var(--bay-deep);
   background: var(--bay-tint);

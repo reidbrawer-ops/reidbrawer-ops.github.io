@@ -18,13 +18,6 @@
   var nav = document.querySelector(".main-nav");
   if (!nav) return;
 
-  if (!document.querySelector('link[href="/assets/global-search.css"]')) {
-    var link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "/assets/global-search.css";
-    document.head.appendChild(link);
-  }
-
   var wrap = document.createElement("div");
   wrap.className = "global-search";
   wrap.innerHTML =

@@ -1,14 +1,7 @@
 /* Directory page — scoped styles layered on top of style.css */
 
 .directory-status {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--ink-soft);
   margin-bottom: 1rem;
-}
-
-.directory-status.is-error {
-  color: var(--poppy);
 }
 
 /* ---------- Filter panel ---------- */
@@ -49,11 +42,6 @@
   border: 1px solid var(--line);
   border-radius: var(--radius-s);
   padding: 0.5em 0.6em;
-}
-
-.filter-field select:focus-visible {
-  outline: 3px solid var(--bay);
-  outline-offset: 1px;
 }
 
 .filter-field-clear {
@@ -114,7 +102,7 @@
   border-radius: 50%;
   background: var(--bay);
   border: 2px solid var(--paper);
-  box-shadow: 0 1px 4px rgba(23, 35, 43, 0.35);
+  box-shadow: 0 1px 4px rgba(var(--ink-rgb), 0.35);
   cursor: pointer;
   margin-top: 5px;
 }
@@ -126,7 +114,7 @@
   border-radius: 50%;
   background: var(--bay);
   border: 2px solid var(--paper);
-  box-shadow: 0 1px 4px rgba(23, 35, 43, 0.35);
+  box-shadow: 0 1px 4px rgba(var(--ink-rgb), 0.35);
   cursor: pointer;
 }
 
@@ -149,24 +137,6 @@
   font-family: var(--font-mono);
   font-size: 0.78rem;
   color: var(--ink-soft);
-}
-
-.clear-btn {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--bay);
-  background: transparent;
-  border: 1.5px solid var(--bay);
-  border-radius: 999px;
-  padding: 0.5em 1em;
-  cursor: pointer;
-  transition: background 0.15s var(--ease), color 0.15s var(--ease);
-}
-
-.clear-btn:hover {
-  background: var(--bay);
-  color: #fff;
 }
 
 /* ---------- Result count / empty state ---------- */

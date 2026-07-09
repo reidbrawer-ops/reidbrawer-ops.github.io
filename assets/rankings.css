@@ -24,13 +24,6 @@
   gap: 0.5rem;
 }
 
-.city-jump-group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.5rem;
-}
-
 .city-jump-region {
   font-family: var(--font-mono);
   text-transform: uppercase;
@@ -40,35 +33,8 @@
   min-width: 6.5em;
 }
 
-.city-jump-tag {
-  display: inline-flex;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0.3em 0.85em;
-  color: var(--ink-soft);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
-}
-
-.city-jump-tag:hover {
-  background: var(--bay-tint);
-  color: var(--bay-deep);
-  border-color: var(--bay);
-}
-
 .rankings-status {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--ink-soft);
   padding: 1rem 0;
-}
-
-.rankings-status.is-error {
-  color: var(--poppy-deep);
 }
 
 .region-subhead {
@@ -184,12 +150,6 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 0.5rem;
-}
-
-.top10-note {
-  color: var(--ink-soft);
-  font-size: 0.92rem;
-  margin-top: 0.6rem;
 }
 
 /* Compact Top 10 rows: skip the full 6-factor rating form (that lives in

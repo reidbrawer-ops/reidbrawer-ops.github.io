@@ -1,14 +1,7 @@
 /* Map page — scoped styles layered on top of style.css */
 
 .map-status {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--ink-soft);
   margin-bottom: 0.75rem;
-}
-
-.map-status.is-error {
-  color: var(--poppy);
 }
 
 .map-legend {
@@ -40,7 +33,7 @@
   border: 1px solid var(--line);
   overflow: hidden;
   background: var(--fog-dim);
-  box-shadow: 0 16px 32px -20px rgba(23, 35, 43, 0.25);
+  box-shadow: 0 16px 32px -20px rgba(var(--ink-rgb), 0.25);
 }
 
 @media (max-width: 640px) {
@@ -92,7 +85,7 @@
   border-radius: 50%;
   background: var(--poppy);
   border: 2px solid var(--paper);
-  box-shadow: 0 1px 4px rgba(23, 35, 43, 0.35);
+  box-shadow: 0 1px 4px rgba(var(--ink-rgb), 0.35);
 }
 
 .pba-pin--outdoor {
@@ -112,7 +105,7 @@
 }
 
 .pba-pin.top-pick {
-  box-shadow: 0 0 0 2px var(--optic), 0 1px 4px rgba(23, 35, 43, 0.35);
+  box-shadow: 0 0 0 2px var(--optic), 0 1px 4px rgba(var(--ink-rgb), 0.35);
 }
 
 .leaflet-popup-content-wrapper {
@@ -120,7 +113,7 @@
   color: var(--ink);
   border: 1px solid var(--line);
   border-radius: var(--radius-s);
-  box-shadow: 0 12px 28px -10px rgba(23, 35, 43, 0.3);
+  box-shadow: 0 12px 28px -10px rgba(var(--ink-rgb), 0.3);
 }
 
 .leaflet-popup-tip {
