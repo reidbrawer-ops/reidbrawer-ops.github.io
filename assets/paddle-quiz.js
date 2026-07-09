@@ -87,18 +87,6 @@ function budgetScore(paddle, budgetPref) {
   return trapezoid(price, 220, 400, 80); // premium
 }
 
-// Beginners get more weight on forgiveness (a large sweet spot matters more
-// early on); advanced players put more weight on their stated priority
-// instead. Forgiveness is never zeroed out, though — a paddle that's a poor
-// fit there still loses some ground even for advanced players, so the rank
-// always tracks the visible dot ratings rather than occasionally ignoring
-// one entirely.
-const RANK_WEIGHTS_BY_EXPERIENCE = {
-  beginner: { priority: 0.45, forgiveness: 0.35, weight: 0.1, budget: 0.1 },
-  intermediate: { priority: 0.6, forgiveness: 0.2, weight: 0.1, budget: 0.1 },
-  advanced: { priority: 0.7, forgiveness: 0.1, weight: 0.1, budget: 0.1 },
-};
-
 function isTournamentLegal(paddle) {
   return paddle.approvalBody === "USAP" || paddle.approvalBody === "USAP/UPA-A";
 }
@@ -168,49 +156,38 @@ function dimensionsFor(paddle, fullAnswers) {
   };
 }
 
-// Blends power/control/spin — using the exact same *quantized dots* the
-// comparison table displays (not the raw 0–1 scores) — so "Best match" is
-// mathematically guaranteed to be explainable by what's on screen. Two
-// paddles showing identical dots on a dimension contribute identically to
-// the rank, full stop; there's no hidden precision within a dot bucket
-// (e.g. 0.69 vs 0.95, both displayed as the same 2 or 3 dots) left to
-// silently override a real, visible advantage elsewhere. Whichever
-// dimension the user picked as their priority dominates the blend, but the
-// other two never drop to zero weight — "allcourt" weights all three
-// evenly instead.
-function styleBlend(paddle, priority) {
-  const p = toDots(powerRating(paddle)) / 3;
-  const c = toDots(controlRating(paddle)) / 3;
-  const s = toDots(spinRatingOf(paddle)) / 3;
-  if (priority === "power") return p * 0.7 + c * 0.15 + s * 0.15;
-  if (priority === "control") return c * 0.7 + p * 0.15 + s * 0.15;
-  if (priority === "spin") return s * 0.7 + p * 0.15 + c * 0.15;
-  return (p + c + s) / 3; // allcourt
+// The rank is a plain sum of the exact dots shown in the table — no hidden
+// weighting formula a viewer couldn't reconstruct themselves by counting
+// circles on screen. The user's stated priority (power/control/spin) counts
+// double, since that's the one thing they explicitly said matters most;
+// beginners get forgiveness counted double too, on the theory that a large
+// sweet spot matters more early on. Everything else — including
+// weight-fit/budget-fit, only added when the user actually stated a
+// preference — counts once. Every term is a positive integer, so a paddle
+// that's equal-or-better on every shown dimension (and strictly better on
+// at least one) always scores strictly higher, full stop.
+function totalScore(dims, fullAnswers) {
+  let score = dims.power + dims.control + dims.spin + dims.forgiveness;
+  if (fullAnswers.priority === "power") score += dims.power;
+  else if (fullAnswers.priority === "control") score += dims.control;
+  else if (fullAnswers.priority === "spin") score += dims.spin;
+  if (fullAnswers.experience === "beginner") score += dims.forgiveness;
+  if (fullAnswers.weight !== "nopref") score += dims.weightFit;
+  if (fullAnswers.budget !== "nopref") score += dims.budgetFit;
+  return score;
 }
 
 export function computeMatches(paddles, answers) {
   const fullAnswers = { ...answers };
-  const rankWeights = RANK_WEIGHTS_BY_EXPERIENCE[answers.experience] || RANK_WEIGHTS_BY_EXPERIENCE.intermediate;
   const pool = (answers.tournament === "yes" ? paddles.filter(isTournamentLegal) : paddles).filter((p) => p.price != null);
 
-  // Weight-fit and budget-fit are capped at 10% each so they can only break
-  // near-ties between visibly similar paddles — they can no longer outweigh
-  // a clear advantage on the dimensions actually shown in the table (as they
-  // could when they carried 40% combined weight between them). Quantized via
-  // toDots for the same reason everything else is: so the rank is computed
-  // from literally the same dots shown in the "Weight fit"/"Budget fit" rows,
-  // not a hidden-precision value that could disagree with them.
-  const scored = pool.map((paddle) => ({
-    paddle,
-    score:
-      styleBlend(paddle, fullAnswers.priority) * rankWeights.priority +
-      (toDots(forgivenessRatingOf(paddle)) / 3) * rankWeights.forgiveness +
-      (toDots(weightPrefScore(paddle, fullAnswers.weight)) / 3) * rankWeights.weight +
-      (toDots(budgetScore(paddle, fullAnswers.budget)) / 3) * rankWeights.budget,
-  }));
+  const scored = pool.map((paddle) => {
+    const dims = dimensionsFor(paddle, fullAnswers);
+    return { paddle, dims, score: totalScore(dims, fullAnswers) };
+  });
 
   scored.sort((a, b) => b.score - a.score);
-  const top = scored.slice(0, 3).map(({ paddle }) => ({ paddle, dims: dimensionsFor(paddle, fullAnswers) }));
+  const top = scored.slice(0, 3).map(({ paddle, dims }) => ({ paddle, dims }));
 
   return { fullAnswers, top };
 }
