@@ -1,6 +1,6 @@
 // Find your paddle — a short wizard that scores every paddle in
 // assets/paddles.json against the visitor's answers, shows their top 3
-// matches at each of 3 budget tiers, and captures an email as a lead
+// matches as a side-by-side comparison, and captures an email as a lead
 // (Firestore, write-only — see firestore.rules `paddleQuizLeads`).
 //
 // Mounts into <div id="paddle-quiz-app"> on paddle-quiz.html. No framework —
@@ -40,6 +40,16 @@ const QUESTIONS = [
     ],
   },
   {
+    key: "budget",
+    prompt: "What's your budget?",
+    options: [
+      { value: "budget", label: "Under $150", hint: "" },
+      { value: "mid", label: "$150–220", hint: "" },
+      { value: "premium", label: "$220+", hint: "" },
+      { value: "nopref", label: "No preference", hint: "Just show me the top 3 overall" },
+    ],
+  },
+  {
     key: "tournament",
     prompt: "Do you need it tournament-legal?",
     options: [
@@ -51,7 +61,7 @@ const QUESTIONS = [
 
 // Beginners get a forgiving, large-sweet-spot paddle by default; advanced
 // players are assumed to trade some forgiveness for a more specialized feel.
-// This keeps the quiz to 4 questions instead of asking forgiveness directly.
+// This keeps the quiz to 5 questions instead of asking forgiveness directly.
 const FORGIVENESS_BY_EXPERIENCE = {
   beginner: "high",
   intermediate: "medium",
@@ -105,7 +115,15 @@ function weightPrefScore(paddle, weightPref) {
   return trapezoid(w, 8.3, 20, 0.6); // heavy
 }
 
-const WEIGHTS = { style: 0.45, forgiveness: 0.35, weight: 0.2 };
+function budgetScore(paddle, budgetPref) {
+  const price = paddle.price;
+  if (budgetPref === "nopref") return 1;
+  if (budgetPref === "budget") return trapezoid(price, 0, 150, 80);
+  if (budgetPref === "mid") return trapezoid(price, 150, 220, 60);
+  return trapezoid(price, 220, 400, 80); // premium
+}
+
+const WEIGHTS = { style: 0.35, forgiveness: 0.25, weight: 0.15, budget: 0.25 };
 
 function isTournamentLegal(paddle) {
   return paddle.approvalBody === "USAP" || paddle.approvalBody === "USAP/UPA-A";
@@ -125,150 +143,49 @@ function vendorLinkFor(paddle) {
   return null;
 }
 
-// Results are grouped by price instead of asked as a question — everyone
-// sees their top 3 at each budget tier rather than picking one upfront.
-const PRICE_BUCKETS = [
-  { key: "budget", label: "Best under $150", inRange: (p) => p < 150 },
-  { key: "mid", label: "Best $150–220", inRange: (p) => p >= 150 && p <= 220 },
-  { key: "premium", label: "Best $220+", inRange: (p) => p > 220 },
-];
+// ---------- Comparison-table dimension ratings ----------
+//
+// Unlike the scoring above (which is conditioned on the user's stated
+// priority, to rank paddles against each other), these are fixed, absolute
+// per-paddle profiles — every result shows all 4 axes regardless of what
+// the user picked, so the comparison table actually shows how the 3 picks
+// differ rather than just confirming the one thing they asked for.
+// Deliberately paraphrased into a dot rating rather than citing the exact
+// proprietary lab-tested labels/percentiles those numbers come from.
 
-// Deliberately generic/paraphrased — never cites the exact proprietary
-// lab-tested labels (spin rating, percentiles, "Firepower" tier) those
-// numbers come from, even though they inform the ranking internally.
-const FEEL_COPY = {
-  "Soft/Dense": "Soft, dense core — muted and control-friendly",
-  "Soft/Hollow": "Soft, hollow core — plush feel with a bit of pop",
-  "Stiff/Dense": "Stiff, dense core — crisp and responsive",
-  "Stiff/Hollow": "Stiff, hollow core — loud and poppy",
-  Neutral: "Neutral core feel, doesn't lean soft or stiff",
-};
-
-const SHAPE_COPY = {
-  Elongated: "Elongated shape for extra reach and swing speed",
-  "Extra-elongated": "Extra-elongated shape for maximum reach",
-  Widebody: "Widebody shape for a bigger sweet spot",
-  Hybrid: "Hybrid shape, splitting the difference between reach and sweet spot",
-};
-
-// One-line summary of what's true of every paddle in a bucket — shown once
-// per bucket instead of repeated on every card, since restating "built for
-// power" on all 3 power-priority cards doesn't help tell them apart.
-function bucketIntro(fullAnswers) {
-  const priorityCopy = {
-    power: "built for power",
-    control: "built for control and touch",
-    spin: "built to generate spin",
-    allcourt: "built to be well-rounded",
-  }[fullAnswers.priority];
-  const parts = [priorityCopy, fullAnswers.tournament === "yes" ? "tournament-legal" : null].filter(Boolean);
-  return parts.length ? `All 3 below are ${parts.join(" and ")} — here's what sets each one apart:` : "";
+function powerRating(paddle) {
+  const base = paddle.paddleType === "Power" ? 0.85 : paddle.paddleType === "All-Court" ? 0.5 : paddle.paddleType === "Control" ? 0.2 : 0.5;
+  return paddle.powerPercentile != null ? base * 0.4 + paddle.powerPercentile * 0.6 : base;
 }
 
-// Candidate facts for one paddle, keyed so reasonsForBucket can tell which
-// keys actually vary across a bucket's 3 picks and lead with those, instead
-// of a fixed order that often surfaces the same fact on every card (e.g.
-// scoring already biases "control" picks toward a soft impact feel, so
-// impact feel alone isn't always a distinguishing fact either — it depends
-// on the specific 3 paddles in front of the user).
-function factsFor(paddle, fullAnswers) {
-  const facts = {};
-
-  const construction = FEEL_COPY[paddle.impactFeel] || SHAPE_COPY[paddle.shape];
-  if (construction) facts.construction = construction;
-
-  if (paddle.coreThicknessMm != null) {
-    if (paddle.coreThicknessMm >= 16) facts.thickness = `${paddle.coreThicknessMm}mm core, on the thicker/quieter side`;
-    else if (paddle.coreThicknessMm <= 13) facts.thickness = `${paddle.coreThicknessMm}mm core, on the thinner/poppier side`;
-  }
-
-  if (fullAnswers.weight !== "nopref" && paddle.weightOz != null) {
-    facts.weight = `${paddle.weightOz}oz, matching your weight preference`;
-  }
-
-  if (
-    fullAnswers.forgiveness !== "low" &&
-    paddle.twistWeightPercentile != null &&
-    paddle.twistWeightPercentile >= 0.6
-  ) {
-    facts.forgiveness = "Forgiving on off-center hits";
-  }
-
-  // Spin isn't shown as a chip anywhere else on the card, so it's worth
-  // calling out on its own even when it doesn't vary within the bucket.
-  if (fullAnswers.priority === "spin" && (paddle.spinRating === "Very High" || paddle.spinRating === "High")) {
-    facts.spin = "A textured surface built to grip the ball and generate spin";
-  }
-
-  return facts;
+function controlRating(paddle) {
+  let base = paddle.paddleType === "Control" ? 0.85 : paddle.paddleType === "All-Court" ? 0.5 : paddle.paddleType === "Power" ? 0.2 : 0.5;
+  if (paddle.impactFeel === "Soft/Dense" || paddle.impactFeel === "Soft/Hollow") base = clamp01(base + 0.15);
+  else if (paddle.impactFeel === "Stiff/Dense" || paddle.impactFeel === "Stiff/Hollow") base = clamp01(base - 0.15);
+  return base;
 }
 
-// Absolute facts (construction, thickness, spin) can legitimately be
-// identical across a whole bucket — scoring specifically biases "control"
-// picks toward a soft impact feel and a thicker, quieter core, so 3 control
-// paddles at the same price tier can genuinely share every one of those
-// traits. Relative facts fix that: they compare the 3 paddles actually in
-// front of the user on price/weight/balance and only fire for whichever is
-// the lightest/heaviest, cheapest/priciest, etc. — guaranteed to differ
-// whenever the underlying numbers aren't literally tied.
-const RELATIVE_FIELDS = [
-  { key: "price", get: (p) => p.price, low: "The most affordable of these 3", high: "The priciest of these 3, if budget allows" },
-  { key: "weightRel", get: (p) => p.weightOz, low: "The lightest of these 3 — quicker hands", high: "The heaviest of these 3 — more mass behind the ball" },
-  {
-    key: "balance",
-    get: (p) => p.balancePointMm,
-    low: "Handle-light balance relative to the others here — quicker resets",
-    high: "Head-heavy balance relative to the others here — more mass through contact",
-  },
-];
-
-function relativeFactsFor(bucketTop) {
-  const perPaddle = bucketTop.map(() => ({}));
-  RELATIVE_FIELDS.forEach(({ key, get, low, high }) => {
-    const values = bucketTop.map((s) => get(s.paddle)).filter((v) => v != null);
-    if (values.length < 2) return;
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    if (min === max) return;
-    bucketTop.forEach((s, i) => {
-      const v = get(s.paddle);
-      if (v === min) perPaddle[i][key] = low;
-      else if (v === max) perPaddle[i][key] = high;
-    });
-  });
-  return perPaddle;
+function spinRatingOf(paddle) {
+  return { "Very High": 1, High: 0.75, Medium: 0.45, Low: 0.15 }[paddle.spinRating] ?? 0.5;
 }
 
-const FACT_PRIORITY = ["price", "weightRel", "balance", "construction", "thickness", "forgiveness", "weight"];
+function forgivenessRatingOf(paddle) {
+  return paddle.twistWeightPercentile != null ? paddle.twistWeightPercentile : 0.5;
+}
 
-function reasonsForBucket(bucketTop, fullAnswers) {
-  const absoluteFacts = bucketTop.map((s) => factsFor(s.paddle, fullAnswers));
-  const relativeFacts = relativeFactsFor(bucketTop);
-  const factsPerPaddle = bucketTop.map((_, i) => ({ ...absoluteFacts[i], ...relativeFacts[i] }));
+function toDots(score) {
+  if (score >= 0.7) return 3;
+  if (score >= 0.4) return 2;
+  return 1;
+}
 
-  // A fact only earns priority placement if it's not identical across every
-  // paddle in this bucket — an identical fact doesn't help distinguish #1
-  // from #2 from #3, however true it is. Relative facts are sparse by
-  // construction (only the min/max paddle gets one), so they already count
-  // as "varying" whenever a low/high pair exists.
-  const varying = FACT_PRIORITY.filter((key) => {
-    const values = factsPerPaddle.map((f) => f[key]).filter(Boolean);
-    return new Set(values).size >= 2;
-  });
-  const order = [...varying, ...FACT_PRIORITY.filter((key) => !varying.includes(key))];
-
-  return bucketTop.map((s, i) => {
-    // Spin gets a guaranteed slot ahead of the varying/relative facts —
-    // unlike those, it isn't shown anywhere else on the card (no chip for
-    // it), so it's worth stating even when every pick in the bucket shares
-    // it, the same way the bucket intro states the shared priority once.
-    const reasons = factsPerPaddle[i].spin ? [factsPerPaddle[i].spin] : [];
-    for (const key of order) {
-      if (reasons.length >= 3) break;
-      if (factsPerPaddle[i][key]) reasons.push(factsPerPaddle[i][key]);
-    }
-    return { paddle: s.paddle, reasons };
-  });
+function dimensionsFor(paddle) {
+  return {
+    power: toDots(powerRating(paddle)),
+    control: toDots(controlRating(paddle)),
+    spin: toDots(spinRatingOf(paddle)),
+    forgiveness: toDots(forgivenessRatingOf(paddle)),
+  };
 }
 
 export function computeMatches(paddles, answers) {
@@ -280,23 +197,14 @@ export function computeMatches(paddles, answers) {
     score:
       styleScore(paddle, fullAnswers.priority) * WEIGHTS.style +
       forgivenessScore(paddle, fullAnswers.forgiveness) * WEIGHTS.forgiveness +
-      weightPrefScore(paddle, fullAnswers.weight) * WEIGHTS.weight,
+      weightPrefScore(paddle, fullAnswers.weight) * WEIGHTS.weight +
+      budgetScore(paddle, fullAnswers.budget) * WEIGHTS.budget,
   }));
 
-  const buckets = PRICE_BUCKETS.map((bucket) => {
-    const top = scored
-      .filter((s) => bucket.inRange(s.paddle.price))
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3);
-    return {
-      key: bucket.key,
-      label: bucket.label,
-      intro: bucketIntro(fullAnswers),
-      top: reasonsForBucket(top, fullAnswers),
-    };
-  });
+  scored.sort((a, b) => b.score - a.score);
+  const top = scored.slice(0, 3).map(({ paddle }) => ({ paddle, dims: dimensionsFor(paddle) }));
 
-  return { fullAnswers, buckets };
+  return { fullAnswers, top };
 }
 
 // ---------- Lead capture (Firestore, write-only) ----------
@@ -334,6 +242,7 @@ export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
         priority: fullAnswers.priority,
         forgiveness: fullAnswers.forgiveness,
         weight: fullAnswers.weight,
+        budget: fullAnswers.budget,
         tournament: fullAnswers.tournament,
       },
       recommendedPaddleIds,
@@ -349,6 +258,11 @@ export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
 // ---------- Wizard UI ----------
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function meterHtml(dots, label) {
+  const cells = Array.from({ length: 3 }, (_, i) => `<span class="pq-meter-dot ${i < dots ? "is-filled" : ""}"></span>`).join("");
+  return `<span class="pq-meter" role="img" aria-label="${label}: ${dots} of 3">${cells}</span>`;
+}
 
 class PaddleQuizApp {
   constructor(root, paddles) {
@@ -400,7 +314,7 @@ class PaddleQuizApp {
     return `
       ${this.renderProgress(QUESTIONS.length, QUESTIONS.length + 1)}
       <h3 class="pq-prompt">Where should we send your matches?</h3>
-      <p class="pq-email-hint">Enter your email to reveal your top picks — 3 paddles at each budget tier. We'll also occasionally send new paddle drops and deals — unsubscribe anytime. See the <a href="/privacy">privacy policy</a>.</p>
+      <p class="pq-email-hint">Enter your email to reveal your top 3 picks. We'll also occasionally send new paddle drops and deals — unsubscribe anytime. See the <a href="/privacy">privacy policy</a>.</p>
       <form class="pq-email-form" data-role="email-form">
         <div class="pq-honeypot" aria-hidden="true">
           <label for="pq-hp">Leave this field blank</label>
@@ -418,39 +332,73 @@ class PaddleQuizApp {
   }
 
   renderResults() {
-    const sections = this.matches.buckets
-      .map((bucket) => {
-        const cards = bucket.top
-          .map(({ paddle, reasons }, i) => {
-            const link = vendorLinkFor(paddle);
-            return `
-          <div class="venue-card pq-paddle-card ${i === 0 ? "top-pick" : ""}">
-            <div class="name-row">
-              <h3>${paddle.name}</h3>
-              ${i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`}
-            </div>
-            <span class="addr">${paddle.brand} · $${paddle.price}</span>
-            ${paddle.paddleType ? `<div class="facts"><span class="stat-chip">${paddle.paddleType}</span></div>` : ""}
-            ${reasons.length ? `<ul class="know-list">${reasons.map((r) => `<li>${r}</li>`).join("")}</ul>` : ""}
-            ${link ? `<a class="book-btn" href="${link.href}" target="_blank" rel="noopener nofollow">${link.label} →</a>` : ""}
-          </div>`;
-          })
-          .join("");
-        return `
-        <div class="pq-bucket">
-          <h3 class="pq-bucket-title">${bucket.label}</h3>
-          ${bucket.intro && cards ? `<p class="pq-bucket-intro">${bucket.intro}</p>` : ""}
-          <div class="pq-results-grid">${cards || `<p class="pq-empty">No matches in this range — try adjusting your other answers.</p>`}</div>
-        </div>`;
-      })
+    const top = this.matches.top;
+
+    if (!top.length) {
+      return `
+        <div class="pq-results-head">
+          <p class="eyebrow">Your matches</p>
+          <h3 class="pq-prompt">No matches found</h3>
+        </div>
+        <p class="pq-empty">Try loosening your budget or tournament-legal answer and retake the quiz.</p>
+        <button type="button" class="clear-btn pq-retake" data-action="retake">Retake the quiz</button>
+      `;
+    }
+
+    const cols = top
+      .map(
+        ({ paddle }, i) => `
+      <th class="pq-compare-col">
+        <div class="name-row">
+          <h3>${paddle.name}</h3>
+          ${i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`}
+        </div>
+        <span class="addr">${paddle.brand} · $${paddle.price}</span>
+      </th>`
+      )
       .join("");
+
+    const dimRow = (label, key) => `
+      <tr>
+        <th class="pq-compare-label">${label}</th>
+        ${top.map(({ dims }) => `<td>${meterHtml(dims[key], label)}</td>`).join("")}
+      </tr>`;
+
+    const weightRow = `
+      <tr>
+        <th class="pq-compare-label">Weight</th>
+        ${top.map(({ paddle }) => `<td>${paddle.weightOz != null ? `${paddle.weightOz}oz` : "—"}</td>`).join("")}
+      </tr>`;
+
+    const linkRow = `
+      <tr class="pq-compare-links">
+        <th class="pq-compare-label"></th>
+        ${top
+          .map(({ paddle }) => {
+            const link = vendorLinkFor(paddle);
+            return `<td>${link ? `<a class="book-btn" href="${link.href}" target="_blank" rel="noopener nofollow">${link.label} →</a>` : ""}</td>`;
+          })
+          .join("")}
+      </tr>`;
 
     return `
       <div class="pq-results-head">
         <p class="eyebrow">Your matches</p>
-        <h3 class="pq-prompt">Your top picks, by budget</h3>
+        <h3 class="pq-prompt">Your top 3 picks</h3>
       </div>
-      <div class="pq-buckets-grid">${sections}</div>
+      <div class="pq-compare-wrap">
+        <table class="pq-compare-table">
+          <thead><tr><th></th>${cols}</tr></thead>
+          <tbody>
+            ${dimRow("Put-away power", "power")}
+            ${dimRow("Resets &amp; touch", "control")}
+            ${dimRow("Spin", "spin")}
+            ${dimRow("Forgiveness", "forgiveness")}
+            ${weightRow}
+            ${linkRow}
+          </tbody>
+        </table>
+      </div>
       <button type="button" class="clear-btn pq-retake" data-action="retake">Retake the quiz</button>
     `;
   }
@@ -499,7 +447,7 @@ class PaddleQuizApp {
     this.render();
 
     this.matches = computeMatches(this.paddles, this.answers);
-    const recommendedPaddleIds = this.matches.buckets.flatMap((b) => b.top.map((m) => m.paddle.id));
+    const recommendedPaddleIds = this.matches.top.map((m) => m.paddle.id);
     await submitLead(email, this.matches.fullAnswers, recommendedPaddleIds);
 
     this.submitting = false;
