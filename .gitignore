@@ -1,4 +1,5 @@
 .DS_Store
+*.numbers
 node_modules/
 .vercel/
 .netlify/

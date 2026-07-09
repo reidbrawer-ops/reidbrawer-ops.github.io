@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rankings — vote for your favorite Bay Area pickleball court</title>
-<meta name="description" content="Vote for your favorite Bay Area pickleball court and rate courts on beginner-friendliness, surface, wait time, and advanced play. Live rankings by city.">
+<title>Paddle finder quiz — Pickleball Bay Area</title>
+<meta name="description" content="Answer 5 quick questions about your game and get your top 5 paddle matches from a database of 486 paddles — scored on style, forgiveness, weight, and budget.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -15,15 +15,15 @@
 <meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Pickleball Bay Area">
-<meta property="og:title" content="Rankings — vote for your favorite Bay Area pickleball court">
-<meta property="og:description" content="Vote for your favorite Bay Area pickleball court and rate courts on beginner-friendliness, surface, wait time, and advanced play. Live rankings by city.">
-<meta property="og:url" content="https://pickleball-bay-area.com/rankings">
+<meta property="og:title" content="Paddle finder quiz — Pickleball Bay Area">
+<meta property="og:description" content="Answer 5 quick questions about your game and get your top 5 paddle matches from a database of 486 paddles.">
+<meta property="og:url" content="https://pickleball-bay-area.com/paddle-quiz">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Rankings — vote for your favorite Bay Area pickleball court">
-<meta name="twitter:description" content="Vote for your favorite Bay Area pickleball court and rate courts on beginner-friendliness, surface, wait time, and advanced play. Live rankings by city.">
-<link rel="canonical" href="https://pickleball-bay-area.com/rankings">
+<meta name="twitter:title" content="Paddle finder quiz — Pickleball Bay Area">
+<meta name="twitter:description" content="Answer 5 quick questions about your game and get your top 5 paddle matches from a database of 486 paddles.">
+<link rel="canonical" href="https://pickleball-bay-area.com/paddle-quiz">
 <link rel="stylesheet" href="/assets/style.css">
-<link rel="stylesheet" href="/assets/rankings.css">
+<link rel="stylesheet" href="/assets/paddle-quiz.css">
 </head>
 <body>
 
@@ -35,13 +35,13 @@
       <a href="/cities/">Cities</a>
       <a href="/map">Map</a>
       <a href="/directory">Directory</a>
-      <a href="/rankings" aria-current="page">Rankings</a>
+      <a href="/rankings">Rankings</a>
       <details class="nav-dropdown">
         <summary>More</summary>
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
           <a href="/gear">Gear &amp; rentals</a>
-          <a href="/paddle-quiz">Paddle quiz</a>
+          <a href="/paddle-quiz" aria-current="page">Paddle quiz</a>
           <a href="/visiting">Visiting the Bay</a>
           <a href="/corrections">Report a correction</a>
         </div>
@@ -53,47 +53,22 @@
 
 <section class="page-hero">
   <div class="container">
-    <p class="eyebrow">Community rankings</p>
-    <h1>Vote for your favorite court.</h1>
-    <p class="lede">Every court on this site can be voted for as a favorite and rated on six factors — beginner friendliness, court surface, wait time, advanced play, amenities, and atmosphere. No login needed. Rankings update live as votes come in, grouped by city so you can see what your own local scene actually thinks.</p>
-    <p class="lede">Where available, each court also shows its public Google rating (e.g. "Google 4.3★ (128)") right next to the community rating above. These are two separate numbers from two different populations of people — we don't average them into one score.</p>
+    <p class="eyebrow">Paddle quiz</p>
+    <h1>Which paddle actually fits your game?</h1>
+    <p class="lede">Five quick questions — level, priority, weight, budget, and whether it needs to be tournament-legal — scored against 486 paddles from 59 brands. No generic "top 10" list, just what matches your answers.</p>
     <div class="stat-strip">
-      <span class="stat-chip"><b>84</b> courts to rate</span>
-      <span class="stat-chip"><b>6</b> rating factors</span>
-      <span class="stat-chip"><b>17</b> city leaderboards</span>
-    </div>
-    <div class="rankings-cta">
-      <a class="btn" href="#top-10">See the Bay Area Top 10 →</a>
-    </div>
-    <div class="city-jump">
-      <p class="city-jump-label">Jump to your city:</p>
-      <div class="city-jump-groups" id="city-jump-groups"></div>
+      <span class="stat-chip"><b>486</b> paddles scored</span>
+      <span class="stat-chip"><b>59</b> brands</span>
+      <span class="stat-chip">~30 seconds</span>
     </div>
   </div>
 </section>
 
-<section class="section" id="top-10">
+<section class="section">
   <div class="container">
-    <div class="region-head">
-      <div>
-        <h2>Bay Area Top 10</h2>
-        <p>Ranked by favorite votes across all 17 cities, ties broken by overall rating. Cast the first vote for a court and watch it climb.</p>
-      </div>
+    <div class="pq-shell" id="paddle-quiz-app">
+      <p class="pq-error">Loading the quiz…</p>
     </div>
-    <div id="rankings-status" class="rankings-status">Loading rankings…</div>
-    <div id="top10-list" class="leaderboard"></div>
-  </div>
-</section>
-
-<section class="section" id="city-leaderboards">
-  <div class="container">
-    <div class="region-head">
-      <div>
-        <h2>Rankings by city</h2>
-        <p>Every court, ranked within its own city. Vote for a favorite or leave a star rating on any of the six factors below.</p>
-      </div>
-    </div>
-    <div id="rankings-cities"></div>
   </div>
 </section>
 
@@ -138,18 +113,14 @@
     </div>
     <div class="footer-note">
       <span>An independent, unaffiliated directory. No ads, no sponsored listings.</span>
-      <span>Favorite votes and ratings are community-submitted and unverified. Google ratings, where shown, are pulled periodically from Google Maps and displayed separately, not blended in.</span>
+      <span>486 paddles scored, July 2026.</span>
     </div>
   </div>
 </footer>
 
-<script type="module" src="/assets/court-ratings.js"></script>
-<script src="/assets/rating-widgets.js"></script>
-<script src="/assets/google-ratings.js"></script>
-<script src="/assets/regions.js"></script>
-<script src="/assets/rankings.js"></script>
 <script src="/assets/nav.js" defer></script>
 <script src="/assets/global-search.js" defer></script>
 <script src="/assets/analytics.js" defer></script>
+<script type="module" src="/assets/paddle-quiz.js"></script>
 </body>
 </html>

@@ -110,5 +110,36 @@ service cloud.firestore {
           || (countDelta == 0 && sumDelta >= -4 && sumDelta <= 4);
       }
     }
+
+    // Paddle quiz leads (paddle-quiz.html). Write-only mailbox: anyone can
+    // drop in a well-formed lead, nobody can read, edit, or delete from the
+    // client — only accessible from the Firebase console / an admin script.
+    // Same abuse caveat as courtVotes above: this is shape validation, not
+    // fraud prevention.
+    match /paddleQuizLeads/{leadId} {
+      allow read: if false;
+      allow update: if false;
+      allow delete: if false;
+
+      allow create: if isWellFormedLead(request.resource.data);
+
+      function isWellFormedLead(data) {
+        return data.keys().hasOnly(['email', 'answers', 'recommendedPaddleIds', 'createdAt'])
+          && data.email is string
+          && data.email.size() <= 254
+          && data.email.matches('^[^@\\s]+@[^@\\s]+[.][^@\\s]+$')
+          && data.answers is map
+          && data.answers.keys().hasOnly(['experience', 'priority', 'forgiveness', 'weight', 'budget', 'tournament'])
+          && data.answers.experience is string
+          && data.answers.priority is string
+          && data.answers.forgiveness is string
+          && data.answers.weight is string
+          && data.answers.budget is string
+          && data.answers.tournament is string
+          && data.recommendedPaddleIds is list
+          && data.recommendedPaddleIds.size() <= 5
+          && data.createdAt == request.time;
+      }
+    }
   }
 }
