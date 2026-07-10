@@ -74,7 +74,7 @@
     "url": "/cities/cupertino",
     "indoor": "outdoor",
     "id": "de-anza-college",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Central Park Knoll Pickleball Courts",
@@ -119,7 +119,7 @@
     "approx": true,
     "indoor": "outdoor",
     "id": "raindance-pickleball",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Kelly Park",
@@ -240,7 +240,7 @@
     "url": "/cities/oakland",
     "indoor": "outdoor",
     "id": "oakland-hills-tennis-club",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "DeFremery Park",
@@ -251,7 +251,7 @@
     "url": "/cities/oakland",
     "indoor": "outdoor",
     "id": "de-fremery-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Mitchell Park",
@@ -317,7 +317,7 @@
     "url": "/cities/pleasanton",
     "indoor": "both",
     "id": "clubsport-of-pleasanton",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Red Morton Park \u2014 outdoor courts",
@@ -471,7 +471,7 @@
     "url": "/cities/san-francisco",
     "indoor": "outdoor",
     "id": "rec-fillmore",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "States Street Playground",
@@ -482,7 +482,7 @@
     "url": "/cities/san-francisco",
     "indoor": "outdoor",
     "id": "states-street-playground",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Stern Grove Playground",
@@ -493,7 +493,7 @@
     "url": "/cities/san-francisco",
     "indoor": "outdoor",
     "id": "stern-grove-playground",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Upper Noe Rec Center",
@@ -515,7 +515,7 @@
     "url": "/cities/san-francisco",
     "indoor": "indoor",
     "id": "eureka-valley-rec-center",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Hamilton Rec Center",
@@ -537,7 +537,7 @@
     "url": "/cities/san-francisco",
     "indoor": "indoor",
     "id": "minnie-lovie-ward-rec-center",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Richmond Rec Center",
@@ -548,7 +548,7 @@
     "url": "/cities/san-francisco",
     "indoor": "indoor",
     "id": "richmond-rec-center",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Mission YMCA",
@@ -625,7 +625,7 @@
     "url": "/cities/san-jose",
     "indoor": "outdoor",
     "id": "calabazas-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "John Mise Park",
@@ -636,7 +636,7 @@
     "url": "/cities/san-jose",
     "indoor": "outdoor",
     "id": "john-mise-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Cataldi Park",
@@ -647,7 +647,7 @@
     "url": "/cities/san-jose",
     "indoor": "outdoor",
     "id": "cataldi-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Edenvale Gardens Regional Park",
@@ -658,7 +658,7 @@
     "url": "/cities/san-jose",
     "indoor": "outdoor",
     "id": "edenvale-gardens-regional-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Groesbeck Hill Park",
@@ -669,7 +669,7 @@
     "url": "/cities/san-jose",
     "indoor": "outdoor",
     "id": "groesbeck-hill-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "River Glen Park",
@@ -680,7 +680,7 @@
     "url": "/cities/san-jose",
     "indoor": "outdoor",
     "id": "river-glen-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Branham Park",
@@ -702,7 +702,7 @@
     "url": "/cities/san-jose",
     "indoor": "indoor",
     "id": "bascom-community-center",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Camden Community Center",
@@ -823,7 +823,7 @@
     "url": "/cities/san-rafael",
     "indoor": "outdoor",
     "id": "mcinnis-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "McNears Beach Park",
@@ -834,7 +834,7 @@
     "url": "/cities/san-rafael",
     "indoor": "outdoor",
     "id": "mcnears-beach-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Osher Marin JCC",
@@ -845,7 +845,7 @@
     "url": "/cities/san-rafael",
     "indoor": "both",
     "id": "osher-marin-jcc",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Community Recreation Center at Central Park",
@@ -912,5 +912,393 @@
     "indoor": "outdoor",
     "id": "heather-farm-park-walnut-creek-tennis-center",
     "confirmed": true
+  },
+  {
+    "name": "Neighborhood Pickleball - Rooftop - Level 6",
+    "city": "Berkeley",
+    "address": "2061 Allston Way, Berkeley, CA (6th floor / Level 6 of the parking garage; exact ZIP not confirmed by sources checked, likely 94704)",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/berkeley",
+    "approx": true,
+    "indoor": "outdoor",
+    "id": "neighborhood-pickleball-rooftop-level-6",
+    "confirmed": true
+  },
+  {
+    "name": "Claremont Club and Spa",
+    "city": "Berkeley",
+    "address": "41 Tunnel Rd, Berkeley, CA 94705",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/berkeley",
+    "approx": true,
+    "indoor": "outdoor",
+    "id": "claremont-club-and-spa",
+    "confirmed": true
+  },
+  {
+    "name": "Mission Hills Racquet and Swim Club",
+    "city": "Fremont",
+    "address": "10 E Las Palmas Ave, Fremont, CA 94539",
+    "lat": 37.55892,
+    "lon": -121.95087,
+    "url": "/cities/fremont",
+    "indoor": "outdoor",
+    "id": "mission-hills-racquet-and-swim-club",
+    "confirmed": true
+  },
+  {
+    "name": "Bintang Badminton",
+    "city": "Fremont",
+    "address": "48900 Milmont Dr, Fremont, CA 94538",
+    "lat": 37.460655,
+    "lon": -121.92063,
+    "url": "/cities/fremont",
+    "indoor": "indoor",
+    "id": "bintang-badminton",
+    "confirmed": true
+  },
+  {
+    "name": "Vallejo Mill Historical Park",
+    "city": "Fremont",
+    "address": "Niles Canyon Rd & Mission Blvd (NE corner), Fremont, CA 94536",
+    "lat": 37.577469,
+    "lon": -121.97253,
+    "url": "/cities/fremont",
+    "indoor": "outdoor",
+    "id": "vallejo-mill-historical-park",
+    "confirmed": true
+  },
+  {
+    "name": "Google Athletic Recreation Field Park",
+    "city": "Mountain View",
+    "address": "2400 Amphitheatre Pkwy, Mountain View, CA 94043",
+    "lat": 37.4240559,
+    "lon": -122.0881274,
+    "url": "/cities/mountain-view",
+    "indoor": "outdoor",
+    "id": "google-athletic-recreation-field-park",
+    "confirmed": true
+  },
+  {
+    "name": "Bay Club Rolling Hills",
+    "city": "Novato",
+    "address": "351 San Andreas Drive, Novato, CA 94945",
+    "lat": 38.1252713,
+    "lon": -122.6037694,
+    "url": "/cities/novato",
+    "indoor": "outdoor",
+    "id": "bay-club-rolling-hills",
+    "confirmed": true
+  },
+  {
+    "name": "Meyer Tennis Courts",
+    "city": "Oakland",
+    "address": "Richards Rd, Oakland, CA 94613",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/oakland",
+    "approx": true,
+    "indoor": "outdoor",
+    "id": "meyer-tennis-courts",
+    "confirmed": true
+  },
+  {
+    "name": "Sheffield Village Tennis Court",
+    "city": "Oakland",
+    "address": "3062 Roxbury Ave, Oakland, CA 94605",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/oakland",
+    "approx": true,
+    "indoor": "outdoor",
+    "id": "sheffield-village-tennis-court",
+    "confirmed": true
+  },
+  {
+    "name": "Hampton Tennis Court - Piedmont",
+    "city": "Oakland",
+    "address": "Hampton Rd & La Salle Ave, Piedmont, CA 94611",
+    "lat": 37.817744,
+    "lon": -122.223519,
+    "url": "/cities/oakland",
+    "approx": true,
+    "indoor": "outdoor",
+    "id": "hampton-tennis-court-piedmont",
+    "confirmed": false
+  },
+  {
+    "name": "Andrew Spinas Park",
+    "city": "Redwood City",
+    "address": "3003 Bay Rd, Redwood City, CA 94063",
+    "lat": 37.4835,
+    "lon": -122.2012,
+    "url": "/cities/redwood-city",
+    "approx": true,
+    "indoor": "outdoor",
+    "id": "andrew-spinas-park",
+    "confirmed": true
+  },
+  {
+    "name": "Stanford Redwood City Recreation & Wellness Center",
+    "city": "Redwood City",
+    "address": "900 Warrington Ave, Redwood City, CA 94063",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/redwood-city",
+    "approx": true,
+    "indoor": "indoor",
+    "id": "stanford-redwood-city-recreation-and-wellness-center",
+    "confirmed": true
+  },
+  {
+    "name": "Palace of Fine Arts",
+    "city": "San Francisco",
+    "address": "3601 Lyon St, San Francisco, CA 94123",
+    "lat": 37.8029220527055,
+    "lon": -122.44843125343323,
+    "url": "/cities/san-francisco",
+    "indoor": "indoor",
+    "id": "palace-of-fine-arts",
+    "confirmed": true
+  },
+  {
+    "name": "Bay Padel Dogpatch Indoor Padel and Pickleball Courts in San Francisco",
+    "city": "San Francisco",
+    "address": "1070 Maryland St, San Francisco, CA 94107",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-francisco",
+    "approx": true,
+    "indoor": "indoor",
+    "id": "bay-padel-dogpatch",
+    "confirmed": true
+  },
+  {
+    "name": "Alta Plaza Park",
+    "city": "San Francisco",
+    "address": "Jackson St & Steiner St, San Francisco, CA 94115",
+    "lat": 37.7911417,
+    "lon": -122.4376241,
+    "url": "/cities/san-francisco",
+    "indoor": "outdoor",
+    "id": "alta-plaza-park",
+    "confirmed": true
+  },
+  {
+    "name": "Crocker Amazon Park",
+    "city": "San Francisco",
+    "address": "799 Moscow St, San Francisco, CA 94112",
+    "lat": 37.7138207,
+    "lon": -122.431916,
+    "url": "/cities/san-francisco",
+    "indoor": "outdoor",
+    "id": "crocker-amazon-park",
+    "confirmed": true
+  },
+  {
+    "name": "Mission Bay",
+    "city": "San Francisco",
+    "address": "451 Berry St, San Francisco, CA 94158",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-francisco",
+    "approx": true,
+    "indoor": "outdoor",
+    "id": "mission-bay",
+    "confirmed": true
+  },
+  {
+    "name": "Church of Pickleball",
+    "city": "San Francisco",
+    "address": "554 Fillmore St, San Francisco, CA 94117",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-francisco",
+    "approx": true,
+    "indoor": "indoor",
+    "id": "church-of-pickleball",
+    "confirmed": true
+  },
+  {
+    "name": "Bay Club Gateway",
+    "city": "San Francisco",
+    "address": "370 Drumm St, San Francisco, CA 94111",
+    "lat": 37.7969956,
+    "lon": -122.3972503,
+    "url": "/cities/san-francisco",
+    "indoor": "outdoor",
+    "id": "bay-club-gateway",
+    "confirmed": true
+  },
+  {
+    "name": "Bay Padel Indoor Padel and Pickleball Courts in San Francisco",
+    "city": "San Francisco",
+    "address": "29 Avenue G, San Francisco, CA 94130",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-francisco",
+    "approx": true,
+    "indoor": "indoor",
+    "id": "bay-padel-treasure-island",
+    "confirmed": true
+  },
+  {
+    "name": "Little Italy/Arena Green East",
+    "city": "San Jose",
+    "address": "340 W St John St, San Jose, CA 95110",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-jose",
+    "indoor": "outdoor",
+    "id": "little-italy-arena-green-east",
+    "confirmed": true
+  },
+  {
+    "name": "Doerr Park",
+    "city": "San Jose",
+    "address": "Potrero Dr & Park Wilshire Dr, San Jose, CA 95124",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-jose",
+    "indoor": "outdoor",
+    "id": "doerr-park",
+    "confirmed": true
+  },
+  {
+    "name": "Ace Pickleball Club San Jose",
+    "city": "San Jose",
+    "address": "5502 Monterey Road, San Jose, CA 95138",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-jose",
+    "indoor": "indoor",
+    "id": "ace-pickleball-club-san-jose",
+    "confirmed": true
+  },
+  {
+    "name": "Willow Street Frank Bramhall Park",
+    "city": "San Jose",
+    "address": "1320 Willow St, San Jose, CA 95125",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-jose",
+    "indoor": "outdoor",
+    "id": "willow-street-frank-bramhall-park",
+    "confirmed": true
+  },
+  {
+    "name": "Canoas Park",
+    "city": "San Jose",
+    "address": "2580-2648 Thrush Dr, San Jose, CA 95125",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-jose",
+    "indoor": "outdoor",
+    "id": "canoas-park",
+    "confirmed": true
+  },
+  {
+    "name": "Central YMCA",
+    "city": "San Jose",
+    "address": "1717 The Alameda, San Jose, CA 95126",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-jose",
+    "indoor": "indoor",
+    "id": "central-ymca",
+    "confirmed": true
+  },
+  {
+    "name": "De Anza Park",
+    "city": "San Jose",
+    "address": "Meridian Ave & Princeton Dr, San Jose, CA 95118",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-jose",
+    "indoor": "outdoor",
+    "id": "de-anza-park",
+    "confirmed": false
+  },
+  {
+    "name": "Silver Creek Valley Country Club",
+    "city": "San Jose",
+    "address": "5460 Country Club Pkwy, San Jose, CA 95138",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-jose",
+    "indoor": "outdoor",
+    "id": "silver-creek-valley-country-club",
+    "confirmed": true
+  },
+  {
+    "name": "San Jose Swim & Racquet Club",
+    "city": "San Jose",
+    "address": "1170 Pedro St, San Jose, CA",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/san-jose",
+    "indoor": "outdoor",
+    "id": "san-jose-swim-and-racquet-club",
+    "confirmed": true
+  },
+  {
+    "name": "Albert J. Boro Community Center",
+    "city": "San Rafael",
+    "address": "50 Canal Street, San Rafael, CA 94901",
+    "lat": 37.9680284,
+    "lon": -122.4980253,
+    "url": "/cities/san-rafael",
+    "indoor": "indoor",
+    "id": "albert-j-boro-community-center",
+    "confirmed": true
+  },
+  {
+    "name": "Santa Clara Adult Education",
+    "city": "Santa Clara",
+    "address": "1840 Benton St, Santa Clara, CA 95050",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/santa-clara",
+    "approx": true,
+    "indoor": "indoor",
+    "id": "santa-clara-adult-education",
+    "confirmed": true
+  },
+  {
+    "name": "Bay Club Walnut Creek",
+    "city": "Walnut Creek",
+    "address": "2805 Jones Rd, Walnut Creek, CA 94597",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/walnut-creek",
+    "approx": true,
+    "indoor": "indoor",
+    "id": "bay-club-walnut-creek",
+    "confirmed": true
+  },
+  {
+    "name": "Tice Valley Gym",
+    "city": "Walnut Creek",
+    "address": "2055 Tice Valley Blvd, Walnut Creek, CA 94595",
+    "lat": 37.8752676,
+    "lon": -122.0699168,
+    "url": "/cities/walnut-creek",
+    "indoor": "indoor",
+    "id": "tice-valley-gym",
+    "confirmed": true
+  },
+  {
+    "name": "Rossmoor",
+    "city": "Walnut Creek",
+    "address": "1001 Golden Rain Rd, Walnut Creek, CA 94595",
+    "lat": null,
+    "lon": null,
+    "url": "/cities/walnut-creek",
+    "approx": true,
+    "indoor": "both",
+    "id": "rossmoor",
+    "confirmed": false
   }
 ]

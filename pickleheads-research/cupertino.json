@@ -1,0 +1,95 @@
+{
+  "city": "Cupertino",
+  "pickleheadsSlug": "cupertino",
+  "pickleheadsStatedTotal": {
+    "locations": 2,
+    "courts": 14,
+    "notes": "Pickleheads' city-index page for Cupertino did not return a literal 'N locations with M courts' summary line in search snippets. Locations=2 and courts=14 (8+6) are computed from the two individual venue detail pages Pickleheads lists (Cupertino Memorial Park, DeAnza College) via `site:pickleheads.com/courts/us/california/cupertino`, which returned exactly these two URLs and no others. Independently corroborated by a third-party aggregator (Bounce) which also lists '2 locations' for Cupertino."
+  },
+  "researchedAt": "2026-07-10",
+  "venues": [
+    {
+      "id": "cupertino-memorial-park",
+      "name": "Cupertino Memorial Park",
+      "city": "Cupertino",
+      "neighborhood": "Not specified",
+      "address": "21121 Stevens Creek Blvd, Cupertino, CA 95014",
+      "lat": 37.3227003,
+      "lon": -122.0468305,
+      "approxLocation": false,
+      "courts": 8,
+      "indoorOutdoor": "Outdoor",
+      "surface": "Outdoor hard and concrete courts, permanent lines, portable nets available",
+      "lights": true,
+      "netType": "Portable nets on permanent lines",
+      "price": "Free",
+      "reservable": "Walk-up",
+      "bookingUrl": null,
+      "hours": "Daylight hours until 9pm daily",
+      "amenities": ["lights", "restrooms", "water"],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Hot, sunny South Bay summers",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/cupertino/cupertino-memorial-park",
+      "pickleheadsRating": null,
+      "googleMapsUrl": null,
+      "confirmed": false,
+      "matchStatus": "existing-conflict",
+      "existingId": "memorial-park",
+      "conflicts": [
+        {
+          "field": "courts",
+          "existing": 4,
+          "pickleheads": 8,
+          "source": "https://www.pickleheads.com/courts/us/california/cupertino/cupertino-memorial-park"
+        }
+      ],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/cupertino/cupertino-memorial-park",
+        "https://www.bounce.game/pickleball/city/cupertino-california-us/courts",
+        "https://www.yelp.com/biz/memorial-park-cupertino"
+      ],
+      "notes": "Matched to existing baseline entry 'Memorial Park' (memorial-park) by name (Pickleheads lists it as 'Cupertino Memorial Park') and by it being Cupertino's only large multi-court public park on Stevens Creek Blvd. Pickleheads states 8 courts vs. the existing record's 4 — flagged as a conflict, not resolved here. Address: Pickleheads' own page did not display an address in any search snippet retrieved. Several third-party aggregators (e.g. corner.inc) show '21153 Christensen Dr, Cupertino, CA 95014' for this venue, but that address resolves to a private single-family residence in county property records (city-data.com), not the park — treated as an unreliable scrape and excluded. Kept the existing baseline's Stevens Creek Blvd address/coordinates instead, which is corroborated by Yelp ('Anton Way At Stevens Creek Blvd') and city sources (~21100 Stevens Creek Blvd). lat/lon carried from the existing confirmed venues.json record, not independently re-geocoded. Hours 'daylight hours until 9pm daily' came from a search synthesis referencing Pickleheads plus other sources, not a pure site:pickleheads.com snippet — treat with slightly lower confidence than the court-count figure. Non-Pickleheads sources (teachme.to, corner.inc) additionally describe the 8 courts as split 4 'friendly' / 4 'competitive' with mixed skill levels; not recorded in the skill field since it isn't sourced to Pickleheads itself, noted here only for human review. No numeric Google Maps cid could be confirmed for this venue, so googleMapsUrl is null rather than falling back to a worse URL format."
+    },
+    {
+      "id": "deanza-college",
+      "name": "DeAnza College",
+      "city": "Cupertino",
+      "neighborhood": "Not specified",
+      "address": "21250 Stevens Creek Blvd, Cupertino, CA 95014",
+      "lat": 37.3180201,
+      "lon": -122.042637,
+      "approxLocation": false,
+      "courts": 6,
+      "indoorOutdoor": "Outdoor",
+      "surface": "Outdoor asphalt courts, permanent lines, bring your own net",
+      "lights": true,
+      "netType": "Bring your own net (BYO)",
+      "price": "Free, $3.00/day parking",
+      "reservable": "Walk-up",
+      "bookingUrl": null,
+      "hours": "Not specified",
+      "amenities": ["lights"],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Hot, sunny South Bay summers",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/cupertino/deanza-college",
+      "pickleheadsRating": null,
+      "googleMapsUrl": null,
+      "confirmed": true,
+      "matchStatus": "existing-update",
+      "existingId": "de-anza-college",
+      "conflicts": [],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/cupertino/deanza-college"
+      ],
+      "notes": "Matched to existing baseline entry 'De Anza College' (de-anza-college) — exact address match (21250 Stevens Creek Blvd), exact court count match (6). Pickleheads confirms the existing record with no conflicts and fills in one previously 'Not specified' field: reservable (now 'Walk-up', i.e. cannot be reserved). lights=true is new information not previously captured in courts-data.json (that schema has no lights field). No rating, hours, or skill-level data found on the Pickleheads page. lat/lon carried from the existing venues.json record, not independently re-geocoded. No numeric Google Maps cid could be confirmed, so googleMapsUrl is null here (the existing courts-data.json record already has one — this file doesn't overwrite it, that's a merge-step decision)."
+    }
+  ],
+  "notOnPickleheads": [
+    {
+      "id": "cupertino-sports-center",
+      "name": "Cupertino Sports Center"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "city": "Palo Alto",
+  "pickleheadsSlug": "palo-alto",
+  "pickleheadsStatedTotal": { "locations": 1, "courts": 15 },
+  "researchedAt": "2026-07-10",
+  "notes": "Pickleheads lists exactly 1 location for Palo Alto — Mitchell Park — with 15 outdoor hard courts, consistently across the city index page and the venue detail page. This is the same physical venue as the existing baseline's sole Palo Alto entry (id: mitchell-park, 600 E Meadow Dr), matched on name and address, but Pickleheads' court count (15, all described as dedicated permanent lines/nets) materially contradicts the existing record (8 permanent dedicated courts + 7 separate multi-purpose courts, 24/7 vs 8am-3pm respectively). See the venue's conflicts array — left confirmed:false pending human review of which count/structure is current.",
+  "venues": [
+    {
+      "id": "mitchell-park",
+      "name": "Mitchell Park",
+      "city": "Palo Alto",
+      "neighborhood": "Not specified",
+      "address": "600 E Meadow Dr, Palo Alto, CA 94303",
+      "lat": 37.4232558,
+      "lon": -122.1163817,
+      "approxLocation": false,
+      "courts": 15,
+      "indoorOutdoor": "Outdoor",
+      "surface": "Outdoor hard court, all 15 courts described as dedicated permanent lines and nets",
+      "lights": true,
+      "netType": "Dedicated permanent pickleball nets",
+      "price": "Free",
+      "reservable": "Walk-up",
+      "bookingUrl": null,
+      "hours": "6am-10pm daily (15 courts)",
+      "amenities": ["Restrooms", "Water", "Lights", "Shaded picnic areas", "Playgrounds", "Parking"],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Not specified",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/palo-alto/mitchell-park",
+      "pickleheadsRating": null,
+      "googleMapsUrl": "https://maps.google.com/?cid=1867436835109849446",
+      "confirmed": false,
+      "matchStatus": "existing-conflict",
+      "existingId": "mitchell-park",
+      "conflicts": [
+        {
+          "field": "courts",
+          "existing": 8,
+          "pickleheads": 15,
+          "source": "https://www.pickleheads.com/courts/us/california/palo-alto/mitchell-park"
+        },
+        {
+          "field": "hours",
+          "existing": "8 permanent courts open 24/7; 7 multi-purpose courts open 8am-3pm daily",
+          "pickleheads": "6am-10pm daily (15 courts)",
+          "source": "https://www.pickleheads.com/courts/us/california/palo-alto/mitchell-park"
+        },
+        {
+          "field": "surface",
+          "existing": "Hard court; 8 permanent (dedicated) + 7 multi-purpose",
+          "pickleheads": "Outdoor hard court, all 15 courts with dedicated permanent lines and nets (no multi-purpose split mentioned)",
+          "source": "https://www.pickleheads.com/courts/us/california/palo-alto/mitchell-park"
+        }
+      ],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/palo-alto",
+        "https://www.pickleheads.com/courts/us/california/palo-alto/mitchell-park",
+        "https://dailypb.com/venue/mitchell-park-pickleball-palo-alto-ca"
+      ],
+      "notes": "Existing repo baseline (assets/courts-data.json, id: mitchell-park) already had a confirmed:true record for this venue describing 8 dedicated 24/7 courts plus 7 separate multi-purpose courts open 8am-3pm. Pickleheads instead states a flat 15 total outdoor courts, all with dedicated permanent lines/nets, open 6am-10pm daily -- a materially different count and structure (could reflect a park expansion since the baseline was recorded, or Pickleheads counting multi-purpose/tennis-overlay lines as full courts). Set confirmed:false and recorded all three affected fields in conflicts for human review rather than picking a side. DailyPB corroborates the 15-court count, free/walk-up access, restrooms/water/lights, and adds a non-Pickleheads detail (a $2 suggested donation for balls) that is noted here but not written into the 'price' field since Pickleheads itself states the courts are simply free. lat/lon and googleMapsUrl carried forward unchanged from the existing confirmed venues.json/courts-data.json record for this exact address, since Pickleheads doesn't publish coordinates or a Google Maps link directly. Palo Alto Pickleball Club (750+ members, paloaltopickleballclub.org) organizes community play here per non-Pickleheads sources; not itself a Pickleheads-sourced fact so left out of the 'skill' field. No Pickleheads-specific star rating was found via search (a 5.0/1-review rating exists on a different aggregator, Pickleball Plus, but that is not a Pickleheads figure so pickleheadsRating is left null)."
+    }
+  ],
+  "notOnPickleheads": []
+}

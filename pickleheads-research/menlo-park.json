@@ -1,0 +1,83 @@
+{
+  "city": "Menlo Park",
+  "pickleheadsSlug": "menlo-park",
+  "pickleheadsStatedTotal": { "locations": 2, "courts": 6 },
+  "researchedAt": "2026-07-10",
+  "notes": "Pickleheads lists only 2 locations for Menlo Park (Nealon Park, 4 outdoor courts; Athletic Club San Carlos, 2 indoor courts = 6 total), consistently across the city index page and independent aggregator mirrors (Pickleballify, globalpickleball.network). The existing baseline's Kelly Park is NOT listed by Pickleheads at all (see notOnPickleheads). Separately, 'Athletic Club San Carlos' appears to be a Pickleheads data error, not a real Menlo Park venue — see that venue's own notes field for the full explanation before merging it.",
+  "venues": [
+    {
+      "id": "nealon-park",
+      "name": "Nealon Park",
+      "city": "Menlo Park",
+      "neighborhood": "Not specified",
+      "address": "800 Middle Ave, Menlo Park, CA 94025",
+      "lat": 37.447922,
+      "lon": -122.179417,
+      "approxLocation": false,
+      "courts": 4,
+      "indoorOutdoor": "Outdoor",
+      "surface": "Outdoor asphalt, permanent pickleball lines",
+      "lights": true,
+      "netType": "Portable nets on dedicated pickleball lines",
+      "price": "Free",
+      "reservable": "Walk-up",
+      "bookingUrl": null,
+      "hours": "Drop-in pickleball 8:00am–3:00pm daily; shared with tennis 3:00–10:00pm; lights off at 10pm",
+      "amenities": ["Restrooms", "Water", "Lights"],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Mild, occasional fog",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/menlo-park/nealon-park",
+      "pickleheadsRating": null,
+      "googleMapsUrl": "https://maps.google.com/?cid=6207450611251846679",
+      "confirmed": true,
+      "matchStatus": "existing-update",
+      "existingId": "nealon-park",
+      "conflicts": [],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/menlo-park",
+        "https://www.pickleheads.com/courts/us/california/menlo-park/nealon-park"
+      ],
+      "notes": "Matches existing baseline entry exactly on courts (4), indoorOutdoor (Outdoor), and reservable (Walk-up/'reservations not available') — no conflicts. Fills in fields the baseline had as 'Not specified': price (Free), hours (specific drop-in/shared-with-tennis schedule), lights, netType, and amenities. lat/lon and googleMapsUrl carried forward unchanged from the existing confirmed record (Pickleheads doesn't publish coordinates or a Google Maps cid), not independently re-sourced here."
+    },
+    {
+      "id": "athletic-club-san-carlos",
+      "name": "Athletic Club San Carlos",
+      "city": "Menlo Park",
+      "neighborhood": "Not specified",
+      "address": "3 Callie Ln, Menlo Park, CA 94025",
+      "lat": null,
+      "lon": null,
+      "approxLocation": false,
+      "courts": 2,
+      "indoorOutdoor": "Indoor",
+      "surface": "Indoor, permanent pickleball lines",
+      "lights": "Not specified",
+      "netType": "Portable nets",
+      "price": "Membership required",
+      "reservable": "Not specified",
+      "bookingUrl": null,
+      "hours": "Not specified",
+      "amenities": [],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Mild, occasional fog",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/menlo-park/athletic-club-san-carlos",
+      "pickleheadsRating": null,
+      "googleMapsUrl": null,
+      "confirmed": false,
+      "matchStatus": "new",
+      "existingId": null,
+      "conflicts": [],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/menlo-park",
+        "https://www.pickleheads.com/courts/us/california/menlo-park/athletic-club-san-carlos",
+        "https://www.pickleheads.com/courts/mx/sonora/san-carlos/athletic-club-san-carlos"
+      ],
+      "notes": "LIKELY PICKLEHEADS DATA ERROR — flag for human review, do not merge as-is. This 'Menlo Park' listing shares its exact name, facility description ('2 courts, permanent lines, portable nets, membership required'), and contact phone number (622-226-0700) with a separate Pickleheads page for a completely different venue in San Carlos, Sonora, MEXICO (pickleheads.com/courts/mx/sonora/san-carlos/athletic-club-san-carlos — 1 outdoor hard court on a tennis court overlay, address 'Avenida 3 #110 at the corner of Calle IV, San Carlos, Sonora Mexico', phone 622-226-0700, hours Mon–Fri 6am–9pm/Sat 8am–3pm/closed Sun). The 622 area code is a Mexican (Sonora) code, not a US one. The stated address '3 Callie Ln, Menlo Park, CA 94025' does not appear to exist — real Callie Ln addresses in Menlo Park run roughly 47–60 (per Zillow/Redfin listings), no '3 Callie Ln'. Court count (2) and indoor/outdoor also don't match the Mexico page (1 court, outdoor), so even the two Pickleheads pages for the 'same' venue disagree with each other. Best guess: Pickleheads mis-geocoded/duplicated the Sonora, Mexico venue onto a fabricated Menlo Park, CA address. Recorded here because it does appear on Pickleheads' Menlo Park city index page and the task scope is 'every venue Pickleheads lists for Menlo Park' — but confirmed is set false and this should very likely be excluded rather than added to courts-data.json/venues.json during merge."
+    }
+  ],
+  "notOnPickleheads": [
+    { "id": "kelly-park", "name": "Kelly Park" }
+  ]
+}

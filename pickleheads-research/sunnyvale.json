@@ -1,0 +1,96 @@
+{
+  "city": "Sunnyvale",
+  "pickleheadsSlug": "sunnyvale",
+  "pickleheadsStatedTotal": { "locations": 2, "courts": 18 },
+  "researchedAt": "2026-07-10",
+  "venues": [
+    {
+      "id": "sunnyvale-tennis-center",
+      "name": "Sunnyvale Tennis Center",
+      "city": "Sunnyvale",
+      "neighborhood": "Not specified",
+      "address": "755 S Mathilda Ave, Sunnyvale, CA 94087",
+      "lat": 37.3650942,
+      "lon": -122.0342751,
+      "courts": 12,
+      "indoorOutdoor": "Outdoor",
+      "surface": "Outdoor acrylic and hard courts, dedicated, permanent lines and nets. A secondary (non-Pickleheads) source breaks the 12 down as 4 dedicated pickleball courts plus 8 temporary/converted-tennis-court pickleball courts.",
+      "lights": true,
+      "netType": "Permanent nets on dedicated courts",
+      "price": "$10/hr resident, $13/hr non-resident",
+      "reservable": "Reservable",
+      "bookingUrl": "https://app.courtreserve.com/Online/Portal/Index/13233",
+      "hours": "Mon–Fri 8am–10pm, Sat–Sun 8am–8pm",
+      "amenities": ["Restrooms", "Food", "Water", "Lights", "Group and private lessons", "Youth programming", "Pro shop"],
+      "skill": "Group and private pickleball lessons/clinics for beginner through advanced players",
+      "waitTime": "Not specified",
+      "weather": "Hot, sunny South Bay summers",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/sunnyvale/sunnyvale-tennis-center",
+      "pickleheadsRating": null,
+      "googleMapsUrl": null,
+      "confirmed": false,
+      "matchStatus": "existing-conflict",
+      "existingId": "sunnyvale-tennis-center",
+      "conflicts": [
+        {
+          "field": "courts",
+          "existing": 4,
+          "pickleheads": 12,
+          "source": "https://www.pickleheads.com/courts/us/california/sunnyvale/sunnyvale-tennis-center"
+        },
+        {
+          "field": "price",
+          "existing": "$8–10/hr resident ($2/person w/ 4 players), $10–13/hr non-resident",
+          "pickleheads": "$10/hr resident, $13/hr non-resident",
+          "source": "https://www.pickleheads.com/courts/us/california/sunnyvale/sunnyvale-tennis-center"
+        }
+      ],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/sunnyvale",
+        "https://www.pickleheads.com/courts/us/california/sunnyvale/sunnyvale-tennis-center",
+        "https://www.tennispickleballcalifornia.com/courts/california/sunnyvale/lifetime-pickleball-courts-sunnyvale/",
+        "https://www.courtsource.us/pickleball/ca/sunnyvale/sunnyvale-tennis-center",
+        "https://www.places2play.org/place?id=6850"
+      ],
+      "notes": "Pickleheads (and the city-level '2 locations, 18 courts' total, which only reconciles as 12+6) consistently states 12 outdoor pickleball courts here, up from the existing record's 4. A secondary source (tennispickleballcalifornia.com) explains this as 4 dedicated + 8 temporary/converted-tennis courts, which is plausible for a 13–16-court municipal tennis facility, but two other non-Pickleheads sources (courtsource.us, places2play.org) independently corroborate the older '4 total pickleball courts' figure instead — the discrepancy is not just Pickleheads-vs-repo, it shows up across sources, so this needs a human call. Pickleheads also newly confirms indoorOutdoor = Outdoor (existing record had this as 'Not specified'). Reported pricing also varies by source: some (matching the existing record) give $8/hr resident + $2/person-with-4-players, others (attributed to Pickleheads) give a flat $10/hr resident — possibly a rate increase since the existing record was last checked, possibly source inconsistency. Left confirmed:false due to the unresolved court-count and price conflicts. Could not confirm a numeric Google Maps cid for this venue in search results, so googleMapsUrl is left null per the no-worse-format rule."
+    },
+    {
+      "id": "sunnyvale-community-center",
+      "name": "Sunnyvale Community Center",
+      "city": "Sunnyvale",
+      "neighborhood": "Not specified",
+      "address": "550 E Remington Drive, Sunnyvale, CA 94087",
+      "lat": 37.357704,
+      "lon": -122.0264951,
+      "courts": 6,
+      "indoorOutdoor": "Indoor",
+      "surface": "Indoor hard court, permanent lines, bring-your-own net",
+      "lights": "Not specified",
+      "netType": "Permanent lines; bring your own net",
+      "price": "$5/session, or $45/year community center membership for a discount",
+      "reservable": "Not specified",
+      "bookingUrl": null,
+      "hours": "Scheduled play Mondays 10am–1pm; paddles and balls provided",
+      "amenities": ["Restrooms", "Paddles and balls provided", "Indoor lighting"],
+      "skill": "All levels welcome",
+      "waitTime": "Not specified",
+      "weather": "Indoor — weather is a non-issue",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/sunnyvale/sunnyvale-community-center",
+      "pickleheadsRating": null,
+      "googleMapsUrl": "https://maps.google.com/?cid=2229482720768545781",
+      "confirmed": true,
+      "matchStatus": "existing-update",
+      "existingId": "sunnyvale-community-center",
+      "conflicts": [],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/sunnyvale",
+        "https://www.pickleheads.com/courts/us/california/sunnyvale/sunnyvale-community-center",
+        "https://dailypb.com/venue/sunnyvale-community-center-pickleball-sunnyvale-ca",
+        "https://www.tennispickleballcalifornia.com/courts/california/sunnyvale/lifetime-pickleball-courts-sunnyvale/",
+        "https://www.google.com/maps/place/Sunnyvale+Community+Center/@37.3581167,-122.0276356,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb67776c47651:0x1ef0b6b8e447d3f5!8m2!3d37.3581167!4d-122.0254469"
+      ],
+      "notes": "Court count (6) and indoor status match the existing record exactly — no conflict. The existing record's surface field was a vague 'no surface detail confirmed' placeholder; Pickleheads-derived sources add real detail (hard court, permanent lines, bring-your-own net), so this is treated as an update even though the old field wasn't literally null. Sources describe the Monday 10am–1pm session as an active scheduled session (not caveated as possibly suspended), which may bear on the existing record's 'possibly suspended, call to confirm' note, but nothing found explicitly re-confirms it as of the research date, so the hours field/caveat was left as-is rather than edited. googleMapsUrl cid was derived by converting the hex CID from a Google Maps place data= URL (0x1ef0b6b8e447d3f5) to decimal; worth a spot-check."
+    }
+  ],
+  "notOnPickleheads": []
+}

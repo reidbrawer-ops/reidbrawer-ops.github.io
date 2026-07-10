@@ -1,0 +1,193 @@
+{
+  "city": "San Mateo",
+  "pickleheadsSlug": "san-mateo",
+  "pickleheadsStatedTotal": { "locations": 4, "courts": 16 },
+  "researchedAt": "2026-07-10",
+  "notes": "Pickleheads lists 4 San Mateo locations totaling 16 courts (1 indoor location with 6 courts, 3 outdoor locations with 10 courts combined -- 6+3+1=10, consistent). Three of the four match existing baseline entries by name+address: San Mateo Central Park (existingId: central-park), Beresford Park (existingId: beresford-park), San Mateo High School (existingId: san-mateo-high-school-gym). All three have an hours (and for the high school, also a price) conflict against the baseline -- see each venue's conflicts array. The fourth, 'Totonaka RV', is a distinct Pickleheads listing at the same street address as San Mateo Central Park (50 E 5th Ave) with only 1 court and a one-time fee; it does not match any existing baseline entry by name, so it's recorded as matchStatus:new rather than merged into the Central Park record -- a human should sanity-check whether this is a genuinely separate court/area within Central Park (site sources didn't clarify) before treating it as fully distinct. Three existing baseline San Mateo entries have no corresponding Pickleheads page at all: Joinville/Bayside Park, Los Prados, and Shoreview Park & Recreation Center -- see notOnPickleheads. Note: a WebSearch synthesis at one point claimed a 'Westborough Park' existed at 1837 Bahia St (Los Prados' address); this was verified false -- Westborough Park is a real, distinct Pickleheads-listed venue in South San Francisco at 2350 Galway Drive, unrelated to San Mateo's Los Prados. Flagging this here since it's exactly the kind of cross-contamination error the research prompt warns about, even though the erroneous claim never made it into this file's data."
+  ,
+  "venues": [
+    {
+      "id": "central-park",
+      "name": "San Mateo Central Park",
+      "city": "San Mateo",
+      "neighborhood": "Not specified",
+      "address": "50 E 5th Ave, San Mateo, CA 94401",
+      "lat": 37.5624573,
+      "lon": -122.3225242,
+      "approxLocation": false,
+      "courts": 6,
+      "indoorOutdoor": "Outdoor",
+      "surface": "Outdoor hard courts, permanent lines, portable nets",
+      "lights": true,
+      "netType": "Portable nets on permanent lines",
+      "price": "Free",
+      "reservable": "Walk-up",
+      "bookingUrl": null,
+      "hours": "6am-10pm daily",
+      "amenities": ["Lights"],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Mild, occasional fog — central San Mateo",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/san-mateo/san-mateo-central-park",
+      "pickleheadsRating": null,
+      "googleMapsUrl": "https://maps.google.com/?cid=6585367038596118954",
+      "confirmed": false,
+      "matchStatus": "existing-conflict",
+      "existingId": "central-park",
+      "conflicts": [
+        {
+          "field": "hours",
+          "existing": "8am–10pm",
+          "pickleheads": "6am-10pm daily",
+          "source": "https://www.pickleheads.com/courts/us/california/san-mateo/san-mateo-central-park"
+        }
+      ],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/san-mateo",
+        "https://www.pickleheads.com/courts/us/california/san-mateo/san-mateo-central-park",
+        "https://www.globalpickleball.network/pickleball-courts/courts/pickleball-court-page/court/2469-san-mateo-central-park"
+      ],
+      "notes": "Existing baseline entry (id: central-park) already had courts:6, confirmed:true, and a surface note flagging 'court count is disputed' -- Pickleheads' independent count of 6 corroborates the existing number rather than contradicting it, so that dispute looks resolved, though confirmed is left false here because of the hours conflict. Existing hours (8am-10pm) vs Pickleheads-sourced hours (6am-10pm daily) differ only in start time; both agree on the 10pm close. One search result attributed a 94402 zip to this address via Pickleheads-adjacent synthesis (vs. baseline's 94401) -- not confident enough this is Pickleheads' literal stated zip (vs. a search-synthesis artifact) to record as a formal conflict, so address is carried forward unchanged from baseline; a human may want to double-check the zip directly on pickleheads.com. lat/lon and googleMapsUrl carried forward unchanged from the existing confirmed venues.json/courts-data.json record, since Pickleheads doesn't publish coordinates or a Google Maps link directly. Broader park amenities (Japanese Garden, mini train, playground, baseball field, horseshoes) turned up in a non-Pickleheads source (thesanfranciscopeninsula.com) and are park-wide rather than court-specific, so left out of the amenities array, which only includes what Pickleheads itself stated (lights)."
+    },
+    {
+      "id": "beresford-park",
+      "name": "Beresford Park",
+      "city": "San Mateo",
+      "neighborhood": "Not specified",
+      "address": "551 28th Avenue, San Mateo, CA 94403",
+      "lat": 37.5376363,
+      "lon": -122.3142081,
+      "approxLocation": false,
+      "courts": 3,
+      "indoorOutdoor": "Outdoor",
+      "surface": "Outdoor concrete courts, permanent lines, portable nets",
+      "lights": true,
+      "netType": "Portable nets on permanent lines",
+      "price": "Free",
+      "reservable": "Not specified",
+      "bookingUrl": null,
+      "hours": "6am-10pm daily",
+      "amenities": ["Lights", "Restrooms"],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Mild, occasional fog — central San Mateo",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/san-mateo/beresford-park",
+      "pickleheadsRating": null,
+      "googleMapsUrl": "https://maps.google.com/?cid=13103766171320125482",
+      "confirmed": false,
+      "matchStatus": "existing-conflict",
+      "existingId": "beresford-park",
+      "conflicts": [
+        {
+          "field": "hours",
+          "existing": "8am–10pm",
+          "pickleheads": "6am-10pm daily",
+          "source": "https://www.pickleheads.com/courts/us/california/beresford-park"
+        }
+      ],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/san-mateo",
+        "https://www.pickleheads.com/courts/us/california/san-mateo/beresford-park",
+        "https://www.courtsource.us/pickleball/ca/san-mateo/beresford-park"
+      ],
+      "notes": "Existing baseline entry (id: beresford-park) already had courts:3, confirmed:true, matching Pickleheads' independent count exactly -- no conflict there. Same hours discrepancy pattern as Central Park: existing 8am start vs Pickleheads-sourced 6am start, both agree on 10pm close. Pickleheads' own search summary explicitly states reservation status is unclear/not sure ('Pickleheads is not sure if reservations are available or required'), so reservable is left Not specified here rather than carried forward from the existing Walk-up value -- that's not a contradiction, just Pickleheads not asserting a value; existing Walk-up value stands unless a human overrides it at merge time. Amenities (lights, restrooms) are new information filling a gap the existing courts-data.json record didn't capture (no amenities field exists there yet). lat/lon and googleMapsUrl carried forward unchanged from the existing confirmed venues.json/courts-data.json record. Note the existing record's address (551 28th Avenue) differs from the frontage address that shows up on some general park listings (2720 Alameda de las Pulgas) -- large parks commonly have multiple valid street addresses/entrances; this wasn't a Pickleheads-specific claim so not treated as a conflict."
+    },
+    {
+      "id": "san-mateo-high-school-gym",
+      "name": "San Mateo High School",
+      "city": "San Mateo",
+      "neighborhood": "Not specified",
+      "address": "506 N. Delaware Street, San Mateo, CA 94401",
+      "lat": 37.5760358,
+      "lon": -122.3296619,
+      "approxLocation": false,
+      "courts": 6,
+      "indoorOutdoor": "Indoor",
+      "surface": "Indoor wood courts, permanent lines, portable nets",
+      "lights": true,
+      "netType": "Portable nets on permanent lines",
+      "price": "$4.00 drop-in fee",
+      "reservable": "Not specified",
+      "bookingUrl": null,
+      "hours": "Saturday 11am-1pm and Sunday 5:30pm-8:30pm (gym schedule subject to change around the high school's own calendar; posted schedule at the gym is authoritative)",
+      "amenities": ["Restrooms", "Lights"],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Mild, occasional fog — central San Mateo",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/san-mateo/san-mateo-high-school",
+      "pickleheadsRating": null,
+      "googleMapsUrl": null,
+      "confirmed": false,
+      "matchStatus": "existing-conflict",
+      "existingId": "san-mateo-high-school-gym",
+      "conflicts": [
+        {
+          "field": "courts",
+          "existing": null,
+          "pickleheads": 6,
+          "source": "https://www.pickleheads.com/courts/us/california/san-mateo/san-mateo-high-school"
+        },
+        {
+          "field": "price",
+          "existing": "$5.00 fee",
+          "pickleheads": "$4.00 drop-in fee (covers ~3 hours of play)",
+          "source": "https://www.pickleheads.com/courts/us/california/san-mateo/san-mateo-high-school"
+        },
+        {
+          "field": "hours",
+          "existing": "Sundays ~10am–3pm",
+          "pickleheads": "Saturday 11am-1pm and Sunday 5:30pm-8:30pm",
+          "source": "https://www.pickleheads.com/courts/us/california/san-mateo/san-mateo-high-school"
+        }
+      ],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/san-mateo",
+        "https://www.pickleheads.com/courts/us/california/san-mateo/san-mateo-high-school",
+        "https://dailypb.com/venue/san-mateo-high-school-gym-pickleball-san-mateo-ca",
+        "https://www.quickscores.com/sanmateo"
+      ],
+      "confirmedNote": "listed as courts:null in existing baseline; not literally a 'conflict' in the contradiction sense since there was no prior value, but grouped with matchStatus existing-conflict per the schema because this venue also has two genuine field conflicts (price, hours) that block a clean existing-update classification.",
+      "notes": "Existing baseline entry is 'San Mateo High School Gym' (id: san-mateo-high-school-gym, courts:null, confirmed:false already) -- matched on address (506 N. Delaware Street). Pickleheads calls it 'San Mateo High School' (no 'Gym' suffix) but it's unambiguously the same indoor gym venue. Three-way disagreement on schedule/fee across sources: this file's WebSearch synthesis for the Pickleheads page itself returned 'Saturday 11am-1pm and Sunday 5:30pm-8:30pm' with a $4 fee covering ~3 hours, while a separate search pass (also citing pickleheads.com plus dailypb.com) returned 'Sunday 10am-3pm' with the same $4 fee -- these may reflect different points in time or different underlying schedule sources folded into the same synthesized answer; both are inconsistent with the existing baseline's 'Sundays ~10am-3pm' / '$5.00 fee'. Recorded the Saturday+Sunday version in the main hours field since it was the version most directly tied to the pickleheads.com URL in search results, but flagging in this note that a human should verify directly against pickleheads.com and the posted gym schedule (quickscores.com/sanmateo) rather than trusting either synthesized version outright. googleMapsUrl left null (existing baseline's own googleMapsUrl for this venue is a /maps/search/?api=1&query=... coordinate link, not the maps.google.com/?cid=<decimal> form this new file requires, and no numeric cid was found) -- do not carry the existing non-cid link forward into this record. lat/lon carried forward unchanged from the existing venues.json record."
+    },
+    {
+      "id": "totonaka-rv",
+      "name": "Totonaka RV",
+      "city": "San Mateo",
+      "neighborhood": "Not specified",
+      "address": "50 E 5th Ave, San Mateo, CA 94402",
+      "lat": 37.5624573,
+      "lon": -122.3225242,
+      "approxLocation": true,
+      "courts": 1,
+      "indoorOutdoor": "Not specified",
+      "surface": "Permanent lines",
+      "lights": "Not specified",
+      "netType": "Permanent nets",
+      "price": "One-time fee (amount not specified)",
+      "reservable": "Not specified",
+      "bookingUrl": null,
+      "hours": "Not specified",
+      "amenities": [],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Mild, occasional fog — central San Mateo",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/san-mateo/totonaka-rv",
+      "pickleheadsRating": null,
+      "googleMapsUrl": null,
+      "confirmed": true,
+      "matchStatus": "new",
+      "existingId": null,
+      "conflicts": [],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/san-mateo",
+        "https://www.pickleheads.com/courts/us/california/san-mateo/totonaka-rv"
+      ],
+      "notes": "Pickleheads' 4th San Mateo listing, distinct from the 3 named venues above -- brings the city total from 3 to 4 locations and 15 to 16 courts, matching Pickleheads' own stated total exactly. Listed street address (50 E 5th Ave, San Mateo, CA 94402) is identical to San Mateo Central Park's address (94401 at that same street per baseline), which is itself the address of the city's Central Park -- but the venue name 'Totonaka RV' does not match Central Park or any existing baseline entry, and search results gave no further detail clarifying whether this is a genuinely separate court/area within Central Park (San Mateo's Central Park does contain a Japanese garden associated with sister city Toyonaka, Japan, per unrelated non-Pickleheads sources -- a plausible but unconfirmed origin for the name) or a data-quality artifact on Pickleheads' side. Recorded as-is per the 'don't fabricate, don't guess' instruction rather than merging it into the Central Park record or discarding it. lat/lon approximated from Central Park's coordinates (same street address) rather than independently geocoded, hence approxLocation:true. A human should visit the Pickleheads page directly to clarify what this listing actually refers to before treating it as a fully independent venue in courts-data.json."
+    }
+  ],
+  "notOnPickleheads": [
+    { "id": "joinville-bayside-park", "name": "Joinville/Bayside Park" },
+    { "id": "los-prados", "name": "Los Prados" },
+    { "id": "shoreview-park-recreation-center", "name": "Shoreview Park & Recreation Center" }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "city": "Novato",
+  "pickleheadsSlug": "novato",
+  "pickleheadsStatedTotal": { "locations": 2, "courts": 18 },
+  "researchedAt": "2026-07-10",
+  "venues": [
+    {
+      "name": "Hill Pickleball Courts",
+      "city": "Novato",
+      "neighborhood": "Not specified",
+      "address": "1560 Hill Rd, Novato, CA 94947",
+      "lat": null,
+      "lon": null,
+      "approxLocation": true,
+      "courts": 6,
+      "indoorOutdoor": "Outdoor",
+      "surface": "Outdoor hard court — dedicated, permanent lines and nets",
+      "lights": "Not specified",
+      "netType": "Dedicated pickleball nets",
+      "price": "Free",
+      "reservable": "Walk-up",
+      "bookingUrl": null,
+      "hours": "8am–10pm daily",
+      "amenities": ["restrooms", "water", "wheelchair accessible"],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Mild, marine-influenced — less fog than the coast",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/novato/hill-pickleball-courts",
+      "pickleheadsRating": null,
+      "googleMapsUrl": null,
+      "confirmed": false,
+      "matchStatus": "existing-conflict",
+      "existingId": "hill-recreation-pickleball-courts",
+      "id": "hill-pickleball-courts",
+      "conflicts": [
+        {
+          "field": "address",
+          "existing": "500 Crescent Drive, Novato, CA 94949",
+          "pickleheads": "1560 Hill Rd, Novato, CA 94947",
+          "source": "https://www.pickleheads.com/courts/us/california/novato/hill-pickleball-courts"
+        }
+      ],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/novato/hill-pickleball-courts",
+        "https://www.pickleheads.com/courts/us/california/novato",
+        "https://www.novato.gov/government/parks-recreation-community-services/parks-facilities/hill-recreation-area",
+        "https://www.tennispickleballcalifornia.com/courts/california/novato/hill-recreation-area-pickleball-courts/"
+      ],
+      "notes": "Name, court count (6), hours (8am–10pm daily), and free/walk-up model all match the existing 'hill-recreation-pickleball-courts' baseline entry exactly — this is almost certainly the same physical courts. But the baseline's address/coordinates (500 Crescent Drive, 94949; lat 38.0530871, lon -122.5187715) don't match Pickleheads' address (1560 Hill Rd, 94947) or novato.gov's own address for Hill Recreation Area. Separate research turned up that 500 Crescent Drive, Novato is actually the address of a different, unrelated venue called 'Thigpen Courts' (2 tennis courts striped for pickleball, $3 Saturdays only, not listed on Pickleheads and not in the current baseline at all: see https://www.pickleballrush.com/where-to-play/california/novato/thigpen-courts). It looks like the existing baseline record may have picked up Thigpen Courts' address by mistake. Flagging for human review — not resolving here since I can't confirm a precise geocode for 1560 Hill Rd."
+    },
+    {
+      "name": "Bay Club Rolling Hills",
+      "city": "Novato",
+      "neighborhood": "Not specified",
+      "address": "351 San Andreas Drive, Novato, CA 94945",
+      "lat": 38.1252713,
+      "lon": -122.6037694,
+      "courts": 12,
+      "indoorOutdoor": "Outdoor",
+      "surface": "Outdoor hard court — dedicated, permanent lines and nets",
+      "lights": true,
+      "netType": "Dedicated pickleball nets",
+      "price": "Membership required",
+      "reservable": "Reservable",
+      "bookingUrl": null,
+      "hours": "Sun: 7:00am–8:00pm · Mon–Fri: 5:00am–9:00pm · Sat: 7:00am–8:00pm",
+      "amenities": ["food", "lights", "locker rooms", "restrooms", "water", "trainers or lessons"],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Mild, marine-influenced — less fog than the coast",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/novato/bay-club-rolling-hills",
+      "pickleheadsRating": null,
+      "googleMapsUrl": null,
+      "confirmed": true,
+      "matchStatus": "new",
+      "existingId": null,
+      "id": "bay-club-rolling-hills",
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/novato/bay-club-rolling-hills",
+        "https://www.pickleheads.com/courts/us/california/novato",
+        "https://www.bayclubs.com/clubs/rollinghills",
+        "https://clustrmaps.com/a/39f331/",
+        "https://www.tennispickleballcalifornia.com/courts/california/novato/bay-club-rolling-hills-novato/"
+      ],
+      "notes": "Private club; membership required to access pickleball courts, per Pickleheads and bayclubs.com. Not a public/walk-up venue. Coordinates sourced from a third-party property-records aggregator (clustrmaps), not a Pickleheads map pin or direct geocode — treat as approximate despite being address-level."
+    }
+  ],
+  "notOnPickleheads": [
+    { "id": "pioneer-park", "name": "Pioneer Park" }
+  ]
+}
