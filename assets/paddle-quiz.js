@@ -88,11 +88,11 @@ const QUESTIONS = [
   {
     key: "swingWeight",
     prompt: "How should it feel when you swing it?",
-    hint: "Swing weight is how heavy the paddle feels in motion, not just on a scale.",
+    hint: "Different from overall weight — two paddles can weigh the same and still swing very differently. This is swing weight: how heavy it feels in motion.",
     options: [
-      { value: "low", label: "Lower swing weight", hint: "Faster hands and easier maneuverability" },
+      { value: "low", label: "Quick and maneuverable", hint: "Faster hands at the net — lower swing weight" },
       { value: "mid", label: "Balanced", hint: "A bit of both — no strong preference" },
-      { value: "high", label: "Higher swing weight", hint: "More plow-through and stability, slower hands" },
+      { value: "high", label: "Stable through contact", hint: "More plow-through on drives — higher swing weight, slower hands" },
     ],
   },
   {
