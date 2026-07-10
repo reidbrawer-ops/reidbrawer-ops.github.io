@@ -1,4 +1,4 @@
-// Find your paddle — a short wizard that scores every paddle in
+// Find your paddle — an 11-question wizard that scores every paddle in
 // assets/paddles.json against the visitor's answers, shows their top 3
 // matches as a side-by-side comparison, and captures an email as a lead
 // (Firestore, write-only — see firestore.rules `paddleQuizLeads`).
@@ -16,37 +16,93 @@ const QUESTIONS = [
     options: [
       { value: "beginner", label: "Beginner", hint: "New to the game, or under ~6 months in" },
       { value: "intermediate", label: "Intermediate", hint: "Comfortable rallying, working on strategy (roughly 3.0–3.5)" },
-      { value: "advanced", label: "Advanced", hint: "Competitive league or tournament play (4.0+)" },
+      { value: "advanced", label: "Advanced", hint: "Competitive league play (4.0+)" },
+      { value: "pro", label: "Pro / tournament", hint: "Dialed-in technique, playing to win (4.5+)" },
     ],
   },
   {
-    key: "priority",
-    prompt: "What do you want more of on the court?",
+    key: "frequency",
+    prompt: "How often do you get on the court?",
     options: [
-      { value: "power", label: "Power", hint: "More pace on drives and put-aways" },
-      { value: "control", label: "Control & touch", hint: "Soft hands at the kitchen — dinks, resets, placement" },
-      { value: "spin", label: "Spin", hint: "Heavy topspin or slice to move the ball around" },
-      { value: "allcourt", label: "A bit of everything", hint: "No strong preference — keep it balanced" },
+      { value: "rarely", label: "A few times a year", hint: "Casual, social games here and there" },
+      { value: "weekly", label: "Weekly", hint: "A regular game or two most weeks" },
+      { value: "frequent", label: "A few times a week", hint: "Pickleball is a real part of your routine" },
+      { value: "daily", label: "Daily / competitive", hint: "You train, drill, and play tournaments" },
+    ],
+  },
+  {
+    key: "style",
+    prompt: "What best describes your game?",
+    options: [
+      { value: "power", label: "Power banger", hint: "You want pace — hard drives and big put-away shots" },
+      { value: "allround", label: "All-around", hint: "A bit of everything — no strong lean" },
+      { value: "spin", label: "Spin & control", hint: "You place the ball and generate heavy topspin" },
+      { value: "soft", label: "Soft game & resets", hint: "You live at the kitchen line — dinks, resets, touch" },
+    ],
+  },
+  {
+    key: "current",
+    type: "multi",
+    prompt: "What would you change about your current paddle?",
+    hint: "Pick all that apply — or tell us it's your first paddle.",
+    options: [
+      { value: "more_power", label: "More power", hint: "Drives and put-aways need more mustard" },
+      { value: "more_spin", label: "More spin", hint: "Want more bite on topspin and serves" },
+      { value: "more_forgiveness", label: "A bigger sweet spot", hint: "Off-center hits punish you too much" },
+      { value: "less_weight", label: "Lighter swing weight", hint: "Current paddle feels heavy late in matches" },
+      { value: "less_arm_strain", label: "Less arm strain", hint: "You feel it in your elbow or wrist after playing" },
+      { value: "first_paddle", label: "Nothing — it's my first paddle", hint: "", exclusive: true },
+    ],
+  },
+  {
+    key: "shape",
+    prompt: "Widebody, elongated, or hybrid?",
+    hint: "Shape trades reach and spin for sweet spot size.",
+    options: [
+      { value: "widebody", label: "Widebody", hint: "Wider face, bigger sweet spot, more forgiving" },
+      { value: "elongated", label: "Elongated", hint: "More reach and swing speed, smaller sweet spot" },
+      { value: "hybrid", label: "Hybrid", hint: "A middle ground between the two" },
+      { value: "notsure", label: "Not sure", hint: "Recommend what fits my other answers" },
+    ],
+  },
+  {
+    key: "sensitivity",
+    prompt: "Any elbow, wrist, or shoulder sensitivity?",
+    hint: "We'll favor lighter, more forgiving paddles if so.",
+    options: [
+      { value: "none", label: "None", hint: "No issues — optimize for performance" },
+      { value: "mild", label: "Occasional soreness", hint: "Nothing serious, but worth some caution" },
+      { value: "sensitive", label: "Yes, ongoing issues", hint: "Prioritize a light, arm-friendly paddle" },
     ],
   },
   {
     key: "weight",
-    prompt: "Preferred paddle weight?",
+    prompt: "Lighter or heavier overall?",
+    hint: "There's no one right weight — only what your arm and swing prefer.",
     options: [
-      { value: "light", label: "Lightweight", hint: "Quicker hands at the net, less arm fatigue (≈7.5oz or under)" },
-      { value: "mid", label: "Middleweight", hint: "Balanced feel (≈7.6–8.2oz)" },
-      { value: "heavy", label: "Heavier", hint: "More mass behind the ball (8.3oz+)" },
-      { value: "nopref", label: "No preference", hint: "" },
+      { value: "light", label: "Lighter", hint: "Faster hands and less fatigue late in matches" },
+      { value: "neutral", label: "No strong preference", hint: "Happy to split the difference" },
+      { value: "heavy", label: "Heavier", hint: "More plow-through and stability on contact" },
     ],
   },
   {
-    key: "budget",
-    prompt: "What's your budget?",
+    key: "swingWeight",
+    prompt: "How should it feel when you swing it?",
+    hint: "Swing weight is how heavy the paddle feels in motion, not just on a scale.",
     options: [
-      { value: "budget", label: "Under $150", hint: "" },
-      { value: "mid", label: "$150–220", hint: "" },
-      { value: "premium", label: "$220+", hint: "" },
-      { value: "nopref", label: "No preference", hint: "Just show me the top 3 overall" },
+      { value: "low", label: "Lower swing weight", hint: "Faster hands and easier maneuverability" },
+      { value: "mid", label: "Balanced", hint: "A bit of both — no strong preference" },
+      { value: "high", label: "Higher swing weight", hint: "More plow-through and stability, slower hands" },
+    ],
+  },
+  {
+    key: "twistWeight",
+    prompt: "How much should off-center hits punish you?",
+    hint: "Twist weight is how much the paddle resists turning on a mishit.",
+    options: [
+      { value: "high", label: "Bigger sweet spot", hint: "More stability and a larger effective sweet spot" },
+      { value: "mid", label: "No strong preference", hint: "Somewhere in between" },
+      { value: "low", label: "Precise & lively", hint: "Less forgiving on mishits, but a crisper, more direct feel" },
     ],
   },
   {
@@ -55,6 +111,17 @@ const QUESTIONS = [
     options: [
       { value: "yes", label: "Yes — USAP approved", hint: "Required for USA Pickleball–sanctioned tournaments" },
       { value: "no", label: "No, just recreational play", hint: "" },
+    ],
+  },
+  {
+    key: "budget",
+    prompt: "What's your budget?",
+    hint: "We'll prioritize this range, but still surface the best overall fit.",
+    options: [
+      { value: "under150", label: "Under $150", hint: "Great value, entry-level builds" },
+      { value: "150to200", label: "$150–$200", hint: "The sweet spot for most players" },
+      { value: "200to250", label: "$200–$250", hint: "Premium construction and materials" },
+      { value: "250plus", label: "$250+", hint: "Top-of-line — budget isn't the priority" },
     ],
   },
 ];
@@ -73,22 +140,62 @@ function trapezoid(value, min, max, falloff) {
 
 function weightPrefScore(paddle, weightPref) {
   const w = paddle.weightOz;
-  if (weightPref === "nopref") return 1;
   if (weightPref === "light") return trapezoid(w, 0, 7.5, 0.6);
-  if (weightPref === "mid") return trapezoid(w, 7.6, 8.2, 0.6);
+  if (weightPref === "neutral") return trapezoid(w, 7.6, 8.2, 0.6);
   return trapezoid(w, 8.3, 20, 0.6); // heavy
 }
 
+const BUDGET_RANGES = { under150: [0, 150], "150to200": [150, 200], "200to250": [200, 250], "250plus": [250, 999] };
+
 function budgetScore(paddle, budgetPref) {
-  const price = paddle.price;
-  if (budgetPref === "nopref") return 1;
-  if (budgetPref === "budget") return trapezoid(price, 0, 150, 80);
-  if (budgetPref === "mid") return trapezoid(price, 150, 220, 60);
-  return trapezoid(price, 220, 400, 80); // premium
+  const r = BUDGET_RANGES[budgetPref];
+  return trapezoid(paddle.price, r[0], r[1], 80);
+}
+
+// Swing weight — how heavy a paddle feels in motion — isn't a field in the
+// source data, so it's approximated from where the balance point sits
+// (farther from the handle = more head-heavy = swings heavier) blended with
+// static weight, both normalized against the dataset's observed range
+// (see assets/paddles.json prep script). Shown only as a relative "fit" dot
+// against the visitor's stated preference, never as a fabricated absolute
+// number — the underlying data doesn't support that level of precision.
+const BALANCE_MM_RANGE = [203, 256];
+const WEIGHT_OZ_RANGE = [7.25, 8.9];
+
+function swingWeightIndex(paddle) {
+  if (paddle.balancePointMm == null) return 0.5;
+  const balNorm = clamp01((paddle.balancePointMm - BALANCE_MM_RANGE[0]) / (BALANCE_MM_RANGE[1] - BALANCE_MM_RANGE[0]));
+  const wtNorm = clamp01((paddle.weightOz - WEIGHT_OZ_RANGE[0]) / (WEIGHT_OZ_RANGE[1] - WEIGHT_OZ_RANGE[0]));
+  return balNorm * 0.65 + wtNorm * 0.35;
+}
+
+function swingWeightPrefScore(paddle, pref) {
+  const idx = swingWeightIndex(paddle);
+  if (pref === "low") return trapezoid(idx, 0, 0.35, 0.2);
+  if (pref === "mid") return trapezoid(idx, 0.35, 0.65, 0.2);
+  return trapezoid(idx, 0.65, 1, 0.2); // high
+}
+
+// Twist weight percentile is a real per-paddle field (see dimensionsFor's
+// `forgiveness` dimension, which reads the same value) — this just scores it
+// against the visitor's stated preference rather than showing it absolute.
+function twistWeightPrefScore(paddle, pref) {
+  const t = paddle.twistWeightPercentile;
+  if (pref === "high") return trapezoid(t, 0.65, 1, 0.25); // bigger sweet spot
+  if (pref === "mid") return trapezoid(t, 0.35, 0.65, 0.25);
+  return trapezoid(t, 0, 0.35, 0.25); // low = precise & lively
 }
 
 function isTournamentLegal(paddle) {
   return paddle.approvalBody === "USAP" || paddle.approvalBody === "USAP/UPA-A";
+}
+
+function isSoftImpact(paddle) {
+  return paddle.impactFeel === "Soft/Dense" || paddle.impactFeel === "Soft/Hollow";
+}
+
+function isStiffImpact(paddle) {
+  return paddle.impactFeel === "Stiff/Dense" || paddle.impactFeel === "Stiff/Hollow";
 }
 
 // vendorSearchBase is only set for brands whose on-site search was directly
@@ -107,13 +214,13 @@ function vendorLinkFor(paddle) {
 
 // ---------- Comparison-table dimension ratings ----------
 //
-// Unlike the scoring above (which is conditioned on the user's stated
-// priority, to rank paddles against each other), these are fixed, absolute
-// per-paddle profiles — every result shows all 4 axes regardless of what
-// the user picked, so the comparison table actually shows how the 3 picks
-// differ rather than just confirming the one thing they asked for.
-// Deliberately paraphrased into a dot rating rather than citing the exact
-// proprietary lab-tested labels/percentiles those numbers come from.
+// Unlike the scoring below (which is conditioned on the visitor's answers,
+// to rank paddles against each other), these are fixed, absolute per-paddle
+// profiles — every result shows all 4 axes regardless of what the visitor
+// picked, so the comparison table actually shows how the 3 picks differ
+// rather than just confirming the one thing they asked for. Deliberately
+// paraphrased into a dot rating rather than citing the exact proprietary
+// lab-tested labels/percentiles those numbers come from.
 
 function powerRating(paddle) {
   const base = paddle.paddleType === "Power" ? 0.85 : paddle.paddleType === "All-Court" ? 0.5 : paddle.paddleType === "Control" ? 0.2 : 0.5;
@@ -122,8 +229,8 @@ function powerRating(paddle) {
 
 function controlRating(paddle) {
   let base = paddle.paddleType === "Control" ? 0.85 : paddle.paddleType === "All-Court" ? 0.5 : paddle.paddleType === "Power" ? 0.2 : 0.5;
-  if (paddle.impactFeel === "Soft/Dense" || paddle.impactFeel === "Soft/Hollow") base = clamp01(base + 0.15);
-  else if (paddle.impactFeel === "Stiff/Dense" || paddle.impactFeel === "Stiff/Hollow") base = clamp01(base - 0.15);
+  if (isSoftImpact(paddle)) base = clamp01(base + 0.15);
+  else if (isStiffImpact(paddle)) base = clamp01(base - 0.15);
   return base;
 }
 
@@ -147,11 +254,9 @@ function dimensionsFor(paddle, fullAnswers) {
     control: toDots(controlRating(paddle)),
     spin: toDots(spinRatingOf(paddle)),
     forgiveness: toDots(forgivenessRatingOf(paddle)),
-    // Only meaningful when the user actually stated a preference — with
-    // "no preference" these score 1 (3 dots) for every paddle by design, so
-    // the row is hidden entirely in that case rather than shown as an
-    // uninformative wall of identical dots (see renderResults).
     weightFit: toDots(weightPrefScore(paddle, fullAnswers.weight)),
+    swingWeightFit: toDots(swingWeightPrefScore(paddle, fullAnswers.swingWeight)),
+    twistWeightFit: toDots(twistWeightPrefScore(paddle, fullAnswers.twistWeight)),
     budgetFit: toDots(budgetScore(paddle, fullAnswers.budget)),
     // Tagged once in assets/paddles.json from forgiveness (twist weight
     // percentile), core thickness, and paddle type — see the prep script for
@@ -159,6 +264,14 @@ function dimensionsFor(paddle, fullAnswers) {
     // dots, since it's a category rather than an intensity) so the skill
     // bonus below is as visible/auditable as everything else in the score.
     skillLevel: paddle.skillLevel || "Intermediate",
+    // Internal-only signals used by totalScore/taglineFor below but not
+    // rendered as their own comparison-table row — shape and arm-friendliness
+    // feed the score, but adding two more rows would push the table past
+    // what a visitor can usefully scan in one glance.
+    shape: paddle.shape,
+    softImpact: isSoftImpact(paddle),
+    weightOz: paddle.weightOz,
+    lightness: toDots(1 - swingWeightIndex(paddle)),
   };
 }
 
@@ -190,45 +303,81 @@ function taglineFor(dims) {
 
 const SKILL_LEVELS = ["Beginner", "Intermediate", "Advanced"];
 
-// An exact match to the user's stated level is worth more than the typical
-// 1-2 point gap between skill tiers on raw dot totals (Advanced-tagged
-// paddles trade away forgiveness dots for specialization, so without a
-// large-enough bonus here, "Advanced" tags would never surface for
+// An exact match to the visitor's stated level is worth more than the
+// typical 1-2 point gap between skill tiers on raw dot totals (Advanced-
+// tagged paddles trade away forgiveness dots for specialization, so without
+// a large-enough bonus here, "Advanced" tags would never surface for
 // advanced players — the raw stat sum would always favor the more
-// forgiving, easier-rated paddle regardless of who's asking). One step off
-// (e.g. an Intermediate paddle for a Beginner) gets a small nod; the
-// opposite end of the spectrum gets nothing.
+// forgiving, easier-rated paddle regardless of who's asking). "Pro" maps
+// onto the same "Advanced" tier as "advanced" for matching purposes — the
+// data doesn't tag a separate Pro tier, and pretending it does would be
+// inventing precision the dataset can't back up. One step off (e.g. an
+// Intermediate paddle for a Beginner) gets a small nod; the opposite end of
+// the spectrum gets nothing.
 function skillMatchScore(paddleSkillLevel, experience) {
-  const userLevel = experience === "beginner" ? "Beginner" : experience === "advanced" ? "Advanced" : "Intermediate";
+  const userLevel = experience === "beginner" ? "Beginner" : experience === "intermediate" ? "Intermediate" : "Advanced";
   const distance = Math.abs(SKILL_LEVELS.indexOf(paddleSkillLevel) - SKILL_LEVELS.indexOf(userLevel));
   if (distance === 0) return 4;
   if (distance === 1) return 1;
   return 0;
 }
 
+const SHAPE_MAP = { widebody: "Widebody", elongated: "Elongated", hybrid: "Hybrid" };
+
 // The rank is a plain sum of the exact dots/badges shown in the table — no
 // hidden weighting formula a viewer couldn't reconstruct themselves by
-// counting circles on screen. The user's stated priority (power/control/
-// spin) counts double, since that's the one thing they explicitly said
-// matters most; beginners get forgiveness counted double too, on the theory
-// that a large sweet spot matters more early on; a paddle tagged for the
-// user's exact stated skill level gets its own (larger) bonus — see
-// skillMatchScore for why it needs more than a simple double to actually
-// move the needle. Everything else — including weight-fit/budget-fit, only
-// added when the user actually stated a preference — counts once. Every
-// term is a non-negative integer, so a paddle that's equal-or-better on
-// every shown dimension (and strictly better on at least one) always scores
-// strictly
-// higher, full stop.
-function totalScore(dims, fullAnswers) {
-  let score = dims.power + dims.control + dims.spin + dims.forgiveness;
-  if (fullAnswers.priority === "power") score += dims.power;
-  else if (fullAnswers.priority === "control") score += dims.control;
-  else if (fullAnswers.priority === "spin") score += dims.spin;
-  if (fullAnswers.experience === "beginner") score += dims.forgiveness;
-  if (fullAnswers.weight !== "nopref") score += dims.weightFit;
-  if (fullAnswers.budget !== "nopref") score += dims.budgetFit;
-  score += skillMatchScore(dims.skillLevel, fullAnswers.experience);
+// counting circles on screen — plus a small set of named bonuses for
+// answers that aren't shown as their own row (style, current-paddle gripes,
+// shape, arm sensitivity, play frequency). The visitor's stated style
+// counts its one matching dimension double, since that's the thing they
+// explicitly said matters most; a paddle tagged for the visitor's exact
+// stated skill level gets its own (larger) bonus — see skillMatchScore for
+// why it needs more than a simple double to actually move the needle.
+// Every dot term is a non-negative integer, so a paddle that's
+// equal-or-better on every shown dimension (and strictly better on at
+// least one) always scores strictly higher, full stop.
+function totalScore(dims, a) {
+  let score =
+    dims.power + dims.control + dims.spin + dims.forgiveness + dims.weightFit + dims.swingWeightFit + dims.twistWeightFit + dims.budgetFit;
+
+  if (a.style === "power") score += dims.power;
+  else if (a.style === "spin") score += dims.spin;
+  else if (a.style === "soft") score += dims.control;
+  // "allround" adds nothing on purpose — no lean is the point.
+
+  if (Array.isArray(a.current)) {
+    if (a.current.includes("more_power")) score += dims.power;
+    if (a.current.includes("more_spin")) score += dims.spin;
+    if (a.current.includes("more_forgiveness")) score += dims.forgiveness;
+    if (a.current.includes("less_weight")) score += dims.lightness;
+    if (a.current.includes("less_arm_strain")) score += dims.forgiveness + (dims.softImpact ? 1 : 0);
+  }
+
+  if (a.shape && a.shape !== "notsure") {
+    const want = SHAPE_MAP[a.shape];
+    if (dims.shape === want) score += 3;
+    // A Hybrid paddle is a reasonable middle-ground fallback when the
+    // visitor wanted one of the two extremes (widebody/elongated) — but if
+    // they asked for Hybrid specifically, a non-Hybrid paddle isn't a
+    // meaningful "close enough," so this bonus shouldn't apply in that
+    // direction (that would flatten every other shape to the same score).
+    else if (dims.shape === "Hybrid" && want !== "Hybrid") score += 1;
+    else if (a.shape === "elongated" && dims.shape === "Extra-elongated") score += 2;
+  }
+
+  if (a.sensitivity === "sensitive") {
+    score += dims.forgiveness;
+    score += dims.softImpact ? 2 : -1;
+    if (dims.weightOz != null && dims.weightOz <= 7.6) score += 1;
+  } else if (a.sensitivity === "mild") {
+    score += dims.softImpact ? 1 : 0;
+  }
+
+  if ((a.frequency === "daily" || a.frequency === "frequent") && dims.skillLevel === "Advanced") score += 1;
+  if (a.frequency === "rarely") score += dims.forgiveness;
+
+  score += skillMatchScore(dims.skillLevel, a.experience);
+
   return score;
 }
 
@@ -270,6 +419,8 @@ async function getFirestoreHandles() {
   return firestoreHandlesPromise;
 }
 
+// Keys here must match firestore.rules' isWellFormedLead() answers allowlist
+// exactly, or every lead write gets rejected by security rules.
 export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
   const handles = await getFirestoreHandles();
   if (!handles) return false;
@@ -279,10 +430,16 @@ export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
       email,
       answers: {
         experience: fullAnswers.experience,
-        priority: fullAnswers.priority,
+        frequency: fullAnswers.frequency,
+        style: fullAnswers.style,
+        current: fullAnswers.current || [],
+        shape: fullAnswers.shape,
+        sensitivity: fullAnswers.sensitivity,
         weight: fullAnswers.weight,
-        budget: fullAnswers.budget,
+        swingWeight: fullAnswers.swingWeight,
+        twistWeight: fullAnswers.twistWeight,
         tournament: fullAnswers.tournament,
+        budget: fullAnswers.budget,
       },
       recommendedPaddleIds,
       createdAt: fs.serverTimestamp(),
@@ -331,20 +488,36 @@ class PaddleQuizApp {
   }
 
   renderQuestion(q) {
+    const isMulti = q.type === "multi";
+    const selectedValues = isMulti ? this.answers[q.key] || [] : null;
+
     const options = q.options
-      .map(
-        (opt) => `
-      <button type="button" class="pq-option" data-key="${q.key}" data-value="${opt.value}">
-        <span class="pq-option-label">${opt.label}</span>
-        ${opt.hint ? `<span class="pq-option-hint">${opt.hint}</span>` : ""}
-      </button>`
-      )
+      .map((opt) => {
+        // Single-select questions still need a persisted selected state, not
+        // just multi-select ones — otherwise going Back to review or change
+        // an earlier answer shows no indication of what was picked, and a
+        // careless re-click can silently overwrite it.
+        const isSelected = isMulti ? selectedValues.includes(opt.value) : this.answers[q.key] === opt.value;
+        const cls = "pq-option" + (isMulti ? " pq-option--multi" : "") + (isSelected ? " is-selected" : "");
+        return `
+      <button type="button" class="${cls}" data-key="${q.key}" data-value="${opt.value}" data-multi="${isMulti ? "1" : "0"}" aria-pressed="${isSelected}">
+        ${isMulti ? `<span class="pq-check ${isSelected ? "is-selected" : ""}">${isSelected ? "✓" : ""}</span>` : ""}
+        <span class="pq-option-text">
+          <span class="pq-option-label">${opt.label}</span>
+          ${opt.hint ? `<span class="pq-option-hint">${opt.hint}</span>` : ""}
+        </span>
+      </button>`;
+      })
       .join("");
+
+    const continueEnabled = !isMulti || selectedValues.length > 0;
 
     return `
       ${this.renderProgress(this.step, QUESTIONS.length + 1)}
       <h3 class="pq-prompt">${q.prompt}</h3>
+      ${q.hint ? `<p class="pq-question-hint">${q.hint}</p>` : ""}
       <div class="pq-options">${options}</div>
+      ${isMulti ? `<button type="button" class="btn pq-continue" data-action="continue" ${continueEnabled ? "" : "disabled"}>Continue →</button>` : ""}
       ${this.step > 0 ? `<button type="button" class="pq-back" data-action="back">← Back</button>` : ""}
     `;
   }
@@ -426,17 +599,6 @@ class PaddleQuizApp {
           .join("")}
       </tr>`;
 
-    // Only shown when the user actually stated a preference — otherwise
-    // every paddle scores the same on these by design, and the row would
-    // just be a wall of identical dots. When shown, this is what makes the
-    // rank fully explainable: literally every input to the score is now a
-    // visible row, so a cheaper/lighter pick beating a "better" one on the
-    // 4 dimensions above always has a visible reason in this table.
-    const fitRow = (label, key, pref) =>
-      pref !== "nopref"
-        ? `<tr><th class="pq-compare-label">${label}</th>${top.map(({ dims }) => `<td>${meterHtml(dims[key], label)}</td>`).join("")}</tr>`
-        : "";
-
     const linkRow = `
       <tr class="pq-compare-links">
         <th class="pq-compare-label"></th>
@@ -463,8 +625,10 @@ class PaddleQuizApp {
             ${dimRow("Spin", "spin")}
             ${dimRow("Forgiveness", "forgiveness")}
             ${weightRow}
-            ${fitRow("Weight fit", "weightFit", this.matches.fullAnswers.weight)}
-            ${fitRow("Budget fit", "budgetFit", this.matches.fullAnswers.budget)}
+            ${dimRow("Swing weight fit", "swingWeightFit")}
+            ${dimRow("Twist weight fit", "twistWeightFit")}
+            ${dimRow("Total weight fit", "weightFit")}
+            ${dimRow("Budget fit", "budgetFit")}
             ${linkRow}
           </tbody>
         </table>
@@ -473,10 +637,41 @@ class PaddleQuizApp {
     `;
   }
 
+  toggleMulti(key, value) {
+    const q = QUESTIONS[this.step];
+    const cur = this.answers[key] || [];
+    const optDef = q.options.find((o) => o.value === value);
+    let next;
+    if (optDef && optDef.exclusive) {
+      next = cur.includes(value) ? [] : [value];
+    } else if (cur.includes(value)) {
+      next = cur.filter((v) => v !== value);
+    } else {
+      const withoutExclusive = cur.filter((v) => {
+        const d = q.options.find((o) => o.value === v);
+        return !(d && d.exclusive);
+      });
+      next = withoutExclusive.concat([value]);
+    }
+    this.answers[key] = next;
+    this.render();
+  }
+
   onClick(e) {
     const opt = e.target.closest(".pq-option[data-key]");
     if (opt) {
-      this.answers[opt.dataset.key] = opt.dataset.value;
+      if (opt.dataset.multi === "1") {
+        this.toggleMulti(opt.dataset.key, opt.dataset.value);
+      } else {
+        this.answers[opt.dataset.key] = opt.dataset.value;
+        this.step += 1;
+        this.render();
+      }
+      return;
+    }
+    const cont = e.target.closest('[data-action="continue"]');
+    if (cont) {
+      if (cont.disabled) return;
       this.step += 1;
       this.render();
       return;

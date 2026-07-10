@@ -51,6 +51,12 @@
   margin-bottom: 1.1rem;
 }
 
+.pq-question-hint {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin: -0.7rem 0 1.1rem;
+}
+
 .pq-options {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -92,6 +98,59 @@
 .pq-option-hint {
   font-size: 0.85rem;
   color: var(--ink-soft);
+}
+
+/* Selected state applies to both variants — single-select options still
+   auto-advance on click, but going Back to one needs to show what was
+   already picked, or a careless re-click can silently overwrite it. */
+.pq-option.is-selected {
+  border-color: var(--bay);
+  background: var(--bay-tint);
+}
+
+/* Multi-select variant (currently just the "what would you change" question)
+   — stays on screen and toggles instead of auto-advancing, so it needs a
+   checkbox indicator and an explicit continue action. */
+.pq-option--multi {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.pq-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pq-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1.5px solid var(--line);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--paper);
+  margin-top: 0.15rem;
+}
+
+.pq-check.is-selected {
+  border-color: var(--bay);
+  background: var(--bay);
+}
+
+.pq-continue {
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.pq-continue:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .pq-back {
@@ -219,6 +278,7 @@
 }
 
 .pq-compare-col .name-row {
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.4rem;
@@ -263,4 +323,36 @@
 
 .pq-meter-dot.is-filled {
   background: var(--bay);
+}
+
+/* ---------- Hero media (skill-level illustration) ---------- */
+
+.pq-hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.pq-hero-copy {
+  max-width: 46ch;
+}
+
+.pq-hero-media {
+  flex: none;
+  width: 320px;
+  max-width: 40%;
+  height: auto;
+}
+
+@media (max-width: 800px) {
+  .pq-hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pq-hero-media {
+    width: 100%;
+    max-width: 320px;
+  }
 }
