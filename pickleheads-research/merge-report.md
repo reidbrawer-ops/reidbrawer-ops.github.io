@@ -11,7 +11,7 @@ Merged all 17 `pickleheads-research/*.json` files into `assets/courts-data.json`
 - **Existing venues patched (gap-filled) with `confirmed: true`:** 21
 - **Existing venues confirmed with no field changes needed (`existing-no-change`, `confirmed` flipped to true):** 7
 - **Total records where `confirmed` flipped false -> true:** 21
-- **Existing venues left as unresolved conflicts:** 34 venues, 46 conflicting fields (see `pickleheads-research/conflicts.md`)
+- **Existing venues with conflicts:** 34 venues, 46 fields — all now **resolved** as of 2026-07-11 (see "Conflicts — resolved" below and `pickleheads-research/conflicts.md`)
 - **New venues excluded from auto-merge (flagged as likely data errors):** 3
 - **New venues merged despite a caveat note (not a data-correctness issue):** 2
 - **New venues added with no geocoded lat/lon (map pin will not render until filled in):** 21
@@ -93,44 +93,13 @@ The following existing venues had `existing-no-change` status (Pickleheads corro
 - san-jose.json: river-glen-park
 - walnut-creek.json: rudgear-park
 
-## Unresolved conflicts
+## Conflicts — resolved (2026-07-11 update)
 
-34 existing venues have at least one field where Pickleheads disagrees with an already-populated baseline value. These records were **not** modified. Full detail (existing value, Pickleheads value, source) is in [`pickleheads-research/conflicts.md`](conflicts.md).
+The 34 venues / 46 fields originally left as unresolved conflicts have since been resolved by human review and applied to `assets/courts-data.json` / `assets/venues.json`. All 34 are now `confirmed: true` in both files. Most were resolved by accepting Pickleheads' value; 12 were resolved with corrections the user provided directly (some of which kept the existing value and rejected Pickleheads' claim instead). Full per-venue detail — resolution source, before/after values, and reasoning — is in [`pickleheads-research/conflicts.md`](conflicts.md), which now serves as a resolution log rather than an open worklist. The original existing-vs-Pickleheads-vs-source citations are unchanged in each `pickleheads-research/<city>.json` file.
 
-- **albert-park**: address, price
-- **bay-club-pleasanton**: courts
-- **bay-club-santa-clara**: courts
-- **beresford-park**: hours
-- **branham-park**: courts
-- **buena-vista-park**: reservable
-- **bushrod-park**: price
-- **camden-community-center**: price
-- **central-park**: hours
-- **clubsport-fremont**: courts, name
-- **community-recreation-center-at-central-park**: hours
-- **evergreen-valley-college**: reservable
-- **flyte-racquet-club**: bookingUrl, price
-- **george-christopher-playground**: courts
-- **goldman-tennis-center**: price
-- **hamilton-rec-center**: courts
-- **heather-farm-park-walnut-creek-tennis-center**: reservable
-- **hill-recreation-pickleball-courts**: address
-- **memorial-park**: courts
-- **mitchell-park**: courts, hours, surface
-- **montclair-pickleball-courts**: price
-- **moscone-playground**: courts, indoorOutdoor
-- **pickle-athletics**: reservable
-- **pleasanton-middle-school-gym**: price
-- **pleasanton-tennis-and-community-park**: reservable, surface
-- **presidio-wall-playground**: hours
-- **red-morton-park-outdoor-courts**: hours
-- **red-morton-senior-center-indoor-courts**: price
-- **rengstorff-park**: courts
-- **rossi-playground**: courts
-- **san-mateo-high-school-gym**: (note), courts, hours, price
-- **sequoia-ymca**: price
-- **sunnyvale-tennis-center**: courts, price
-- **upper-noe-rec-center**: courts, hours
+Two resolutions are worth flagging specifically:
+- **hill-recreation-pickleball-courts** (Novato): address accepted from Pickleheads (1560 Hill Rd), but the research file itself warned this may reflect the baseline having picked up a *different* venue's address (Thigpen Courts) by mistake. lat/lon were nulled out rather than left pointing at the old address.
+- **branham-park** (San Jose): accepting Pickleheads' court count (1, down from 2) left the old surface text ("1 dedicated + 1 lined on shared basketball court") internally inconsistent, so it was also updated to match.
 
 ## New venues NOT merged (flagged as likely data errors)
 
@@ -185,6 +154,8 @@ Added to both files with `lat: null, lon: null` per the "don't fabricate, don't 
 - Santa Clara: Santa Clara Adult Education (`santa-clara-adult-education`, santa-clara.json)
 - Walnut Creek: Bay Club Walnut Creek (`bay-club-walnut-creek`, walnut-creek.json)
 - Walnut Creek: Rossmoor (`rossmoor`, walnut-creek.json)
+
+One existing (non-new) venue also lost its coordinates during conflict resolution: **Hill Recreation Pickleball Courts** (Novato) had its address corrected to Pickleheads' value (see "Conflicts — resolved" above), but no geocode was available for the corrected address, and the old lat/lon belonged to the old, likely-wrong address — so they were nulled rather than left misleading. Same map.js filtering applies; needs geocoding.
 
 ## `notOnPickleheads` -- existing entries Pickleheads doesn't list
 

@@ -99,7 +99,7 @@
     "confirmed": true
   },
   {
-    "name": "ClubSport Fremont",
+    "name": "Bay Club Fremont",
     "city": "Fremont",
     "address": "46650 Landing Pkwy, Fremont, CA 94538",
     "lat": 37.4832307,
@@ -107,7 +107,7 @@
     "url": "/cities/fremont",
     "indoor": "outdoor",
     "id": "clubsport-fremont",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Raindance Pickleball",
@@ -168,9 +168,9 @@
   {
     "name": "Hill Recreation Pickleball Courts",
     "city": "Novato",
-    "address": "500 Crescent Drive, Novato, CA 94949",
-    "lat": 38.0530871,
-    "lon": -122.5187715,
+    "address": "1560 Hill Rd, Novato, CA 94947",
+    "lat": null,
+    "lon": null,
     "url": "/cities/novato",
     "indoor": "outdoor",
     "id": "hill-recreation-pickleball-courts",
@@ -306,7 +306,7 @@
     "url": "/cities/pleasanton",
     "indoor": "both",
     "id": "bay-club-pleasanton",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "ClubSport of Pleasanton",
@@ -350,7 +350,7 @@
     "url": "/cities/redwood-city",
     "indoor": "indoor",
     "id": "sequoia-ymca",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Larsen Playground",
@@ -427,7 +427,7 @@
     "url": "/cities/san-francisco",
     "indoor": "outdoor",
     "id": "buena-vista-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Rossi Playground",
@@ -438,7 +438,7 @@
     "url": "/cities/san-francisco",
     "indoor": "outdoor",
     "id": "rossi-playground",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Moscone Playground",
@@ -447,9 +447,9 @@
     "lat": 37.801298,
     "lon": -122.433128,
     "url": "/cities/san-francisco",
-    "indoor": "outdoor",
+    "indoor": "both",
     "id": "moscone-playground",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "George Christopher Playground",
@@ -460,7 +460,7 @@
     "url": "/cities/san-francisco",
     "indoor": "outdoor",
     "id": "george-christopher-playground",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Rec Fillmore",
@@ -504,7 +504,7 @@
     "url": "/cities/san-francisco",
     "indoor": "both",
     "id": "upper-noe-rec-center",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Eureka Valley Rec Center",
@@ -526,7 +526,7 @@
     "url": "/cities/san-francisco",
     "indoor": "indoor",
     "id": "hamilton-rec-center",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Minnie & Lovie Ward Rec Center",
@@ -691,7 +691,7 @@
     "url": "/cities/san-jose",
     "indoor": "outdoor",
     "id": "branham-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Bascom Community Center",
@@ -713,7 +713,7 @@
     "url": "/cities/san-jose",
     "indoor": "indoor",
     "id": "camden-community-center",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Central Park",
@@ -779,7 +779,7 @@
     "url": "/cities/san-mateo",
     "indoor": "indoor",
     "id": "san-mateo-high-school-gym",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Flyte Racquet Club",
@@ -806,13 +806,13 @@
   {
     "name": "Albert Park",
     "city": "San Rafael",
-    "address": "155 Anderson Dr, San Rafael, CA 94901",
+    "address": "76 Albert Park Lane, San Rafael, CA 94901",
     "lat": 37.9687998,
     "lon": -122.52685,
     "url": "/cities/san-rafael",
     "indoor": "outdoor",
     "id": "albert-park",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "McInnis Park",
