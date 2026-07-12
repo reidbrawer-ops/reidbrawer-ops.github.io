@@ -255,7 +255,20 @@
         },
       });
       var proceed = document.dispatchEvent(ev);
-      if (proceed) window.location.href = match.href;
+      if (proceed) {
+        window.location.href = match.href;
+      } else {
+        // Handled in place (e.g. the Find-courts hub recentered its map). A
+        // navigation would normally have torn down this dropdown for us; since
+        // it was prevented, collapse our own results so they don't linger over
+        // the page. Reflect the picked value and drop focus.
+        input.value = match.label;
+        resultsEl.hidden = true;
+        resultsEl.innerHTML = "";
+        activeIndex = -1;
+        currentMatches = [];
+        input.blur();
+      }
     }
 
     var debounceTimer = null;
