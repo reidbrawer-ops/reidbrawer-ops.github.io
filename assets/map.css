@@ -243,19 +243,6 @@
   color: var(--bay-deep);
 }
 
-.finder-view-toggle {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--bay);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.finder-view-toggle:hover {
-  color: var(--kitchen);
-}
-
 .finder {
   position: relative;
   display: grid;
@@ -572,5 +559,305 @@
 
   .finder-scrim[hidden] {
     display: none;
+  }
+}
+
+/* ---------- Filter panel (the folded-in Directory filters) ---------- */
+
+.finder-filters-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.finder-filters-toggle:hover {
+  border-color: var(--bay);
+  color: var(--bay-deep);
+}
+
+.finder-filters-toggle.is-open {
+  background: var(--bay-tint);
+  border-color: var(--bay);
+  color: var(--bay-deep);
+}
+
+/* Three stacked bars — a plain "filter/sliders" glyph. */
+.ff-toggle-icon {
+  position: relative;
+  width: 0.95em;
+  height: 0.7em;
+  flex: none;
+}
+
+.ff-toggle-icon::before,
+.ff-toggle-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 2px;
+  box-shadow: 0 0.32em 0 currentColor;
+}
+
+.ff-toggle-icon::before {
+  top: 0.05em;
+}
+
+.ff-toggle-icon::after {
+  top: 0.32em;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ff-active-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4em;
+  height: 1.4em;
+  padding: 0 0.35em;
+  border-radius: 999px;
+  background: var(--bay);
+  color: var(--paper);
+  font-size: 0.68rem;
+  line-height: 1;
+}
+
+.ff-active-count[hidden] {
+  display: none;
+}
+
+.finder-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.9rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 1.3rem 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.finder-filters[hidden] {
+  display: none;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.filter-field label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+.filter-field select {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: var(--fog);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  padding: 0.5em 0.6em;
+}
+
+.filter-field-clear {
+  justify-content: flex-end;
+}
+
+.clear-btn {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bay);
+  background: var(--paper);
+  border: 1px solid var(--bay);
+  border-radius: 999px;
+  padding: 0.5em 1.1em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.clear-btn:hover {
+  background: var(--bay-tint);
+  color: var(--bay-deep);
+}
+
+/* Hours range slider */
+.filter-field-hours {
+  grid-column: span 2;
+  min-width: 220px;
+}
+
+.hours-slider {
+  position: relative;
+  height: 28px;
+}
+
+.hours-slider-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  background: var(--line);
+  border-radius: 999px;
+}
+
+.hours-slider-range {
+  position: absolute;
+  top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
+  background: var(--bay);
+  border-radius: 999px;
+}
+
+.hours-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  height: 28px;
+  background: transparent;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.hours-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bay);
+  border: 2px solid var(--paper);
+  box-shadow: 0 1px 4px rgba(var(--ink-rgb), 0.35);
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.hours-thumb::-moz-range-thumb {
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bay);
+  border: 2px solid var(--paper);
+  box-shadow: 0 1px 4px rgba(var(--ink-rgb), 0.35);
+  cursor: pointer;
+}
+
+.hours-thumb::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 28px;
+}
+
+.hours-thumb::-moz-range-track {
+  background: transparent;
+  height: 28px;
+}
+
+.hours-thumb:focus-visible::-webkit-slider-thumb {
+  outline: 3px solid var(--bay);
+  outline-offset: 2px;
+}
+
+.hours-slider-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.finder-count {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin: 0 0 1rem;
+  min-height: 1.2em;
+}
+
+/* Courts without coordinates: listed, but flagged as not-yet-mappable. */
+.finder-result--nopin .fr-name {
+  color: var(--ink-soft);
+}
+
+.fr-nopin {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  color: var(--poppy-deep);
+}
+
+/* "Help add its location" block in the detail card. */
+.fd-nopin {
+  margin: 0.9rem 0 0.4rem;
+  padding: 0.85rem 1rem;
+  background: var(--poppy-tint);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+}
+
+.fd-nopin-text {
+  margin: 0 0 0.5rem;
+  font-size: 0.86rem;
+  color: var(--ink);
+}
+
+.fd-nopin-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--poppy-deep);
+  text-decoration: none;
+}
+
+.fd-nopin-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .finder-filters {
+    grid-template-columns: 1fr 1fr;
+    padding: 1rem;
+  }
+
+  .filter-field-hours {
+    grid-column: 1 / -1;
+  }
+
+  .filter-field-clear {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+
+  .filter-field-clear .clear-btn {
+    width: 100%;
   }
 }

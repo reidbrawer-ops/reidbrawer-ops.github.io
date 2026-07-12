@@ -7,30 +7,84 @@
   margin-top: var(--space-2);
 }
 
-.city-jump {
-  margin-top: var(--space-3);
-}
-
-.city-jump-label {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--ink-soft);
-  margin: 0 0 0.5rem;
-}
-
-.city-jump-groups {
+/* Six rating-factor tags in the hero (replaces the old prose list). */
+.ranking-criteria {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.7rem;
+  margin-top: var(--space-2);
 }
 
-.city-jump-region {
+.ranking-criteria-label {
   font-family: var(--font-mono);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.72rem;
   color: var(--kitchen-deep);
-  min-width: 6.5em;
+}
+
+.ranking-criteria-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ranking-criteria-tags li {
+  display: inline-flex;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3em 0.85em;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* Search + city filter, stacked (search on top, city dropdown below). */
+.rankings-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: var(--space-3);
+  max-width: 26rem;
+}
+
+.rankings-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.rankings-filter-field label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+.rankings-filter-field input[type="search"],
+.rankings-filter-field select {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--fog);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  padding: 0.55em 0.7em;
+}
+
+.rankings-no-results {
+  padding: 1.2rem 0;
+  color: var(--ink-soft);
 }
 
 .rankings-status {

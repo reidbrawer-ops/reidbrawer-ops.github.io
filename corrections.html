@@ -34,7 +34,6 @@
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/">Cities</a>
-      <a href="/directory">Directory</a>
       <a href="/rankings">Rankings</a>
       <a href="/paddles">Paddles &amp; Gear</a>
       <details class="nav-dropdown">
@@ -217,10 +216,37 @@
 </footer>
 
 <script>
-  if (new URLSearchParams(window.location.search).get('sent') === '1') {
-    document.getElementById('corr-thanks').classList.add('show');
-    document.getElementById('corr-form').classList.add('hide');
-  }
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('sent') === '1') {
+      document.getElementById('corr-thanks').classList.add('show');
+      document.getElementById('corr-form').classList.add('hide');
+    }
+
+    // Prefill from a "help add its location" link on the Find-courts hub
+    // (/corrections?issue=address&venue=…&city=…) — the missing-place flow.
+    var venue = params.get('venue');
+    var city = params.get('city');
+    var issue = params.get('issue');
+    if (venue) {
+      var venueEl = document.getElementById('corr-venue');
+      if (venueEl) venueEl.value = venue;
+    }
+    if (city) {
+      var cityEl = document.getElementById('corr-city');
+      if (cityEl && [].some.call(cityEl.options, function (o) { return o.value === city; })) {
+        cityEl.value = city;
+      }
+    }
+    if (issue === 'address') {
+      var typeEl = document.getElementById('corr-type');
+      if (typeEl) typeEl.value = 'Address or directions wrong';
+      var detailsEl = document.getElementById('corr-details');
+      if (detailsEl && !detailsEl.value) {
+        detailsEl.value = "The correct address / location for this court is: ";
+      }
+    }
+  })();
 </script>
 
 <script src="/assets/dom-utils.js"></script>

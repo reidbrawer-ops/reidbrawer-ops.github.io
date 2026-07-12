@@ -35,7 +35,6 @@
     <nav class="main-nav">
       <a href="/map" aria-current="page">Find courts</a>
       <a href="/cities/">Cities</a>
-      <a href="/directory">Directory</a>
       <a href="/rankings">Rankings</a>
       <a href="/paddles">Paddles &amp; Gear</a>
       <details class="nav-dropdown">
@@ -54,11 +53,10 @@
   <div class="container">
     <p class="eyebrow">Find courts</p>
     <h1>Find a court near you.</h1>
-    <p class="lede">Search a Bay Area city or neighborhood to recenter the map on its courts, browse them in the list beside it, and open any one for hours, surface, wait, ratings, and directions.</p>
-    <!-- Phase 2's global-search component mounts its large hero input here
-         (see the contract at the top of assets/global-search.js). Until it
-         does, the nav search pill stays the entry point and this page still
-         responds to ?city=<slug> and the pbsearch:select event. -->
+    <p class="lede">Search a Bay Area city or neighborhood to recenter the map on its courts, browse them in the list beside it, and open any one for hours, surface, wait, ratings, and directions. Open <strong>Filters</strong> to narrow by price, skill, courts, indoor/outdoor, hours, and more.</p>
+    <!-- The global-search component (assets/global-search.js) mounts its large
+         hero input here and dispatches pbsearch:select, which map.js listens
+         for to recenter in place; this page also honors a ?city=<slug> deep-link. -->
     <div class="hero-search" data-search-scope="courts" data-search-target="map"></div>
   </div>
 </section>
@@ -72,9 +70,75 @@
           <span class="finder-scope-label" id="finder-scope-label"></span>
           <button type="button" class="finder-scope-clear" id="finder-clear">Clear</button>
         </span>
-        <a class="finder-view-toggle" href="/directory">Filter &amp; list view →</a>
+        <button type="button" class="finder-filters-toggle" id="finder-filters-toggle" aria-expanded="false" aria-controls="finder-filters">
+          <span class="ff-toggle-icon" aria-hidden="true"></span>
+          Filters<span class="ff-active-count" id="finder-filter-count" hidden></span>
+        </button>
       </div>
     </div>
+
+    <form id="finder-filters" class="finder-filters" aria-label="Filter courts" hidden>
+      <div class="filter-field">
+        <label for="f-region">Region</label>
+        <select id="f-region" name="region"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-city">City</label>
+        <select id="f-city" name="city"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-neighborhood">Neighborhood</label>
+        <select id="f-neighborhood" name="neighborhood"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-indoor">Indoor / Outdoor</label>
+        <select id="f-indoor" name="indoorOutdoor"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-surface">Surface</label>
+        <select id="f-surface" name="surface"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-reservable">Reservable</label>
+        <select id="f-reservable" name="reservable"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-skill">Skill level</label>
+        <select id="f-skill" name="skill"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-price">Price</label>
+        <select id="f-price" name="price"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-courts">Number of courts</label>
+        <select id="f-courts" name="courts"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-wait">Wait time</label>
+        <select id="f-wait" name="waitTime"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-weather">Typical weather</label>
+        <select id="f-weather" name="weather"></select>
+      </div>
+      <div class="filter-field filter-field-hours">
+        <label for="f-hours-start">Open during</label>
+        <div class="hours-slider" id="hours-slider">
+          <div class="hours-slider-track">
+            <div class="hours-slider-range" id="hours-slider-range"></div>
+          </div>
+          <input type="range" id="f-hours-start" class="hours-thumb" min="0" max="1440" step="15" value="0" aria-label="Earliest open time">
+          <input type="range" id="f-hours-end" class="hours-thumb" min="0" max="1440" step="15" value="1440" aria-label="Latest open time">
+        </div>
+        <span id="hours-slider-label" class="hours-slider-label">Any time</span>
+      </div>
+      <div class="filter-field filter-field-clear">
+        <button type="button" id="f-clear" class="clear-btn">Clear filters</button>
+      </div>
+    </form>
+
+    <p id="finder-count" class="finder-count" aria-live="polite"></p>
 
     <div class="finder" id="finder">
       <aside class="finder-list-wrap">
@@ -144,6 +208,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="/assets/dom-utils.js"></script>
+<script src="/assets/regions.js"></script>
 <script type="module" src="/assets/court-ratings.js"></script>
 <script src="/assets/google-ratings.js"></script>
 <script src="/assets/top-picks.js"></script>

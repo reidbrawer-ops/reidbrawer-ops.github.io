@@ -6,53 +6,99 @@
 
   const { escapeHtml, citySlug, setStatus } = window.PBUtils;
 
-  const cityJumpEl = document.getElementById("city-jump-groups");
+  const searchEl = document.getElementById("rankings-search");
+  const cityFilterEl = document.getElementById("rankings-city");
+  const top10SectionEl = document.getElementById("top-10");
 
   // Built from the static region/city map, not the async courts-data fetch —
   // the city list itself never changes, so there's no reason to wait on it.
-  function renderCityJumpTags() {
-    if (!cityJumpEl || !window.PB_REGION_ORDER || !window.PB_CITY_REGION) return;
+  function renderCityFilterOptions() {
+    if (!cityFilterEl || !window.PB_REGION_ORDER || !window.PB_CITY_REGION) return;
     const citiesByRegion = {};
     Object.keys(window.PB_CITY_REGION).forEach((city) => {
       const region = window.PB_CITY_REGION[city];
       (citiesByRegion[region] = citiesByRegion[region] || []).push(city);
     });
 
-    cityJumpEl.innerHTML = window.PB_REGION_ORDER.map((region) => {
+    let html = '<option value="">All cities</option>';
+    window.PB_REGION_ORDER.forEach((region) => {
       const cities = (citiesByRegion[region] || []).slice().sort();
-      if (!cities.length) return "";
-      const tags = cities
-        .map((city) => `<a class="city-jump-tag" href="#${citySlug(city)}">${escapeHtml(city)}</a>`)
+      if (!cities.length) return;
+      html += `<optgroup label="${escapeHtml(region)}">`;
+      html += cities
+        .map((city) => `<option value="${citySlug(city)}">${escapeHtml(city)}</option>`)
         .join("");
-      return `
-        <div class="city-jump-group">
-          <span class="city-jump-region">${escapeHtml(region)}</span>
-          ${tags}
-        </div>`;
-    }).join("");
-  }
-
-  renderCityJumpTags();
-
-  // The browser's native "scroll to #hash" doesn't reliably fire for a
-  // same-page click here (same underlying issue jumpToHashTarget below
-  // works around for the initial-load case) — so drive the scroll
-  // ourselves rather than trust the anchor's default behavior.
-  if (cityJumpEl) {
-    cityJumpEl.addEventListener("click", (e) => {
-      const link = e.target.closest(".city-jump-tag");
-      if (!link) return;
-      const id = link.getAttribute("href").slice(1);
-      const target = document.getElementById(id);
-      if (!target) return;
-      e.preventDefault();
-      window.location.hash = id;
-      // "instant", not "smooth" — this page's rows can re-render mid-animation
-      // (live vote/rating updates), which stalls a smooth scrollIntoView the
-      // same way jumpToHashTarget's comment below describes. Instant avoids it.
-      target.scrollIntoView({ behavior: "instant", block: "start" });
+      html += "</optgroup>";
     });
+    cityFilterEl.innerHTML = html;
   }
+
+  renderCityFilterOptions();
+
+  const noResultsEl = document.getElementById("rankings-no-results");
+
+  // Filter the already-rendered leaderboard rows in place by court name
+  // (search) and city (dropdown). Called both on user input and at the end of
+  // every render(), since render() rebuilds the DOM from scratch on each live
+  // vote/rating update and would otherwise drop the active filter.
+  function applyFilters() {
+    const query = (searchEl && searchEl.value || "").trim().toLowerCase();
+    const city = (cityFilterEl && cityFilterEl.value) || "";
+
+    const rowMatches = (row) => {
+      const name = row.dataset.name || "";
+      const rowCity = row.dataset.city || "";
+      return (!query || name.includes(query)) && (!city || rowCity === city);
+    };
+
+    // Top 10: filter rows by name/city; hide the whole section if none survive.
+    let top10Visible = 0;
+    if (top10El) {
+      top10El.querySelectorAll(".leaderboard-row").forEach((row) => {
+        const show = rowMatches(row);
+        row.hidden = !show;
+        if (show) top10Visible++;
+      });
+    }
+    if (top10SectionEl) top10SectionEl.hidden = top10Visible === 0;
+
+    // City leaderboards: hide a city section entirely if the city filter
+    // excludes it, otherwise filter its rows and hide it if none match.
+    let cityVisible = 0;
+    citiesEl.querySelectorAll(".city-leaderboard").forEach((section) => {
+      if (city && section.id !== city) {
+        section.hidden = true;
+        return;
+      }
+      let visible = 0;
+      section.querySelectorAll(".leaderboard-row").forEach((row) => {
+        const show = rowMatches(row);
+        row.hidden = !show;
+        if (show) visible++;
+      });
+      section.hidden = visible === 0;
+      cityVisible += visible;
+    });
+
+    // Region subheads: hide any that no longer have a visible city below them.
+    let currentHead = null;
+    let headHasVisible = false;
+    Array.from(citiesEl.children).forEach((el) => {
+      if (el.classList.contains("region-subhead")) {
+        if (currentHead) currentHead.hidden = !headHasVisible;
+        currentHead = el;
+        headHasVisible = false;
+      } else if (el.classList.contains("city-leaderboard") && !el.hidden) {
+        headHasVisible = true;
+      }
+    });
+    if (currentHead) currentHead.hidden = !headHasVisible;
+
+    if (noResultsEl) noResultsEl.hidden = !(top10Visible === 0 && cityVisible === 0);
+  }
+
+  if (searchEl) searchEl.addEventListener("input", applyFilters);
+  if (cityFilterEl) cityFilterEl.addEventListener("change", applyFilters);
 
   function rankClass(index) {
     if (index === 0) return "rank-1";
@@ -77,7 +123,7 @@
     if (isMostLoved) badges.push('<span class="badge-most-loved">♥ Most loved</span>');
 
     return `
-      <div class="leaderboard-row${compact ? " is-compact" : ""}"${rowId ? ` id="${rowId}"` : ""}>
+      <div class="leaderboard-row${compact ? " is-compact" : ""}"${rowId ? ` id="${rowId}"` : ""} data-name="${escapeHtml(court.name.toLowerCase())}" data-city="${citySlug(court.city)}">
         <div class="rank-number ${rankClass(index)}">#${index + 1}</div>
         <div class="leaderboard-main">
           <div class="leaderboard-name-row">
@@ -170,6 +216,7 @@
     restoreExpandedRatingForms(expandedIds);
 
     window.PBWidgets.refreshAll();
+    applyFilters();
   }
 
   let courtsData = null;

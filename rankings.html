@@ -34,7 +34,6 @@
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/">Cities</a>
-      <a href="/directory">Directory</a>
       <a href="/rankings" aria-current="page">Rankings</a>
       <a href="/paddles">Paddles &amp; Gear</a>
       <details class="nav-dropdown">
@@ -53,19 +52,30 @@
   <div class="container">
     <p class="eyebrow">Community rankings</p>
     <h1>Vote for your favorite court.</h1>
-    <p class="lede">Every court on this site can be voted for as a favorite and rated on six factors — beginner friendliness, court surface, wait time, advanced play, amenities, and atmosphere. No login needed. Rankings update live as votes come in, grouped by city so you can see what your own local scene actually thinks.</p>
-    <p class="lede">Where available, each court also shows its public Google rating (e.g. "Google 4.3★ (128)") right next to the community rating above. These are two separate numbers from two different populations of people — we don't average them into one score.</p>
-    <div class="stat-strip">
-      <span class="stat-chip">Every court, votable</span>
-      <span class="stat-chip"><b>6</b> rating factors</span>
-      <span class="stat-chip">City-by-city leaderboards</span>
+    <p class="lede">Vote for a favorite and rate any court — no login needed. Rankings update live as votes come in, grouped by city so you can see what your own local scene actually thinks.</p>
+    <div class="ranking-criteria">
+      <span class="ranking-criteria-label">Rated on</span>
+      <ul class="ranking-criteria-tags">
+        <li>Beginner friendliness</li>
+        <li>Court surface</li>
+        <li>Wait time</li>
+        <li>Advanced play</li>
+        <li>Amenities</li>
+        <li>Atmosphere</li>
+      </ul>
     </div>
     <div class="rankings-cta">
       <a class="btn" href="#top-10">See the Bay Area Top 10 →</a>
     </div>
-    <div class="city-jump">
-      <p class="city-jump-label">Jump to your city:</p>
-      <div class="city-jump-groups" id="city-jump-groups"></div>
+    <div class="rankings-filter">
+      <div class="rankings-filter-field">
+        <label for="rankings-search">Search courts</label>
+        <input type="search" id="rankings-search" placeholder="Search by court name…" autocomplete="off">
+      </div>
+      <div class="rankings-filter-field">
+        <label for="rankings-city">Filter by city</label>
+        <select id="rankings-city"><option value="">All cities</option></select>
+      </div>
     </div>
   </div>
 </section>
@@ -91,6 +101,7 @@
         <p>Every court, ranked within its own city. Vote for a favorite or leave a star rating on any of the six factors below.</p>
       </div>
     </div>
+    <p id="rankings-no-results" class="rankings-no-results" hidden>No courts match your search. Try a different name or city.</p>
     <div id="rankings-cities"></div>
   </div>
 </section>

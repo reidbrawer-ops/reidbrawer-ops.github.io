@@ -24,7 +24,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const ROOT_PAGES = [
-  'index.html', 'about.html', 'corrections.html', 'directory.html',
+  'index.html', 'about.html', 'corrections.html',
   'learn.html', 'map.html', 'paddles.html',
   'privacy.html', 'rankings.html', 'affiliate-disclosure.html', '404.html',
 ];
@@ -56,14 +56,16 @@ const HEAD_BOILERPLATE = `<link rel="preconnect" href="https://fonts.googleapis.
 <link rel="icon" href="/favicon.ico" sizes="any">
 <meta name="theme-color" content="#ffffff">`;
 
-// Confirmed nav shape (plan §6, locked 2026-07-12): Find courts · Cities ·
-// Directory · Rankings · Paddles & Gear · More(Learn, Corrections) · About.
-// The brand logo is the way Home; "Find courts" is /map renamed; "Gear &
-// rentals" + "Find your paddle" fold into the single /paddles hub (Phase 5).
+// Nav shape: Find courts · Cities · Rankings · Paddles & Gear ·
+// More(Learn, Corrections) · About. "Find courts" (/map) is now the single
+// search + map + filter + list hub — the standalone Directory page was folded
+// into it (its filters live behind a show/hide panel there), so /directory is
+// gone from the nav and 301-redirects to /map (see firebase.json).
+// The brand logo is the way Home; "Gear & rentals" + "Find your paddle" fold
+// into the single /paddles hub (Phase 5).
 const NAV_ITEMS = [
   { href: '/map', label: 'Find courts' },
   { href: '/cities/', label: 'Cities' },
-  { href: '/directory', label: 'Directory' },
   { href: '/rankings', label: 'Rankings' },
   { href: '/paddles', label: 'Paddles &amp; Gear' },
 ];
