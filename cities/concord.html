@@ -27,9 +27,10 @@
 </head>
 <body>
 
+<!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -46,6 +47,7 @@
     </nav>
   </div>
 </header>
+<!-- site-header:end -->
 
 <section class="page-hero">
   <div class="container">
@@ -81,7 +83,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue caution">Inland East Bay — hot, dry summers (90s–100s°F), mild wet winters</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue neutral">Medium — one of the region's largest complexes, but free walk-up play still draws weekend crowds</span></div>
         </div>
-        <p>Concord's flagship pickleball venue, and the only one the city's own dedicated pickleball page mentions — described there as "one of the largest Pickleball complexes in Northern California." The 14 courts are separate from the park's own tennis courts. Play is casual walk-up rotation (one game to 11, then rotate off when courts fill up); groups larger than 8 need a permit. Closed for maintenance Wednesdays 12–1pm.</p>
+        <p>Concord's flagship pickleball venue, and the only public one the city officially recognizes for pickleball — one of the largest pickleball complexes in Northern California. The 14 courts are separate from the park's own tennis courts. Play is casual walk-up rotation (one game to 11, then rotate off when courts fill up); groups larger than 8 need a permit. Closed for maintenance Wednesdays 12–1pm.</p>
         <div class="vote-actions">
           <a href="/rankings#willow-pass-community-park"><span class="rating-summary" data-court-id="willow-pass-community-park" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="willow-pass-community-park" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -127,9 +129,9 @@
           <div class="rating-pill"><span class="rlabel">Surface</span><span class="rvalue neutral">Medium — shared tennis/pickleball striping, bring your own net</span></div>
           <div class="rating-pill"><span class="rlabel">Level</span><span class="rvalue">Not specified</span></div>
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue caution">Inland East Bay — hot, dry summers (90s–100s°F), mild wet winters</span></div>
-          <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue good">Low — small, little-known courts not listed on the city's own pickleball page</span></div>
+          <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue good">Low — small, little-known courts that aren't in the city's official pickleball lineup</span></div>
         </div>
-        <p>A small, two-court facility with shared tennis/pickleball striping — bring your own net, since none is installed. The city's own pickleball page doesn't mention Pine Hollow at all; pickleball use here is corroborated only by third-party aggregators, though several agree independently on the details. The official facilities page still lists the courts as lighted, but player reports describe the lights as non-functional after a copper-wire theft the city has declined to repair — plan on daytime play only. Courts are also reported to collect pine needles from nearby trees.</p>
+        <p>A small, two-court facility with shared tennis/pickleball striping — bring your own net, since none is installed. It isn't part of the city's official pickleball lineup, so it flies under the radar. The courts are officially listed as lighted, but the lights don't actually work — copper-wire theft the city has declined to repair — so plan on daytime play only. The courts also tend to collect pine needles from the nearby trees.</p>
         <div class="vote-actions">
           <a href="/rankings#pine-hollow-tennis-courts"><span class="rating-summary" data-court-id="pine-hollow-tennis-courts" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="pine-hollow-tennis-courts" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -141,13 +143,40 @@
     <ul class="know-list">
       <li>Willow Pass closes for maintenance every Wednesday from 12–1pm; groups larger than 8 need a permit, arranged through the city's Active.net-linked booking system.</li>
       <li>Indoor Pickleball X requires membership — Bronze is free to join with pay-as-you-play pricing, and court reservations run through CourtReserve online.</li>
-      <li>Pine Hollow's lights are reported non-functional after a copper-wire theft the city hasn't repaired — treat it as daytime-only regardless of what the official facility page says.</li>
-      <li>Concord's own pickleball page covers only Willow Pass; Pine Hollow's pickleball use is confirmed only by third-party sites, so it's worth a phone call before a special trip.</li>
+      <li>Pine Hollow's lights don't work after a copper-wire theft the city hasn't repaired — treat it as daytime-only regardless of what the official facility page says.</li>
+      <li>Concord's official pickleball lineup covers only Willow Pass; Pine Hollow flies under the radar, so it's worth a phone call before a special trip.</li>
     </ul>
 
     <p class="sources">Sources: <a href="https://www.cityofconcord.org/649/Pickleball" target="_blank" rel="noopener">City of Concord — Pickleball</a> · <a href="https://www.cityofconcord.org/653/Sports-Facilities" target="_blank" rel="noopener">City of Concord — Sports Facilities</a> · <a href="https://www.pickleheads.com/courts/us/california/concord" target="_blank" rel="noopener">Pickleheads — Concord</a> · <a href="https://indoorpickleballx.com/concord-ca/" target="_blank" rel="noopener">Indoor Pickleball X — Concord</a>. Verified July 2026 — always confirm hours before a special trip.</p>
   </div>
 </section>
+
+<!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
+<section class="section">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Before you head out</h2>
+        <p>Found your court? Here's what to sort out next.</p>
+      </div>
+    </div>
+    <div class="home-lanes">
+      <div class="home-lane">
+        <p class="eyebrow">New to pickleball</p>
+        <h3>Learn the basics first</h3>
+        <p>The rules, the scoring, and the one shot that trips up every beginner — a couple of minutes before your first game.</p>
+        <a class="btn" href="/learn">Start with the basics →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">Ready to buy</p>
+        <h3>Find your paddle</h3>
+        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
+        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- lane-router:end -->
 
 <footer class="site-footer">
   <div class="container">
@@ -228,7 +257,7 @@
     {
       "@type": "SportsActivityLocation",
       "name": "Pine Hollow Tennis Courts",
-      "description": "Two outdoor courts with shared tennis/pickleball striping and no installed net; lights are reported non-functional despite the official listing.",
+      "description": "Two outdoor courts with shared tennis/pickleball striping and no installed net; the lights are out despite the official listing showing them as lighted.",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "5491 Silver Sage Ct",

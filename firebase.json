@@ -15,6 +15,7 @@
       "**/.*",
       "**/node_modules/**",
       "scripts/**",
+      "partials/**",
       "**/*.md",
       "firestore.rules"
     ]

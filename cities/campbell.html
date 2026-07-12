@@ -27,9 +27,10 @@
 </head>
 <body>
 
+<!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -46,6 +47,7 @@
     </nav>
   </div>
 </header>
+<!-- site-header:end -->
 
 <section class="page-hero">
   <div class="container">
@@ -81,7 +83,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue">Indoor — no weather factor</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue good">Low — membership/guest-pass gated, 20 courts, reservable via CourtReserve, no public drop-in crowding</span></div>
         </div>
-        <p>Twenty individually fenced indoor courts in a 57,000-square-foot former Fry's Electronics store — Pickleheads' only listed location in Campbell. Regular play requires membership, though a $40 all-day guest pass covers walk-ins with in-and-out privileges; courts are booked through CourtReserve. One aggregator, PicklePlay, describes this address as 20 outdoor courts with no lighting, which conflicts with every other source, including the venue's own site and Yelp reviews describing well-lit indoor courts — likely a PicklePlay data error rather than a real discrepancy. A city planning review of a possible 9-court expansion into adjacent space was underway as of this research but hadn't broken ground.</p>
+        <p>Twenty individually fenced indoor courts in a 57,000-square-foot former Fry's Electronics store — the only venue of its kind in Campbell. Regular play requires membership, though a $40 all-day guest pass covers walk-ins with in-and-out privileges; courts are booked through CourtReserve. The courts are well-lit and fully indoor. A city planning review of a possible 9-court expansion into adjacent space was underway but hadn't broken ground.</p>
         <div class="vote-actions">
           <a href="/rankings#the-hub-silicon-valley"><span class="rating-summary" data-court-id="the-hub-silicon-valley" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="the-hub-silicon-valley" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -105,7 +107,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue">Indoor — no weather factor</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue neutral">Medium — advance registration required, no walk-up drop-in, but only one weekly session for the whole city</span></div>
         </div>
-        <p>Indoor Adult Open Gym pickleball on portable nets over the hardwood gym floor — not dedicated courts. The city currently runs it in the Auxiliary Gym at 3 courts over summer, shifting to 4 courts in the Main Gym during the school year. Sign-up is mandatory in advance, online or in person, for the single weekly Sunday 6:30–9:45pm session (18+) — no walk-up drop-in, no cash on-site. One aggregator lists a lower $4 session fee and a Tuesday-morning time slot, both conflicting with the city's own $8 fee and Sunday-evening schedule; this page uses the official city page as authoritative.</p>
+        <p>Indoor Adult Open Gym pickleball on portable nets over the hardwood gym floor — not dedicated courts. The city currently runs it in the Auxiliary Gym at 3 courts over summer, shifting to 4 courts in the Main Gym during the school year. Sign-up is mandatory in advance, online or in person, for the single weekly Sunday 6:30–9:45pm session (18+) — no walk-up drop-in, no cash on-site. The session fee is $8; confirm the current time and price before a special trip.</p>
         <div class="vote-actions">
           <a href="/rankings#campbell-community-center"><span class="rating-summary" data-court-id="campbell-community-center" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="campbell-community-center" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -124,6 +126,33 @@
     <p class="sources">Sources: <a href="https://thehubpickleball.com/the-hub-silicon-valley/" target="_blank" rel="noopener">The HUB Silicon Valley — official site</a> · <a href="https://www.pickleheads.com/courts/us/california/campbell/the-hub-silicon-valley" target="_blank" rel="noopener">Pickleheads</a> · <a href="https://www.campbellca.gov/409/Sports" target="_blank" rel="noopener">City of Campbell — Sports</a> · <a href="https://www.places2play.org/place/5411-campbell-community-center-campbell-ca" target="_blank" rel="noopener">Places2Play</a>. Verified July 2026 — always confirm hours before a special trip.</p>
   </div>
 </section>
+
+<!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
+<section class="section">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Before you head out</h2>
+        <p>Found your court? Here's what to sort out next.</p>
+      </div>
+    </div>
+    <div class="home-lanes">
+      <div class="home-lane">
+        <p class="eyebrow">New to pickleball</p>
+        <h3>Learn the basics first</h3>
+        <p>The rules, the scoring, and the one shot that trips up every beginner — a couple of minutes before your first game.</p>
+        <a class="btn" href="/learn">Start with the basics →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">Ready to buy</p>
+        <h3>Find your paddle</h3>
+        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
+        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- lane-router:end -->
 
 <footer class="site-footer">
   <div class="container">

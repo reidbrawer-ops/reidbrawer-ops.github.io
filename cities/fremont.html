@@ -27,9 +27,10 @@
 </head>
 <body>
 
+<!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -46,12 +47,13 @@
     </nav>
   </div>
 </header>
+<!-- site-header:end -->
 
 <section class="page-hero">
   <div class="container">
     <p class="eyebrow"><a href="/cities/#east-bay">East Bay region</a></p>
     <h1>Fremont</h1>
-    <p class="lede">Fremont's anchor is the free, dedicated Knoll at Central Park; the Fremont Tennis Center adds seven reservable courts, plus a couple of smaller membership and drop-in spots. A citywide estimate puts the total near 11 locations and 55 courts — more than we could confirm individually, so treat this list as a starting point, not an exhaustive one.</p>
+    <p class="lede">Fremont's anchor is the free, dedicated Knoll at Central Park; the Fremont Tennis Center adds seven reservable courts, plus a couple of smaller membership and drop-in spots. Citywide, Fremont runs to roughly 11 locations and 55 courts — more than we've profiled here, so treat this list as a curated starting point, not the full count.</p>
     <div class="stat-strip">
       <span class="stat-chip"><b>8</b> free dedicated courts at the Knoll</span>
       <span class="stat-chip"><b>7</b> reservable courts at the Tennis Center</span>
@@ -83,7 +85,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue">Inland Tri-Valley-adjacent — hot, sunny, especially summer afternoons</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue neutral">Medium — Sunday runs ~51% busy, Mon/Tue ~33%, Wed ~24%</span></div>
         </div>
-        <p>Fremont's biggest dedicated setup — 8 outdoor acrylic courts with permanent lines and nets, free and first-come-first-served. A paddle-in rotation keeps play fair when busy, especially on Sundays. Morning players on the west-end courts face direct sun and glare. Note: some sources list this address as 40000 Paseo Padre Pkwy — that's the Tennis Center below, not the Knoll.</p>
+        <p>Fremont's biggest dedicated setup — 8 outdoor acrylic courts with permanent lines and nets, free and first-come-first-served. A paddle-in rotation keeps play fair when busy, especially on Sundays. Morning players on the west-end courts face direct sun and glare. Note: you'll sometimes see this address given as 40000 Paseo Padre Pkwy — that's the Tennis Center below, not the Knoll.</p>
         <div class="vote-actions">
           <a href="/rankings#central-park-knoll-pickleball-courts"><span class="rating-summary" data-court-id="central-park-knoll-pickleball-courts" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="central-park-knoll-pickleball-courts" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -169,7 +171,7 @@
 
 
     <ul class="know-list">
-      <li>We excluded "Pickleball City" and Irvington Community Center as unconfirmed: Irvington is listed on fremont.gov only as "fee-based drop-in," with no address or court count, and Pickleball City couldn't be verified at all.</li>
+      <li>We left out "Pickleball City" and Irvington Community Center: Irvington shows up only as a "fee-based drop-in," with no address or court count, and Pickleball City doesn't check out as a real venue.</li>
       <li>Double-check the Central Park Knoll address before you drive there — 40000 Paseo Padre Pkwy is the Tennis Center, not the Knoll.</li>
     </ul>
 
@@ -234,6 +236,33 @@
   ]
 }
 </script>
+
+<!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
+<section class="section">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Before you head out</h2>
+        <p>Found your court? Here's what to sort out next.</p>
+      </div>
+    </div>
+    <div class="home-lanes">
+      <div class="home-lane">
+        <p class="eyebrow">New to pickleball</p>
+        <h3>Learn the basics first</h3>
+        <p>The rules, the scoring, and the one shot that trips up every beginner — a couple of minutes before your first game.</p>
+        <a class="btn" href="/learn">Start with the basics →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">Ready to buy</p>
+        <h3>Find your paddle</h3>
+        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
+        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- lane-router:end -->
 
 <footer class="site-footer">
   <div class="container">

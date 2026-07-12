@@ -27,9 +27,10 @@
 </head>
 <body>
 
+<!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -46,12 +47,13 @@
     </nav>
   </div>
 </header>
+<!-- site-header:end -->
 
 <section class="page-hero">
   <div class="container">
     <p class="eyebrow"><a href="/cities/#south-bay">South Bay region</a></p>
     <h1>Los Altos</h1>
-    <p class="lede">Three listed venues, but only one is a straightforward public option: McKenzie Park's six shared outdoor courts. The other two are membership-gated — a private country club, and a school gym program whose outdoor-court claim isn't confirmed by the city.</p>
+    <p class="lede">Three listed venues, but only one is a straightforward public option: McKenzie Park's six shared outdoor courts. The other two are membership-gated — a private country club, and a school gym program whose outdoor-court claim doesn't hold up (plan on indoor only).</p>
     <div class="stat-strip">
       <span class="stat-chip"><b>18</b> courts</span>
       <span class="stat-chip"><b>3</b> venues</span>
@@ -81,7 +83,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue good">Mild, sheltered foothill climate — good for year-round outdoor play</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue caution">High — the only outdoor public pickleball venue in Los Altos, shared with tennis</span></div>
         </div>
-        <p>Los Altos' only outdoor public pickleball venue: six courts painted onto two existing tennis courts at McKenzie Park, with portable nets supplied by the city. Pickleball gets priority Monday, Wednesday, Friday, and Saturday (6am–10pm); tennis has priority the other three days, and city-sponsored tennis lessons can bump either. Play itself is free, though the city's separate tennis-court reservation fee ($10/hr resident, $8/hr nonprofit) may or may not apply here — that wasn't clearly resolved in city documentation.</p>
+        <p>Los Altos' only outdoor public pickleball venue: six courts painted onto two existing tennis courts at McKenzie Park, with portable nets supplied by the city. Pickleball gets priority Monday, Wednesday, Friday, and Saturday (6am–10pm); tennis has priority the other three days, and city-sponsored tennis lessons can bump either. Play itself is free, though the separate tennis-court reservation fee ($10/hr resident, $8/hr nonprofit) may apply here — confirm before you count on free play.</p>
         <div class="vote-actions">
           <a href="/rankings#mckenzie-park"><span class="rating-summary" data-court-id="mckenzie-park" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="mckenzie-park" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -105,7 +107,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue good">Mild, sheltered foothill climate — good for year-round outdoor play</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue good">Low — private membership club, smaller player pool</span></div>
         </div>
-        <p>Four dedicated, permanently lined outdoor courts with LED lights, part of a private country club. Membership requires sponsorship by four current Proprietary members plus an application and initiation fee; there's no separately published per-visit pickleball charge. The club's own site says courts are lit for member play until 10pm, seven days a week, though one third-party aggregator lists more limited hours (weekdays 9am–5pm, weekends 12–8pm) that don't match — the club's own claim is treated as more reliable here.</p>
+        <p>Four dedicated, permanently lined outdoor courts with LED lights, part of a private country club. Membership requires sponsorship by four current Proprietary members plus an application and initiation fee; there's no separate per-visit pickleball charge. Courts are lit for member play until 10pm, seven days a week — the hours to trust, even if you see narrower ones (weekdays 9am–5pm, weekends 12–8pm) quoted elsewhere.</p>
         <div class="vote-actions">
           <a href="/rankings#los-altos-golf-and-country-club"><span class="rating-summary" data-court-id="los-altos-golf-and-country-club" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="los-altos-golf-and-country-club" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -124,12 +126,12 @@
           <span class="stat-chip">Hours: Mon &amp; Wed 6:30–9:30pm (indoor)</span>
         </div>
         <div class="rating-row">
-          <div class="rating-pill"><span class="rlabel">Surface</span><span class="rvalue caution">Low — city confirms only an indoor gym; outdoor-court claim disputed, unconfirmed</span></div>
-          <div class="rating-pill"><span class="rlabel">Level</span><span class="rvalue">All levels welcome (per one aggregator; not confirmed by the city)</span></div>
-          <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue good">Not a factor — confirmed sessions are indoor</span></div>
+          <div class="rating-pill"><span class="rlabel">Surface</span><span class="rvalue caution">Low — only the indoor gym holds up; outdoor courts unverified</span></div>
+          <div class="rating-pill"><span class="rlabel">Level</span><span class="rvalue">All levels welcome</span></div>
+          <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue good">Not a factor — the sessions that run are indoor</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue neutral">Medium — membership required; walk-up within a narrow twice-weekly window</span></div>
         </div>
-        <p>The city's own page describes only an indoor gym program here: membership-gated pickleball in the Egan Junior High gym, Monday and Wednesday evenings, 6:30–9:30pm. Pickleheads separately lists this location as 8 total courts (4 indoor, 4 outdoor), but the city's site never mentions outdoor courts at this campus, and other aggregators disagree with each other too (one says 6 total, another 4) — treat the outdoor claim as unconfirmed, especially since this is an active school campus. Annual Rec membership runs $96 resident / $115 non-resident (per the city), with a free 1-month trial; non-member drop-in play ended June 1, 2024.</p>
+        <p>What actually runs here is an indoor gym program: membership-gated pickleball in the Egan Junior High gym, Monday and Wednesday evenings, 6:30–9:30pm. You'll see this location listed with as many as 8 total courts (4 indoor, 4 outdoor), and court counts floating around range from 4 to 8 — but we can't stand up any outdoor pickleball courts at this active school campus, so plan on the indoor sessions only. Annual Rec membership runs $96 resident / $115 non-resident, with a free 1-month trial; non-member drop-in play ended June 1, 2024.</p>
         <div class="vote-actions">
           <a href="/rankings#egan-junior-high-school"><span class="rating-summary" data-court-id="egan-junior-high-school" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="egan-junior-high-school" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -141,13 +143,40 @@
     <ul class="know-list">
       <li>McKenzie Park is Los Altos' only outdoor public pickleball venue — six courts painted onto two shared tennis courts, free and city-run.</li>
       <li>Los Altos Golf and Country Club's four courts are members-only; joining requires sponsorship by four current Proprietary members plus an application and initiation fee.</li>
-      <li>Egan Gym's indoor pickleball requires an annual Los Altos Rec membership ($96 resident/$115 non-resident, per the city), with a 1-month free trial; non-member drop-in play ended June 1, 2024.</li>
-      <li>Pickleheads lists Egan Junior High as having 8 total courts including 4 outdoor, but the city's own page describes only the indoor gym program — treat the outdoor claim as unconfirmed.</li>
+      <li>Egan Gym's indoor pickleball requires an annual Los Altos Rec membership ($96 resident/$115 non-resident), with a 1-month free trial; non-member drop-in play ended June 1, 2024.</li>
+      <li>Egan Junior High gets listed with as many as 8 total courts including 4 outdoor, but only the indoor gym program actually runs — treat the outdoor courts as unconfirmed.</li>
     </ul>
 
     <p class="sources">Sources: <a href="https://www.losaltosca.gov/375/Pickleball" target="_blank" rel="noopener">City of Los Altos — Pickleball</a> · <a href="https://www.losaltosca.gov/376/Egan-Gym-Indoor-Pickleball" target="_blank" rel="noopener">City of Los Altos — Egan Gym Indoor Pickleball</a> · <a href="https://www.lagcc.com/club-life" target="_blank" rel="noopener">Los Altos Golf and Country Club</a> · <a href="https://www.pickleheads.com/courts/us/california/los-altos" target="_blank" rel="noopener">Pickleheads</a>. Verified July 2026 — always confirm hours before a special trip.</p>
   </div>
 </section>
+
+<!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
+<section class="section">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Before you head out</h2>
+        <p>Found your court? Here's what to sort out next.</p>
+      </div>
+    </div>
+    <div class="home-lanes">
+      <div class="home-lane">
+        <p class="eyebrow">New to pickleball</p>
+        <h3>Learn the basics first</h3>
+        <p>The rules, the scoring, and the one shot that trips up every beginner — a couple of minutes before your first game.</p>
+        <a class="btn" href="/learn">Start with the basics →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">Ready to buy</p>
+        <h3>Find your paddle</h3>
+        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
+        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- lane-router:end -->
 
 <footer class="site-footer">
   <div class="container">
@@ -228,7 +257,7 @@
     {
       "@type": "SportsActivityLocation",
       "name": "Egan Junior High School",
-      "description": "Membership-based indoor pickleball in the Egan Junior High gym, Monday and Wednesday evenings. An additional 4 outdoor courts are claimed by one listing source but not confirmed by the city.",
+      "description": "Membership-based indoor pickleball in the Egan Junior High gym, Monday and Wednesday evenings. An additional 4 outdoor courts are sometimes listed but not confirmed.",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "100 W Portola Ave",

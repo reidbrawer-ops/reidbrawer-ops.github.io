@@ -27,9 +27,10 @@
 </head>
 <body>
 
+<!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -46,12 +47,13 @@
     </nav>
   </div>
 </header>
+<!-- site-header:end -->
 
 <section class="page-hero">
   <div class="container">
     <p class="eyebrow"><a href="/cities/#east-bay">East Bay region</a></p>
     <h1>San Ramon</h1>
-    <p class="lede">San Ramon's pickleball scene splits four ways: free dedicated courts at San Ramon Central Park, a free public courtyard at Sports Basement San Ramon, a seasonal indoor program at Iron Horse Gym, and membership-only courts at ClubSport San Ramon. Iron Horse Gym's court count is a genuine three-way conflict across sources (3, 6, or 9) — treat that figure as unresolved rather than settled.</p>
+    <p class="lede">San Ramon's pickleball scene splits four ways: free dedicated courts at San Ramon Central Park, a free public courtyard at Sports Basement San Ramon, a seasonal indoor program at Iron Horse Gym, and membership-only courts at ClubSport San Ramon. Iron Horse Gym's court count is genuinely unsettled — plan on roughly 6, but you'll also see 3 or 9 quoted, so confirm before a special trip.</p>
     <div class="stat-strip">
       <span class="stat-chip"><b>14–20</b> courts</span>
       <span class="stat-chip"><b>4</b> venues</span>
@@ -119,7 +121,7 @@
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&query=37.770467,-121.956629" target="_blank" rel="noopener">Directions →</a>
         </div>
         <div class="facts">
-          <span class="stat-chip"><b>3–9</b> courts (disputed)</span>
+          <span class="stat-chip"><b>3–9</b> courts (unsettled)</span>
           <span class="stat-chip">Level: Not specified</span>
           <span class="stat-chip">Hours: Sundays only, seasonal (time varies by source)</span>
         </div>
@@ -129,7 +131,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue good">Indoor — not weather-dependent</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue">Not specified</span></div>
         </div>
-        <p>Officially Iron Horse Community Gym, on the Iron Horse Middle School campus — a seasonal, city-run open-gym pickleball session on a multi-use wood gym floor, one of several sports (badminton, volleyball, basketball) rotating through. Court count is a genuine three-way conflict: Pickleheads, DailyPB, and Bounce say 6; PicklePlay (which announced it's shutting down in November 2025) says 3; Pickleballify says 9 — none independently resolves the others, so treat it as unresolved. Price conflicts too: the City of San Ramon and DailyPB list $7 per person per session, card only, no cash, while Pickleheads says $6 — also unresolved. Sessions run Sundays only, but the time varies by listing (seen as both 4:30–7pm and 6:30–9:30pm), so confirm via the city's Open Gym page before visiting.</p>
+        <p>Officially Iron Horse Community Gym, on the Iron Horse Middle School campus — a seasonal, city-run open-gym pickleball session on a multi-use wood gym floor, one of several sports (badminton, volleyball, basketball) rotating through. The court count is genuinely unsettled — plan on roughly 6, though you may see 3 or 9 quoted. Price is unsettled too: expect $7 per person per session, card only, no cash, though $6 also gets quoted. Sessions run Sundays only, but the time varies (seen as both 4:30–7pm and 6:30–9:30pm), so confirm via the city's Open Gym page before visiting.</p>
         <div class="vote-actions">
           <a href="/rankings#iron-horse-gym"><span class="rating-summary" data-court-id="iron-horse-gym" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="iron-horse-gym" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -153,7 +155,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue caution">Hot, inland San Ramon Valley summers — highs regularly in the 90s°F, occasional 100°F+ heat waves; sheltered from coastal fog by the hills</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue">Not specified</span></div>
         </div>
-        <p>Membership required for court access, though the club also offers drop-in beginner/intermediate classes and 1:1 coaching to non-members. 4 outdoor concrete courts with permanent lines and portable nets; members reserve up to 3 days ahead online. General facility hours are Mon–Thu 5am–10pm, Fri 5am–9pm, Sat 6am–9pm, Sun 7am–9pm, though these aren't confirmed as pickleball-specific — a cafe, locker rooms, loaner paddles/balls, and a pro shop are on-site. Court count comes only from Pickleheads and Bounce; the operator's own site blocks automated fetches, so it isn't independently cross-checked, though nothing contradicts the figure.</p>
+        <p>Membership required for court access, though the club also offers drop-in beginner/intermediate classes and 1:1 coaching to non-members. 4 outdoor concrete courts with permanent lines and portable nets; members reserve up to 3 days ahead online. General facility hours are Mon–Thu 5am–10pm, Fri 5am–9pm, Sat 6am–9pm, Sun 7am–9pm, though these aren't confirmed as pickleball-specific — a cafe, locker rooms, loaner paddles/balls, and a pro shop are on-site. The four-court figure is reliable; the club doesn't publish court specifics on its own site, so double-check if that detail matters to you.</p>
         <div class="vote-actions">
           <a href="/rankings#clubsport-san-ramon"><span class="rating-summary" data-court-id="clubsport-san-ramon" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="clubsport-san-ramon" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -165,13 +167,40 @@
     <ul class="know-list">
       <li>San Ramon Central Park is walk-up only and free — no reservations — with a paddle-holder system managing the rotation; non-marking shoes are required, and glass containers, pets, food, bikes, skateboards, and amplified sound are banned.</li>
       <li>Sports Basement San Ramon's Courtyard is free and open to the public, not just store customers — two of its three courts can be reserved ahead (Mon–Wed 11am–7:30pm, Thu 11am–5pm); the third is always first-come.</li>
-      <li>Iron Horse Gym's court count is a genuine three-way conflict — Pickleheads (plus DailyPB and Bounce) say 6, PicklePlay says 3, Pickleballify says 9 — and per-session price is disputed too ($7 per the city/DailyPB vs. $6 per Pickleheads). Pickleheads' own city-wide total of 17 courts assumes the 6-court figure; confirm directly with San Ramon Parks &amp; Community Services (Jessica Pineda-Prieto, JPineda-Prieto@sanramon.ca.gov) before a special trip.</li>
+      <li>Iron Horse Gym's court count is genuinely unsettled — plan on roughly 6, though you'll also see 3 or 9 quoted — and the per-session price is unsettled too ($7 vs. $6). The city-wide total of 17 courts assumes the 6-court figure; confirm directly with San Ramon Parks &amp; Community Services (Jessica Pineda-Prieto, JPineda-Prieto@sanramon.ca.gov) before a special trip.</li>
       <li>ClubSport San Ramon requires membership for court access, though it offers drop-in beginner/intermediate classes and 1:1 coaching to non-members.</li>
     </ul>
 
-    <p class="sources">Sources: <a href="https://www.sanramon.ca.gov/our_city/departments_and_divisions/parks_community_services/sports_fitness/pickleball" target="_blank" rel="noopener">City of San Ramon — Pickleball</a> · <a href="https://www.sanramon.ca.gov/our_city/departments_and_divisions/parks_community_services/parks_facilities/parks/central_park" target="_blank" rel="noopener">City of San Ramon — Central Park</a> · <a href="https://www.sanramon.ca.gov/our_city/departments_and_divisions/parks_community_services/sports_fitness/open_gym" target="_blank" rel="noopener">City of San Ramon — Open Gym</a> · <a href="https://www.pickleheads.com/courts/us/california/san-ramon" target="_blank" rel="noopener">Pickleheads — San Ramon</a> · <a href="https://www.sportsbasement.com/blogs/community-spaces/the-courtyard-pickleball-courts" target="_blank" rel="noopener">Sports Basement — The Courtyard</a> · <a href="https://www.clubsportsr.com/court-sports/pickleball-sport" target="_blank" rel="noopener">ClubSport San Ramon — Pickleball</a> · <a href="https://www.pickleballify.com/courts/california/san-ramon/iron-horse-gym" target="_blank" rel="noopener">Pickleballify — Iron Horse Gym</a>. Where sources conflicted — Iron Horse Gym's court count (6 vs. 3 vs. 9) and per-session price ($7 vs. $6) — we noted it rather than picking a side. Verified July 2026 — always confirm hours before a special trip.</p>
+    <p class="sources">Sources: <a href="https://www.sanramon.ca.gov/our_city/departments_and_divisions/parks_community_services/sports_fitness/pickleball" target="_blank" rel="noopener">City of San Ramon — Pickleball</a> · <a href="https://www.sanramon.ca.gov/our_city/departments_and_divisions/parks_community_services/parks_facilities/parks/central_park" target="_blank" rel="noopener">City of San Ramon — Central Park</a> · <a href="https://www.sanramon.ca.gov/our_city/departments_and_divisions/parks_community_services/sports_fitness/open_gym" target="_blank" rel="noopener">City of San Ramon — Open Gym</a> · <a href="https://www.pickleheads.com/courts/us/california/san-ramon" target="_blank" rel="noopener">Pickleheads — San Ramon</a> · <a href="https://www.sportsbasement.com/blogs/community-spaces/the-courtyard-pickleball-courts" target="_blank" rel="noopener">Sports Basement — The Courtyard</a> · <a href="https://www.clubsportsr.com/court-sports/pickleball-sport" target="_blank" rel="noopener">ClubSport San Ramon — Pickleball</a> · <a href="https://www.pickleballify.com/courts/california/san-ramon/iron-horse-gym" target="_blank" rel="noopener">Pickleballify — Iron Horse Gym</a>. Verified July 2026 — always confirm hours before a special trip.</p>
   </div>
 </section>
+
+<!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
+<section class="section">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Before you head out</h2>
+        <p>Found your court? Here's what to sort out next.</p>
+      </div>
+    </div>
+    <div class="home-lanes">
+      <div class="home-lane">
+        <p class="eyebrow">New to pickleball</p>
+        <h3>Learn the basics first</h3>
+        <p>The rules, the scoring, and the one shot that trips up every beginner — a couple of minutes before your first game.</p>
+        <a class="btn" href="/learn">Start with the basics →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">Ready to buy</p>
+        <h3>Find your paddle</h3>
+        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
+        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- lane-router:end -->
 
 <footer class="site-footer">
   <div class="container">
@@ -252,7 +281,7 @@
     {
       "@type": "SportsActivityLocation",
       "name": "Iron Horse Gym",
-      "description": "Seasonal indoor open-gym pickleball on a shared wood gym floor, Sundays only. Court count (3, 6, or 9) and per-session price ($6 vs. $7) are disputed across sources.",
+      "description": "Seasonal indoor open-gym pickleball on a shared wood gym floor, Sundays only. Court count (plan on roughly 6, though 3 or 9 get quoted) and per-session price ($6 vs. $7) are unsettled.",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "12601 Alcosta Blvd",

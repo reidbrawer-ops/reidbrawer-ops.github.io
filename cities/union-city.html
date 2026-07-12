@@ -27,9 +27,10 @@
 </head>
 <body>
 
+<!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -46,12 +47,13 @@
     </nav>
   </div>
 </header>
+<!-- site-header:end -->
 
 <section class="page-hero">
   <div class="container">
     <p class="eyebrow"><a href="/cities/#east-bay">East Bay region</a></p>
     <h1>Union City</h1>
-    <p class="lede">Union City's only public pickleball option is shared gym time at Mark Green Sports Center — there are no dedicated outdoor courts anywhere in the city. A Change.org petition from residents puts it plainly: Union City "currently does not have any pickleball courts to meet the needs of the community."</p>
+    <p class="lede">Union City's only public pickleball option is shared gym time at Mark Green Sports Center — there are no dedicated outdoor courts anywhere in the city, and residents have petitioned the city to build some.</p>
     <div class="stat-strip">
       <span class="stat-chip"><b>2</b> courts</span>
       <span class="stat-chip"><b>1</b> venue</span>
@@ -81,7 +83,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue good">Indoor — not weather-dependent</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue caution">Likely high — Union City's only public pickleball venue, competing for gym time with basketball, volleyball, and badminton</span></div>
         </div>
-        <p>Mark Green Sports Center is a city-run multi-sport gym with two indoor wood-floor pickleball courts — permanent lines, portable nets, shared with basketball, volleyball, badminton, and table tennis. Open-gym pickleball runs Mon/Wed/Fri 6am–3pm in Gym B for ages 16+; the broader Sports Center is open weekdays 6am–9pm and weekends 7am–3pm. Pricing is unresolved: the city's official fee schedule lists $10 (resident) / $15 (non-resident) daily drop-in, but some Pickleheads-derived sources cite a flat $5 day pass for pickleball specifically — worth confirming before you go. This is genuinely the only public pickleball venue in Union City; a resident-led Change.org petition is pushing the city for dedicated outdoor courts, and no other city facility offers pickleball access.</p>
+        <p>Mark Green Sports Center is a city-run multi-sport gym with two indoor wood-floor pickleball courts — permanent lines, portable nets, shared with basketball, volleyball, badminton, and table tennis. Open-gym pickleball runs Mon/Wed/Fri 6am–3pm in Gym B for ages 16+; the broader Sports Center is open weekdays 6am–9pm and weekends 7am–3pm. Pricing is unresolved: expect a $10 resident / $15 non-resident daily drop-in, though you may see a flat $5 day pass quoted for pickleball specifically — worth confirming before you go. This is genuinely the only public pickleball venue in Union City; residents are pushing the city for dedicated outdoor courts, and no other city facility offers pickleball access.</p>
         <div class="vote-actions">
           <a href="/rankings#mark-green-sports-center"><span class="rating-summary" data-court-id="mark-green-sports-center" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="mark-green-sports-center" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -92,14 +94,41 @@
 
     <ul class="know-list">
       <li>Walk-up only — no reservation system or online booking.</li>
-      <li>Several aggregators list additional Union City pickleball courts (one claims 16); every one we checked turned out to actually be located in a neighboring city (Hayward, Fremont, Campbell, San Francisco, San Bruno) — a "near you" radius search mislabeling results by city, not real Union City venues.</li>
+      <li>You may see listings claiming additional Union City pickleball courts (one as many as 16); every one we checked is actually in a neighboring city (Hayward, Fremont, Campbell, San Francisco, San Bruno) — a "near you" radius search mislabeling results by city, not real Union City venues.</li>
       <li>Elite Badminton Center in Union City is badminton-only — no pickleball, despite sometimes surfacing in searches.</li>
-      <li>Pricing is unresolved: the city's official fee page lists $10 resident / $15 non-resident daily drop-in; some sources instead cite a flat $5 day pass. Confirm before you go.</li>
+      <li>Pricing is unresolved: expect $10 resident / $15 non-resident daily drop-in, though you may see a flat $5 day pass quoted. Confirm before you go.</li>
     </ul>
 
     <p class="sources">Sources: <a href="https://www.unioncityca.gov/290/Mark-Green-Sports-Center" target="_blank" rel="noopener">City of Union City — Mark Green Sports Center</a> · <a href="https://www.unioncityca.gov/246/Sports-Activities" target="_blank" rel="noopener">City of Union City — Sports Activities &amp; fees</a> · <a href="https://www.pickleheads.com/courts/us/california/union-city/mark-green-sports-center" target="_blank" rel="noopener">Pickleheads — Mark Green Sports Center</a> · <a href="https://www.change.org/p/build-pickleball-courts-for-union-city-ca" target="_blank" rel="noopener">Change.org — Build Pickleball Courts for Union City, CA</a>. Verified July 2026 — always confirm hours before a special trip.</p>
   </div>
 </section>
+
+<!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
+<section class="section">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Before you head out</h2>
+        <p>Found your court? Here's what to sort out next.</p>
+      </div>
+    </div>
+    <div class="home-lanes">
+      <div class="home-lane">
+        <p class="eyebrow">New to pickleball</p>
+        <h3>Learn the basics first</h3>
+        <p>The rules, the scoring, and the one shot that trips up every beginner — a couple of minutes before your first game.</p>
+        <a class="btn" href="/learn">Start with the basics →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">Ready to buy</p>
+        <h3>Find your paddle</h3>
+        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
+        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- lane-router:end -->
 
 <footer class="site-footer">
   <div class="container">

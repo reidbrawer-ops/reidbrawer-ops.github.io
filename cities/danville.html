@@ -27,9 +27,10 @@
 </head>
 <body>
 
+<!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -46,6 +47,7 @@
     </nav>
   </div>
 </header>
+<!-- site-header:end -->
 
 <section class="page-hero">
   <div class="container">
@@ -143,7 +145,7 @@
           <a class="directions-link" href="https://www.google.com/maps/search/?api=1&query=1320+Van+Patten+Dr%2C+Danville%2C+CA+94526" target="_blank" rel="noopener">Directions →</a>
         </div>
         <div class="facts">
-          <span class="stat-chip"><b>1</b> court (HOA site says up to 4)</span>
+          <span class="stat-chip"><b>1</b> court (may be up to 4)</span>
           <span class="stat-chip">Level: Not specified</span>
           <span class="stat-chip">Hours: 8am–10pm</span>
         </div>
@@ -153,7 +155,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue caution">Hot, inland San Ramon Valley summers — highs of 85–95°F, sometimes over 100°F</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue good">Low — HOA residents and members only</span></div>
         </div>
-        <p>A private court for Danville Station residents and paid DSHOA Recreational Members, plus their guests. Sources disagree on the exact court count: Pickleheads lists one court with pickleball lines overlaid on a tennis court (net still at tennis height, not lowered to regulation), while the HOA's own site describes "four lighted courts" for tennis and pickleball without saying how many are actually striped for pickleball — treat the real number as unconfirmed. Reservable for members; hours run 8am to 10pm.</p>
+        <p>A private court for Danville Station residents and paid DSHOA Recreational Members, plus their guests. The court count is unsettled: plan on one court with pickleball lines overlaid on a tennis court (net still at tennis height, not lowered to regulation), though the complex's four lighted courts may stripe more for pickleball — treat the exact number as unconfirmed and worth checking. Reservable for members; hours run 8am to 10pm.</p>
         <div class="vote-actions">
           <a href="/rankings#danville-station-hoa"><span class="rating-summary" data-court-id="danville-station-hoa" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="danville-station-hoa" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -165,13 +167,40 @@
     <ul class="know-list">
       <li>Osage Station Park and Diablo Vista Park are the only public options; Bay Club Crow Canyon and Danville Station HOA require membership or HOA residency.</li>
       <li>Diablo Vista Park's sessions are pre-registered through the Town's Recreation Guide (danville.ca.gov/recguide) — not walk-up, and courts are shared with tennis, not dedicated.</li>
-      <li>Danville Station HOA's own site describes "four lighted courts" without specifying how many are striped for pickleball; Pickleheads lists just one — treat that number as unconfirmed.</li>
+      <li>Danville Station HOA's court count is unsettled — its four lighted courts may stripe only one for pickleball, so plan on one and treat the exact number as unconfirmed.</li>
       <li>Osage Station Park's 2023 proposal to add six more courts was unanimously rejected by Town Council in May 2024 after a resident appeal over noise.</li>
     </ul>
 
     <p class="sources">Sources: <a href="https://www.danville.ca.gov/223/Tennis-Courts" target="_blank" rel="noopener">Town of Danville — Tennis Courts</a> · <a href="https://www.pickleheads.com/courts/us/california/danville" target="_blank" rel="noopener">Pickleheads — Danville</a> · <a href="https://www.bayclubs.com/clubs/crowcanyon" target="_blank" rel="noopener">Bay Club — Crow Canyon</a> · <a href="https://www.danvillestation.com/tennis-courts/" target="_blank" rel="noopener">Danville Station HOA — Tennis Courts</a> · <a href="https://www.danvillesanramon.com/city-government/2024/05/20/danville-council-to-vote-on-pickleball-courts-amid-community-groups-appeal/" target="_blank" rel="noopener">Danville San Ramon — council rejects pickleball expansion</a>. Verified July 2026 — always confirm hours before a special trip.</p>
   </div>
 </section>
+
+<!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
+<section class="section">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Before you head out</h2>
+        <p>Found your court? Here's what to sort out next.</p>
+      </div>
+    </div>
+    <div class="home-lanes">
+      <div class="home-lane">
+        <p class="eyebrow">New to pickleball</p>
+        <h3>Learn the basics first</h3>
+        <p>The rules, the scoring, and the one shot that trips up every beginner — a couple of minutes before your first game.</p>
+        <a class="btn" href="/learn">Start with the basics →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">Ready to buy</p>
+        <h3>Find your paddle</h3>
+        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
+        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- lane-router:end -->
 
 <footer class="site-footer">
   <div class="container">
@@ -266,7 +295,7 @@
     {
       "@type": "SportsActivityLocation",
       "name": "Danville Station HOA",
-      "description": "Private HOA court with pickleball lines overlaid on a tennis court. Sources disagree on the exact court count — Pickleheads lists one, the HOA's own site implies up to four.",
+      "description": "Private HOA court with pickleball lines overlaid on a tennis court. The exact court count is unsettled — plan on one, though the complex's four lighted courts may stripe more.",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "1320 Van Patten Dr",

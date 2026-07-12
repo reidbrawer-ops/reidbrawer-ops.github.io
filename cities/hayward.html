@@ -27,9 +27,10 @@
 </head>
 <body>
 
+<!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -46,6 +47,7 @@
     </nav>
   </div>
 </header>
+<!-- site-header:end -->
 
 <section class="page-hero">
   <div class="container">
@@ -153,7 +155,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue good">Indoor — no weather factor</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue good">Low — narrow weekly window, senior-center-branded, walk-up only</span></div>
         </div>
-        <p>Two indoor courts on the Hayward Area Senior Center's wood gym floor — taped lines and portable nets rather than a dedicated pickleball setup. Thursdays only, 1:15–4:00pm, $4 drop-in fee, loaner paddles available, beginners welcome. Restrooms, water, and wheelchair access are on-site. It's branded as a 50+ Senior Center, so the crowd likely skews older in practice, though no source states an explicit age requirement for these sessions specifically.</p>
+        <p>Two indoor courts on the Hayward Area Senior Center's wood gym floor — taped lines and portable nets rather than a dedicated pickleball setup. Thursdays only, 1:15–4:00pm, $4 drop-in fee, loaner paddles available, beginners welcome. Restrooms, water, and wheelchair access are on-site. It's branded as a 50+ Senior Center, so the crowd likely skews older in practice, though there's no explicit age requirement for these sessions specifically.</p>
         <div class="vote-actions">
           <a href="/rankings#hayward-senior-center-pickleball"><span class="rating-summary" data-court-id="hayward-senior-center-pickleball" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="hayward-senior-center-pickleball" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -177,7 +179,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue good">Indoor — sheltered from weather, though sessions are often opened specifically when rain is expected</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue good">Low — rain-contingent fallback session, not a guaranteed weekly program</span></div>
         </div>
-        <p>Not listed on Pickleheads, but independently confirmed by at least eight other sources: three indoor wood-floor courts with portable nets and loaner paddles, restrooms on-site, drop-in Tuesdays and Thursdays 10am–1pm. Organizers describe it mainly as a rain-day fallback rather than a guaranteed weekly session, so confirm current cadence before making a special trip. The drop-in fee is reported as $3 by most sources, though one aggregator (Places2Play) lists $5 instead.</p>
+        <p>Easy to overlook and rarely listed, but a real spot: three indoor wood-floor courts with portable nets and loaner paddles, restrooms on-site, drop-in Tuesdays and Thursdays 10am–1pm. It runs mainly as a rain-day fallback rather than a guaranteed weekly session, so confirm current cadence before making a special trip. The drop-in fee is $3, though you may see $5 quoted.</p>
         <div class="vote-actions">
           <a href="/rankings#matt-jimenez-community-center"><span class="rating-summary" data-court-id="matt-jimenez-community-center" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="matt-jimenez-community-center" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -189,12 +191,39 @@
     <ul class="know-list">
       <li>All five venues are run by the Hayward Area Recreation and Park District (HARD), not the city government directly — the City of Hayward's own site has no pickleball listings of its own.</li>
       <li>Two other candidates didn't make this list: a Sunday drop-in at Hayward Adult School's Sunset Gymnasium appears to have ended years ago, and Mt. Eden Park's tennis-to-pickleball conversion is still just proposed, part of a renovation expected to finish fall 2026.</li>
-      <li>Matt Jimenez Community Center is more of a rain-day fallback than a guaranteed weekly session — call ahead to confirm it's running, and note one source lists its drop-in fee at $5 instead of the more commonly cited $3.</li>
+      <li>Matt Jimenez Community Center is more of a rain-day fallback than a guaranteed weekly session — call ahead to confirm it's running, and note its drop-in fee is $3, though you may see $5 quoted.</li>
     </ul>
 
     <p class="sources">Sources: <a href="https://www.haywardrec.org/facilities/facility/details/Southgate-Park-58" target="_blank" rel="noopener">Hayward Area Recreation and Park District</a> · <a href="https://www.pickleheads.com/courts/us/california/hayward" target="_blank" rel="noopener">Pickleheads</a> · <a href="https://www.places2play.org/city/hayward-california" target="_blank" rel="noopener">Places2Play</a>. Verified July 2026 — always confirm hours before a special trip.</p>
   </div>
 </section>
+
+<!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
+<section class="section">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Before you head out</h2>
+        <p>Found your court? Here's what to sort out next.</p>
+      </div>
+    </div>
+    <div class="home-lanes">
+      <div class="home-lane">
+        <p class="eyebrow">New to pickleball</p>
+        <h3>Learn the basics first</h3>
+        <p>The rules, the scoring, and the one shot that trips up every beginner — a couple of minutes before your first game.</p>
+        <a class="btn" href="/learn">Start with the basics →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">Ready to buy</p>
+        <h3>Find your paddle</h3>
+        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
+        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- lane-router:end -->
 
 <footer class="site-footer">
   <div class="container">
@@ -303,7 +332,7 @@
     {
       "@type": "SportsActivityLocation",
       "name": "Matt Jimenez Community Center",
-      "description": "Three indoor wood-floor courts with portable nets, drop-in Tuesdays and Thursdays 10am–1pm, $3 fee. Not listed on Pickleheads but corroborated by multiple independent sources.",
+      "description": "Three indoor wood-floor courts with portable nets, drop-in Tuesdays and Thursdays 10am–1pm, $3 fee. Easy to overlook and rarely listed, but a real spot.",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "28200 Ruus Rd",

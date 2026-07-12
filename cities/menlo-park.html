@@ -27,9 +27,10 @@
 </head>
 <body>
 
+<!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/" aria-current="page">Cities</a>
@@ -46,12 +47,13 @@
     </nav>
   </div>
 </header>
+<!-- site-header:end -->
 
 <section class="page-hero">
   <div class="container">
     <p class="eyebrow"><a href="/cities/#peninsula">Peninsula region</a></p>
     <h1>Menlo Park</h1>
-    <p class="lede">Menlo Park's public scene runs through two neighborhood parks: Kelly Park, where half the courts are reservable, and Nealon Park, drop-in only and reportedly the busier of the two. Eight courts total. Burgess Park — which the city discussed converting in 2023 — still isn't one of them.</p>
+    <p class="lede">Menlo Park's public scene runs through two neighborhood parks: Kelly Park, where half the courts are reservable, and Nealon Park, drop-in only and the busier of the two. Eight courts total. Burgess Park — which the city discussed converting in 2023 — still isn't one of them.</p>
     <div class="stat-strip">
       <span class="stat-chip"><b>8</b> courts</span>
       <span class="stat-chip"><b>2</b> parks</span>
@@ -109,7 +111,7 @@
           <div class="rating-pill"><span class="rlabel">Weather</span><span class="rvalue neutral">Mild, occasional fog</span></div>
           <div class="rating-pill"><span class="rlabel">Wait</span><span class="rvalue caution">High — no reservation escape valve</span></div>
         </div>
-        <p>All four courts are walk-on only — no reservations, which is reportedly why it's the more popular of Menlo Park's two parks. Good for casual, beginner-leaning morning play if you don't mind a wait at peak times.</p>
+        <p>All four courts are walk-on only — no reservations, which is why it's the more popular of Menlo Park's two parks. Good for casual, beginner-leaning morning play if you don't mind a wait at peak times.</p>
         <div class="vote-actions">
           <a href="/rankings#nealon-park"><span class="rating-summary" data-court-id="nealon-park" data-role="overall-rating"><span data-role="stars"></span><span class="rating-value-label" data-role="value-label"></span></span></a>
           <button type="button" class="favorite-btn" data-court-id="nealon-park" aria-pressed="false"><span data-role="favorite-count">0</span> Favorite</button>
@@ -132,6 +134,33 @@
     <p class="sources">Sources: <a href="https://www.menlopark.gov/Government/Departments/Library-and-Community-Services/Recreation-and-sports/Pickleball-and-Tennis" target="_blank" rel="noopener">City of Menlo Park — Pickleball and Tennis</a> · <a href="https://www.almanacnews.com/news/2023/10/03/demand-for-pickleball-is-growing-where-will-menlo-park-put-the-courts" target="_blank" rel="noopener">Almanac News — court demand reporting</a> · <a href="https://www.almanacnews.com/menlo-park/2024/03/01/menlo-park-council-takes-up-possible-pickleball-expansion/" target="_blank" rel="noopener">Almanac News — Willow Oaks Park proposal</a>. Verified July 2026 — always confirm hours and reservation rules before a special trip.</p>
   </div>
 </section>
+
+<!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
+<section class="section">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Before you head out</h2>
+        <p>Found your court? Here's what to sort out next.</p>
+      </div>
+    </div>
+    <div class="home-lanes">
+      <div class="home-lane">
+        <p class="eyebrow">New to pickleball</p>
+        <h3>Learn the basics first</h3>
+        <p>The rules, the scoring, and the one shot that trips up every beginner — a couple of minutes before your first game.</p>
+        <a class="btn" href="/learn">Start with the basics →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">Ready to buy</p>
+        <h3>Find your paddle</h3>
+        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
+        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- lane-router:end -->
 
 <footer class="site-footer">
   <div class="container">
@@ -197,7 +226,7 @@
     {
       "@type": "SportsActivityLocation",
       "name": "Nealon Park",
-      "description": "Four drop-in-only pickleball courts, no reservations. Beginner-friendly, casual morning play, reportedly the busier of Menlo Park's two parks.",
+      "description": "Four drop-in-only pickleball courts, no reservations. Beginner-friendly, casual morning play, and the busier of Menlo Park's two parks.",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "800 Middle Ave",
