@@ -42,6 +42,7 @@ const HEAD_BOILERPLATE = `<link rel="preconnect" href="https://fonts.googleapis.
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon-180.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
 <meta name="theme-color" content="#ffffff">`;
 
 const NAV_ITEMS = [
