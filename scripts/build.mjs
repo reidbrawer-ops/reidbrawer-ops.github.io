@@ -25,7 +25,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const ROOT_PAGES = [
   'index.html', 'about.html', 'corrections.html', 'directory.html',
-  'gear.html', 'learn.html', 'map.html', 'paddle-quiz.html', 'paddles.html',
+  'learn.html', 'map.html', 'paddles.html',
   'privacy.html', 'rankings.html', 'affiliate-disclosure.html', '404.html',
 ];
 const CITY_PAGES = fs.readdirSync(path.join(ROOT, 'cities'))
