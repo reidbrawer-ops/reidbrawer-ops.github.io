@@ -1,0 +1,51 @@
+{
+  "city": "Union City",
+  "pickleheadsSlug": "union-city",
+  "pickleheadsStatedTotal": { "locations": 1, "courts": 2 },
+  "researchedAt": "2026-07-11",
+  "notes": "Pickleheads lists exactly 1 location for Union City -- Mark Green Sports Center, a city-run multi-sport gym with 2 indoor wood pickleball courts (portable nets set up on a shared gym floor for scheduled open-gym sessions) -- and that count was consistent across roughly a dozen independent WebSearch queries (WebFetch on pickleheads.com itself returns HTTP 403, consistent with this repo's other research files). This is corroborated as Union City's ONLY current pickleball venue by two strong independent signals: (1) a Change.org petition started by Union City residents, 'Build Pickleball Courts for Union City, CA,' which states verbatim that the city 'currently does not have any pickleball courts to meet the needs of the community' and that 'many of our residents have to travel to neighboring cities to play'; and (2) the city's own Parks and Recreation Master Plan site (unioncityparksandrecmp.com) does not mention pickleball anywhere. Union City's official tennis-court locations (Veteran's Memorial Park, Arroyo Park, James Logan High School) were individually checked and none have any source confirming pickleball striping or open public access. IMPORTANT DATA-QUALITY FINDING: several third-party aggregators claim far more Union City courts than actually exist there -- Global Pickleball Network's Union City page literally lists '16 pickleball courts,' and multiple Yelp 'near Union City, CA 94587' searches surface Southgate Park Pickleball Courts, Pickleball City, Central Park Knoll Pickleball Courts, The HUB Silicon Valley, Bay Padel, Pickle Me Pink, and Unity Park as if they were Union City venues. Every single one was individually verified by address and turned out to actually be located in Hayward, Fremont, Fremont, Campbell, San Francisco, San Bruno, and Highland Village TX (respectively) -- these are radius/'near you' search results mislabeled by city, not real Union City venues, and none are included below. Elite Badminton Center (33540 Central Ave, Union City) was also checked and confirmed to be badminton-only with no pickleball offering. Union City has no existing cities/union-city.html page or courts-data.json baseline yet, so the sole venue below is matchStatus 'new' and notOnPickleheads is empty (nothing to reconcile against).",
+  "venues": [
+    {
+      "id": "mark-green-sports-center",
+      "name": "Mark Green Sports Center",
+      "city": "Union City",
+      "neighborhood": "Not specified",
+      "address": "31224 Union City Blvd, Union City, CA 94587",
+      "lat": 37.5934382,
+      "lon": -122.0802825,
+      "approxLocation": false,
+      "courts": 2,
+      "indoorOutdoor": "Indoor",
+      "surface": "Indoor wood gymnasium floor (Gym B)",
+      "lights": true,
+      "netType": "Permanent pickleball lines painted on the gym floor; portable nets set up for scheduled open-gym sessions (not dedicated, standalone courts)",
+      "price": "$10 resident / $15 non-resident daily drop-in (adult 18+); $7 resident / $12 non-resident (ages 11-17); monthly memberships $25-$82 depending on tier and residency -- this is the Sports Center's general published fee schedule (unioncityca.gov), which covers pickleball open-gym access along with basketball/volleyball/badminton/table tennis/fitness room. Conflicts with a $5 day-pass figure some Pickleheads-derived sources give for pickleball specifically -- see notes.",
+      "reservable": "Walk-up",
+      "bookingUrl": null,
+      "hours": "Open-gym pickleball: Mon, Wed, Fri 6:00am-3:00pm, Gym B, ages 16+ (per unioncityca.gov open-gym schedule). General Sports Center hours: Mon-Fri 6:00am-9:00pm, Sat-Sun 7:00am-3:00pm.",
+      "amenities": ["Locker rooms", "Showers", "Restrooms", "Water", "Lights", "Fitness center on site"],
+      "skill": "Not specified",
+      "waitTime": "Not specified",
+      "weather": "Southern East Bay microclimate -- warm, dry, sunny summers (July average high around 80F/27C, low around 55F/13C, little to no rain June-August) and short, mild, wet winters. Sits back from the Golden Gate fog belt, so it generally runs warmer and clearer than San Francisco or the immediate Peninsula coast, similar to neighboring Fremont and Hayward. This is an indoor venue, so day-to-day weather has limited effect on play.",
+      "pickleheadsUrl": "https://www.pickleheads.com/courts/us/california/union-city/mark-green-sports-center",
+      "pickleheadsRating": null,
+      "googleMapsUrl": "https://maps.google.com/?cid=8394086450643005417",
+      "confirmed": true,
+      "matchStatus": "new",
+      "existingId": null,
+      "conflicts": [],
+      "sources": [
+        "https://www.pickleheads.com/courts/us/california/union-city",
+        "https://www.pickleheads.com/courts/us/california/union-city/mark-green-sports-center",
+        "https://www.unioncityca.gov/290/Mark-Green-Sports-Center",
+        "https://www.unioncityca.gov/246/Sports-Activities",
+        "https://pickleballplusapp.com/us/pickleball-courts/california/union-city/mark-green-sports-center",
+        "https://www.change.org/p/build-pickleball-courts-for-union-city-ca",
+        "https://www.yelp.com/biz/mark-green-sports-center-union-city",
+        "https://maps.google.com/?cid=8394086450643005417"
+      ],
+      "notes": "Court count (2), indoor wood surface, and open-gym pickleball program are corroborated independently by unioncityca.gov (primary/official source), Pickleheads (via WebSearch synthesis, consistent across many queries), and pickleballplusapp.com -- set confirmed:true on that basis. Two unresolved secondary discrepancies, neither affecting the core facts, are flagged rather than silently picked: (1) PRICE -- Pickleheads-derived WebSearch summaries repeatedly state a flat '$5 day pass' for pickleball; the official unioncityca.gov fee page instead lists $10/$15 daily drop-in and $25-$82 monthly tiers with no $5 option anywhere. Went with the official page as primary per this site's standard, but the $5 figure recurred too consistently across independent queries to dismiss outright -- may be a stale Pickleheads price or a since-discontinued promo rate. (2) NET/LINE PERMANENCE -- most WebSearch passes over Pickleheads' content say pickleball lines are 'permanent' with portable nets; one pass instead characterized Union City as having 'no locations with dedicated pickleball courts with permanent lines and nets.' Went with the majority/consistent description since it recurred verbatim far more often, but could not confirm directly since pickleheads.com blocks WebFetch (HTTP 403) and this had to be reconstructed from WebSearch's AI-synthesized summaries rather than the raw page. googleMapsUrl's cid (8394086450643005417) was derived from the hex feature ID in Mark Green Sports Center's Google Maps place URL and then verified by actually navigating a browser to https://maps.google.com/?cid=8394086450643005417, which correctly resolved to 'Mark Green Sports Center,' 31224 Union City Blvd, Union City, CA 94587, 4.4 stars (157 reviews) -- confirmed correct, not guessed. pickleheadsRating left null because that same 4.4-star figure recurs across Yelp, Chamber of Commerce, pickleballplusapp, and Google Maps itself, indicating it's Google's aggregate rating being relayed by aggregators rather than a Pickleheads-specific score. lat/lon are a geocode of the confirmed street address (Pickleheads does not publish coordinates directly); approxLocation is false because this is a full, verified street address, not a city-center estimate."
+    }
+  ],
+  "notOnPickleheads": []
+}

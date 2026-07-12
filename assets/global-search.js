@@ -1,6 +1,6 @@
 // Self-mounting sitewide search widget. Appends a search icon + input as the
 // last child of .main-nav on every page, indexes assets/courts-data.json
-// (venues) plus the 17-city list from assets/regions.js's PB_CITY_REGION,
+// (venues) plus the city list from assets/regions.js's PB_CITY_REGION,
 // and jumps straight to the matching city page (or venue card, once Group
 // A's id fix has run) on selection. Escape/outside-click handling mirrors
 // nav.js's existing pattern for the "More" dropdown.

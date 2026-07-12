@@ -1,6 +1,6 @@
 // Self-mounting city quick-jump tag row. Reads the same city -> region map
 // used by rankings.js/directory.js (assets/regions.js) so this list can't
-// drift out of sync with the site's canonical 17-city list. Mount points are
+// drift out of sync with the site's canonical city list. Mount points are
 // any element with class "city-quick-jump"; set data-href-prefix on one to
 // point tags at another page's anchors (e.g. "/cities/index.html") instead
 // of the current page's own.
