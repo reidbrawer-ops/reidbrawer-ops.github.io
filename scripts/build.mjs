@@ -25,15 +25,26 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const ROOT_PAGES = [
   'index.html', 'about.html', 'corrections.html', 'directory.html',
-  'gear.html', 'learn.html', 'map.html', 'paddle-quiz.html',
-  'privacy.html', 'rankings.html', 'visiting.html', '404.html',
+  'gear.html', 'learn.html', 'map.html', 'paddle-quiz.html', 'paddles.html',
+  'privacy.html', 'rankings.html', 'affiliate-disclosure.html', '404.html',
 ];
 const CITY_PAGES = fs.readdirSync(path.join(ROOT, 'cities'))
   .filter((f) => f.endsWith('.html'))
   .sort()
   .map((f) => path.join('cities', f));
 
-const FILES = [...ROOT_PAGES, ...CITY_PAGES];
+// Phase 1 is the integrator's branch (merged last), so it declares pages that
+// sibling phases create — paddles.html (Phase 5) and, at Integration,
+// affiliate-disclosure.html (Phase 7). Until those branches land, the files
+// won't exist yet; skip (with a warning) any declared page that's missing on
+// disk instead of crashing the build. The authoritative full run happens at
+// Integration once every branch is merged and every declared page exists.
+const DECLARED_FILES = [...ROOT_PAGES, ...CITY_PAGES];
+const FILES = DECLARED_FILES.filter((relPath) => {
+  const exists = fs.existsSync(path.join(ROOT, relPath));
+  if (!exists) console.warn(`skipping (not yet on disk): ${relPath}`);
+  return exists;
+});
 
 const HEAD_BOILERPLATE = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,18 +56,19 @@ const HEAD_BOILERPLATE = `<link rel="preconnect" href="https://fonts.googleapis.
 <link rel="icon" href="/favicon.ico" sizes="any">
 <meta name="theme-color" content="#ffffff">`;
 
+// Confirmed nav shape (plan §6, locked 2026-07-12): Find courts · Cities ·
+// Directory · Rankings · Paddles & Gear · More(Learn, Corrections) · About.
+// The brand logo is the way Home; "Find courts" is /map renamed; "Gear &
+// rentals" + "Find your paddle" fold into the single /paddles hub (Phase 5).
 const NAV_ITEMS = [
-  { href: '/', label: 'Home' },
+  { href: '/map', label: 'Find courts' },
   { href: '/cities/', label: 'Cities' },
-  { href: '/map', label: 'Map' },
   { href: '/directory', label: 'Directory' },
   { href: '/rankings', label: 'Rankings' },
+  { href: '/paddles', label: 'Paddles &amp; Gear' },
 ];
 const DROPDOWN_ITEMS = [
   { href: '/learn', label: 'Learn to play' },
-  { href: '/gear', label: 'Gear &amp; rentals' },
-  { href: '/paddle-quiz', label: 'Find your paddle' },
-  { href: '/visiting', label: 'Visiting the Bay' },
   { href: '/corrections', label: 'Report a correction' },
 ];
 
@@ -149,14 +161,12 @@ function renderFooter({ popularLines, footerNote }) {
         <h4>Site</h4>
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/cities/">All 42 cities</a></li>
+          <li><a href="/cities/">All cities</a></li>
           <li><a href="/about">About this guide</a></li>
-          <li><a href="/map">Map</a></li>
+          <li><a href="/map">Find courts</a></li>
           <li><a href="/rankings">Rankings</a></li>
           <li><a href="/learn">Learn to play</a></li>
-          <li><a href="/gear">Gear &amp; rentals</a></li>
-          <li><a href="/paddle-quiz">Find your paddle</a></li>
-          <li><a href="/visiting">Visiting the Bay</a></li>
+          <li><a href="/paddles">Paddles &amp; Gear</a></li>
           <li><a href="/corrections">Report a correction</a></li>
           <li><a href="/privacy">Privacy Policy</a></li>
         </ul>
@@ -169,7 +179,7 @@ ${popularLines}
       </div>
     </div>
     <div class="footer-note">
-      <span>An independent, unaffiliated directory. No ads, no sponsored listings.</span>
+      <span>Independent court data — no ads, no pay-to-list, no sponsored listings. Some paddle &amp; gear links are <a href="/affiliate-disclosure">affiliate links</a>.</span>
       <span>${footerNote}</span>
     </div>
   </div>
@@ -241,8 +251,12 @@ export function extractPage(relPath, raw) {
   if (!popularMatch) throw new Error('could not find Popular list');
   const popularLines = popularMatch[1];
 
+  // The first span is the generated trust/affiliate tagline (owned by
+  // renderFooter); match it loosely so this stays idempotent when the tagline
+  // wording changes (Phase 1 rewrote it for affiliate honesty — plan §3.6).
+  // Only the second span (the per-page footer note) is extracted.
   const noteMatch = raw.match(
-    /<div class="footer-note">\n {6}<span>An independent, unaffiliated directory\. No ads, no sponsored listings\.<\/span>\n {6}<span>([\s\S]*?)<\/span>/
+    /<div class="footer-note">\n {6}<span>[\s\S]*?<\/span>\n {6}<span>([\s\S]*?)<\/span>/
   );
   if (!noteMatch) throw new Error('could not find footer note');
   const footerNote = noteMatch[1];

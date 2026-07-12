@@ -178,3 +178,389 @@
   font-size: 0.72rem;
   color: var(--poppy);
 }
+
+/* ---------- Phase 3: Find-courts hub (search + list + map + detail) ---------- */
+
+/* Phase 2's hero search mounts into this empty node; collapse it until then. */
+.finder-hero .hero-search {
+  margin-top: 1.25rem;
+}
+.finder-hero .hero-search:empty {
+  margin-top: 0;
+}
+
+.finder-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.finder-toolbar .map-status {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.finder-toolbar-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.finder-scope {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.35rem 0.25rem 0.85rem;
+  background: var(--bay-tint);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--bay-deep);
+}
+
+.finder-scope[hidden] {
+  display: none;
+}
+
+.finder-scope-clear {
+  border: none;
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font: inherit;
+  color: var(--bay);
+  cursor: pointer;
+}
+
+.finder-scope-clear:hover {
+  background: var(--fog);
+  color: var(--bay-deep);
+}
+
+.finder-view-toggle {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bay);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.finder-view-toggle:hover {
+  color: var(--kitchen);
+}
+
+.finder {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(300px, 360px) 1fr;
+  gap: 1rem;
+  height: 640px;
+}
+
+.finder-list-wrap {
+  position: relative;
+  height: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.finder-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.finder-result {
+  border-bottom: 1px solid var(--line);
+}
+
+.finder-result-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: none;
+  background: none;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.finder-result-btn:hover {
+  background: var(--fog);
+}
+
+.finder-result.is-active .finder-result-btn {
+  background: var(--bay-tint);
+  box-shadow: inset 3px 0 0 var(--bay);
+}
+
+.fr-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.fr-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+
+.fr-pick {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--optic-deep);
+}
+
+.fr-pick[hidden] {
+  display: none;
+}
+
+.fr-meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+.fr-sub {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.finder-empty {
+  padding: 1.2rem 0.9rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.finder-map-wrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+}
+
+.finder-map-wrap .map-legend {
+  margin-bottom: 0.6rem;
+}
+
+/* Inside the hub the map fills the remaining column height rather than the
+   standalone fixed height it uses elsewhere. */
+.finder .venue-map {
+  height: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* ---- Detail card: desktop side-panel overlaying the list ---- */
+
+.finder-detail {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow-y: auto;
+  padding: 1.1rem 1.15rem 1.5rem;
+  background: var(--paper);
+}
+
+.finder-detail[hidden] {
+  display: none;
+}
+
+.finder-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  margin-bottom: 0.85rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--bay);
+  cursor: pointer;
+}
+
+.finder-detail-back:hover {
+  background: var(--fog);
+  color: var(--bay-deep);
+}
+
+.fd-eyebrow {
+  margin: 0 0 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+.fd-name {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3.5vw, 1.6rem);
+  line-height: 1.15;
+}
+
+.fd-addr {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.fd-facts {
+  margin: 0 0 1rem;
+}
+
+.fd-fact {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.fd-fact dt {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+.fd-fact dd {
+  margin: 0;
+  text-align: right;
+  font-size: 0.9rem;
+}
+
+.fd-ratings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.fd-ratings:empty {
+  margin: 0;
+}
+
+.fd-ratings .rating-form {
+  flex-basis: 100%;
+}
+
+.fd-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.finder-detail .btn {
+  font-size: 0.85rem;
+  padding: 0.6em 1.1em;
+}
+
+.finder-detail .btn-ghost {
+  background: var(--paper);
+  color: var(--bay);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.finder-detail .btn-ghost:hover {
+  background: var(--fog);
+  color: var(--bay-deep);
+}
+
+.fd-approx {
+  margin: 0 0 1rem;
+  font-size: 0.78rem;
+  color: var(--poppy);
+}
+
+.fd-city-link {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bay);
+  text-decoration: none;
+}
+
+.fd-city-link:hover {
+  color: var(--kitchen);
+}
+
+/* Scrim only backs the mobile bottom sheet; on desktop the detail overlays
+   its own column, so no scrim is needed. */
+.finder-scrim {
+  display: none;
+}
+
+/* ---- Mobile: stacked layout + bottom-sheet detail ---- */
+
+@media (max-width: 900px) {
+  .finder {
+    display: block;
+    height: auto;
+  }
+
+  .finder-map-wrap {
+    height: 460px;
+    margin-bottom: 1rem;
+  }
+
+  .finder-list-wrap {
+    height: auto;
+    max-height: 65vh;
+  }
+
+  .finder-results {
+    height: auto;
+    max-height: 65vh;
+  }
+
+  .finder-detail {
+    position: fixed;
+    inset: auto 0 0 0;
+    max-height: 85vh;
+    border-radius: var(--radius-m) var(--radius-m) 0 0;
+    box-shadow: 0 -14px 34px -12px rgba(var(--ink-rgb), 0.4);
+    z-index: 1000;
+  }
+
+  .finder-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(var(--ink-rgb), 0.42);
+  }
+
+  .finder-scrim[hidden] {
+    display: none;
+  }
+}

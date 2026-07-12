@@ -1,0 +1,19 @@
+{
+  "_README": [
+    "Pluggable per-vendor affiliate model consumed at runtime by assets/paddle-quiz.js (vendorLinkFor).",
+    "It lives here in assets/ — NOT in scripts/paddle-vendor-map.json — because Firebase Hosting ignores scripts/** (see firebase.json), so a file under scripts/ is never actually served to the browser. scripts/paddle-vendor-map.json stays the BUILD-TIME source of each brand's vendorUrl/search route; THIS file is the SERVED affiliate overlay. Editing this JSON and redeploying activates affiliate links with no paddle-data rebuild.",
+    "Brand keys must match the `brand` field in assets/paddles.json exactly (e.g. \"Selkirk\", \"JOOLA\", \"Six Zero\").",
+    "Per brand you may set any of:",
+    "  template : a deep-link template. Placeholders {url} (the brand's own product/search URL, encoded), {query} and {name} (the paddle name, encoded) are substituted. Use for affiliate-network wrappers or brand deep links, e.g. \"https://go.brand.com/aff?u={url}&id=PBA123\".",
+    "  params   : query params appended to the brand's own product/search URL. Use for DTC programs that track via a ref/subid, e.g. { \"ref\": \"pba\" }. Ignored when `template` is set.",
+    "  label    : optional CTA text override (default \"Buy <Brand>\").",
+    "A brand with neither template nor params gets an honest, un-tagged plain link to its own site (current state — no programs signed up yet).",
+    "amazonFallback lets an Amazon Associates search link slot in later for paddles with no brand program, without touching per-paddle code: set enabled=true and tag to your Associates tag. Off by default."
+  ],
+  "amazonFallback": {
+    "enabled": false,
+    "tag": "",
+    "searchBase": "https://www.amazon.com/s?k="
+  },
+  "brands": {}
+}

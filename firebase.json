@@ -5,6 +5,10 @@
   "hosting": {
     "public": ".",
     "cleanUrls": true,
+    "redirects": [
+      { "source": "/gear", "destination": "/paddles", "type": 301 },
+      { "source": "/paddle-quiz", "destination": "/paddles", "type": 301 }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",

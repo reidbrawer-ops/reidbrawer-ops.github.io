@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pickleball Bay Area — public courts, city by city</title>
-<meta name="description" content="A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing. 42 cities, 5 regions.">
+<meta name="description" content="A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,11 +17,11 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Pickleball Bay Area">
 <meta property="og:title" content="Pickleball Bay Area — public courts, city by city">
-<meta property="og:description" content="A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing. 42 cities, 5 regions.">
+<meta property="og:description" content="A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing.">
 <meta property="og:url" content="https://pickleball-bay-area.com/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pickleball Bay Area — public courts, city by city">
-<meta name="twitter:description" content="A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing. 42 cities, 5 regions.">
+<meta name="twitter:description" content="A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing.">
 <link rel="canonical" href="https://pickleball-bay-area.com/">
 <link rel="stylesheet" href="/assets/style.css">
 </head>
@@ -31,18 +31,15 @@
   <div class="container">
     <a class="brand" href="/"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
     <nav class="main-nav">
-      <a href="/" aria-current="page">Home</a>
+      <a href="/map">Find courts</a>
       <a href="/cities/">Cities</a>
-      <a href="/map">Map</a>
       <a href="/directory">Directory</a>
       <a href="/rankings">Rankings</a>
+      <a href="/paddles">Paddles &amp; Gear</a>
       <details class="nav-dropdown">
         <summary>More</summary>
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
-          <a href="/gear">Gear &amp; rentals</a>
-          <a href="/paddle-quiz">Find your paddle</a>
-          <a href="/visiting">Visiting the Bay</a>
           <a href="/corrections">Report a correction</a>
         </div>
       </details>
@@ -54,16 +51,59 @@
 <section class="hero">
   <div class="container">
     <div>
-      <p class="eyebrow">SF Bay Area · 42 cities · 5 regions</p>
+      <p class="eyebrow">SF Bay Area · every region · updated Jul 2026</p>
       <h1>The Bay, court by court.</h1>
       <p class="lede">A working directory of public pickleball courts from the Presidio to Pleasanton — what's dedicated, what's shared with tennis, what it costs, and what to know before you show up.</p>
-      <div class="stat-strip">
-        <span class="stat-chip"><b>42</b> cities</span>
-        <span class="stat-chip"><b>80+</b> venues</span>
-        <span class="stat-chip"><b>5</b> regions</span>
-        <span class="stat-chip">updated <b>Jul 2026</b></span>
+      <!-- Phase 2's global-search.js mounts the large hero search into this element.
+           data-search-scope="courts" selects the courts+cities index. -->
+      <div class="hero-search" data-search-scope="courts"></div>
+      <p class="hero-search-hint">Search a city or court to see it on the map — or <a href="/map">browse the full map</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="region-head">
+      <div>
+        <h2>Start where you are</h2>
+        <p>Three ways in, depending on what you're here to do.</p>
       </div>
-      <p><a class="btn" href="/cities/">See all 42 cities →</a></p>
+    </div>
+    <div class="home-lanes">
+      <div class="home-lane">
+        <p class="eyebrow">Locals &amp; visitors</p>
+        <h3>Find a court near you</h3>
+        <p>Search a city or neighborhood, see its courts on the map, and open any one for hours, surface, wait, and directions.</p>
+        <ol class="home-lane-steps">
+          <li>Search a city or venue</li>
+          <li>Scan the map &amp; list</li>
+          <li>Open a court for the details</li>
+        </ol>
+        <a class="btn" href="/map">Open the court finder →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">New to pickleball</p>
+        <h3>Never played before?</h3>
+        <p>Learn the basics in a couple of minutes, find a beginner-friendly court, and rent a paddle before you commit to buying one.</p>
+        <ol class="home-lane-steps">
+          <li><a href="/learn">Learn the basics</a></li>
+          <li><a href="/map">Find a beginner court</a></li>
+          <li><a href="/paddles">Rent a paddle first</a></li>
+        </ol>
+        <a class="btn" href="/learn">Start with the basics →</a>
+      </div>
+      <div class="home-lane">
+        <p class="eyebrow">Ready to buy</p>
+        <h3>Find your paddle</h3>
+        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
+        <ol class="home-lane-steps">
+          <li>Take the quick quiz</li>
+          <li>See your matched picks</li>
+          <li>Buy the one that fits</li>
+        </ol>
+        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -123,55 +163,12 @@
       </div>
       <div>
         <h3>What we don't do</h3>
-        <p>No sponsored placements, no pay-to-list, no affiliate links on paddles or gear. If a city's scene is thin or contested, we say so.</p>
+        <p>No ads, no pay-to-list, and nothing sponsors or influences our court data — that stays independent. Some paddle &amp; gear links are <a href="/affiliate-disclosure">affiliate links</a>, disclosed at each one. If a city's scene is thin or contested, we say so.</p>
       </div>
       <div>
         <h3>How to use it</h3>
         <p>Court counts, hours, and fees move with city budgets and construction schedules. Treat this as a starting point, then check the source link at the bottom of each city's page.</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="region-head">
-      <div>
-        <h2>More ways to use this guide</h2>
-        <p>Same research, cut for what you're actually trying to do.</p>
-      </div>
-    </div>
-    <div class="region-grid">
-      <a class="region-card" href="/map">
-        <p class="eyebrow">Interactive map</p>
-        <h3>Every court, one map.</h3>
-        <p>All 203 venues plotted at their real coordinates — click through to any city page.</p>
-      </a>
-      <a class="region-card" href="/learn">
-        <p class="eyebrow">Learn</p>
-        <h3>Never played before?</h3>
-        <p>Scoring, the kitchen, paddle-stacking, and what to bring — in about two minutes.</p>
-      </a>
-      <a class="region-card" href="/gear">
-        <p class="eyebrow">Gear &amp; rentals</p>
-        <h3>Don't own a paddle?</h3>
-        <p>Demo programs, rentals, and stringing services, organized by region.</p>
-      </a>
-      <a class="region-card" href="/paddle-quiz">
-        <p class="eyebrow">Find your paddle</p>
-        <h3>Already have one — but the wrong one?</h3>
-        <p>Answer a few questions and get your top picks at every budget, out of 486 paddles.</p>
-      </a>
-      <a class="region-card" href="/visiting">
-        <p class="eyebrow">For travelers</p>
-        <h3>Just visiting the Bay?</h3>
-        <p>Courts near your hotel, layover, or conference — not sorted by city name.</p>
-      </a>
-      <a class="region-card" href="/corrections">
-        <p class="eyebrow">Corrections</p>
-        <h3>Something out of date?</h3>
-        <p>This is hand-maintained, not a database. Tell us what changed.</p>
-      </a>
     </div>
   </div>
 </section>
@@ -193,14 +190,12 @@
         <h4>Site</h4>
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/cities/">All 42 cities</a></li>
+          <li><a href="/cities/">All cities</a></li>
           <li><a href="/about">About this guide</a></li>
-          <li><a href="/map">Map</a></li>
+          <li><a href="/map">Find courts</a></li>
           <li><a href="/rankings">Rankings</a></li>
           <li><a href="/learn">Learn to play</a></li>
-          <li><a href="/gear">Gear &amp; rentals</a></li>
-          <li><a href="/paddle-quiz">Find your paddle</a></li>
-          <li><a href="/visiting">Visiting the Bay</a></li>
+          <li><a href="/paddles">Paddles &amp; Gear</a></li>
           <li><a href="/corrections">Report a correction</a></li>
           <li><a href="/privacy">Privacy Policy</a></li>
         </ul>
@@ -216,7 +211,7 @@
       </div>
     </div>
     <div class="footer-note">
-      <span>An independent, unaffiliated directory. No ads, no sponsored listings.</span>
+      <span>Independent court data — no ads, no pay-to-list, no sponsored listings. Some paddle &amp; gear links are <a href="/affiliate-disclosure">affiliate links</a>.</span>
       <span>Court info verified against city rec department pages, July 2026.</span>
     </div>
   </div>

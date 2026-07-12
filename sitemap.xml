@@ -31,19 +31,14 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://pickleball-bay-area.com/gear</loc>
+    <loc>https://pickleball-bay-area.com/paddles</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://pickleball-bay-area.com/paddle-quiz</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://pickleball-bay-area.com/visiting</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <loc>https://pickleball-bay-area.com/affiliate-disclosure</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://pickleball-bay-area.com/privacy</loc>

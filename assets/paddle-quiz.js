@@ -198,18 +198,67 @@ function isStiffImpact(paddle) {
   return paddle.impactFeel === "Stiff/Dense" || paddle.impactFeel === "Stiff/Hollow";
 }
 
-// vendorSearchBase is only set for brands whose on-site search was directly
-// verified to return real product results (see assets/paddles.json prep
-// script) — for the rest, link to the vendor's site itself rather than
-// guess at a search URL that might 404.
-function vendorLinkFor(paddle) {
-  if (paddle.vendorSearchBase) {
-    return { href: paddle.vendorSearchBase + encodeURIComponent(paddle.name), label: `Search ${paddle.brand}` };
+// ---------- Buy links + pluggable affiliate model ----------
+//
+// Every result's buy link is built here from two inputs:
+//   1. The paddle's own vendor fields (baked into paddles.json from
+//      scripts/paddle-vendor-map.json at data-rebuild time): `vendorUrl` is
+//      the brand's real site, and `vendorSearchBase` is a domain-root search
+//      route that was directly verified to return real product results (for
+//      the rest we don't guess a search URL that might 404).
+//   2. An optional affiliate overlay (assets/affiliate-map.json, fetched at
+//      runtime and passed in as `affiliateMap`) — the pluggable per-vendor
+//      model: brand -> { template | params | label } plus a global
+//      amazonFallback. It lives in assets/ rather than the build-time
+//      scripts/paddle-vendor-map.json because Firebase Hosting ignores
+//      scripts/** (see firebase.json), so only assets/ is actually served.
+//
+// The returned `isAffiliate` flag drives both the link's rel (sponsored vs.
+// plain) and whether the commission disclosure is shown — so a plain vendor
+// link is never dressed up as, or disclosed as, something that earns money.
+
+function appendParams(url, params) {
+  const keys = Object.keys(params || {});
+  if (!keys.length) return url;
+  const sep = url.includes("?") ? "&" : "?";
+  const qs = keys.map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`).join("&");
+  return url + sep + qs;
+}
+
+function vendorLinkFor(paddle, affiliateMap) {
+  // The best buyable target we have for this exact model: its brand's
+  // verified on-site search, else the brand's own site.
+  const searchUrl = paddle.vendorSearchBase ? paddle.vendorSearchBase + encodeURIComponent(paddle.name) : null;
+  const base = searchUrl || paddle.vendorUrl || null;
+  if (!base) return null;
+
+  const brandCfg = affiliateMap && affiliateMap.brands ? affiliateMap.brands[paddle.brand] : null;
+
+  // 1) A brand/DTC affiliate program is configured for this brand.
+  if (brandCfg && (brandCfg.template || brandCfg.params)) {
+    let href;
+    if (brandCfg.template) {
+      href = brandCfg.template
+        .replaceAll("{url}", encodeURIComponent(base))
+        .replaceAll("{query}", encodeURIComponent(paddle.name))
+        .replaceAll("{name}", encodeURIComponent(paddle.name));
+    } else {
+      href = appendParams(base, brandCfg.params);
+    }
+    return { href, label: brandCfg.label || `Buy ${paddle.brand}`, isAffiliate: true };
   }
-  if (paddle.vendorUrl) {
-    return { href: paddle.vendorUrl, label: `Visit ${paddle.brand}` };
+
+  // 2) Amazon Associates fallback — slots in for brands with no program of
+  //    their own once enabled, without any per-paddle rewrite.
+  const az = affiliateMap && affiliateMap.amazonFallback;
+  if (az && az.enabled && az.tag) {
+    const searchBase = az.searchBase || "https://www.amazon.com/s?k=";
+    const query = encodeURIComponent(`${paddle.brand} ${paddle.name} pickleball paddle`);
+    return { href: appendParams(searchBase + query, { tag: az.tag }), label: "Search Amazon", isAffiliate: true };
   }
-  return null;
+
+  // 3) No program yet — an honest, un-tagged link to the brand's own site.
+  return { href: base, label: searchUrl ? `Search ${paddle.brand}` : `Visit ${paddle.brand}`, isAffiliate: false };
 }
 
 // ---------- Comparison-table dimension ratings ----------
@@ -461,9 +510,12 @@ function meterHtml(dots, label) {
 }
 
 class PaddleQuizApp {
-  constructor(root, paddles) {
+  constructor(root, paddles, affiliateMap) {
     this.root = root;
     this.paddles = paddles;
+    // Optional affiliate overlay (assets/affiliate-map.json). May be null if
+    // the fetch failed — vendorLinkFor degrades to plain vendor links.
+    this.affiliateMap = affiliateMap || null;
     this.step = 0; // 0..QUESTIONS.length-1 = questions, QUESTIONS.length = email, +1 = results
     this.answers = {};
     this.submitting = false;
@@ -599,16 +651,30 @@ class PaddleQuizApp {
           .join("")}
       </tr>`;
 
+    const links = top.map(({ paddle }) => vendorLinkFor(paddle, this.affiliateMap));
+    const anyAffiliate = links.some((l) => l && l.isAffiliate);
+
     const linkRow = `
       <tr class="pq-compare-links">
         <th class="pq-compare-label"></th>
-        ${top
-          .map(({ paddle }) => {
-            const link = vendorLinkFor(paddle);
-            return `<td>${link ? `<a class="book-btn" href="${link.href}" target="_blank" rel="noopener nofollow">${link.label} →</a>` : ""}</td>`;
+        ${links
+          .map((link) => {
+            if (!link) return "<td></td>";
+            // Affiliate links get rel="sponsored" per FTC guidance (and the
+            // site's affiliate stance); plain vendor links stay nofollow but
+            // are not marked sponsored, because they aren't.
+            const rel = link.isAffiliate ? "sponsored nofollow noopener" : "nofollow noopener";
+            return `<td><a class="book-btn" href="${link.href}" target="_blank" rel="${rel}">${link.label} →</a></td>`;
           })
           .join("")}
       </tr>`;
+
+    // Disclosure sits with the buy links and tells the truth for the current
+    // state: only claim a commission when at least one pick actually links
+    // through an affiliate program.
+    const disclosure = anyAffiliate
+      ? `<p class="affiliate-disclosure" id="buy">Some paddle links above are affiliate links — we may earn a commission if you buy, at no extra cost to you. It never changes which paddles we recommend or our court data. <a href="/affiliate-disclosure">How this works</a>.</p>`
+      : `<p class="affiliate-disclosure" id="buy">These links go straight to each brand's own site — we don't earn a commission from them today. If that changes, we'll say so right here and on our <a href="/affiliate-disclosure">disclosure page</a>.</p>`;
 
     return `
       <div class="pq-results-head">
@@ -633,6 +699,7 @@ class PaddleQuizApp {
           </tbody>
         </table>
       </div>
+      ${disclosure}
       <button type="button" class="clear-btn pq-retake" data-action="retake">Retake the quiz</button>
     `;
   }
@@ -725,9 +792,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const root = document.getElementById("paddle-quiz-app");
   if (!root) return;
   try {
-    const res = await fetch("/assets/paddles.json");
-    const paddles = await res.json();
-    new PaddleQuizApp(root, paddles).render();
+    // The affiliate overlay is optional chrome on top of the required paddle
+    // data — a missing/broken map must not break the quiz, so it's fetched
+    // alongside but swallowed independently (falls back to plain links).
+    const [paddles, affiliateMap] = await Promise.all([
+      fetch("/assets/paddles.json").then((r) => r.json()),
+      // Revalidate the affiliate overlay rather than serve a stale copy — it's
+      // a tiny file, and a stale one would keep showing old (or missing) buy
+      // links after the vendor map is updated and redeployed.
+      fetch("/assets/affiliate-map.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+    ]);
+    new PaddleQuizApp(root, paddles, affiliateMap).render();
   } catch (err) {
     console.error("[PaddleQuiz] Failed to load paddle data.", err);
     root.innerHTML = `<p class="pq-error">Couldn't load the paddle database right now — try refreshing the page.</p>`;

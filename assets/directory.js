@@ -276,7 +276,7 @@
         return 0;
       });
 
-      countEl.textContent = `Showing ${filtered.length} of ${rows.length} venues`;
+      countEl.textContent = `Showing ${filtered.length} ${filtered.length === 1 ? "venue" : "venues"}`;
 
       const noResults = filtered.length === 0;
       emptyEl.hidden = !noResults;
@@ -418,7 +418,7 @@
     updateHoursVisual();
     tableEl.hidden = false;
     render();
-    setStatus(statusEl, `Showing all ${rows.length} venues.`);
+    setStatus(statusEl, `Showing every venue in the directory.`);
   }
 
   fetch("/assets/courts-data.json")

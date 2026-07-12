@@ -325,6 +325,25 @@
   background: var(--bay);
 }
 
+/* ---------- Phase 5: affiliate disclosure ---------- */
+/* Shared class (also used by the hub's buy framing) so every set of buy
+   links carries the same FTC-style disclosure treatment. */
+.affiliate-disclosure {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  background: var(--bay-tint);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  padding: 0.7rem 0.9rem;
+  margin: 0 0 1.3rem;
+}
+
+.affiliate-disclosure a {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
 /* ---------- Hero media (skill-level illustration) ---------- */
 
 .pq-hero-inner {

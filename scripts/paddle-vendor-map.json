@@ -1,4 +1,5 @@
 {
+ "_README": "Build-time source of each brand's vendorUrl + verified search route, read by scripts/rebuild_paddle_data.py to populate assets/paddles.json. AFFILIATE links are NOT configured here: this file lives under scripts/, which Firebase Hosting ignores (see firebase.json), so it is never served. The pluggable per-vendor affiliate model (brand -> deep-link template / tracking params, plus an Amazon-Associates fallback) is the SERVED overlay at assets/affiliate-map.json, resolved at runtime by assets/paddle-quiz.js. Edit that file to turn affiliate links on.",
  "11SIX24": {
   "vendorUrl": "https://11six24.com/",
   "searchVerified": true
