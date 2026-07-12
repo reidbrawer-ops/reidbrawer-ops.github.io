@@ -314,6 +314,10 @@
         opts = opts || {};
         activeId = id;
         highlightRow(id);
+        // Cancel any pending city fly-in handoff so selecting a venue right
+        // after a city focus (e.g. ?city=…&venue=… or a venue search result)
+        // isn't yanked back out to the city bounds.
+        flyToken++;
         if (opts.pan !== false) {
           map.setView([record.lat, record.lon], Math.max(map.getZoom() || 0, 14), {
             animate: true,
@@ -327,6 +331,59 @@
       // ---- City focus (search contract) --------------------------------
 
       let currentCity = null;
+      let flyToken = 0;
+
+      // Two-phase move when focusing a city: a quick zoom-out that glides
+      // toward the city for context, then a slower zoom back in to its courts
+      // — a Google-Maps-style "pull back, then swoop in." Falls back to an
+      // instant fit when the user prefers reduced motion, and skips the
+      // zoom-out beat when the map is already at/below the intermediate level.
+      function flyToCity(matches) {
+        map.invalidateSize();
+        const single = matches.length === 1;
+        const bounds = L.featureGroup(matches.map((r) => markersById[r.id])).getBounds();
+        const center = single ? L.latLng(matches[0].lat, matches[0].lon) : bounds.getCenter();
+
+        const reduce =
+          window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduce) {
+          if (single) map.setView(center, 14);
+          else map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
+          return;
+        }
+
+        // Phase 2 — a slow zoom in. From the phase-1 center this is a near-pure
+        // zoom, so it reads as settling into the city rather than arcing again.
+        const zoomIn = () => {
+          if (single) map.flyTo(center, 14, { duration: 1.6, easeLinearity: 0.2 });
+          else
+            map.flyToBounds(bounds, {
+              duration: 1.6,
+              easeLinearity: 0.2,
+              padding: [40, 40],
+              maxZoom: 15,
+            });
+        };
+
+        const currentZoom = map.getZoom();
+        const targetZoom = single ? 14 : map.getBoundsZoom(bounds);
+        // Pull back ~2 levels for context, but never wider than the whole
+        // dataset's extent — no point zooming past "the entire Bay Area."
+        const fullZoom = map.getBoundsZoom(group.getBounds());
+        const outZoom = Math.max(fullZoom, Math.min(currentZoom, targetZoom) - 2);
+
+        if (outZoom < currentZoom) {
+          // Phase 1 — a quick zoom-out toward the city. Token-guard the handoff
+          // so a rapid second selection can't trigger this flight's zoom-in.
+          const token = ++flyToken;
+          map.flyTo(center, outZoom, { duration: 0.7, easeLinearity: 0.25 });
+          map.once("moveend", () => {
+            if (token === flyToken) zoomIn();
+          });
+        } else {
+          zoomIn();
+        }
+      }
 
       function focusCity(slug, cityNameHint) {
         const matches = records.filter((r) => citySlug(r.city) === slug);
@@ -337,13 +394,7 @@
         const cityName = cityNameHint || matches[0].city;
         scopeLabelEl.textContent = `Showing courts in ${cityName}`;
         scopeEl.hidden = false;
-        const bounds = L.featureGroup(matches.map((r) => markersById[r.id])).getBounds();
-        map.invalidateSize();
-        if (matches.length === 1) {
-          map.setView([matches[0].lat, matches[0].lon], 14, { animate: true });
-        } else {
-          map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
-        }
+        flyToCity(matches);
         try {
           history.replaceState(null, "", `/map?city=${encodeURIComponent(slug)}`);
         } catch (e) {

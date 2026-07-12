@@ -483,6 +483,16 @@
   padding: 0.6em 1.1em;
 }
 
+/* The detail-card Directions control is a solid button, but it also carries
+   the .directions-link class as a hook for google-ratings.js to rewrite its
+   href. That shared class is the city-page *text link* style (teal text on no
+   background) — layered onto this button it wins over .btn's white text and
+   lands teal-on-teal, hiding the label until :hover flips it back to white.
+   Pin it white so the label shows in the resting state. */
+.finder-detail .btn.directions-link {
+  color: #fff;
+}
+
 .finder-detail .btn-ghost {
   background: var(--paper);
   color: var(--bay);
