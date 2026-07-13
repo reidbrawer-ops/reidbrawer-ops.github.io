@@ -1,3 +1,27 @@
+// Mobile nav (hamburger) toggle. The header collapses .main-nav into a
+// full-width panel below ~720px; this opens/closes it. --header-h stays
+// correct automatically via the ResizeObserver at the bottom of this file.
+(function () {
+  var navToggle = document.getElementById("nav-toggle");
+  var mainNav = document.getElementById("main-nav");
+  if (!navToggle || !mainNav) return;
+  function closeNav() {
+    mainNav.classList.remove("is-open");
+    navToggle.setAttribute("aria-expanded", "false");
+  }
+  navToggle.addEventListener("click", function () {
+    var open = mainNav.classList.toggle("is-open");
+    navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  mainNav.addEventListener("click", function (e) {
+    // A real nav link closes the panel; the "More" <summary> doesn't.
+    if (e.target.closest("a")) closeNav();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeNav();
+  });
+})();
+
 document.querySelectorAll(".nav-dropdown").forEach(function (d) {
   d.addEventListener("click", function (e) {
     if (e.target.closest("a")) d.removeAttribute("open");

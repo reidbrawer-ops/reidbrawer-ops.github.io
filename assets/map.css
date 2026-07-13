@@ -511,6 +511,13 @@
   color: var(--kitchen);
 }
 
+.fd-verified {
+  margin-top: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
 /* Scrim only backs the mobile bottom sheet; on desktop the detail overlays
    its own column, so no scrim is needed. */
 .finder-scrim {
@@ -860,4 +867,163 @@
   .filter-field-clear .clear-btn {
     width: 100%;
   }
+}
+
+/* ---- "Use my location" (nearest-first) ---- */
+.finder-locate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--bay);
+  border: 1px solid var(--bay);
+  border-radius: 999px;
+  /* min 44px tall for a comfortable mobile tap target */
+  padding: 0.6rem 1rem;
+  min-height: 44px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.finder-locate:hover {
+  background: var(--bay-deep);
+  border-color: var(--bay-deep);
+}
+
+.finder-locate:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.finder-locate.is-active {
+  background: var(--bay-tint);
+  color: var(--bay-deep);
+  border-color: var(--bay);
+}
+
+/* A simple location "pin" glyph drawn from a bordered dot. */
+.finder-locate-icon {
+  width: 0.72em;
+  height: 0.72em;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  box-shadow: 0 0 0 2px transparent;
+  flex: none;
+}
+
+.finder-locate.is-locating .finder-locate-icon {
+  animation: finder-locate-pulse 1s ease-in-out infinite;
+}
+
+@keyframes finder-locate-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .finder-locate.is-locating .finder-locate-icon {
+    animation: none;
+  }
+}
+
+/* "You are here" marker on the map. */
+.pba-you-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pba-you-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bay);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px var(--bay), 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Distance chip shown on each finder row while sorting nearest-first. */
+.fr-distance {
+  flex: none;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--bay-deep);
+  background: var(--bay-tint);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  white-space: nowrap;
+}
+
+/* Coverage note shown when geolocation lands far outside the Bay Area. */
+.finder-out-of-area {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--bay);
+  border-radius: var(--radius-m);
+  background: var(--bay-tint);
+}
+
+.finder-out-of-area[hidden] {
+  display: none;
+}
+
+.finder-ooa-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--bay-deep);
+  margin: 0 0 0.3rem;
+}
+
+.finder-ooa-body p {
+  margin: 0;
+}
+
+.finder-ooa-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  margin-top: 0.85rem;
+}
+
+.finder-ooa-alt {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--bay);
+}
+
+.finder-ooa-alt:hover {
+  color: var(--bay-deep);
+}
+
+.finder-ooa-close {
+  flex: none;
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink-soft);
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.finder-ooa-close:hover {
+  color: var(--ink);
 }

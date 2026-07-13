@@ -22,4 +22,34 @@ if (GA_MEASUREMENT_ID.indexOf("XXXXXXXXXX") === -1) {
   window.gtag = function () { window.dataLayer.push(arguments); };
   window.gtag("js", new Date());
   window.gtag("config", GA_MEASUREMENT_ID);
+
+  // Lightweight client-error monitoring. A bad deploy (broken data file, a
+  // widget regression, a Firestore/Leaflet failure) is otherwise invisible
+  // unless a visitor reports it — surface uncaught errors as GA4 "exception"
+  // events so they show up in Analytics. No extra vendor.
+  function reportError(kind, message, source, lineno) {
+    try {
+      window.gtag("event", "exception", {
+        description: (kind + ": " + (message || "unknown")).slice(0, 300),
+        fatal: false,
+        error_source: source ? String(source).slice(0, 200) : undefined,
+        error_line: lineno || undefined,
+        page_path: location.pathname,
+      });
+    } catch (e) {
+      /* error reporting must never itself throw */
+    }
+  }
+
+  window.addEventListener("error", function (e) {
+    // Ignore resource (img/script) load errors — no message, too noisy.
+    if (!e.message) return;
+    reportError("error", e.message, e.filename, e.lineno);
+  });
+
+  window.addEventListener("unhandledrejection", function (e) {
+    var reason = e && e.reason;
+    var msg = reason && reason.message ? reason.message : String(reason);
+    reportError("unhandledrejection", msg);
+  });
 }

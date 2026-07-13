@@ -1,0 +1,13 @@
+{
+  "name": "pickleball-bay-area",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bay Area pickleball courts directory (static site, Firebase Hosting). Node scripts: .mjs = ES modules, .js = CommonJS (do not add \"type\":\"module\").",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "sync": "node scripts/sync-header.js && node scripts/sync-lane-router.js",
+    "generate-venues": "node scripts/generate-venues.mjs",
+    "validate": "node scripts/validate.mjs",
+    "check": "node scripts/validate.mjs && node scripts/check-venue-cards.mjs"
+  }
+}

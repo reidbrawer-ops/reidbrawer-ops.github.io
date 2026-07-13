@@ -19,10 +19,42 @@
 <meta property="og:title" content="Pickleball Bay Area — public courts, city by city">
 <meta property="og:description" content="A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing.">
 <meta property="og:url" content="https://pickleball-bay-area.com/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Pickleball Bay Area — public courts, city by city">
 <meta name="twitter:description" content="A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing.">
+<meta name="twitter:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
 <link rel="canonical" href="https://pickleball-bay-area.com/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://pickleball-bay-area.com/#org",
+      "name": "Pickleball Bay Area",
+      "url": "https://pickleball-bay-area.com/",
+      "logo": "https://pickleball-bay-area.com/assets/logo/icon-512.png"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://pickleball-bay-area.com/#website",
+      "url": "https://pickleball-bay-area.com/",
+      "name": "Pickleball Bay Area",
+      "description": "A working directory of public pickleball courts across the San Francisco Bay Area.",
+      "publisher": { "@id": "https://pickleball-bay-area.com/#org" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://pickleball-bay-area.com/map?city={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
+}
+</script>
 <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
@@ -31,7 +63,12 @@
 <header class="site-header">
   <div class="container">
     <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
-    <nav class="main-nav">
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav class="main-nav" id="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/">Cities</a>
       <a href="/rankings">Rankings</a>
@@ -90,7 +127,7 @@
         <ol class="home-lane-steps">
           <li><a href="/learn">Learn the basics</a></li>
           <li><a href="/map">Find a beginner court</a></li>
-          <li><a href="/paddles">Rent a paddle first</a></li>
+          <li><a href="/paddles#rent">Rent a paddle first</a></li>
         </ol>
         <a class="btn" href="/learn">Start with the basics →</a>
       </div>
@@ -103,7 +140,7 @@
           <li>See your matched picks</li>
           <li>Buy the one that fits</li>
         </ol>
-        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+        <a class="btn" href="/paddles#quiz">Take the paddle quiz →</a>
       </div>
     </div>
   </div>
@@ -124,24 +161,24 @@
         <p>Fog, wind, and a rec department racing to convert tennis courts as fast as demand grows.</p>
       </a>
       <a class="region-card" href="/cities/#peninsula">
-        <p class="eyebrow">4 cities</p>
+        <p class="eyebrow">10 cities</p>
         <h3>Peninsula</h3>
-        <p>Palo Alto, Menlo Park, Redwood City, San Mateo — a 15-court flagship, plus a few smaller neighborhood-park scenes worth knowing about.</p>
+        <p>From Daly City down to San Carlos — a 15-court flagship in Palo Alto, plus neighborhood-park scenes in Menlo Park, San Mateo, Burlingame, Belmont and more.</p>
       </a>
       <a class="region-card" href="/cities/#south-bay">
-        <p class="eyebrow">5 cities</p>
+        <p class="eyebrow">10 cities</p>
         <h3>South Bay</h3>
-        <p>San Jose, Santa Clara, Sunnyvale, Cupertino, Mountain View — the highest court count in the Bay, and its most contentious siting fight.</p>
+        <p>San Jose, Sunnyvale, Santa Clara, Cupertino, Mountain View, Los Gatos and beyond — the highest court count in the Bay, and its most contentious siting fight.</p>
       </a>
       <a class="region-card" href="/cities/#east-bay">
-        <p class="eyebrow">5 cities</p>
+        <p class="eyebrow">18 cities</p>
         <h3>East Bay</h3>
-        <p>Oakland, Berkeley, Walnut Creek, Fremont, Pleasanton — free city parks a few miles from members-only clubs.</p>
+        <p>Oakland, Berkeley, Fremont, Walnut Creek, Alameda and a dozen more — free city parks a few miles from members-only clubs.</p>
       </a>
       <a class="region-card" href="/cities/#north-bay">
-        <p class="eyebrow">2 cities</p>
+        <p class="eyebrow">3 cities</p>
         <h3>North Bay</h3>
-        <p>San Rafael and Novato — Marin's scene is small, indoor-heavy, and easy to book ahead.</p>
+        <p>San Rafael, Novato and Vallejo — a small, indoor-heavy scene that's easy to book ahead.</p>
       </a>
     </div>
     <p class="eyebrow">Or jump straight to a city</p>

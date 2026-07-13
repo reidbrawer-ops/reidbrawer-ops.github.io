@@ -105,9 +105,11 @@ function renderHead(data) {
       `<meta property="og:title" content="${socialTitle}">`,
       `<meta property="og:description" content="${socialDescription}">`,
       `<meta property="og:url" content="${canonical}">`,
-      '<meta name="twitter:card" content="summary">',
+      '<meta property="og:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">',
+      '<meta name="twitter:card" content="summary_large_image">',
       `<meta name="twitter:title" content="${socialTitle}">`,
       `<meta name="twitter:description" content="${socialDescription}">`,
+      '<meta name="twitter:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">',
       `<link rel="canonical" href="${canonical}">`,
     );
   }

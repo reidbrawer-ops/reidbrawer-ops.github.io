@@ -268,6 +268,90 @@ img, svg {
   text-underline-offset: 4px;
 }
 
+/* ---------- Mobile nav toggle (hamburger) ---------- */
+
+.nav-toggle {
+  display: none; /* shown only under the mobile breakpoint below */
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  cursor: pointer;
+  flex: none;
+}
+
+.nav-toggle-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  margin: 0 auto;
+  background: var(--ink);
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 720px) {
+  .nav-toggle {
+    display: flex;
+  }
+  .site-header .container {
+    flex-wrap: wrap;
+  }
+  /* Nav collapses into a full-width panel below the brand/toggle row. */
+  .main-nav {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.1rem;
+    margin-top: 0.5rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--line);
+  }
+  .main-nav.is-open {
+    display: flex;
+  }
+  .main-nav > a,
+  .main-nav .nav-dropdown > summary {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    width: 100%;
+  }
+  .main-nav .nav-dropdown {
+    width: 100%;
+  }
+  /* "More" opens inline in the panel rather than as a floating flyout. */
+  .main-nav .nav-dropdown-menu {
+    position: static;
+    box-shadow: none;
+    border: none;
+    padding: 0 0 0 1rem;
+    min-width: 0;
+  }
+  .main-nav .nav-dropdown-menu::before {
+    display: none;
+  }
+  .main-nav .global-search {
+    width: 100%;
+    margin-top: 0.4rem;
+  }
+}
+
 /* ---------- Nav dropdown ("More") ---------- */
 
 .nav-dropdown {
@@ -845,6 +929,11 @@ img, svg {
   text-decoration: none;
   white-space: nowrap;
   flex: 0 0 auto;
+  /* ≥44px touch target for the primary mobile action */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.35em;
 }
 
 .directions-link:hover,
@@ -947,7 +1036,8 @@ img, svg {
   background: transparent;
   border: 1.5px solid var(--bay);
   border-radius: 999px;
-  padding: 0.4em 0.95em;
+  padding: 0.55em 1.1em;
+  min-height: 44px;
   text-decoration: none;
   cursor: pointer;
   transition: background 0.15s var(--ease), color 0.15s var(--ease);
@@ -1275,6 +1365,18 @@ img, svg {
   margin-left: 0.4em;
 }
 
+/* Zero-data rating state reads as an invitation, not a dead end. The summary
+   is wrapped in a link to the court's rating form, so style the label as a
+   call to action rather than muted "Not yet rated" text. */
+.rating-summary.is-unrated .rating-value-label {
+  color: var(--bay);
+  font-weight: 600;
+}
+
+a:hover .rating-summary.is-unrated .rating-value-label {
+  text-decoration: underline;
+}
+
 .star-picker {
   display: inline-flex;
   flex-direction: row-reverse;
@@ -1286,9 +1388,15 @@ img, svg {
   border: none;
   padding: 0.05em;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   line-height: 1;
   color: var(--line);
+  /* larger touch target for closely-spaced rating stars */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.2rem;
+  min-height: 2.4rem;
 }
 
 .star-picker button::before {
@@ -1313,7 +1421,8 @@ img, svg {
   background: var(--paper);
   border: 1.5px solid var(--poppy);
   border-radius: 999px;
-  padding: 0.4em 0.95em;
+  padding: 0.55em 1em;
+  min-height: 44px;
   cursor: pointer;
   transition: background 0.15s var(--ease), color 0.15s var(--ease);
 }
@@ -1514,6 +1623,25 @@ img, svg {
   margin-top: 0.7rem;
 }
 
+/* Per-venue "Report an issue" link (injected by report-issue.js). Sits at the
+   end of the actions row, de-emphasized until hovered. */
+.report-issue-link {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.2em;
+}
+
+.report-issue-link:hover {
+  color: var(--bay);
+  text-decoration: underline;
+}
+
 @media (max-width: 560px) {
   .rating-form-row {
     flex-direction: column;
@@ -1553,7 +1681,9 @@ a.google-rating-badge:hover {
 .google-rating-asof {
   margin-left: 0.45em;
   font-weight: 400;
-  opacity: 0.65;
+  /* was opacity:0.65 on already-soft text — dropped below AA contrast.
+     Use a solid AA-passing ink instead. */
+  color: var(--ink-soft);
 }
 
 /* ---------- City quick-jump tags (shared with rankings.css's own

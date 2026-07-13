@@ -163,6 +163,34 @@ def num(value, decimals=None):
 
 
 # ---------------------------------------------------------------------------
+# Percentile coarsening — see PADDLE_DATA_SETUP.md "Data licensing".
+#
+# PickleballEffect's exact lab-tested percentiles are proprietary. The quiz
+# only ever uses them to compute coarse dot ratings / preference scores (it
+# never displays the raw number), so we don't need — and shouldn't ship — the
+# precise value in the public, fetchable assets/paddles.json. We store the
+# QUARTILE-BAND MIDPOINT instead: a value that is one of four fixed tiers, not
+# their measurement, while staying accurate enough for the dot ratings and
+# preference trapezoids in assets/paddle-quiz.js.
+#
+# IMPORTANT: skill_level() must be called on the RAW percentile (before this
+# coarsening), since its 0.35 / 0.6 cut points are finer than these bands.
+# ---------------------------------------------------------------------------
+
+
+def coarsen_percentile(p):
+    if p is None:
+        return None
+    if p < 0.25:
+        return 0.13
+    if p < 0.5:
+        return 0.38
+    if p < 0.75:
+        return 0.63
+    return 0.88
+
+
+# ---------------------------------------------------------------------------
 # Step 5 — skill-level tagging.
 #
 # There is no "skill level" column in the source data — this is derived
@@ -280,6 +308,7 @@ def main():
 
         core_thickness = num(row["Core Thickness (mm)"], 1)
         twist_weight_pct = num(row["Twist Weight Percentile"], 2)
+        power_pct = num(row["Power Percentile"], 2)
         paddle_type = row["Paddle Type"] or None
 
         paddle = {
@@ -293,10 +322,12 @@ def main():
             "impactFeel": row["Impact Feel"] or None,
             "coreThicknessMm": core_thickness,
             "weightOz": num(row["Weight (oz)"], 2),
-            "twistWeightPercentile": twist_weight_pct,
+            # Coarsened to a quartile tier before storage — skill_level below
+            # still reads the raw twist_weight_pct (see coarsen_percentile).
+            "twistWeightPercentile": coarsen_percentile(twist_weight_pct),
             "balancePointMm": num(row["Balance Point (mm)"], 0),
             "spinRating": row["Spin Rating"] or None,
-            "powerPercentile": num(row["Power Percentile"], 2),
+            "powerPercentile": coarsen_percentile(power_pct),
             "skillLevel": skill_level(twist_weight_pct, core_thickness, paddle_type),
         }
 

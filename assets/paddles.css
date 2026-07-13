@@ -32,6 +32,53 @@
   transform: translateY(-1px);
 }
 
+/* Two-way "Find your paddle / Rent & try" chooser in the hero — the quiz
+   (primary) and renting, presented as an either/or, not a 1-2-3 sequence. */
+.pf-choose {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: var(--space-3);
+}
+
+.pf-choice {
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--paper);
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.pf-choice:hover {
+  border-color: var(--bay);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -12px rgba(var(--bay-rgb), 0.5);
+}
+
+.pf-choice--primary {
+  border-color: var(--bay);
+  background: var(--bay-tint);
+}
+
+.pf-choice-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--bay-deep);
+}
+
+.pf-choice-note {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
 .pf-jump-step {
   display: inline-flex;
   align-items: center;

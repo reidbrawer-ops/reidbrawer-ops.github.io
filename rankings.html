@@ -19,9 +19,11 @@
 <meta property="og:title" content="Rankings — vote for your favorite Bay Area pickleball court">
 <meta property="og:description" content="Vote for your favorite Bay Area pickleball court and rate courts on beginner-friendliness, surface, wait time, and advanced play. Live rankings by city.">
 <meta property="og:url" content="https://pickleball-bay-area.com/rankings">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rankings — vote for your favorite Bay Area pickleball court">
 <meta name="twitter:description" content="Vote for your favorite Bay Area pickleball court and rate courts on beginner-friendliness, surface, wait time, and advanced play. Live rankings by city.">
+<meta name="twitter:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
 <link rel="canonical" href="https://pickleball-bay-area.com/rankings">
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="stylesheet" href="/assets/rankings.css">
@@ -32,7 +34,12 @@
 <header class="site-header">
   <div class="container">
     <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
-    <nav class="main-nav">
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav class="main-nav" id="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/">Cities</a>
       <a href="/rankings" aria-current="page">Rankings</a>
@@ -92,6 +99,10 @@
     </div>
     <div id="rankings-status" class="rankings-status">Loading rankings…</div>
     <div id="top10-list" class="leaderboard"></div>
+    <div id="top10-empty" class="rankings-empty" hidden>
+      <p class="rankings-empty-title">No ratings yet — you could be first.</p>
+      <p>Every Bay Area court starts at zero. Rate the courts you actually play and you'll build this Top 10 yourself — about 20 seconds, no login needed. Pick a court below and tap a star.</p>
+    </div>
   </div>
 </section>
 

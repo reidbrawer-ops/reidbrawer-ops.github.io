@@ -19,9 +19,11 @@
 <meta property="og:title" content="Report a correction — Pickleball Bay Area">
 <meta property="og:description" content="Spot stale hours, a closed court, or a wrong address? Tell us and we'll check it — this guide is hand-maintained, not a database.">
 <meta property="og:url" content="https://pickleball-bay-area.com/corrections">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Report a correction — Pickleball Bay Area">
 <meta name="twitter:description" content="Spot stale hours, a closed court, or a wrong address? Tell us and we'll check it — this guide is hand-maintained, not a database.">
+<meta name="twitter:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
 <link rel="canonical" href="https://pickleball-bay-area.com/corrections">
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="stylesheet" href="/assets/corrections.css">
@@ -32,7 +34,12 @@
 <header class="site-header">
   <div class="container">
     <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
-    <nav class="main-nav">
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav class="main-nav" id="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/">Cities</a>
       <a href="/rankings">Rankings</a>
@@ -89,28 +96,53 @@
               <option>San Francisco</option>
             </optgroup>
             <optgroup label="Peninsula">
-              <option>Palo Alto</option>
+              <option>Belmont</option>
+              <option>Burlingame</option>
+              <option>Daly City</option>
               <option>Menlo Park</option>
+              <option>Palo Alto</option>
               <option>Redwood City</option>
+              <option>San Bruno</option>
+              <option>San Carlos</option>
               <option>San Mateo</option>
+              <option>South San Francisco</option>
             </optgroup>
             <optgroup label="South Bay">
+              <option>Campbell</option>
+              <option>Cupertino</option>
+              <option>Los Altos</option>
+              <option>Los Gatos</option>
+              <option>Milpitas</option>
+              <option>Mountain View</option>
               <option>San Jose</option>
               <option>Santa Clara</option>
+              <option>Saratoga</option>
               <option>Sunnyvale</option>
-              <option>Cupertino</option>
-              <option>Mountain View</option>
             </optgroup>
             <optgroup label="East Bay">
-              <option>Oakland</option>
+              <option>Alameda</option>
+              <option>Albany</option>
               <option>Berkeley</option>
-              <option>Walnut Creek</option>
+              <option>Concord</option>
+              <option>Danville</option>
+              <option>Dublin</option>
+              <option>El Cerrito</option>
+              <option>Emeryville</option>
               <option>Fremont</option>
+              <option>Hayward</option>
+              <option>Livermore</option>
+              <option>Oakland</option>
               <option>Pleasanton</option>
+              <option>Richmond</option>
+              <option>San Leandro</option>
+              <option>San Ramon</option>
+              <option>Union City</option>
+              <option>Walnut Creek</option>
             </optgroup>
             <optgroup label="North Bay">
-              <option>San Rafael</option>
               <option>Novato</option>
+              <option>San Rafael</option>
+              <option>Vallejo</option>
             </optgroup>
             <option value="Not sure / general">Not sure / general site feedback</option>
           </select>

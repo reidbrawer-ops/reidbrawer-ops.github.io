@@ -19,9 +19,11 @@
 <meta property="og:title" content="Find a Bay Area pickleball court">
 <meta property="og:description" content="Search any Bay Area city to recenter the map on its courts, then open a court for hours, surface, wait, ratings, and directions.">
 <meta property="og:url" content="https://pickleball-bay-area.com/map">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Find a Bay Area pickleball court">
 <meta name="twitter:description" content="Search any Bay Area city to recenter the map on its courts, then open a court for hours, surface, wait, ratings, and directions.">
+<meta name="twitter:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
 <link rel="canonical" href="https://pickleball-bay-area.com/map">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <link rel="stylesheet" href="/assets/style.css">
@@ -33,7 +35,12 @@
 <header class="site-header">
   <div class="container">
     <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
-    <nav class="main-nav">
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav class="main-nav" id="main-nav">
       <a href="/map" aria-current="page">Find courts</a>
       <a href="/cities/">Cities</a>
       <a href="/rankings">Rankings</a>
@@ -68,6 +75,10 @@
     <div class="finder-toolbar">
       <div id="map-status" class="map-status" role="status">Loading court data…</div>
       <div class="finder-toolbar-actions">
+        <button type="button" class="finder-locate" id="finder-locate" aria-pressed="false">
+          <span class="finder-locate-icon" aria-hidden="true"></span>
+          <span class="finder-locate-label">Use my location</span>
+        </button>
         <span id="finder-scope" class="finder-scope" hidden>
           <span class="finder-scope-label" id="finder-scope-label"></span>
           <button type="button" class="finder-scope-clear" id="finder-clear">Clear</button>
@@ -142,6 +153,18 @@
 
     <p id="finder-count" class="finder-count" aria-live="polite"></p>
 
+    <div id="finder-out-of-area" class="finder-out-of-area" role="status" hidden>
+      <div class="finder-ooa-body">
+        <p class="finder-ooa-title">You're <span id="finder-ooa-distance">outside the Bay Area</span> away</p>
+        <p>This guide only covers <strong>San Francisco Bay Area</strong> pickleball courts. Planning a trip out this way? Start here:</p>
+        <div class="finder-ooa-actions">
+          <a class="btn" href="/rankings">See the top-rated courts →</a>
+          <a class="finder-ooa-alt" href="/cities/">Browse courts by city →</a>
+        </div>
+      </div>
+      <button type="button" class="finder-ooa-close" id="finder-ooa-close" aria-label="Dismiss">&times;</button>
+    </div>
+
     <div class="finder" id="finder">
       <aside class="finder-list-wrap">
         <ol id="finder-results" class="finder-results" aria-label="Courts shown on the map"></ol>
@@ -184,7 +207,7 @@
         <p class="eyebrow">Ready to buy</p>
         <h3>Find your paddle</h3>
         <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
-        <a class="btn" href="/paddles">Take the paddle quiz →</a>
+        <a class="btn" href="/paddles#quiz">Take the paddle quiz →</a>
       </div>
     </div>
   </div>

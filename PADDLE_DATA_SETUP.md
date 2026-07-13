@@ -214,12 +214,14 @@ built, is:
   the site, not even as a chip or in a tooltip.
 - No page anywhere credits, links to, or names PickleballEffect.
 - The dataset itself (`assets/paddles.json`) is still a public, fetchable
-  static file, which is a real limitation — the fields it does carry
-  (forgiveness percentile, power percentile, etc., used to compute the
-  dot ratings) are technically visible to anyone who opens the browser's
-  Network tab. There's no way to fully firewall that on a static site
-  without moving scoring server-side (a Cloud Function), which hasn't
-  been built.
+  static file. To avoid republishing PickleballEffect's *exact* lab
+  numbers, the two percentile fields it carries (`twistWeightPercentile`,
+  `powerPercentile`) are **coarsened to a quartile-band midpoint**
+  (0.13 / 0.38 / 0.63 / 0.88) by `coarsen_percentile()` before they're
+  written — so the file exposes a four-tier bucket, not their measurement,
+  while staying accurate enough for the quiz's dot ratings and preference
+  trapezoids. The only way to fully firewall even the tier is to move
+  scoring server-side (a Cloud Function), which hasn't been built.
 - Basic specs (name, brand, price, weight, shape, core thickness) are
   treated as safe to keep, since those are just manufacturer facts that
   exist independent of PickleballEffect's own analysis — not their
@@ -277,10 +279,18 @@ import rebuild_paddle_data as script
 
 d = json.load(open('assets/paddles.json'))
 
-# Every paddle's stored skillLevel should be reproducible from its own fields.
-mismatches = [p['name'] for p in d if script.skill_level(
-    p['twistWeightPercentile'], p['coreThicknessMm'], p['paddleType']) != p['skillLevel']]
-print('skill_level mismatches:', len(mismatches))  # expect 0
+# skillLevel is derived from the RAW twist-weight percentile at build time,
+# but assets/paddles.json stores the COARSENED percentile (see coarsen_
+# percentile / the Data licensing section) — so it can no longer be recomputed
+# from the served value. This check therefore only holds against a fresh raw
+# export, not the shipped file: skip it here, or re-run the rebuild and diff
+# the resulting skillLevel column instead. What IS still checkable on the
+# served file is that every percentile is one of the four allowed tiers:
+allowed = {None, 0.13, 0.38, 0.63, 0.88}
+bad_tiers = [p['name'] for p in d
+             if p['twistWeightPercentile'] not in allowed
+             or p['powerPercentile'] not in allowed]
+print('un-coarsened percentiles:', len(bad_tiers))  # expect 0
 
 # Every brand should either have a vendor link or be a known gap.
 vendor_map = script.load_vendor_map()

@@ -57,18 +57,28 @@
     }
   }
 
-  fetch("/assets/courts-data.json")
-    .then(function (res) {
-      return res.ok ? res.json() : [];
-    })
-    .then(function (data) {
-      venues = Array.isArray(data) ? data : [];
-      venuesLoaded = true;
-      refreshActiveInstance();
-    })
-    .catch(function () {
-      venuesLoaded = true; // fail open: city-only matches still work
-    });
+  // Lazy-load the ~192 KB venue index on first search interaction rather than
+  // on every page load — the widget ships on all 53 pages but most page views
+  // never search. City-name matches (from regions.js) work immediately; venue
+  // matches fill in once this resolves (refreshActiveInstance re-runs the
+  // focused input, and renderResults shows "Searching…" until then).
+  var venuesLoadStarted = false;
+  function loadVenues() {
+    if (venuesLoadStarted) return;
+    venuesLoadStarted = true;
+    fetch("/assets/courts-data.json")
+      .then(function (res) {
+        return res.ok ? res.json() : [];
+      })
+      .then(function (data) {
+        venues = Array.isArray(data) ? data : [];
+        venuesLoaded = true;
+        refreshActiveInstance();
+      })
+      .catch(function () {
+        venuesLoaded = true; // fail open: city-only matches still work
+      });
+  }
 
   // Most pages don't load regions.js (only index.html, cities/index.html,
   // rankings.html, and directory.html do) — pull it in ourselves so city-name
@@ -273,6 +283,7 @@
 
     var debounceTimer = null;
     input.addEventListener("input", function () {
+      loadVenues();
       clearTimeout(debounceTimer);
       var query = input.value;
       debounceTimer = setTimeout(function () {
@@ -327,6 +338,7 @@
     });
 
     input.addEventListener("focus", function () {
+      loadVenues();
       if (input.value.trim()) run(input.value);
     });
 

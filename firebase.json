@@ -5,10 +5,25 @@
   "hosting": {
     "public": ".",
     "cleanUrls": true,
+    "predeploy": ["node scripts/validate.mjs"],
     "redirects": [
       { "source": "/gear", "destination": "/paddles", "type": 301 },
       { "source": "/paddle-quiz", "destination": "/paddles", "type": 301 },
       { "source": "/directory", "destination": "/map", "type": 301 }
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }]
+      },
+      {
+        "source": "**/*.@(js|css|json)",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=600, must-revalidate" }]
+      },
+      {
+        "source": "**/*.@(png|jpg|jpeg|gif|svg|webp|ico|woff|woff2)",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+      }
     ],
     "ignore": [
       "firebase.json",
@@ -16,6 +31,9 @@
       "**/node_modules/**",
       "scripts/**",
       "partials/**",
+      "pickleheads-research/**",
+      "audit/**",
+      "quiz/**",
       "**/*.md",
       "firestore.rules"
     ]

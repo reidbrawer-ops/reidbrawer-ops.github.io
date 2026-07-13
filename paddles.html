@@ -19,9 +19,11 @@
 <meta property="og:title" content="Paddles &amp; gear — rent, match, and buy — Pickleball Bay Area">
 <meta property="og:description" content="One place for the paddle side of your game: where to rent or demo across the Bay Area, a quiz that matches you to paddles that fit your style and budget, and honest links to buy.">
 <meta property="og:url" content="https://pickleball-bay-area.com/paddles">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Paddles &amp; gear — rent, match, and buy — Pickleball Bay Area">
 <meta name="twitter:description" content="One place for the paddle side of your game: where to rent or demo across the Bay Area, a quiz that matches you to paddles that fit your style and budget, and honest links to buy.">
+<meta name="twitter:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
 <link rel="canonical" href="https://pickleball-bay-area.com/paddles">
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="stylesheet" href="/assets/paddle-quiz.css">
@@ -33,7 +35,12 @@
 <header class="site-header">
   <div class="container">
     <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
-    <nav class="main-nav">
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav class="main-nav" id="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/">Cities</a>
       <a href="/rankings">Rankings</a>
@@ -54,21 +61,48 @@
 <section class="page-hero">
   <div class="container">
     <p class="eyebrow">Paddles &amp; gear</p>
-    <h1>Rent one, find your match, then buy it right.</h1>
-    <p class="lede">Everything for the paddle side of your game in one place. Rent or demo before you commit, take a quick quiz that matches you to paddles that actually fit your style and budget, and buy through honest links. Our court data stays independent and unmonetized — gear is the only thing on this site we ever point you toward buying, and we say so plainly.</p>
-    <nav class="pf-jumpnav" aria-label="Paddle funnel">
-      <a href="#rent" class="pf-jump"><span class="pf-jump-step">1</span> Rent &amp; try</a>
-      <a href="#quiz" class="pf-jump"><span class="pf-jump-step">2</span> Find your paddle</a>
-      <a href="#buy" class="pf-jump"><span class="pf-jump-step">3</span> Buy</a>
-    </nav>
+    <h1>Find your paddle, or rent one first.</h1>
+    <p class="lede">Everything for the paddle side of your game in one place. Take a quick quiz that matches you to paddles that actually fit your style and budget, or rent and demo before you commit. Our court data stays independent and unmonetized — gear is the only thing on this site we ever point you toward, and we say so plainly.</p>
+    <div class="pf-choose">
+      <a href="#quiz" class="pf-choice pf-choice--primary">
+        <span class="pf-choice-label">Find your paddle →</span>
+        <span class="pf-choice-note">Take the quiz — 11 questions, your top 3 matches</span>
+      </a>
+      <a href="#rent" class="pf-choice">
+        <span class="pf-choice-label">Rent &amp; try →</span>
+        <span class="pf-choice-note">Demo before you commit at a local shop</span>
+      </a>
+    </div>
   </div>
 </section>
 
-<!-- ========================= STEP 1 — RENT ========================= -->
+<!-- ========================= FIND YOUR PADDLE ========================= -->
+<section class="section pf-anchor" id="quiz">
+  <div class="container pq-hero-inner">
+    <div class="pq-hero-copy">
+      <div class="pf-stage-head">
+        <p class="eyebrow">Find your paddle</p>
+        <h2>Which paddle actually fits your game?</h2>
+      </div>
+      <p>Eleven quick questions on how you play, what your body can take, and what you want to spend — scored against a large paddle database to surface your top three matches, side by side.</p>
+    </div>
+    <img class="pq-hero-media" src="/assets/paddle-quiz-skill-levels.png" width="1360" height="730" alt="Three paddles illustrating beginner, intermediate, and advanced skill levels" loading="lazy" decoding="async">
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="pq-shell" id="paddle-quiz-app">
+      <p class="pq-error">Loading the quiz…</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= RENT ========================= -->
 <section class="section pf-anchor" id="rent">
   <div class="container">
     <div class="pf-stage-head">
-      <p class="eyebrow">Step 1 · Try it</p>
+      <p class="eyebrow">Rent or demo</p>
       <h2>Don't own a paddle yet? Rent or demo first.</h2>
       <p>For travelers and beginners without their own equipment — pro shops, demo programs, and rental counters, organized by region like the rest of this site. Every entry is checked against the shop's own site or listing; where we can't confirm something, we say so instead of guessing.</p>
     </div>
@@ -76,7 +110,7 @@
       <p class="eyebrow">Quick answer, if you just want to try it once</p>
       <p><a href="https://www.sportsbasement.com/collections/rental-pickleball-paddles" target="_blank" rel="noopener">Sports Basement</a> runs a rental counter at most of its Bay Area stores — Presidio (SF), Redwood City, Sunnyvale, Campbell, Berkeley, Walnut Creek, and Novato — for roughly $10–40 depending on the model, often credited toward a purchase if you buy within 30 days. Bring photo ID and a physical credit card. It's the closest thing on the Bay Area to a no-commitment "just let me try this" option, and it reaches most of the regions below.</p>
     </div>
-    <p>Already past the rental stage and ready to buy your own? Jump to <a href="#quiz">the quiz</a> — a few quick questions, matched to your game.</p>
+    <p>Ready to find your own paddle instead? <a href="#quiz">Take the quiz</a> — a few quick questions, matched to your game.</p>
   </div>
 </section>
 
@@ -339,45 +373,6 @@
   </div>
 </section>
 
-<!-- ========================= STEP 2 — QUIZ ========================= -->
-<section class="section pf-anchor" id="quiz">
-  <div class="container pq-hero-inner">
-    <div class="pq-hero-copy">
-      <div class="pf-stage-head">
-        <p class="eyebrow">Step 2 · What fits</p>
-        <h2>Which paddle actually fits your game?</h2>
-      </div>
-      <p>Eleven quick questions on how you play, what your body can take, and what you want to spend — scored against a large paddle database to surface your top three matches, side by side.</p>
-    </div>
-    <img class="pq-hero-media" src="/assets/paddle-quiz-skill-levels.png" width="1360" height="730" alt="Three paddles illustrating beginner, intermediate, and advanced skill levels" loading="lazy" decoding="async">
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="pq-shell" id="paddle-quiz-app">
-      <p class="pq-error">Loading the quiz…</p>
-    </div>
-  </div>
-</section>
-
-<!-- ========================= STEP 3 — BUY ========================= -->
-<section class="section pf-anchor" id="buy">
-  <div class="container">
-    <div class="pf-stage-head">
-      <p class="eyebrow">Step 3 · Buy</p>
-      <h2>Buying, honestly</h2>
-    </div>
-    <p>Your top picks above link straight out to buy each paddle. Here's the deal on those links, in plain English:</p>
-    <ul class="know-list">
-      <li><b>Court data stays independent.</b> Courts, cities, rankings, and the directory are never monetized — no affiliate links, no pay-to-list, no sponsored ordering. That independence is the whole point.</li>
-      <li><b>Only paddles &amp; gear may earn us a commission.</b> Some buy links are affiliate links, and we may earn a small commission if you buy through them — at no extra cost to you. It never changes which paddles the quiz recommends.</li>
-      <li><b>Where there's no program yet, the link just goes to the brand.</b> We don't fake it — a plain link to a brand's own site is exactly that, and we only claim a commission where one really exists.</li>
-    </ul>
-    <p>Full details are on the <a href="/affiliate-disclosure">affiliate disclosure page</a>.</p>
-  </div>
-</section>
-
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
@@ -427,5 +422,21 @@
 <script src="/assets/global-search.js" defer></script>
 <script src="/assets/analytics.js" defer></script>
 <script type="module" src="/assets/paddle-quiz.js"></script>
+<script>
+// html{scroll-behavior:smooth} makes the browser's native on-load jump to a
+// #rent/#quiz hash unreliable (the animation can be interrupted before it
+// lands). If the page loaded with a hash and nothing scrolled, do it
+// ourselves, instantly. No-op when the native scroll already worked.
+(function () {
+  var id = (location.hash || "").slice(1);
+  if (!/^(rent|quiz)$/.test(id)) return;
+  function jump() {
+    if (window.scrollY > 60) return; // native scroll already landed
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "instant", block: "start" });
+  }
+  window.addEventListener("load", function () { setTimeout(jump, 60); });
+})();
+</script>
 </body>
 </html>

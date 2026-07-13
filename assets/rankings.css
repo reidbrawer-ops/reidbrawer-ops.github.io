@@ -134,6 +134,14 @@
   padding: 1rem 1.2rem;
 }
 
+/* The search/city filter hides non-matching rows via the [hidden] attribute.
+   The `display: flex` above (author CSS) otherwise beats the UA
+   `[hidden] { display: none }` rule, so filtered-out rows would stay visible —
+   this makes the attribute win. */
+.leaderboard-row[hidden] {
+  display: none;
+}
+
 .leaderboard-row + .leaderboard-row {
   border-top: 1px solid var(--line);
 }
@@ -258,4 +266,55 @@
   .leaderboard-row.is-compact .leaderboard-side {
     flex-direction: row;
   }
+}
+
+/* Zero-data invitation shown in place of the Top 10 until real ratings land. */
+.rankings-empty {
+  border: 1px dashed var(--bay);
+  border-radius: var(--radius-m);
+  background: var(--bay-tint);
+  padding: var(--space-3);
+  color: var(--ink);
+  max-width: 44rem;
+}
+
+.rankings-empty-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin: 0 0 0.4rem;
+  color: var(--bay-deep);
+}
+
+.rankings-empty p {
+  margin: 0;
+}
+
+.rankings-empty p + p {
+  margin-top: 0.5rem;
+}
+
+/* "Be the first to rate" group under each city's ranked rows. Deliberately
+   lighter than the ranked leaderboard so it never reads as a ranking. */
+.unranked-head {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--bay);
+  margin: 0.9rem 0 0.4rem;
+}
+
+.leaderboard--unranked {
+  background: var(--paper-alt, transparent);
+  border-style: dashed;
+}
+
+.leaderboard-row.is-unranked {
+  opacity: 0.92;
+}
+
+.rank-number.rank-unranked {
+  color: var(--line);
+  font-weight: 500;
 }

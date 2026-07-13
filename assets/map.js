@@ -67,6 +67,33 @@
     }
   }
 
+  // Great-circle distance in miles between two lat/lon points — powers the
+  // "Use my location" nearest-first sort on the finder list.
+  function haversineMiles(aLat, aLon, bLat, bLon) {
+    const toRad = (d) => (d * Math.PI) / 180;
+    const R = 3958.8; // Earth radius, miles
+    const dLat = toRad(bLat - aLat);
+    const dLon = toRad(bLon - aLon);
+    const s =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRad(aLat)) * Math.cos(toRad(bLat)) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.min(1, Math.sqrt(s)));
+  }
+
+  function formatMiles(mi) {
+    if (mi == null) return "";
+    return mi < 10 ? `${mi.toFixed(1)} mi` : `${Math.round(mi)} mi`;
+  }
+
+  // "2026-07" -> "Jul 2026" for the per-venue "verified" trust line.
+  var VERIFIED_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function formatVerified(ym) {
+    if (!ym || !/^\d{4}-\d{2}$/.test(ym)) return "";
+    var parts = ym.split("-");
+    var label = VERIFIED_MONTHS[parseInt(parts[1], 10) - 1];
+    return label ? label + " " + parts[0] : "";
+  }
+
   function pinIcon(record, isTopPick) {
     const classes = ["pba-pin", indoorClass(record.indoor)];
     if (isTopPick) classes.push("top-pick");
@@ -183,6 +210,9 @@
       noPinNote +
       approxNote +
       `<a class="fd-city-link" href="${record.url}">See the full ${escapeHtml(record.city)} writeup →</a>` +
+      (formatVerified(record.lastVerified)
+        ? `<p class="fd-verified">Court info verified ${escapeHtml(formatVerified(record.lastVerified))}</p>`
+        : "") +
       `</div>`
     );
   }
@@ -363,6 +393,7 @@
           weather: c.weather,
           bookingUrl: c.bookingUrl,
           googleMapsUrl: c.googleMapsUrl,
+          lastVerified: c.lastVerified,
         };
         rec.region = regionFor(rec);
         rec.priceBucket = priceBucket(rec);
@@ -377,6 +408,53 @@
       const recordsById = {};
       records.forEach((r) => (recordsById[r.id] = r));
       const plottableRecords = records.filter((r) => r.plottable);
+
+      // ---- "Near me" geolocation state ----------------------------------
+      let userLoc = null; // {lat, lon} once the visitor shares their location
+      let sortByDistance = false; // order the finder list by distance when true
+      let youMarker = null;
+
+      // If the nearest court is farther than this, treat the visitor as outside
+      // the Bay Area — sorting hundreds of miles of courts as "near" is useless,
+      // so we show a coverage note + trip-planning links instead.
+      const BAY_AREA_RADIUS_MI = 60;
+
+      function distanceMilesFor(record) {
+        if (!userLoc || !record.plottable) return null;
+        return haversineMiles(userLoc.lat, userLoc.lon, record.lat, record.lon);
+      }
+
+      function nearestVenueMiles() {
+        let min = Infinity;
+        plottableRecords.forEach((r) => {
+          const d = distanceMilesFor(r);
+          if (d != null && d < min) min = d;
+        });
+        return min;
+      }
+
+      function youIcon() {
+        return L.divIcon({
+          className: "pba-you-pin",
+          html: '<span class="pba-you-dot"></span>',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+        });
+      }
+
+      function recenterNearUser() {
+        if (!userLoc) return;
+        const nearest = plottableRecords
+          .map((r) => ({ r, d: distanceMilesFor(r) }))
+          .sort((a, b) => a.d - b.d)
+          .slice(0, 5)
+          .map((x) => [x.r.lat, x.r.lon]);
+        map.invalidateSize();
+        map.fitBounds(L.latLngBounds([[userLoc.lat, userLoc.lon], ...nearest]), {
+          padding: [40, 40],
+          maxZoom: 14,
+        });
+      }
 
       const map = L.map(mapEl, { scrollWheelZoom: true });
 
@@ -490,6 +568,8 @@
 
       function resultHtml(record) {
         const isPick = topPickIds.has(record.id);
+        const dist = sortByDistance ? distanceMilesFor(record) : null;
+        const distChip = dist != null ? `<span class="fr-distance">${formatMiles(dist)}</span>` : "";
         const metaParts = [record.city];
         if (hasValue(record.neighborhood)) metaParts.push(record.neighborhood);
         const subParts = [];
@@ -505,6 +585,7 @@
           `<li class="finder-result${isPick ? " is-top-pick" : ""}${record.plottable ? "" : " finder-result--nopin"}" data-id="${escapeHtml(record.id)}">` +
           `<button type="button" class="finder-result-btn">` +
           `<span class="fr-top"><span class="fr-name">${escapeHtml(record.name)}</span>` +
+          distChip +
           `<span class="fr-pick" title="Community top pick"${isPick ? "" : " hidden"}>★ Top pick</span></span>` +
           `<span class="fr-meta">${escapeHtml(metaParts.join(" · "))}</span>` +
           (subParts.length ? `<span class="fr-sub">${escapeHtml(subParts.join(" · "))}</span>` : "") +
@@ -688,7 +769,21 @@
         const matchedIds = new Set(matchedPlottable.map((r) => r.id));
 
         updateMarkerVisibility(matchedIds);
-        renderResults(matched);
+
+        // Order by distance when "Use my location" is active; otherwise keep
+        // the source order. Non-plottable courts (no coords) sort to the end.
+        let ordered = matched;
+        if (sortByDistance && userLoc) {
+          ordered = matched.slice().sort((a, b) => {
+            const da = distanceMilesFor(a);
+            const db = distanceMilesFor(b);
+            if (da == null && db == null) return 0;
+            if (da == null) return 1;
+            if (db == null) return -1;
+            return da - db;
+          });
+        }
+        renderResults(ordered);
 
         // Result count — a live filtered count, never a completeness total.
         const active = activeFilterCount(filters);
@@ -847,6 +942,116 @@
         if (e.key === "Escape" && !detailEl.hidden) closeDetail();
       });
 
+      // ---- "Use my location" (nearest-first) ----------------------------
+      const locateBtn = document.getElementById("finder-locate");
+      const locateLabelEl = locateBtn && locateBtn.querySelector(".finder-locate-label");
+      const setLocateLabel = (t) => {
+        if (locateLabelEl) locateLabelEl.textContent = t;
+      };
+
+      const outOfAreaEl = document.getElementById("finder-out-of-area");
+      const outOfAreaDistEl = document.getElementById("finder-ooa-distance");
+      const outOfAreaCloseEl = document.getElementById("finder-ooa-close");
+
+      function showOutOfArea(miles) {
+        if (!outOfAreaEl) return;
+        if (outOfAreaDistEl) {
+          const rounded = miles >= 100 ? Math.round(miles / 10) * 10 : Math.round(miles / 5) * 5;
+          outOfAreaDistEl.textContent = `about ${rounded.toLocaleString()} miles`;
+        }
+        outOfAreaEl.hidden = false;
+      }
+
+      function hideOutOfArea() {
+        if (outOfAreaEl) outOfAreaEl.hidden = true;
+      }
+
+      if (outOfAreaCloseEl) outOfAreaCloseEl.addEventListener("click", hideOutOfArea);
+
+      function disableNearMe() {
+        sortByDistance = false;
+        if (youMarker) {
+          map.removeLayer(youMarker);
+          youMarker = null;
+        }
+        if (locateBtn) {
+          locateBtn.classList.remove("is-active");
+          locateBtn.setAttribute("aria-pressed", "false");
+        }
+        setLocateLabel("Use my location");
+        applyFilters();
+      }
+
+      if (locateBtn) {
+        locateBtn.addEventListener("click", () => {
+          if (sortByDistance) {
+            disableNearMe();
+            return;
+          }
+          if (!navigator.geolocation) {
+            setStatus(statusEl, "This browser can't share your location — search a city instead.", true);
+            return;
+          }
+          locateBtn.disabled = true;
+          locateBtn.classList.add("is-locating");
+          setLocateLabel("Locating…");
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              userLoc = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+              locateBtn.disabled = false;
+              locateBtn.classList.remove("is-locating");
+
+              // Outside the Bay Area: don't pretend far-away courts are "near."
+              const nearest = nearestVenueMiles();
+              if (nearest > BAY_AREA_RADIUS_MI) {
+                userLoc = null;
+                sortByDistance = false;
+                setLocateLabel("Use my location");
+                showOutOfArea(nearest);
+                setStatus(
+                  statusEl,
+                  "You're outside the SF Bay Area — this guide covers Bay Area courts only. See the top-rated courts or browse by city to plan a trip.",
+                  true
+                );
+                return;
+              }
+
+              hideOutOfArea();
+              sortByDistance = true;
+              if (youMarker) map.removeLayer(youMarker);
+              youMarker = L.marker([userLoc.lat, userLoc.lon], {
+                icon: youIcon(),
+                zIndexOffset: 1000,
+                keyboard: false,
+                title: "Your location",
+              })
+                .addTo(map)
+                .bindPopup("You are here");
+              locateBtn.classList.add("is-active");
+              locateBtn.setAttribute("aria-pressed", "true");
+              setLocateLabel("Nearest first");
+              applyFilters();
+              recenterNearUser();
+              setStatus(statusEl, "Showing courts nearest to you first. Tap the button again to reset.");
+            },
+            (err) => {
+              locateBtn.disabled = false;
+              locateBtn.classList.remove("is-locating");
+              setLocateLabel("Use my location");
+              const denied = err && err.code === err.PERMISSION_DENIED;
+              setStatus(
+                statusEl,
+                denied
+                  ? "Location permission was blocked — search a city to focus the map instead."
+                  : "Couldn't pin down your location — search a city instead.",
+                true
+              );
+            },
+            { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+          );
+        });
+      }
+
       // Phase 2's search dispatches this on selection (see the contract in
       // global-search.js). preventDefault() keeps the component from navigating
       // (reloading) so we can recenter in place.
@@ -854,6 +1059,7 @@
         const d = (e && e.detail) || {};
         if (d.type === "venue" && d.id && recordsById[d.id]) {
           e.preventDefault();
+          hideOutOfArea();
           setCityFilter(recordsById[d.id].city);
           applyFilters();
           selectVenue(d.id);
@@ -861,6 +1067,7 @@
           const cityName = resolveCityName(d.city, d.slug);
           if (cityName) {
             e.preventDefault();
+            hideOutOfArea();
             setCityFilter(cityName);
             applyFilters();
           }

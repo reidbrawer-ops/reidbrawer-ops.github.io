@@ -1,6 +1,7 @@
 (function () {
   const statusEl = document.getElementById("rankings-status");
   const top10El = document.getElementById("top10-list");
+  const top10EmptyEl = document.getElementById("top10-empty");
   const citiesEl = document.getElementById("rankings-cities");
   if (!citiesEl) return;
 
@@ -60,7 +61,11 @@
         if (show) top10Visible++;
       });
     }
-    if (top10SectionEl) top10SectionEl.hidden = top10Visible === 0;
+    // Keep the Top-10 section visible when it's showing the zero-data
+    // invitation (top10-empty), even though it has no ranked rows.
+    if (top10SectionEl) {
+      top10SectionEl.hidden = top10Visible === 0 && (!top10EmptyEl || top10EmptyEl.hidden);
+    }
 
     // City leaderboards: hide a city section entirely if the city filter
     // excludes it, otherwise filter its rows and hide it if none match.
@@ -107,6 +112,15 @@
     return "";
   }
 
+  // A court "has data" once it carries any community signal (a rating on any
+  // factor, or a favorite vote). Only these are ranked; everything else is
+  // shown as an explicitly-unranked "be the first to rate" row so it stays
+  // rateable and its /rankings#id anchor still resolves.
+  function hasData(court) {
+    const s = window.PBRatings.getStats(court.id);
+    return s.overallAvg > 0 || s.favoriteVotes > 0;
+  }
+
   function sortCourts(courts) {
     return courts.slice().sort((a, b) => {
       const sa = window.PBRatings.getStats(a.id);
@@ -116,15 +130,19 @@
     });
   }
 
-  function rowHtml(court, index, { showCity, isMostLoved, rowId, compact }) {
+  function rowHtml(court, index, { showCity, isMostLoved, rowId, compact, unranked }) {
     const stats = window.PBRatings.getStats(court.id);
     const badges = [];
     if (stats.isTopRated) badges.push('<span class="badge-top-rated">★ Top rated</span>');
     if (isMostLoved) badges.push('<span class="badge-most-loved">♥ Most loved</span>');
 
+    const rankCell = unranked
+      ? '<div class="rank-number rank-unranked" aria-hidden="true">–</div>'
+      : `<div class="rank-number ${rankClass(index)}">#${index + 1}</div>`;
+
     return `
-      <div class="leaderboard-row${compact ? " is-compact" : ""}"${rowId ? ` id="${rowId}"` : ""} data-name="${escapeHtml(court.name.toLowerCase())}" data-city="${citySlug(court.city)}">
-        <div class="rank-number ${rankClass(index)}">#${index + 1}</div>
+      <div class="leaderboard-row${compact ? " is-compact" : ""}${unranked ? " is-unranked" : ""}"${rowId ? ` id="${rowId}"` : ""} data-name="${escapeHtml(court.name.toLowerCase())}" data-city="${citySlug(court.city)}">
+        ${rankCell}
         <div class="leaderboard-main">
           <div class="leaderboard-name-row">
             <h3><a href="${court.url}#${court.id}">${escapeHtml(court.name)}</a></h3>
@@ -171,12 +189,22 @@
 
   function render(courts) {
     const expandedIds = expandedRatingFormIds();
-    const sortedAll = sortCourts(courts);
+    const ratedAll = sortCourts(courts.filter(hasData));
 
-    top10El.innerHTML = sortedAll
-      .slice(0, 10)
-      .map((c, i) => rowHtml(c, i, { showCity: true, isMostLoved: false, rowId: `top10-${c.id}`, compact: true }))
-      .join("");
+    // Bay Area Top 10 — only courts with real community data. Until the first
+    // ratings land, show an invitation instead of a fake ranked list of ties.
+    if (ratedAll.length) {
+      top10El.innerHTML = ratedAll
+        .slice(0, 10)
+        .map((c, i) => rowHtml(c, i, { showCity: true, isMostLoved: false, rowId: `top10-${c.id}`, compact: true }))
+        .join("");
+      top10El.hidden = false;
+      if (top10EmptyEl) top10EmptyEl.hidden = true;
+    } else {
+      top10El.innerHTML = "";
+      top10El.hidden = true;
+      if (top10EmptyEl) top10EmptyEl.hidden = false;
+    }
 
     const byCity = {};
     courts.forEach((c) => {
@@ -195,20 +223,36 @@
       if (!cities.length) return;
       html += `<h3 class="region-subhead">${escapeHtml(region)}</h3>`;
       cities.forEach((city) => {
-        const cityCourts = sortCourts(byCity[city]);
-        const leaderStats = window.PBRatings.getStats(cityCourts[0].id);
-        const mostLovedId = leaderStats.favoriteVotes > 0 ? cityCourts[0].id : null;
+        // Rank only courts with data; keep the rest as a "be the first" group
+        // so every court is still rateable and its #id anchor resolves.
+        const rated = sortCourts(byCity[city].filter(hasData));
+        const unrated = byCity[city]
+          .filter((c) => !hasData(c))
+          .sort((a, b) => a.name.localeCompare(b.name));
+        const mostLovedId =
+          rated.length && window.PBRatings.getStats(rated[0].id).favoriteVotes > 0 ? rated[0].id : null;
+
+        const rankedRows = rated
+          .map((c, i) => rowHtml(c, i, { showCity: false, isMostLoved: c.id === mostLovedId, rowId: c.id }))
+          .join("");
+        const unratedRows = unrated
+          .map((c) => rowHtml(c, null, { showCity: false, isMostLoved: false, rowId: c.id, unranked: true }))
+          .join("");
+        const unratedHead = unrated.length
+          ? `<p class="unranked-head">${
+              rated.length ? "Not yet rated — be the first" : "No ratings here yet — be the first to rate a court"
+            }</p>`
+          : "";
+
         html += `
           <div class="city-leaderboard" id="${citySlug(city)}">
             <div class="region-head">
               <div><h3>${escapeHtml(city)}</h3></div>
               <a class="overview-link" href="/cities/${citySlug(city)}">City guide →</a>
             </div>
-            <div class="leaderboard">
-              ${cityCourts
-                .map((c, i) => rowHtml(c, i, { showCity: false, isMostLoved: c.id === mostLovedId, rowId: c.id }))
-                .join("")}
-            </div>
+            ${rankedRows ? `<div class="leaderboard">${rankedRows}</div>` : ""}
+            ${unratedHead}
+            ${unratedRows ? `<div class="leaderboard leaderboard--unranked">${unratedRows}</div>` : ""}
           </div>`;
       });
     });

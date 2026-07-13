@@ -19,9 +19,11 @@
 <meta property="og:title" content="Privacy Policy — Pickleball Bay Area">
 <meta property="og:description" content="What Pickleball Bay Area collects, what it doesn't, and how the contact form and any outbound links work.">
 <meta property="og:url" content="https://pickleball-bay-area.com/privacy">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Privacy Policy — Pickleball Bay Area">
 <meta name="twitter:description" content="What Pickleball Bay Area collects, what it doesn't, and how the contact form and any outbound links work.">
+<meta name="twitter:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
 <link rel="canonical" href="https://pickleball-bay-area.com/privacy">
 <link rel="stylesheet" href="/assets/style.css">
 </head>
@@ -31,7 +33,12 @@
 <header class="site-header">
   <div class="container">
     <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
-    <nav class="main-nav">
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <nav class="main-nav" id="main-nav">
       <a href="/map">Find courts</a>
       <a href="/cities/">Cities</a>
       <a href="/rankings">Rankings</a>

@@ -82,7 +82,12 @@
       const labelEl = el.querySelector('[data-role="value-label"]');
       if (starsEl) starsEl.innerHTML = starHtml(stats.overallAvg);
       if (labelEl) {
-        labelEl.textContent = stats.overallAvg > 0 ? `${stats.overallAvg.toFixed(1)} avg` : "Not yet rated";
+        const unrated = !(stats.overallAvg > 0);
+        // Turn the zero-data state into an invitation rather than a dead
+        // "Not yet rated." The summary is wrapped in a link to the court's
+        // rating form, so this label reads as the call to action.
+        labelEl.textContent = unrated ? "Be the first to rate →" : `${stats.overallAvg.toFixed(1)} avg`;
+        el.classList.toggle("is-unrated", unrated);
       }
     });
   }
@@ -122,7 +127,7 @@
         }
         if (yourRatingEl) {
           const stats = window.PBRatings.getStats(courtId).factors[factor];
-          const avgText = stats.count > 0 ? `avg ${stats.avg.toFixed(1)} (${stats.count})` : "no ratings yet";
+          const avgText = stats.count > 0 ? `avg ${stats.avg.toFixed(1)} (${stats.count})` : "Be the first — tap a star";
           yourRatingEl.textContent = yourValue != null ? `You rated ${yourValue}★ · ${avgText}` : avgText;
         }
       });
