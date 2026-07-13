@@ -7,7 +7,13 @@
 <meta name="description" content="Search any Bay Area city to recenter the map on its courts, then open a court for hours, surface, wait, community ratings, and directions.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Map third parties: Leaflet (unpkg) + basemap tiles (CARTO) sit on the map's
+     critical path, so open their connections early; Firebase (gstatic) is
+     deferred (see court-ratings.js) so a lighter dns-prefetch is enough. -->
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="preconnect" href="https://basemaps.cartocdn.com" crossorigin>
+<link rel="dns-prefetch" href="https://www.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -25,6 +31,9 @@
 <meta name="twitter:description" content="Search any Bay Area city to recenter the map on its courts, then open a court for hours, surface, wait, ratings, and directions.">
 <meta name="twitter:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
 <link rel="canonical" href="https://pickleball-bay-area.com/map">
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://pickleball-bay-area.com/" }, { "@type": "ListItem", "position": 2, "name": "Find courts", "item": "https://pickleball-bay-area.com/map" } ] }
+</script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="stylesheet" href="/assets/map.css">
@@ -32,9 +41,10 @@
 <body>
 
 <!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -57,6 +67,8 @@
   </div>
 </header>
 <!-- site-header:end -->
+
+<main id="main" tabindex="-1">
 
 <section class="page-hero finder-hero">
   <div class="container">
@@ -214,6 +226,8 @@
 </section>
 <!-- lane-router:end -->
 
+</main>
+
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
@@ -252,7 +266,7 @@
       </div>
     </div>
     <div class="footer-note">
-      <span>Independent court data — no ads, no pay-to-list, no sponsored listings. Some paddle &amp; gear links are <a href="/affiliate-disclosure">affiliate links</a>.</span>
+      <span>Independent court data — no ads, no pay-to-list, no sponsored listings. Some paddle &amp; gear links may be <a href="/affiliate-disclosure">affiliate links</a>, disclosed at each one.</span>
       <span>Court info verified against city rec department pages, July 2026.</span>
     </div>
   </div>

@@ -2,36 +2,6 @@
    Layout-only styles for the consolidated hub; the quiz itself keeps
    paddle-quiz.css and the affiliate disclosure lives there too. */
 
-/* Step jump-nav under the hero — the three funnel stages as a row of
-   numbered pills that scroll to each section. */
-.pf-jumpnav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-  margin-top: var(--space-3);
-}
-
-.pf-jump {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--ink);
-  text-decoration: none;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-m);
-  padding: 0.65rem 1rem;
-  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
-}
-
-.pf-jump:hover {
-  border-color: var(--bay);
-  transform: translateY(-1px);
-}
-
 /* Two-way "Find your paddle / Rent & try" chooser in the hero — the quiz
    (primary) and renting, presented as an either/or, not a 1-2-3 sequence. */
 .pf-choose {
@@ -77,19 +47,6 @@
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--ink-soft);
-}
-
-.pf-jump-step {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background: var(--bay);
-  color: var(--paper);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
 }
 
 /* Funnel-stage section header — an eyebrow with its step number so the

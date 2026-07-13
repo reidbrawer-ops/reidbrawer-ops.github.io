@@ -11,8 +11,11 @@ commands run from the repo root. `npm run validate` is also the Firebase
 
 1. Edit the source of truth: **`assets/courts-data.json`** (name, city,
    `indoorOutdoor`, `courts`, `hours`, `price`, `confirmed`, etc.).
-2. Regenerate the map file: `npm run generate-venues`
-   (derives `assets/venues.json`; aborts if any venue is missing a geocode).
+2. Regenerate the map files: `npm run generate-venues`
+   (derives `assets/venues.json` **and** the map's pre-joined
+   `assets/map-data.json`; aborts if any venue is missing a geocode).
+   `npm run validate` fails if `map-data.json` drifts from its sources, so this
+   step can't be skipped.
 3. Reconcile the city-page cards: `npm run check` (runs `validate` +
    `check-venue-cards`). `node scripts/check-venue-cards.mjs --fix` auto-fixes
    the bold court-count number; hours/skill mismatches are warnings you resolve
@@ -67,6 +70,6 @@ New venue also needs lat/lon: add `lat`/`lon` to its `venues.json` entry
 |---|---|
 | `npm run validate` | Data-integrity gate (lockstep, ids, enums, paddle tiers). Predeploy hook. |
 | `npm run check` | `validate` + `check-venue-cards` (fuller pre-deploy pass). |
-| `npm run generate-venues` | Rebuild `venues.json` from `courts-data.json`. |
+| `npm run generate-venues` | Rebuild `venues.json` + `map-data.json` from `courts-data.json`. |
 | `npm run sync` | Re-inject the shared header + lane-router partials. |
 | `npm run build` | Regenerate head/header/footer boilerplate (see caveat above). |

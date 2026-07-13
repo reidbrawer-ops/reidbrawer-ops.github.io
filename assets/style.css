@@ -23,6 +23,11 @@
   --ink: #17232b;
   --ink-soft: #5b6b70;
   --line: #dfe5e2;
+  /* Stronger line for the visible boundary of interactive form controls
+     (text inputs, selects): --line is ~1.3:1 on white and fails WCAG 1.4.11's
+     3:1 minimum for UI component boundaries. --line-strong is ~3.8:1. Use it
+     for input/select/textarea borders only; --line stays for cards/dividers. */
+  --line-strong: #7d8783;
 
   --bay: #1d6b85;
   --bay-deep: #123240;
@@ -30,6 +35,13 @@
   --kitchen-deep: #1f5a40;
   --optic: #d7e94b;
   --optic-deep: #9aa81e;
+  /* Optic is a light chartreuse: as a *background* it's high-contrast with
+     --bay-deep text, but as *foreground text/graphics* --optic and
+     --optic-deep fail WCAG contrast (~2.6:1 on white). --optic-text is the
+     only optic that passes as colored text/graphic (~4.9:1 on white) — use it
+     for any optic-colored text, numeral, or rating-star fill; keep --optic /
+     --optic-deep for fills, borders, and underline accents only. */
+  --optic-text: #6c7714;
   --poppy: #b54b2c;
   --poppy-deep: #8f3a20;
 
@@ -155,6 +167,48 @@ a:hover {
 select:focus-visible,
 input[type="search"]:focus-visible {
   outline-offset: 1px;
+}
+
+/* Visually hidden but available to screen readers. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip-to-content link: first focusable element on every page, off-screen
+   until it receives keyboard focus, then pinned to the top-left. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transform: translateY(-120%);
+  padding: 0.6rem 1rem;
+  background: var(--bay-deep);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-s) 0;
+  transition: transform 0.15s var(--ease);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Programmatic focus target for the skip link — no visible ring on the
+   region itself (the destination content carries its own focus states). */
+main:focus,
+main:focus-visible {
+  outline: none;
 }
 
 img, svg {
@@ -477,7 +531,7 @@ img, svg {
   font-size: 0.85rem;
   color: var(--ink);
   background: var(--fog);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-s);
   padding: 0.4em 0.6em;
   transition: width 0.15s ease;
@@ -1355,7 +1409,7 @@ img, svg {
   width: var(--fill, 0%);
   overflow: hidden;
   white-space: nowrap;
-  color: var(--optic-deep);
+  color: var(--optic-text);
 }
 
 .rating-value-label {
@@ -1407,7 +1461,7 @@ a:hover .rating-summary.is-unrated .rating-value-label {
 .star-picker button:hover ~ button,
 .star-picker button.is-selected,
 .star-picker button.is-selected ~ button {
-  color: var(--optic-deep);
+  color: var(--optic-text);
 }
 
 .favorite-btn {

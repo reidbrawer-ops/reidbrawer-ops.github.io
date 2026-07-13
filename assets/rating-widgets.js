@@ -60,7 +60,7 @@
         `<div class="rf-control">` +
         `<div class="star-picker" data-role="picker">` +
         [5, 4, 3, 2, 1]
-          .map((v) => `<button type="button" data-value="${v}" aria-label="Rate ${v} star${v === 1 ? "" : "s"}"></button>`)
+          .map((v) => `<button type="button" data-value="${v}" aria-pressed="false" aria-label="Rate ${v} star${v === 1 ? "" : "s"}"></button>`)
           .join("") +
         `</div>` +
         `<span class="rf-your-rating" data-role="your-rating"></span>` +
@@ -69,8 +69,8 @@
     });
     return (
       `<div class="rating-form" data-court-id="${courtId}">` +
-      `<button type="button" class="rating-form-toggle" data-role="toggle">Rate this court →</button>` +
-      `<div class="rating-form-body" data-role="body" hidden>${rows}</div>` +
+      `<button type="button" class="rating-form-toggle" data-role="toggle" aria-expanded="false" aria-controls="rating-body-${courtId}">Rate this court →</button>` +
+      `<div class="rating-form-body" id="rating-body-${courtId}" data-role="body" hidden>${rows}</div>` +
       `</div>`
     );
   }
@@ -122,7 +122,9 @@
         const yourRatingEl = row.querySelector('[data-role="your-rating"]');
         if (picker) {
           picker.querySelectorAll("button").forEach((b) => {
-            b.classList.toggle("is-selected", yourValue != null && Number(b.dataset.value) <= yourValue);
+            const on = yourValue != null && Number(b.dataset.value) <= yourValue;
+            b.classList.toggle("is-selected", on);
+            b.setAttribute("aria-pressed", String(on));
           });
         }
         if (yourRatingEl) {
@@ -148,6 +150,7 @@
       const body = toggle.closest(".rating-form").querySelector('[data-role="body"]');
       const wasHidden = body.hidden;
       body.hidden = !wasHidden;
+      toggle.setAttribute("aria-expanded", String(wasHidden));
       toggle.textContent = wasHidden ? "Hide rating form" : "Rate this court →";
       return;
     }

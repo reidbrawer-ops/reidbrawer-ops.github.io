@@ -130,7 +130,7 @@
     });
   }
 
-  function rowHtml(court, index, { showCity, isMostLoved, rowId, compact, unranked }) {
+  function rowHtml(court, index, { showCity, isMostLoved, rowId, compact, unranked, headingLevel = 3 }) {
     const stats = window.PBRatings.getStats(court.id);
     const badges = [];
     if (stats.isTopRated) badges.push('<span class="badge-top-rated">★ Top rated</span>');
@@ -145,7 +145,7 @@
         ${rankCell}
         <div class="leaderboard-main">
           <div class="leaderboard-name-row">
-            <h3><a href="${court.url}#${court.id}">${escapeHtml(court.name)}</a></h3>
+            <h${headingLevel}><a href="${court.url}#${court.id}">${escapeHtml(court.name)}</a></h${headingLevel}>
             ${showCity ? `<span class="leaderboard-city-tag">${escapeHtml(court.city)}</span>` : ""}
             ${badges.join("")}
           </div>
@@ -233,10 +233,10 @@
           rated.length && window.PBRatings.getStats(rated[0].id).favoriteVotes > 0 ? rated[0].id : null;
 
         const rankedRows = rated
-          .map((c, i) => rowHtml(c, i, { showCity: false, isMostLoved: c.id === mostLovedId, rowId: c.id }))
+          .map((c, i) => rowHtml(c, i, { showCity: false, isMostLoved: c.id === mostLovedId, rowId: c.id, headingLevel: 5 }))
           .join("");
         const unratedRows = unrated
-          .map((c) => rowHtml(c, null, { showCity: false, isMostLoved: false, rowId: c.id, unranked: true }))
+          .map((c) => rowHtml(c, null, { showCity: false, isMostLoved: false, rowId: c.id, unranked: true, headingLevel: 5 }))
           .join("");
         const unratedHead = unrated.length
           ? `<p class="unranked-head">${
@@ -247,7 +247,7 @@
         html += `
           <div class="city-leaderboard" id="${citySlug(city)}">
             <div class="region-head">
-              <div><h3>${escapeHtml(city)}</h3></div>
+              <div><h4>${escapeHtml(city)}</h4></div>
               <a class="overview-link" href="/cities/${citySlug(city)}">City guide →</a>
             </div>
             ${rankedRows ? `<div class="leaderboard">${rankedRows}</div>` : ""}

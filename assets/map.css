@@ -315,7 +315,7 @@
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.03em;
-  color: var(--optic-deep);
+  color: var(--optic-text);
 }
 
 .fr-pick[hidden] {
@@ -683,7 +683,7 @@
   font-size: 0.88rem;
   color: var(--ink);
   background: var(--fog);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-s);
   padding: 0.5em 0.6em;
 }

@@ -106,6 +106,46 @@ if (courtsById.size && venuesById.size) {
   }
 }
 
+// ---- map-data.json: the map's pre-joined feed, must stay in lockstep ----
+// Built by scripts/generate-venues.mjs from courts-data.json + venues.json.
+// These checks catch the failure mode where courts-data or a geocode was
+// edited but `npm run generate-venues` wasn't re-run, leaving the map stale.
+const mapData = load("assets/map-data.json");
+if (Array.isArray(mapData)) {
+  const mapById = new Map();
+  mapData.forEach((r, i) => {
+    const where = r && r.id ? r.id : `index ${i}`;
+    if (!r || typeof r.id !== "string" || !r.id) return fail(`map-data[${i}]: missing string id`);
+    if (mapById.has(r.id)) fail(`map-data: duplicate id "${r.id}"`);
+    mapById.set(r.id, r);
+    const latNum = typeof r.lat === "number";
+    const lonNum = typeof r.lon === "number";
+    if (latNum !== lonNum) fail(`map-data ${where}: lat/lon must both be set or both absent`);
+  });
+  const REGEN = "run: npm run generate-venues";
+  for (const id of courtsById.keys())
+    if (!mapById.has(id)) fail(`map-data drift: "${id}" is in courts-data.json but not map-data.json (${REGEN})`);
+  for (const id of mapById.keys())
+    if (!courtsById.has(id)) fail(`map-data drift: "${id}" is in map-data.json but not courts-data.json (${REGEN})`);
+  // Key facts must match their sources so the feed can't go stale silently.
+  for (const [id, r] of mapById) {
+    const c = courtsById.get(id);
+    const v = venuesById.get(id);
+    if (c) {
+      if (r.name !== c.name) fail(`map-data drift: "${id}" name mismatch (${REGEN})`);
+      if (r.indoorOutdoor !== c.indoorOutdoor) fail(`map-data drift: "${id}" indoorOutdoor mismatch (${REGEN})`);
+      if (r.googleMapsUrl !== c.googleMapsUrl) fail(`map-data drift: "${id}" googleMapsUrl mismatch (${REGEN})`);
+    }
+    if (v) {
+      const vLat = typeof v.lat === "number" ? v.lat : undefined;
+      const rLat = typeof r.lat === "number" ? r.lat : undefined;
+      if (vLat !== rLat) fail(`map-data drift: "${id}" lat mismatch (${REGEN})`);
+    }
+  }
+} else {
+  fail("map-data.json is not an array");
+}
+
 // ---- paddles.json ----
 if (Array.isArray(paddles)) {
   const seen = new Set();

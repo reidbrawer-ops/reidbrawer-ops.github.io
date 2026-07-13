@@ -12,7 +12,26 @@
 
 var GA_MEASUREMENT_ID = "G-DX4PVCWB8H";
 
-if (GA_MEASUREMENT_ID.indexOf("XXXXXXXXXX") === -1) {
+// Privacy opt-out gate. We don't load GA at all when the visitor has signaled
+// they don't want to be tracked, via any of:
+//   - Global Privacy Control (navigator.globalPrivacyControl) — recognized as a
+//     valid opt-out signal under California's CCPA/CPRA;
+//   - legacy Do Not Track (navigator/window doNotTrack);
+//   - the per-browser opt-out toggle on /privacy (localStorage flag).
+// The /privacy "Do Not Sell or Share" control writes the same flag.
+function pbaAnalyticsOptedOut() {
+  try {
+    if (navigator.globalPrivacyControl === true) return true;
+    var dnt = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+    if (dnt === "1" || dnt === "yes") return true;
+    if (localStorage.getItem("pba-analytics-optout") === "1") return true;
+  } catch (e) {
+    /* signal unreadable — fall through and load normally */
+  }
+  return false;
+}
+
+if (GA_MEASUREMENT_ID.indexOf("XXXXXXXXXX") === -1 && !pbaAnalyticsOptedOut()) {
   var gaScript = document.createElement("script");
   gaScript.async = true;
   gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_MEASUREMENT_ID;
@@ -20,6 +39,18 @@ if (GA_MEASUREMENT_ID.indexOf("XXXXXXXXXX") === -1) {
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () { window.dataLayer.push(arguments); };
+
+  // Consent Mode v2: deny advertising/personalization signals by default so a
+  // visit is never used for ad targeting or shared for cross-context behavioral
+  // advertising. Aggregate analytics storage stays granted. Must run before
+  // "config". This keeps us out of CCPA "sale/sharing" territory by design.
+  window.gtag("consent", "default", {
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    analytics_storage: "granted",
+  });
+
   window.gtag("js", new Date());
   window.gtag("config", GA_MEASUREMENT_ID);
 

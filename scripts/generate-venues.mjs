@@ -117,3 +117,45 @@ function toAsciiJson(value) {
 const output = venues.filter(Boolean);
 writeFileSync(venuesPath, toAsciiJson(output) + "\n");
 console.log(`[generate-venues] Wrote ${output.length} venues to assets/venues.json${warnings ? ` (${warnings} warning(s) above)` : " (no drift found)"}.`);
+
+// ---- map-data.json: the map's single pre-joined feed ---------------------
+// The /map page used to fetch BOTH courts-data.json and venues.json and join
+// ~200 records by id in the browser on every load. Pre-join here instead:
+// one file, one request, no client-side join. It carries only the fields
+// assets/map.js actually reads (courts-data's facts + each venue's geocode),
+// so name/city/address/url aren't duplicated across two files anymore.
+const mapDataPath = path.join(__dirname, "../assets/map-data.json");
+const venueById = new Map(output.map((v) => [v.id, v]));
+const mapData = courts.map((c) => {
+  const v = venueById.get(c.id) || {};
+  const rec = {
+    id: c.id,
+    name: c.name,
+    city: c.city,
+    neighborhood: c.neighborhood,
+    address: c.address,
+    url: c.url,
+    indoor: v.indoor, // lowercase pin vocabulary, from venues
+    indoorOutdoor: c.indoorOutdoor, // Title Case, from courts-data
+    price: c.price,
+    hours: c.hours,
+    courts: c.courts,
+    waitTime: c.waitTime,
+    surface: c.surface,
+    skill: c.skill,
+    reservable: c.reservable,
+    weather: c.weather,
+    bookingUrl: c.bookingUrl,
+    googleMapsUrl: c.googleMapsUrl,
+    lastVerified: c.lastVerified,
+  };
+  // Optional geocode: omitted (not null) when a venue isn't plottable, so
+  // map.js's `typeof lat === "number"` plottable test still works.
+  if (typeof v.lat === "number") rec.lat = v.lat;
+  if (typeof v.lon === "number") rec.lon = v.lon;
+  if (v.approx !== undefined) rec.approx = v.approx;
+  return rec;
+});
+writeFileSync(mapDataPath, toAsciiJson(mapData) + "\n");
+const plottableCount = mapData.filter((r) => typeof r.lat === "number").length;
+console.log(`[generate-venues] Wrote ${mapData.length} records to assets/map-data.json (${plottableCount} plottable).`);

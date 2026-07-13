@@ -33,10 +33,12 @@ generic accent; it means "#1."
 | `--paper` | `#ffffff` | Card / surface background |
 | `--ink` | `#17232b` | Primary text |
 | `--ink-soft` | `#5b6b70` | Secondary text, meta, labels |
-| `--line` | `#dfe5e2` | Borders, dividers |
+| `--line` | `#dfe5e2` | Borders, dividers (cards, dividers, non-interactive surfaces) |
+| `--line-strong` | `#7d8783` | Borders of **interactive form controls only** (text inputs, selects, textareas) — `--line` is ~1.3:1 and fails WCAG 1.4.11's 3:1 for UI boundaries; this is ~3.8:1 |
 | `--bay` / `--bay-deep` | `#1d6b85` / `#123240` | Primary brand blue — links, primary buttons, focus rings |
 | `--kitchen` / `--kitchen-deep` | `#2f7a57` / `#1f5a40` | Secondary green — eyebrows, "beginner" badges, bullet marks |
-| `--optic` / `--optic-deep` | `#d7e94b` / `#9aa81e` | **#1 / top-pick marker only** — rank badges, star fill, selection highlight |
+| `--optic` / `--optic-deep` | `#d7e94b` / `#9aa81e` | **#1 / top-pick marker only** — rank badges, selection highlight, borders/rings, underline accents. Backgrounds & non-text marks only. |
+| `--optic-text` | `#6c7714` | The **only** optic that passes WCAG contrast as **foreground text/graphics** (~4.9:1 on white). Use for any optic-colored text, numeral, or rating-star fill — `--optic`/`--optic-deep` fail (~2.6:1) as text. |
 | `--poppy` / `--poppy-deep` | `#b54b2c` / `#8f3a20` | Warm accent — callouts, "competitive" badges, favorite/heart, errors |
 | `--bay-tint` / `--kitchen-tint` / `--poppy-tint` | pale washes | Badge/pill backgrounds paired with their `-deep` text color |
 | `--pin-outdoor` / `--pin-indoor` | `#2166a8` / `#3a8a4a` | **Map pins only** — deliberately ~80° apart in hue so they're distinguishable at 9–16px; don't reuse `--bay`/`--kitchen` for pins (they're only ~40° apart and look identical at that size) |
@@ -167,7 +169,12 @@ plugin's default theme never leaks through.
   `:focus-visible` state (the global 3px `--bay` outline covers most cases
   automatically); nav links use `aria-current="page"` rather than a
   hardcoded "active" class; don't rely on color alone (see the `--pin-`
-  hue-spread reasoning above) — pair color with a label, icon, or position.
+  hue-spread reasoning above) — pair color with a label, icon, or position;
+  optic-colored text/graphics use `--optic-text` (never `--optic-deep`) so
+  they clear contrast. Every page is a `.skip-link` (first body child, from
+  the header partial) → `<main id="main" tabindex="-1">` (wraps everything
+  between the synced header and the footer) landmark pair — new pages must
+  keep that wrapper, and the skip link's `href="#main"` depends on it.
 - **Don't introduce**: a second font family, a second easing curve, drop
   shadows heavier than the existing `rgba(23, 35, 43, …)` ink-tinted ones,
   saturated/neon colors outside the defined palette, or blur/backdrop-filter

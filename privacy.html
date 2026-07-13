@@ -7,7 +7,7 @@
 <meta name="description" content="What Pickleball Bay Area collects, what it doesn't, and how the contact form and any outbound links work.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -26,13 +26,19 @@
 <meta name="twitter:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
 <link rel="canonical" href="https://pickleball-bay-area.com/privacy">
 <link rel="stylesheet" href="/assets/style.css">
+<style>
+  /* Privacy-only: the Do-Not-Sell/opt-out control layout. */
+  .dns-optout { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+  .dns-optout-status { font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-soft); }
+</style>
 </head>
 <body>
 
 <!-- site-header:start · source: partials/site-header.html · regenerate: node scripts/sync-header.js -->
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="Pickleball Bay Area">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -56,6 +62,8 @@
 </header>
 <!-- site-header:end -->
 
+<main id="main" tabindex="-1">
+
 <section class="page-hero">
   <div class="container">
     <p class="eyebrow">Privacy policy</p>
@@ -67,10 +75,49 @@
 <section class="section">
   <div class="container">
     <h2>Hosting</h2>
-    <p>This site is hosted on GitHub Pages. GitHub, not us, receives standard server logs for every request (IP address, browser type, page requested) as part of running the hosting infrastructure. We don't have access to that log data ourselves. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's own privacy statement</a> for what they do with it.</p>
+    <p>This site is hosted on Firebase Hosting, part of Google Cloud. Google, not us, receives standard server logs for every request (IP address, browser type, page requested) as part of running the hosting infrastructure. We don't have access to that raw log data ourselves. See <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase's privacy and security information</a> for what Google does with it.</p>
 
     <h2>No accounts. Limited analytics, no ad trackers</h2>
-    <p>There's no login and no user accounts. As of July 2026, this site uses Google Analytics 4 to see aggregate traffic — which pages get visited, roughly how people found the site, general location and device type. It doesn't identify you personally, and we don't run any ad network or tracking pixel beyond it. Google Analytics sets its own cookies and is subject to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>. If you'd rather not be counted, the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics opt-out browser add-on</a> blocks it.</p>
+    <p>There's no login and no user accounts. As of July 2026, this site uses Google Analytics 4 to see aggregate traffic — which pages get visited, roughly how people found the site, general location and device type. It doesn't identify you personally, and we don't run any ad network or tracking pixel beyond it. We configure Analytics to deny advertising and personalization signals, so your visit isn't used for ad targeting or shared for cross-context behavioral advertising. Google Analytics sets its own cookies and is subject to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>.</p>
+    <p>We honor browser privacy signals automatically: if your browser sends a <a href="https://globalprivacycontrol.org/" target="_blank" rel="noopener">Global Privacy Control</a> or "Do Not Track" signal, Analytics does not load at all. You can also opt this browser out directly below, or use the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics opt-out add-on</a>.</p>
+
+    <h2 id="do-not-sell">Your California privacy rights</h2>
+    <p>If you're a California resident, the CCPA/CPRA gives you the right to know what personal information is collected about you, to request its deletion, and to opt out of the "sale" or "sharing" of it. We don't sell your personal information, and — because we deny advertising signals in Analytics (above) — we don't share it for cross-context behavioral advertising. To exercise the know/delete rights, or ask any question about your data, reach us through the <a href="/corrections">correction form</a>. To stop analytics on this browser, use the control below; we also honor the Global Privacy Control signal as a valid opt-out.</p>
+    <p class="dns-optout">
+      <button type="button" id="dns-optout-btn" class="btn">Do Not Sell or Share My Personal Information</button>
+      <span id="dns-optout-status" class="dns-optout-status" role="status" aria-live="polite"></span>
+    </p>
+    <script>
+      (function () {
+        var KEY = "pba-analytics-optout";
+        var btn = document.getElementById("dns-optout-btn");
+        var status = document.getElementById("dns-optout-status");
+        if (!btn || !status) return;
+        function optedOut() {
+          try { return localStorage.getItem(KEY) === "1"; } catch (e) { return false; }
+        }
+        function render() {
+          if (optedOut()) {
+            btn.textContent = "Undo opt-out (re-enable analytics)";
+            status.textContent = "You're opted out of analytics on this browser.";
+          } else {
+            btn.textContent = "Do Not Sell or Share My Personal Information";
+            status.textContent = "";
+          }
+        }
+        btn.addEventListener("click", function () {
+          try {
+            if (optedOut()) { localStorage.removeItem(KEY); }
+            else { localStorage.setItem(KEY, "1"); }
+          } catch (e) { /* storage blocked — nothing more we can do */ }
+          render();
+          status.textContent = optedOut()
+            ? "You're opted out. Reload any page to apply."
+            : "Opt-out removed. Reload any page to apply.";
+        });
+        render();
+      })();
+    </script>
 
     <h2>The correction form</h2>
     <p>The <a href="/corrections">correction form</a> is handled by a third-party form service, Formspree. If you submit a correction, the details you enter (and your email address, if you choose to include one so we can reply) are sent through Formspree to us. We use it only to review and act on the correction — we don't add you to a list or share it elsewhere. See <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Formspree's privacy policy</a> for how they handle that data in transit.</p>
@@ -80,7 +127,7 @@
 
     <h2>Outbound links &amp; affiliate links</h2>
     <p>This site links out to city recreation department pages, booking systems, retailers, and other third-party sites. Once you click through, you're subject to that site's own privacy practices and cookies, not ours.</p>
-    <p>Some outbound links on the <a href="/paddles">paddles &amp; gear</a> page are affiliate links: if you buy a paddle or gear after clicking one, we may earn a small commission at no extra cost to you. This applies only to paddle and gear links — our court listings, city pages, rankings, and directory carry no affiliate links and are never influenced by them. Affiliate links are disclosed at the point where they appear and on the <a href="/affiliate-disclosure">affiliate disclosure</a> page. Affiliate programs (and any retailers we use) set their own cookies once you reach their site; some use a cookie to attribute a later purchase back to us.</p>
+    <p>Some outbound links on the <a href="/paddles">Paddles &amp; Gear</a> page are affiliate links: if you buy a paddle or gear after clicking one, we may earn a small commission at no extra cost to you. This applies only to paddle and gear links — our court listings, city pages, rankings, and directory carry no affiliate links and are never influenced by them. Affiliate links are disclosed at the point where they appear and on the <a href="/affiliate-disclosure">affiliate disclosure</a> page. Affiliate programs (and any retailers we use) set their own cookies once you reach their site; some use a cookie to attribute a later purchase back to us.</p>
 
     <h2>Children's privacy</h2>
     <p>This site isn't directed at children and doesn't knowingly collect information from anyone under 13.</p>
@@ -91,6 +138,8 @@
     <p class="sources">Last updated: July 2026. Questions about this policy can be sent through the <a href="/corrections">correction form</a>.</p>
   </div>
 </section>
+
+</main>
 
 <footer class="site-footer">
   <div class="container">
@@ -130,7 +179,7 @@
       </div>
     </div>
     <div class="footer-note">
-      <span>Independent court data — no ads, no pay-to-list, no sponsored listings. Some paddle &amp; gear links are <a href="/affiliate-disclosure">affiliate links</a>.</span>
+      <span>Independent court data — no ads, no pay-to-list, no sponsored listings. Some paddle &amp; gear links may be <a href="/affiliate-disclosure">affiliate links</a>, disclosed at each one.</span>
       <span>Court info verified against city rec department pages, July 2026.</span>
     </div>
   </div>

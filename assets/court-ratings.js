@@ -203,14 +203,22 @@ async function createBackend() {
   }
 }
 
-const backendPromise = createBackend();
+// Lazily create the backend — and thus trigger the ~135 KB Firebase/Firestore
+// dynamic import — only when the ratings data is actually needed. Doing it at
+// module load fired that import on every map / rankings / city page before the
+// visitor scrolled to a single rating; see scheduleLoad() at the bottom.
+let backendPromise = null;
+function getBackend() {
+  if (!backendPromise) backendPromise = createBackend();
+  return backendPromise;
+}
 
 let cache = {}; // courtId -> raw doc
 let cacheLoaded = false;
 
 async function ensureLoaded() {
   if (cacheLoaded) return;
-  const backend = await backendPromise;
+  const backend = await getBackend();
   cache = await backend.loadAll();
   cacheLoaded = true;
 }
@@ -236,7 +244,7 @@ const PBRatings = {
   },
 
   backendMode() {
-    return backendPromise.then((b) => b.mode);
+    return getBackend().then((b) => b.mode);
   },
 
   getStats(courtId) {
@@ -263,7 +271,7 @@ const PBRatings = {
   async toggleFavorite(courtId) {
     const favorites = userFavorites();
     const already = !!favorites[courtId];
-    const backend = await backendPromise;
+    const backend = await getBackend();
     const updatedDoc = await backend.incrementFavorite(courtId, already ? -1 : 1);
     cache[courtId] = updatedDoc;
     favorites[courtId] = !already;
@@ -277,7 +285,7 @@ const PBRatings = {
     stars = Math.max(1, Math.min(5, Math.round(stars)));
     const ratings = userRatings();
     const existing = ratings[courtId] && ratings[courtId][factorKey];
-    const backend = await backendPromise;
+    const backend = await getBackend();
 
     let sumDelta;
     let countDelta;
@@ -312,7 +320,40 @@ const PBRatings = {
   },
 };
 
-ensureLoaded().then(() => {
-  window.PBRatings = PBRatings;
-  document.dispatchEvent(new CustomEvent("pbratings:ready"));
-});
+// Preserve the original contract exactly — window.PBRatings appears and
+// "pbratings:ready" fires only once the data is actually loaded — but defer
+// *starting* that load off the critical path.
+let loadStarted = false;
+function startLoad() {
+  if (loadStarted) return;
+  loadStarted = true;
+  ensureLoaded().then(() => {
+    window.PBRatings = PBRatings;
+    document.dispatchEvent(new CustomEvent("pbratings:ready"));
+  });
+}
+
+// Expose a manual trigger so a consumer (e.g. an IntersectionObserver on a
+// ratings widget) can force the load the instant its UI is about to be seen.
+PBRatings.load = startLoad;
+
+// Kick the load off when the page goes idle, or immediately on the first user
+// interaction/scroll — whichever comes first — so the Firebase import never
+// competes with initial render, but ratings still populate on their own.
+function scheduleLoad() {
+  var opts = { once: true, passive: true };
+  ["pointerdown", "keydown", "scroll", "touchstart"].forEach(function (evt) {
+    window.addEventListener(evt, startLoad, opts);
+  });
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(startLoad, { timeout: 3000 });
+  } else {
+    setTimeout(startLoad, 1200);
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", scheduleLoad, { once: true });
+} else {
+  scheduleLoad();
+}

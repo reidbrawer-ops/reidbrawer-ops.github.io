@@ -1,9 +1,10 @@
 // Find-courts hub: search + map + filter panel + results list + detail card.
 //
 // This is the single "find a court" surface — the standalone Directory page was
-// folded in here. It joins assets/courts-data.json (all 203 rich records) with
-// assets/venues.json (geocoded lat/lon by id): the 181 geocoded courts get a
-// Leaflet pin, all 203 appear in the results list, and the directory's filter
+// folded in here. It loads one pre-joined feed, assets/map-data.json (built by
+// scripts/generate-venues.mjs from courts-data.json + venues.json): the 181
+// geocoded courts get a Leaflet pin, all 203 appear in the results list, and
+// the directory's filter
 // set (region/city/neighborhood/indoor-outdoor/surface/reservable/skill/price/
 // courts/wait/weather + an "open during" hours slider) lives behind a show/hide
 // Filters panel that narrows both the map and the list at once.
@@ -173,15 +174,16 @@
           .join("")}</dl>`
       : "";
 
+    const newTab = '<span class="visually-hidden"> (opens in new tab)</span>';
     const actions = [];
     if (hasValue(record.googleMapsUrl)) {
       actions.push(
-        `<a class="btn directions-link" href="${record.googleMapsUrl}" target="_blank" rel="noopener">Directions ↗</a>`
+        `<a class="btn directions-link" href="${record.googleMapsUrl}" target="_blank" rel="noopener">Directions ↗${newTab}</a>`
       );
     }
     if (hasValue(record.bookingUrl)) {
       actions.push(
-        `<a class="btn btn-ghost" href="${record.bookingUrl}" target="_blank" rel="noopener">Book a court ↗</a>`
+        `<a class="btn btn-ghost" href="${record.bookingUrl}" target="_blank" rel="noopener">Book a court ↗${newTab}</a>`
       );
     }
     const actionsHtml = actions.length ? `<div class="fd-actions">${actions.join("")}</div>` : "";
@@ -349,52 +351,19 @@
     { key: "weatherBucket", elId: "f-weather", allLabel: "All", withNotSpecified: true },
   ];
 
-  Promise.all([
-    fetch("/assets/venues.json").then((r) => {
-      if (!r.ok) throw new Error(`venues.json request failed (${r.status})`);
+  // The map loads one pre-joined feed (assets/map-data.json), built at build
+  // time by scripts/generate-venues.mjs from courts-data.json + venues.json —
+  // so there's no second request and no client-side join on every load. Each
+  // row already carries the court's facts plus its geocode; here we only derive
+  // the runtime-only fields (the plottable flag + filter buckets).
+  fetch("/assets/map-data.json")
+    .then((r) => {
+      if (!r.ok) throw new Error(`map-data.json request failed (${r.status})`);
       return r.json();
-    }),
-    fetch("/assets/courts-data.json")
-      .then((r) => (r.ok ? r.json() : []))
-      .catch(() => []),
-  ])
-    .then(([venues, courts]) => {
-      const venuesById = {};
-      (Array.isArray(venues) ? venues : []).forEach((v) => {
-        if (v && v.id) venuesById[v.id] = v;
-      });
-
-      // Every court in courts-data becomes a record; the geocoded ones also get
-      // coordinates (and a pin). Non-geocoded courts stay in the list but can't
-      // be plotted.
-      const records = (Array.isArray(courts) ? courts : []).map((c) => {
-        const v = venuesById[c.id] || {};
-        const plottable = typeof v.lat === "number" && typeof v.lon === "number";
-        const rec = {
-          id: c.id,
-          name: c.name || v.name,
-          city: c.city || v.city,
-          neighborhood: c.neighborhood,
-          address: c.address || v.address,
-          url: c.url || v.url,
-          lat: v.lat,
-          lon: v.lon,
-          plottable,
-          indoor: v.indoor,
-          approx: v.approx,
-          indoorOutdoor: c.indoorOutdoor,
-          price: c.price,
-          hours: c.hours,
-          courts: c.courts,
-          waitTime: c.waitTime,
-          surface: c.surface,
-          skill: c.skill,
-          reservable: c.reservable,
-          weather: c.weather,
-          bookingUrl: c.bookingUrl,
-          googleMapsUrl: c.googleMapsUrl,
-          lastVerified: c.lastVerified,
-        };
+    })
+    .then((data) => {
+      const records = (Array.isArray(data) ? data : []).map((rec) => {
+        rec.plottable = typeof rec.lat === "number" && typeof rec.lon === "number";
         rec.region = regionFor(rec);
         rec.priceBucket = priceBucket(rec);
         rec.skillBucket = skillBucket(rec);
@@ -470,7 +439,17 @@
       const markersById = {};
       const markerShown = {};
       const markers = plottableRecords.map((record) => {
-        const marker = L.marker([record.lat, record.lon], { icon: pinIcon(record, false) });
+        // title/alt give the pin an accessible name + hover tooltip; keyboard:
+        // false removes it from the tab order, since every marker is already
+        // reachable (and labelled) via the results list beside the map — so
+        // keyboard/SR users aren't dragged through ~180 empty pin tab-stops.
+        const label = record.name + " — " + indoorLabel(record.indoor);
+        const marker = L.marker([record.lat, record.lon], {
+          icon: pinIcon(record, false),
+          title: label,
+          alt: label,
+          keyboard: false,
+        });
         marker.bindPopup(popupHtml(record));
         marker.__record = record;
         marker.on("click", () => selectVenue(record.id, { pan: false }));
@@ -619,6 +598,9 @@
       // ---- Detail card --------------------------------------------------
 
       let activeId = null;
+      // The control (list row / marker) that opened the detail sheet, so focus
+      // can be returned to it on close instead of dropping to <body>.
+      let detailTrigger = null;
 
       function fillRatings(id) {
         const slot = detailEl.querySelector('[data-role="ratings"]');
@@ -637,7 +619,15 @@
       }
 
       function openDetail(record) {
+        // Remember what to return focus to (only if it's a real element, not
+        // <body>), before the sheet steals focus.
+        detailTrigger = document.activeElement && document.activeElement !== document.body ? document.activeElement : null;
         detailEl.innerHTML = detailHtml(record);
+        // On mobile the sheet is a scrim-backed modal; expose it as a dialog so
+        // assistive tech treats the rest of the page as inert.
+        detailEl.setAttribute("role", "dialog");
+        detailEl.setAttribute("aria-modal", "true");
+        detailEl.setAttribute("aria-label", record.name + " — court details");
         detailEl.hidden = false;
         scrimEl.hidden = false;
         finderEl.classList.add("finder--detail-open");
@@ -656,6 +646,9 @@
           if (row) row.classList.remove("is-active");
         }
         activeId = null;
+        // Return focus to the control that opened the sheet.
+        if (detailTrigger && document.contains(detailTrigger)) detailTrigger.focus();
+        detailTrigger = null;
       }
 
       function selectVenue(id, opts) {
@@ -861,6 +854,10 @@
           start === HOURS_MIN && end === HOURS_MAX
             ? "Any time"
             : `${formatClock(start)} – ${formatClock(end)}`;
+        // Screen readers otherwise announce the raw slider number (e.g. "720");
+        // aria-valuetext makes them speak the clock time instead.
+        hoursStartEl.setAttribute("aria-valuetext", formatClock(start));
+        hoursEndEl.setAttribute("aria-valuetext", formatClock(end));
         const pct = (v) => ((v - HOURS_MIN) / (HOURS_MAX - HOURS_MIN)) * 100;
         hoursRangeFillEl.style.left = pct(start) + "%";
         hoursRangeFillEl.style.right = 100 - pct(end) + "%";
@@ -893,6 +890,9 @@
       if (formEl) formEl.addEventListener("change", applyFilters);
       if (hoursStartEl) hoursStartEl.addEventListener("input", handleHoursInput);
       if (hoursEndEl) hoursEndEl.addEventListener("input", handleHoursInput);
+      // Seed the slider's visual label + aria-valuetext so a screen reader
+      // hears a clock time, not the raw minute value, before any interaction.
+      if (hoursStartEl && hoursEndEl) updateHoursVisual();
 
       const clearFilters = () => {
         FILTER_FIELDS.forEach((f) => {
@@ -931,6 +931,25 @@
         if (e.target.closest('[data-role="detail-back"]')) closeDetail();
       });
       scrimEl.addEventListener("click", closeDetail);
+
+      // Keep Tab focus inside the open detail dialog (focus trap).
+      detailEl.addEventListener("keydown", (e) => {
+        if (e.key !== "Tab" || detailEl.hidden) return;
+        const focusables = detailEl.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const active = document.activeElement;
+        if (e.shiftKey && (active === first || active === detailEl)) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && active === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      });
       // The scope pill's Clear resets just the city focus, not every filter.
       if (clearBtn)
         clearBtn.addEventListener("click", () => {

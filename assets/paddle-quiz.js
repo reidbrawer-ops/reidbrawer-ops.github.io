@@ -523,12 +523,25 @@ class PaddleQuizApp {
     this.root.addEventListener("submit", (e) => this.onSubmit(e));
   }
 
-  render() {
+  // opts.focus: after re-rendering, move keyboard focus to the new step's
+  // heading so screen-reader and keyboard users land on (and hear) the new
+  // question instead of having focus silently reset to the top of the page.
+  // Only set on genuine step transitions — never on the initial mount, the
+  // multi-select toggle, or the "submitting…" busy re-render.
+  render(opts) {
     const isResults = this.step > QUESTIONS.length;
     this.root.classList.toggle("pq-shell--wide", isResults);
     if (this.step < QUESTIONS.length) this.root.innerHTML = this.renderQuestion(QUESTIONS[this.step]);
     else if (this.step === QUESTIONS.length) this.root.innerHTML = this.renderEmailStep();
     else this.root.innerHTML = this.renderResults();
+    if (opts && opts.focus) this.focusHeading();
+  }
+
+  focusHeading() {
+    const h = this.root.querySelector("h2, h3");
+    if (!h) return;
+    h.setAttribute("tabindex", "-1");
+    h.focus({ preventScroll: false });
   }
 
   renderProgress(stepIndex, total) {
@@ -536,7 +549,12 @@ class PaddleQuizApp {
       const cls = i < stepIndex ? "is-done" : i === stepIndex ? "is-current" : "";
       return `<span class="pq-dot ${cls}"></span>`;
     }).join("");
-    return `<div class="pq-progress"><span class="pq-progress-label">Step ${stepIndex + 1} of ${total}</span><span class="pq-dots">${dots}</span></div>`;
+    // The last step is the email/reveal, not a question — so number the
+    // questions out of the real question count (matches the "eleven quick
+    // questions" copy) and call the final step "Last step" rather than "12 of 12".
+    const questionCount = total - 1;
+    const label = stepIndex < questionCount ? `Question ${stepIndex + 1} of ${questionCount}` : "Last step";
+    return `<div class="pq-progress"><span class="pq-progress-label">${label}</span><span class="pq-dots">${dots}</span></div>`;
   }
 
   renderQuestion(q) {
@@ -585,11 +603,11 @@ class PaddleQuizApp {
           <input type="text" id="pq-hp" name="company" tabindex="-1" autocomplete="off">
         </div>
         <label for="pq-email" class="pq-email-label">Email address</label>
-        <input type="email" id="pq-email" name="email" placeholder="you@example.com" required autocomplete="email">
+        <input type="email" id="pq-email" name="email" placeholder="you@example.com" required autocomplete="email"${this.emailError ? ' aria-invalid="true" aria-describedby="pq-email-error"' : ""}>
         <button type="submit" class="btn pq-submit" ${this.submitting ? "disabled" : ""}>
           ${this.submitting ? "Finding your matches…" : "See my top picks →"}
         </button>
-        ${this.emailError ? `<p class="pq-error">${this.emailError}</p>` : ""}
+        ${this.emailError ? `<p class="pq-error" id="pq-email-error" role="alert">${this.emailError}</p>` : ""}
       </form>
       <button type="button" class="pq-back" data-action="back">← Back</button>
     `;
@@ -612,7 +630,7 @@ class PaddleQuizApp {
     const cols = top
       .map(
         ({ paddle, dims }, i) => `
-      <th class="pq-compare-col">
+      <th class="pq-compare-col" scope="col">
         <div class="name-row">
           <h3>${paddle.name}</h3>
           ${i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`}
@@ -625,13 +643,13 @@ class PaddleQuizApp {
 
     const dimRow = (label, key) => `
       <tr>
-        <th class="pq-compare-label">${label}</th>
+        <th class="pq-compare-label" scope="row">${label}</th>
         ${top.map(({ dims }) => `<td>${meterHtml(dims[key], label)}</td>`).join("")}
       </tr>`;
 
     const weightRow = `
       <tr>
-        <th class="pq-compare-label">Weight</th>
+        <th class="pq-compare-label" scope="row">Weight</th>
         ${top.map(({ paddle }) => `<td>${paddle.weightOz != null ? `${paddle.weightOz}oz` : "—"}</td>`).join("")}
       </tr>`;
 
@@ -642,7 +660,7 @@ class PaddleQuizApp {
     const SKILL_BADGE_CLASS = { Beginner: "beginner", Advanced: "competitive", Intermediate: "mixed" };
     const skillRow = `
       <tr>
-        <th class="pq-compare-label">Best for</th>
+        <th class="pq-compare-label" scope="row">Best for</th>
         ${top
           .map(
             ({ dims }) =>
@@ -656,7 +674,7 @@ class PaddleQuizApp {
 
     const linkRow = `
       <tr class="pq-compare-links">
-        <th class="pq-compare-label"></th>
+        <th class="pq-compare-label" scope="row"></th>
         ${links
           .map((link) => {
             if (!link) return "<td></td>";
@@ -664,7 +682,7 @@ class PaddleQuizApp {
             // site's affiliate stance); plain vendor links stay nofollow but
             // are not marked sponsored, because they aren't.
             const rel = link.isAffiliate ? "sponsored nofollow noopener" : "nofollow noopener";
-            return `<td><a class="book-btn" href="${link.href}" target="_blank" rel="${rel}">${link.label} →</a></td>`;
+            return `<td><a class="book-btn" href="${link.href}" target="_blank" rel="${rel}">${link.label} →<span class="visually-hidden"> (opens in new tab)</span></a></td>`;
           })
           .join("")}
       </tr>`;
@@ -732,7 +750,7 @@ class PaddleQuizApp {
       } else {
         this.answers[opt.dataset.key] = opt.dataset.value;
         this.step += 1;
-        this.render();
+        this.render({ focus: true });
       }
       return;
     }
@@ -740,14 +758,14 @@ class PaddleQuizApp {
     if (cont) {
       if (cont.disabled) return;
       this.step += 1;
-      this.render();
+      this.render({ focus: true });
       return;
     }
     const back = e.target.closest('[data-action="back"]');
     if (back) {
       this.step = Math.max(0, this.step - 1);
       this.emailError = null;
-      this.render();
+      this.render({ focus: true });
       return;
     }
     const retake = e.target.closest('[data-action="retake"]');
@@ -755,7 +773,7 @@ class PaddleQuizApp {
       this.step = 0;
       this.answers = {};
       this.emailError = null;
-      this.render();
+      this.render({ focus: true });
     }
   }
 
@@ -771,6 +789,10 @@ class PaddleQuizApp {
     if (!EMAIL_RE.test(email)) {
       this.emailError = "That doesn't look like a valid email — mind double-checking it?";
       this.render();
+      // Send focus back to the field so the (role="alert") error is heard and
+      // the user can correct it without hunting for the input.
+      const field = this.root.querySelector("#pq-email");
+      if (field) field.focus();
       return;
     }
 
@@ -784,7 +806,7 @@ class PaddleQuizApp {
 
     this.submitting = false;
     this.step += 1;
-    this.render();
+    this.render({ focus: true });
   }
 }
 

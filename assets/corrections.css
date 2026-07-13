@@ -34,7 +34,7 @@
   font-size: 0.98rem;
   color: var(--ink);
   background: var(--glass);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-s);
   padding: 0.7em 0.9em;
   width: 100%;

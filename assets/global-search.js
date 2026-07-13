@@ -182,10 +182,18 @@
   }
 
   // ─── Per-instance widget factory ────────────────────────────────────────────
+  var SEARCH_SEQ = 0;
+
   function createSearch(container, variant) {
     var isHero = variant === "hero";
     var scope = container.getAttribute("data-search-scope"); // reserved; "courts" today
     void scope;
+
+    // Unique per instance so the input's aria-controls / aria-activedescendant
+    // and each option's id resolve correctly when both the nav and hero search
+    // are mounted on the same page.
+    var listboxId = "gs-listbox-" + ++SEARCH_SEQ;
+    var optionId = function (i) { return listboxId + "-opt-" + i; };
 
     var wrap = document.createElement("div");
     wrap.className = "global-search" + (isHero ? " global-search--hero" : "");
@@ -194,15 +202,29 @@
       '<input type="search" class="global-search-input" ' +
       'placeholder="' +
       (isHero ? "Search a city or court — e.g. Berkeley" : "Search a city or venue…") +
-      '" aria-label="Search cities and courts" autocomplete="off" />' +
-      '<div class="global-search-results" role="listbox" hidden></div>';
+      '" aria-label="Search cities and courts" autocomplete="off" ' +
+      'role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="' +
+      listboxId +
+      '" />' +
+      '<div class="global-search-results" id="' +
+      listboxId +
+      '" role="listbox" aria-label="Search results" hidden></div>' +
+      '<div class="visually-hidden" data-role="gs-status" role="status" aria-live="polite"></div>';
 
     container.appendChild(wrap);
 
     var input = wrap.querySelector(".global-search-input");
     var resultsEl = wrap.querySelector(".global-search-results");
+    var statusEl = wrap.querySelector('[data-role="gs-status"]');
     var activeIndex = -1;
     var currentMatches = [];
+
+    // Collapse the popup + reset the combobox ARIA state. Callers that also
+    // want the list emptied clear innerHTML themselves.
+    function setExpanded(open) {
+      input.setAttribute("aria-expanded", open ? "true" : "false");
+      if (!open) input.removeAttribute("aria-activedescendant");
+    }
 
     function renderResults(matches, query) {
       activeIndex = -1;
@@ -211,6 +233,8 @@
       if (!query.trim()) {
         resultsEl.hidden = true;
         resultsEl.innerHTML = "";
+        setExpanded(false);
+        statusEl.textContent = "";
         return;
       }
 
@@ -220,6 +244,8 @@
           '<div class="global-search-empty">' +
           (venuesLoaded ? 'No matches for "' + escapeHtml(query) + '"' : "Searching…") +
           "</div>";
+        setExpanded(true);
+        statusEl.textContent = venuesLoaded ? "No matches for " + query : "Searching…";
         return;
       }
 
@@ -229,9 +255,11 @@
           return (
             '<a class="global-search-result' +
             (m.isSub ? " gsr--sub" : "") +
+            '" id="' +
+            optionId(i) +
             '" href="' +
             m.href +
-            '" role="option" data-index="' +
+            '" role="option" aria-selected="false" data-index="' +
             i +
             '">' +
             '<span class="gsr-label">' +
@@ -244,6 +272,9 @@
           );
         })
         .join("");
+      setExpanded(true);
+      statusEl.textContent =
+        matches.length + (matches.length === 1 ? " result" : " results") + ". Use arrow keys to browse.";
     }
 
     function run(query) {
@@ -275,6 +306,8 @@
         input.value = match.label;
         resultsEl.hidden = true;
         resultsEl.innerHTML = "";
+        setExpanded(false);
+        statusEl.textContent = "";
         activeIndex = -1;
         currentMatches = [];
         input.blur();
@@ -292,10 +325,17 @@
     });
 
     function setActive(index, items) {
-      for (var i = 0; i < items.length; i++) items[i].classList.remove("is-active");
+      for (var i = 0; i < items.length; i++) {
+        items[i].classList.remove("is-active");
+        items[i].setAttribute("aria-selected", "false");
+      }
       if (index >= 0 && items[index]) {
         items[index].classList.add("is-active");
+        items[index].setAttribute("aria-selected", "true");
         items[index].scrollIntoView({ block: "nearest" });
+        input.setAttribute("aria-activedescendant", items[index].id);
+      } else {
+        input.removeAttribute("aria-activedescendant");
       }
       activeIndex = index;
     }
@@ -322,6 +362,8 @@
         input.value = "";
         resultsEl.hidden = true;
         resultsEl.innerHTML = "";
+        setExpanded(false);
+        statusEl.textContent = "";
         input.blur();
       }
     });
@@ -343,7 +385,10 @@
     });
 
     document.addEventListener("click", function (e) {
-      if (!wrap.contains(e.target)) resultsEl.hidden = true;
+      if (!wrap.contains(e.target)) {
+        resultsEl.hidden = true;
+        setExpanded(false);
+      }
     });
 
     instances.push({ input: input, run: run });
