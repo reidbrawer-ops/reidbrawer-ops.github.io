@@ -133,6 +133,19 @@ rating, never blended into one number).
 
 **Callouts** — `.callout` (poppy left-border block for warnings/notices).
 
+**Icons** — a shared line-icon sprite lives at `assets/icons.svg`, referenced
+with `<use href="/assets/icons.svg#ic-…">` (ids: `ic-court`, `ic-outdoor`,
+`ic-indoor`, `ic-reservable`, `ic-cost`, `ic-hours`, `ic-skill`, `ic-surface`,
+`ic-weather`, `ic-wait`, `ic-restroom`, `ic-water`, `ic-lights`, `ic-parking`,
+`ic-quiet`). Style: 24×24 grid, 1.7px stroke, round caps/joins, court-line /
+daylight feel. **Symbols carry no `fill`/`stroke`** so they inherit them from
+the referencing `<svg>` — recolor via `currentColor`, never hardcode a color in
+the sprite. Today the venue-card rating pills use it: `.rating-pill` is
+`.rp-ico` (the leading 19px icon, `--ink-soft`) + `.rp-body` (`.rlabel` mono
+caps + `.rvalue`, with `good`/`caution`/`neutral` value colors), laid out as a
+2-up grid that stacks to 1 column at 560px. Reuse this sprite for any new
+fact/amenity icon rather than inlining new SVG per page.
+
 **Map** — `.venue-map` container + `.pba-pin` (`--outdoor`/`--indoor`/`--both`
 gradient split/`--unknown` modifiers, `.top-pick` adds an optic ring) +
 Leaflet control/popup overrides scoped under `.leaflet-*` selectors so the

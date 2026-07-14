@@ -1029,26 +1029,50 @@ img, svg {
 /* ---------- Rating breakdown ---------- */
 
 .rating-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0.5rem 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem 1.5rem;
+  margin: 0.9rem 0;
 }
 
 .rating-pill {
   display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+/* Leading fact icon (from assets/icons.svg). No fill/stroke on the sprite
+   symbols, so they recolor via currentColor / the stroke set here. */
+.rp-ico {
+  flex: none;
+  width: 19px;
+  height: 19px;
+  margin-top: 1px;
+  color: var(--ink-soft);
+}
+
+.rp-ico svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rp-body {
+  display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  background: var(--fog);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 0.3rem 0.6rem;
-  min-width: 90px;
+  gap: 0.1rem;
+  min-width: 0;
 }
 
 .rating-pill .rlabel {
   font-family: var(--font-mono);
-  font-size: 0.64rem;
+  font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--ink-soft);
@@ -1058,6 +1082,7 @@ img, svg {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--ink);
+  line-height: 1.35;
 }
 
 .rating-pill .rvalue.good {
@@ -1071,6 +1096,12 @@ img, svg {
 .rating-pill .rvalue.neutral {
   color: var(--ink-soft);
   font-weight: 500;
+}
+
+@media (max-width: 560px) {
+  .rating-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------- Booking button / outline pill button (shared with
