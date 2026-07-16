@@ -9,6 +9,11 @@
 
 import { firebaseConfig, isFirebaseConfigured } from "/assets/firebase-config.js";
 
+// dom-utils.js (a plain script, loaded before this module on every page that
+// mounts the quiz — see its header) owns the single escapeHtml definition.
+// Reuse it rather than adding the N+1th copy this codebase already audited away.
+const escapeAttr = (s) => window.PBUtils.escapeHtml(s);
+
 const QUESTIONS = [
   {
     key: "experience",
@@ -251,7 +256,7 @@ function vendorLinkFor(paddle, affiliateMap) {
     } else {
       href = appendParams(base, brandCfg.params);
     }
-    return { href, label: brandCfg.label || `Buy ${paddle.brand}`, isAffiliate: true };
+    return { href, label: brandCfg.label || `Buy ${paddle.brand}`, isAffiliate: true, linkType: "brand-program" };
   }
 
   // 2) Amazon Associates fallback — for brands with no program of their own
@@ -269,15 +274,15 @@ function vendorLinkFor(paddle, affiliateMap) {
     const asin = az.asins ? az.asins[paddle.id] : null;
     if (asin) {
       const detailBase = az.detailBase || "https://www.amazon.com/dp/";
-      return { href: appendParams(detailBase + encodeURIComponent(asin), { tag: az.tag }), label: "Buy on Amazon", isAffiliate: true, isAmazon: true };
+      return { href: appendParams(detailBase + encodeURIComponent(asin), { tag: az.tag }), label: "Buy on Amazon", isAffiliate: true, isAmazon: true, linkType: "amazon-deep" };
     }
     const searchBase = az.searchBase || "https://www.amazon.com/s?k=";
     const query = encodeURIComponent(`${paddle.brand} ${paddle.name} pickleball paddle`);
-    return { href: appendParams(searchBase + query, { tag: az.tag }), label: "Search Amazon", isAffiliate: true, isAmazon: true };
+    return { href: appendParams(searchBase + query, { tag: az.tag }), label: "Search Amazon", isAffiliate: true, isAmazon: true, linkType: "amazon-search" };
   }
 
   // 3) No program yet — an honest, un-tagged link to the brand's own site.
-  return { href: base, label: searchUrl ? `Search ${paddle.brand}` : `Visit ${paddle.brand}`, isAffiliate: false };
+  return { href: base, label: searchUrl ? `Search ${paddle.brand}` : `Visit ${paddle.brand}`, isAffiliate: false, linkType: "plain" };
 }
 
 // ---------- Comparison-table dimension ratings ----------
@@ -707,17 +712,29 @@ class PaddleQuizApp {
     const anyAffiliate = links.some((l) => l && l.isAffiliate);
     const anyAmazon = links.some((l) => l && l.isAmazon);
 
+    // The data-pq-* attributes feed the outbound-click event in trackVendorClicks
+    // below. They exist because Amazon's Associates reporting stopped exposing
+    // order-level data in March 2026 — it will not tell us which paddle or which
+    // link type earned a click, so we measure that ourselves.
     const linkRow = `
       <tr class="pq-compare-links">
         <th class="pq-compare-label" scope="row"></th>
         ${links
-          .map((link) => {
+          .map((link, i) => {
             if (!link) return "<td></td>";
             // Affiliate links get rel="sponsored" per FTC guidance (and the
             // site's affiliate stance); plain vendor links stay nofollow but
             // are not marked sponsored, because they aren't.
             const rel = link.isAffiliate ? "sponsored nofollow noopener" : "nofollow noopener";
-            return `<td><a class="book-btn" href="${link.href}" target="_blank" rel="${rel}">${link.label} →<span class="visually-hidden"> (opens in new tab)</span></a></td>`;
+            const p = top[i].paddle;
+            const data = [
+              `data-pq-paddle="${escapeAttr(p.id)}"`,
+              `data-pq-brand="${escapeAttr(p.brand)}"`,
+              `data-pq-link-type="${escapeAttr(link.linkType || "unknown")}"`,
+              `data-pq-affiliate="${link.isAffiliate ? "1" : "0"}"`,
+              `data-pq-position="${i + 1}"`,
+            ].join(" ");
+            return `<td><a class="book-btn" href="${link.href}" target="_blank" rel="${rel}" ${data}>${link.label} →<span class="visually-hidden"> (opens in new tab)</span></a></td>`;
           })
           .join("")}
       </tr>`;
@@ -848,9 +865,42 @@ class PaddleQuizApp {
   }
 }
 
+// Outbound buy-link tracking.
+//
+// Amazon's Associates reporting stopped exposing order-level data on 2026-03-09:
+// it gives a topline click count and an earnings figure, but will not say which
+// paddle, which link type, or which result position earned them. This measures
+// that ourselves, and covers brand-direct links too — which Amazon was never
+// going to report on at all.
+//
+// Delegated on document (rather than bound per-render) because the results table
+// is re-rendered on every retake; one listener outlives them all.
+//
+// It deliberately no-ops when gtag is missing. analytics.js does not define gtag
+// AT ALL for visitors who send Global Privacy Control / Do Not Track, or who used
+// the opt-out on /privacy — so an absent gtag means the visitor declined tracking,
+// and an affiliate tracker must not be the thing that quietly reinstates it.
+function trackVendorClicks() {
+  document.addEventListener("click", (e) => {
+    const t = e.target;
+    if (!t || typeof t.closest !== "function") return;
+    const a = t.closest("a[data-pq-paddle]");
+    if (!a) return;
+    if (typeof window.gtag !== "function") return; // opted out — see above
+    window.gtag("event", "affiliate_click", {
+      paddle_id: a.dataset.pqPaddle,
+      brand: a.dataset.pqBrand,
+      link_type: a.dataset.pqLinkType, // brand-program | amazon-deep | amazon-search | plain
+      is_affiliate: a.dataset.pqAffiliate === "1",
+      position: Number(a.dataset.pqPosition),
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const root = document.getElementById("paddle-quiz-app");
   if (!root) return;
+  trackVendorClicks();
   try {
     // The affiliate overlay is optional chrome on top of the required paddle
     // data — a missing/broken map must not break the quiz, so it's fetched
