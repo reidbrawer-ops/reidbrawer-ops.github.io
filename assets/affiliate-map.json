@@ -14,13 +14,15 @@
     "  2. amazonFallback, if the brand is in amazonFallback.brands -> a tagged Amazon link (deep link when an ASIN is known, else a search).",
     "  3. neither -> an honest, un-tagged link to the brand's own site.",
     "",
-    "amazonFallback.brands is an ALLOWLIST and it is required — an absent or empty list disables Amazon entirely. It exists because roughly two-thirds of assets/paddles.json is DTC-only brands (Vatic Pro, Six Zero, CRBN, Ronbus, 11SIX24, Proton...) that do not sell on Amazon at all. Without the allowlist those paddles get a tagged Amazon search that returns unrelated paddles — a link that is technically honest but useless, and out of step with how the rest of this site treats its readers. Only add a brand here after confirming it actually has listings.",
+    "amazonFallback.brands is an ALLOWLIST and it is required — an absent or empty list disables Amazon entirely. It exists because a meaningful share of paddles.json is brands with no Amazon listings at all (Gherkin, Honolulu Pickleball, Chorus, Neonic, Bread & Butter...). Without the allowlist those paddles get a tagged Amazon search that returns unrelated paddles — a link that is technically honest but useless, and out of step with how the rest of this site treats its readers. Only add a brand here after confirming it actually has listings.",
     "",
     "amazonFallback.asins maps a paddles.json `id` -> a hand-verified ASIN, upgrading that paddle from a search link to a direct product link. Entirely optional and incremental; any paddle without one still gets the search. Amazon's Creators API (the bulk source for ASINs) requires 10 qualified sales in a trailing 30-day window, so until then these are gathered by hand via SiteStripe. Before adding one, confirm the listing is the exact model AND sold by the brand or Amazon rather than a markup reseller — check it against the paddle's own `price` field.",
     "",
     "The `brands` allowlist below was verified July 2026 by running each of the 56 brands in paddles.json through a real Amazon search and counting ORGANIC (non-sponsored) results whose brand line matched. The trailing number on each line is that count. Threshold for inclusion was >=5 — enough that a brand search surfaces real listings above the noise. Re-check periodically; brands come and go from Amazon.",
     "Do NOT assume a DTC brand is absent from Amazon. That assumption was tested and was wrong: Vatic Pro, Six Zero, CRBN, Ronbus and 11SIX24 all sell there despite direct-to-consumer reputations.",
-    "Known gaps in the verification: (a) SLK (10 paddles) scored 1 because Amazon files it under parent brand Selkirk — worth a manual re-check rather than trusting the number. Selkirk Labs likely has the same issue. (b) Brands whose names are ordinary words (Friday, Thrive, Rev, Chorus, Scoop, Mark) are the ones most at risk of a miscount in either direction. (c) The count says listings EXIST; it says nothing about whether they are sold by the brand or by a markup reseller — that still needs checking per listing before adding an ASIN."
+    "Known gaps in the verification: (a) Brands whose names are ordinary words (Friday, Thrive, Rev, Chorus, Scoop, Mark) are the ones most at risk of a miscount in either direction. (b) The count says listings EXIST; it says nothing about whether they are sold by the brand or by a markup reseller — that still needs checking per listing before adding an ASIN.",
+    "SLK was a CONFIRMED false negative and is now allowlisted. It scored 1 in the sweep because Amazon files SLK products under the brand line \"Selkirk Sport\", not \"SLK\", so a brand-line match never fired. Verified July 2026 via direct listings for SLK Halo, Dauntless, Evo, Atlas and ERA Power. Selkirk Labs (scored 0) is likely the same false negative and is worth re-checking the same way. The lesson generalises: a sub-brand sold under its parent's brand line will always undercount here.",
+    "Amazon variation listings are the main hazard when adding ASINs. One listing can cover many variants (SLK Halo spans Control/Power/Pro x Max/XL; Six Zero Double Black Diamond spans 14mm/16mm/Elongated), and the productTitle returns the generic PARENT title regardless of which child ASIN you fetch. That makes the title useless for telling variants apart. Only add an ASIN when the title names the exact model, or the price uniquely identifies one catalog row — otherwise the deep link silently lands on the wrong variant, which is worse than the search fallback."
   ],
   "amazonFallback": {
     "enabled": true,
@@ -29,6 +31,7 @@
     "detailBase": "https://www.amazon.com/dp/",
     "brands": [
       "JOOLA",
+      "SLK",
       "Head",
       "Paddletek",
       "Diadem",
@@ -53,7 +56,30 @@
       "Volair",
       "Thrive"
     ],
-    "asins": {}
+    "asins": {
+      "11six24-power-2-vapor": "B0GZHM5J6P",
+      "11six24-power-2-hurache-x": "B0GZLKDRV5",
+      "11six24-power-2-pegasus": "B0GZHT6TK7",
+      "11six24-all-court-vapor": "B0GMKL8251",
+      "six-zero-coral-hybrid": "B0GF3XDKDK",
+      "vatic-pro-v-sol-pro-v7": "B0FQ8JFKGF",
+      "vatic-pro-v-sol-pro-flash": "B0FQ7XX11W",
+      "vatic-pro-v-sol-pro-bloom": "B0FQ8SPCTL",
+      "vatic-pro-v-sol-pro-flash-lh": "B0G27RJR6C",
+      "vatic-pro-v-sol-pro-v7-lh": "B0G27NZW6R",
+      "slk-halo-power-max": "B0CVR2W6BV",
+      "slk-halo-control-max": "B0CVR2XL4X",
+      "slk-halo-control-xl": "B0CVR2TFWD",
+      "slk-halo-power-xl": "B0CVR1THC4",
+      "slk-halo-pro-xl": "B0CVR1HKSJ",
+      "slk-halo-control-max-2024-version": "B0BQPXMPVY",
+      "selkirk-slk-dauntless-elongated": "B0GMJSMLHC",
+      "selkirk-slk-dauntless-widebody": "B0GLHX7RR2",
+      "slk-era-power-widebody": "B0FCR9BRYY",
+      "slk-era-power-elongated": "B0FCQWRFSX",
+      "paddletek-bantam-gto-c-12-7": "B0FCSKR4ZB",
+      "adidas-pro-edt-16-c": "B0FT54PLZN"
+    }
   },
   "brands": {}
 }

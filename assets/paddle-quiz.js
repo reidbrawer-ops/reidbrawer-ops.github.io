@@ -647,6 +647,14 @@ class PaddleQuizApp {
       `;
     }
 
+    // The "list" suffix on the price is load-bearing. paddles.json's price is
+    // the manufacturer's list price (PADDLE_DATA_SETUP.md treats it as a raw
+    // manufacturer fact), and retailers routinely sell under it — Adidas, SLK
+    // and Paddletek all ran 20-48% below list on Amazon when this was written.
+    // Amazon's real price can't be shown instead: the Operating Agreement only
+    // permits displaying prices taken from the Product Advertising API and
+    // refreshed within 24h, and this site has no API access. So label whose
+    // price it is rather than imply it's what the visitor will pay.
     const cols = top
       .map(
         ({ paddle, dims }, i) => `
@@ -655,7 +663,7 @@ class PaddleQuizApp {
           <h3>${paddle.name}</h3>
           ${i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`}
         </div>
-        <span class="addr">${paddle.brand}${paddle.price != null ? ` · $${paddle.price}` : ""}</span>
+        <span class="addr">${paddle.brand}${paddle.price != null ? ` · $${paddle.price} list` : ""}</span>
         <p class="pq-tagline">${taglineFor(dims)}</p>
       </th>`
       )
