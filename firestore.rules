@@ -21,9 +21,12 @@ service cloud.firestore {
       allow read: if true;
       allow delete: if false;
 
-      allow create: if isWellFormed(request.resource.data) && isSingleSeedWrite(request.resource.data);
+      allow create: if isWellFormed(request.resource.data)
+                    && isSingleSeedWrite(request.resource.data)
+                    && updatedAtOkOnCreate();
 
       allow update: if isWellFormed(request.resource.data)
+                    && updatedAtOkOnUpdate()
                     && onlyKnownFieldsChanged()
                     && singleGroupChanged()
                     && favoriteDeltaOk()
@@ -42,8 +45,34 @@ service cloud.firestore {
           'waitTimeScoreSum', 'waitTimeScoreCount',
           'advancedPlaySum', 'advancedPlayCount',
           'amenitiesSum', 'amenitiesCount',
-          'atmosphereSum', 'atmosphereCount'
+          'atmosphereSum', 'atmosphereCount',
+          'updatedAt'
         ];
+      }
+
+      // `updatedAt` records when this court was last rated or favorited.
+      // Note this is a LAST-write stamp on a shared aggregate doc, not a
+      // per-submission history: it tells you when a court last saw activity,
+      // not when any individual vote landed.
+      //
+      // Deliberately tolerant rather than mandatory. When the field IS sent
+      // it must equal request.time (same trick as paddleQuizLeads.createdAt),
+      // so nobody can back- or forward-date a court's activity. But a client
+      // may also omit it, or leave an existing value untouched. That matters
+      // because making it mandatory leaves no safe deploy order: rules-first
+      // rejects the old client (which sends no updatedAt), JS-first rejects
+      // the new field, and assets/*.js ships Cache-Control max-age=600 while
+      // an already-open tab can hold old JS indefinitely. Tolerant means
+      // stale clients keep voting successfully — they just don't stamp.
+      function updatedAtOkOnCreate() {
+        let next = request.resource.data.get('updatedAt', null);
+        return next == null || next == request.time;
+      }
+
+      function updatedAtOkOnUpdate() {
+        let next = request.resource.data.get('updatedAt', null);
+        let prev = resource.data.get('updatedAt', null);
+        return next == null || next == request.time || next == prev;
       }
 
       function isWellFormed(data) {
@@ -104,6 +133,15 @@ service cloud.firestore {
       // ever change in one write. Without this, the per-field bounds above
       // still hold individually, but nothing stops one write from changing
       // several slots (e.g. a favorite toggle plus all six factors) at once.
+      //
+      // `updatedAt` is deliberately not part of any slot, so stamping it
+      // alongside a vote doesn't trip this check. The bound stays <= 1 (not
+      // == 1) because re-picking your existing star value is a real no-op
+      // write: rateFactor() sends increment(0)/increment(0), which changes
+      // no counter, so only updatedAt lands in affectedKeys. The tradeoff is
+      // that a scripted no-op write can bump a court's updatedAt without
+      // voting — same "shape validation, not fraud prevention" caveat as the
+      // header note; it can skew "recently active", never the rankings.
       function singleGroupChanged() {
         let keys = request.resource.data.diff(resource.data).affectedKeys();
         let groupsTouched =

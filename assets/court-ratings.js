@@ -107,6 +107,7 @@ class LocalDemoBackend {
     const store = readJson(LS_DEMO_STATS, {});
     const doc = await this.ensureDoc(store, courtId);
     doc.favoriteVotes = Math.max(0, (doc.favoriteVotes || 0) + delta);
+    doc.updatedAt = new Date().toISOString();
     writeJson(LS_DEMO_STATS, store);
     return store[courtId];
   }
@@ -116,6 +117,7 @@ class LocalDemoBackend {
     const doc = await this.ensureDoc(store, courtId);
     doc[factorKey + "Sum"] = Math.max(0, (doc[factorKey + "Sum"] || 0) + sumDelta);
     doc[factorKey + "Count"] = Math.max(0, (doc[factorKey + "Count"] || 0) + countDelta);
+    doc.updatedAt = new Date().toISOString();
     writeJson(LS_DEMO_STATS, store);
     return store[courtId];
   }
@@ -139,24 +141,24 @@ class FirebaseBackend {
   }
 
   async incrementFavorite(courtId, delta) {
-    const { doc, runTransaction, increment } = this.fs;
+    const { doc, runTransaction, increment, serverTimestamp } = this.fs;
     const ref = doc(this.db, "courtVotes", courtId);
     return runTransaction(this.db, async (tx) => {
       const snap = await tx.get(ref);
       if (!snap.exists()) {
         const fresh = emptyDoc();
         fresh.favoriteVotes = Math.max(0, delta);
-        tx.set(ref, fresh);
+        tx.set(ref, { ...fresh, updatedAt: serverTimestamp() });
         return fresh;
       }
-      tx.update(ref, { favoriteVotes: increment(delta) });
+      tx.update(ref, { favoriteVotes: increment(delta), updatedAt: serverTimestamp() });
       const data = snap.data();
       return { ...data, favoriteVotes: Math.max(0, (data.favoriteVotes || 0) + delta) };
     });
   }
 
   async applyRatingDelta(courtId, factorKey, sumDelta, countDelta) {
-    const { doc, runTransaction, increment } = this.fs;
+    const { doc, runTransaction, increment, serverTimestamp } = this.fs;
     const ref = doc(this.db, "courtVotes", courtId);
     return runTransaction(this.db, async (tx) => {
       const snap = await tx.get(ref);
@@ -164,13 +166,14 @@ class FirebaseBackend {
         const fresh = emptyDoc();
         fresh[factorKey + "Sum"] = Math.max(0, sumDelta);
         fresh[factorKey + "Count"] = Math.max(0, countDelta);
-        tx.set(ref, fresh);
+        tx.set(ref, { ...fresh, updatedAt: serverTimestamp() });
         return fresh;
       }
       const data = snap.data();
       tx.update(ref, {
         [factorKey + "Sum"]: increment(sumDelta),
         [factorKey + "Count"]: increment(countDelta),
+        updatedAt: serverTimestamp(),
       });
       return {
         ...data,
