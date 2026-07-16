@@ -22,7 +22,8 @@
     "Do NOT assume a DTC brand is absent from Amazon. That assumption was tested and was wrong: Vatic Pro, Six Zero, CRBN, Ronbus and 11SIX24 all sell there despite direct-to-consumer reputations.",
     "Known gaps in the verification: (a) Brands whose names are ordinary words (Friday, Thrive, Rev, Chorus, Scoop, Mark) are the ones most at risk of a miscount in either direction. (b) The count says listings EXIST; it says nothing about whether they are sold by the brand or by a markup reseller — that still needs checking per listing before adding an ASIN.",
     "SLK was a CONFIRMED false negative and is now allowlisted. It scored 1 in the sweep because Amazon files SLK products under the brand line \"Selkirk Sport\", not \"SLK\", so a brand-line match never fired. Verified July 2026 via direct listings for SLK Halo, Dauntless, Evo, Atlas and ERA Power. Selkirk Labs (scored 0) is likely the same false negative and is worth re-checking the same way. The lesson generalises: a sub-brand sold under its parent's brand line will always undercount here.",
-    "Amazon variation listings are the main hazard when adding ASINs. One listing can cover many variants (SLK Halo spans Control/Power/Pro x Max/XL; Six Zero Double Black Diamond spans 14mm/16mm/Elongated), and the productTitle returns the generic PARENT title regardless of which child ASIN you fetch. That makes the title useless for telling variants apart. Only add an ASIN when the title names the exact model, or the price uniquely identifies one catalog row — otherwise the deep link silently lands on the wrong variant, which is worse than the search fallback."
+    "Amazon variation listings are the main hazard when adding ASINs. One listing can cover many variants (SLK Halo spans Control/Power/Pro x Max/XL; Six Zero Double Black Diamond spans 14mm/16mm/Elongated), and the productTitle returns the generic PARENT title regardless of which child ASIN you fetch. That makes the title useless for telling variants apart. Only add an ASIN when the title names the exact model, or the price uniquely identifies one catalog row — otherwise the deep link silently lands on the wrong variant, which is worse than the search fallback.",
+    "Friday was REMOVED from the allowlist in July 2026 despite having real Amazon listings (it scored 12 in the sweep). Its Amazon prices run ABOVE the manufacturer's own list — Aura Hybrid was $183 against a $129 list (+42%), Aura Pro Widebody $179 against $169 (+6%) — so an Amazon link would send a reader to pay more than fridaypickleball.com charges, earning ~3% while costing them ~40%. Dropping the brand lets its paddles fall to tier 3, an honest un-tagged link to the brand's own site at list price. This is the general rule, and it is the opposite of the usual case: most retail brands sell UNDER list on Amazon (Adidas -48%, SLK -29%, Paddletek -20%), which is fine and worth linking. A brand priced consistently ABOVE its own list on Amazon is a markup reseller in disguise — check price against the paddle's `price` field before allowlisting, not just whether listings exist. Friday's own affiliate program (5-15%) is the right answer for these paddles instead."
   ],
   "amazonFallback": {
     "enabled": true,
@@ -47,7 +48,6 @@
       "Babolat",
       "Adidas",
       "Six Zero",
-      "Friday",
       "Ronbus",
       "Holbrook",
       "Vatic Pro",
@@ -78,7 +78,11 @@
       "slk-era-power-widebody": "B0FCR9BRYY",
       "slk-era-power-elongated": "B0FCQWRFSX",
       "paddletek-bantam-gto-c-12-7": "B0FCSKR4ZB",
-      "adidas-pro-edt-16-c": "B0FT54PLZN"
+      "adidas-pro-edt-16-c": "B0FT54PLZN",
+      "engage-pursuit-pro-ex": "B0CGVYQH5S",
+      "engage-pursuit-pro-ex-6-0": "B0CGVYCFMW",
+      "engage-pursuit-pro-mx": "B0GW9SCPFB",
+      "engage-pursuit-pro-mx-6-0": "B0CGVYPK2D"
     }
   },
   "brands": {}
