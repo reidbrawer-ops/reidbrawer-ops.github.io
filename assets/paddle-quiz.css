@@ -270,7 +270,12 @@
   border-bottom: none;
 }
 
+/* An equal share each, so a column's width comes from the table rather than
+   from how long its paddle's name or brand happens to be — the buy pills
+   below size off the column, and uneven columns would make them uneven too.
+   The label column takes whatever is left over. */
 .pq-compare-col {
+  width: 33.33%;
   min-width: 200px;
   vertical-align: top;
 }
@@ -303,8 +308,27 @@
   background: var(--paper);
 }
 
+/* The three buy links read as one control repeated across the picks, so they
+   have to be the same size: a long brand ("Search Honolulu Pickleball") must
+   not get a bigger pill than "Search Enhance" sitting next to it. Width comes
+   from the (equal) column, and height from stretching every pill to the row,
+   whose height the tallest label sets — so the set stays uniform whatever the
+   labels say, with no worst-case height to keep in sync as brands come and go.
+   `height: 1px` is the usual idiom for giving the cell a definite height for
+   `height: 100%` to resolve against; content still wins, as a cell's height is
+   really a minimum. */
 .pq-compare-links td {
   padding-top: 1.1rem;
+  height: 1px;
+}
+
+.pq-compare-links .book-btn {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+  margin-top: 0;
 }
 
 .pq-meter {
