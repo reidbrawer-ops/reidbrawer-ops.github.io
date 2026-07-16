@@ -1,4 +1,4 @@
-// Find your paddle — an 11-question wizard that scores every paddle in
+// Find your paddle — a 10-question wizard that scores every paddle in
 // assets/paddles.json against the visitor's answers, shows their top 3
 // matches as a side-by-side comparison, and captures an email as a lead
 // (Firestore, write-only — see firestore.rules `paddleQuizLeads`).
@@ -77,22 +77,12 @@ const QUESTIONS = [
   },
   {
     key: "weight",
-    prompt: "Lighter or heavier overall?",
-    hint: "There's no one right weight — only what your arm and swing prefer.",
+    prompt: "Quick and light, or heavy and stable?",
+    hint: "This covers both what the paddle weighs on a scale and how heavy it feels in motion (its swing weight). There's no one right answer — only what your arm and swing prefer.",
     options: [
-      { value: "light", label: "Lighter", hint: "Faster hands and less fatigue late in matches" },
-      { value: "neutral", label: "No strong preference", hint: "Happy to split the difference" },
-      { value: "heavy", label: "Heavier", hint: "More plow-through and stability on contact" },
-    ],
-  },
-  {
-    key: "swingWeight",
-    prompt: "How should it feel when you swing it?",
-    hint: "Different from overall weight — two paddles can weigh the same and still swing very differently. This is swing weight: how heavy it feels in motion.",
-    options: [
-      { value: "low", label: "Quick and maneuverable", hint: "Faster hands at the net — lower swing weight" },
-      { value: "mid", label: "Balanced", hint: "A bit of both — no strong preference" },
-      { value: "high", label: "Stable through contact", hint: "More plow-through on drives — higher swing weight, slower hands" },
+      { value: "light", label: "Quick and maneuverable", hint: "Faster hands at the net and less fatigue late in matches" },
+      { value: "neutral", label: "Balanced", hint: "No strong preference — happy to split the difference" },
+      { value: "heavy", label: "Heavy and stable", hint: "More plow-through and stability on contact, slower hands" },
     ],
   },
   {
@@ -116,12 +106,11 @@ const QUESTIONS = [
   {
     key: "budget",
     prompt: "What's your budget?",
-    hint: "We'll prioritize this range, but still surface the best overall fit.",
+    hint: "We'll prioritize your range, but still surface the best overall fit.",
     options: [
-      { value: "under150", label: "Under $150", hint: "Great value, entry-level builds" },
-      { value: "150to200", label: "$150–$200", hint: "The sweet spot for most players" },
-      { value: "200to250", label: "$200–$250", hint: "Premium construction and materials" },
-      { value: "250plus", label: "$250+", hint: "Top-of-line — budget isn't the priority" },
+      { value: "under100", label: "Under $100", hint: "Great value, entry-level builds" },
+      { value: "100to200", label: "$100–$200", hint: "The sweet spot for most players" },
+      { value: "nobudget", label: "No budget", hint: "Price isn't a factor — show me the best fit at any price" },
     ],
   },
 ];
@@ -145,10 +134,16 @@ function weightPrefScore(paddle, weightPref) {
   return trapezoid(w, 8.3, 20, 0.6); // heavy
 }
 
-const BUDGET_RANGES = { under150: [0, 150], "150to200": [150, 200], "200to250": [200, 250], "250plus": [250, 999] };
+// "nobudget" deliberately has no range — see budgetScore.
+const BUDGET_RANGES = { under100: [0, 100], "100to200": [100, 200] };
 
+// Null (not a flat top score) when the visitor said price isn't a factor: a
+// constraint they don't have shouldn't earn every paddle three dots of
+// "budget fit" it did nothing to deserve. The row is dropped from the table
+// and the term from the ranking instead — see dimRow and totalScore.
 function budgetScore(paddle, budgetPref) {
   const r = BUDGET_RANGES[budgetPref];
+  if (!r) return null;
   return trapezoid(paddle.price, r[0], r[1], 80);
 }
 
@@ -174,6 +169,17 @@ function swingWeightPrefScore(paddle, pref) {
   if (pref === "low") return trapezoid(idx, 0, 0.35, 0.2);
   if (pref === "mid") return trapezoid(idx, 0.35, 0.65, 0.2);
   return trapezoid(idx, 0.65, 1, 0.2); // high
+}
+
+// Static weight and swing weight are genuinely different properties (a light
+// paddle can still swing heavy), but they're the same question to a visitor —
+// "how heavy do you want this thing to feel" — so the quiz asks once and scores
+// both halves against that one answer, averaged into a single "weight fit" dot.
+const SWING_WEIGHT_PREF = { light: "low", neutral: "mid", heavy: "high" };
+
+function weightFitScore(paddle, weightPref) {
+  const swingPref = SWING_WEIGHT_PREF[weightPref] || "mid";
+  return (weightPrefScore(paddle, weightPref) + swingWeightPrefScore(paddle, swingPref)) / 2;
 }
 
 // Twist weight percentile is a real per-paddle field (see dimensionsFor's
@@ -248,13 +254,26 @@ function vendorLinkFor(paddle, affiliateMap) {
     return { href, label: brandCfg.label || `Buy ${paddle.brand}`, isAffiliate: true };
   }
 
-  // 2) Amazon Associates fallback — slots in for brands with no program of
-  //    their own once enabled, without any per-paddle rewrite.
+  // 2) Amazon Associates fallback — for brands with no program of their own
+  //    that are actually sold on Amazon. The `brands` allowlist is required:
+  //    most of the catalog is DTC-only brands with no Amazon listings at all,
+  //    and a tagged search for those returns unrelated paddles. An honest
+  //    un-tagged link to the brand's own site (case 3) beats a commissioned
+  //    link to the wrong thing.
   const az = affiliateMap && affiliateMap.amazonFallback;
-  if (az && az.enabled && az.tag) {
+  const azBrands = az && Array.isArray(az.brands) ? az.brands : [];
+  if (az && az.enabled && az.tag && azBrands.includes(paddle.brand)) {
+    // A hand-verified ASIN deep-links to the exact model; without one we fall
+    // back to a search, which is honest but converts worse. ASINs are added
+    // incrementally (see affiliate-map.json), so both paths stay live.
+    const asin = az.asins ? az.asins[paddle.id] : null;
+    if (asin) {
+      const detailBase = az.detailBase || "https://www.amazon.com/dp/";
+      return { href: appendParams(detailBase + encodeURIComponent(asin), { tag: az.tag }), label: "Buy on Amazon", isAffiliate: true, isAmazon: true };
+    }
     const searchBase = az.searchBase || "https://www.amazon.com/s?k=";
     const query = encodeURIComponent(`${paddle.brand} ${paddle.name} pickleball paddle`);
-    return { href: appendParams(searchBase + query, { tag: az.tag }), label: "Search Amazon", isAffiliate: true };
+    return { href: appendParams(searchBase + query, { tag: az.tag }), label: "Search Amazon", isAffiliate: true, isAmazon: true };
   }
 
   // 3) No program yet — an honest, un-tagged link to the brand's own site.
@@ -292,6 +311,7 @@ function forgivenessRatingOf(paddle) {
 }
 
 function toDots(score) {
+  if (score == null) return null; // A dimension the visitor's answers took out of play.
   if (score >= 0.7) return 3;
   if (score >= 0.4) return 2;
   return 1;
@@ -303,8 +323,7 @@ function dimensionsFor(paddle, fullAnswers) {
     control: toDots(controlRating(paddle)),
     spin: toDots(spinRatingOf(paddle)),
     forgiveness: toDots(forgivenessRatingOf(paddle)),
-    weightFit: toDots(weightPrefScore(paddle, fullAnswers.weight)),
-    swingWeightFit: toDots(swingWeightPrefScore(paddle, fullAnswers.swingWeight)),
+    weightFit: toDots(weightFitScore(paddle, fullAnswers.weight)),
     twistWeightFit: toDots(twistWeightPrefScore(paddle, fullAnswers.twistWeight)),
     budgetFit: toDots(budgetScore(paddle, fullAnswers.budget)),
     // Tagged once in assets/paddles.json from forgiveness (twist weight
@@ -384,10 +403,12 @@ const SHAPE_MAP = { widebody: "Widebody", elongated: "Elongated", hybrid: "Hybri
 // why it needs more than a simple double to actually move the needle.
 // Every dot term is a non-negative integer, so a paddle that's
 // equal-or-better on every shown dimension (and strictly better on at
-// least one) always scores strictly higher, full stop.
+// least one) always scores strictly higher, full stop. A null dim (only
+// budgetFit today, on a "no budget" answer) contributes 0 to every paddle
+// alike, so dropping it can't reorder anything.
 function totalScore(dims, a) {
   let score =
-    dims.power + dims.control + dims.spin + dims.forgiveness + dims.weightFit + dims.swingWeightFit + dims.twistWeightFit + dims.budgetFit;
+    dims.power + dims.control + dims.spin + dims.forgiveness + dims.weightFit + dims.twistWeightFit + (dims.budgetFit || 0);
 
   if (a.style === "power") score += dims.power;
   else if (a.style === "spin") score += dims.spin;
@@ -485,7 +506,6 @@ export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
         shape: fullAnswers.shape,
         sensitivity: fullAnswers.sensitivity,
         weight: fullAnswers.weight,
-        swingWeight: fullAnswers.swingWeight,
         twistWeight: fullAnswers.twistWeight,
         tournament: fullAnswers.tournament,
         budget: fullAnswers.budget,
@@ -550,8 +570,8 @@ class PaddleQuizApp {
       return `<span class="pq-dot ${cls}"></span>`;
     }).join("");
     // The last step is the email/reveal, not a question — so number the
-    // questions out of the real question count (matches the "eleven quick
-    // questions" copy) and call the final step "Last step" rather than "12 of 12".
+    // questions out of the real question count (matches the "ten quick
+    // questions" copy) and call the final step "Last step" rather than "11 of 11".
     const questionCount = total - 1;
     const label = stepIndex < questionCount ? `Question ${stepIndex + 1} of ${questionCount}` : "Last step";
     return `<div class="pq-progress"><span class="pq-progress-label">${label}</span><span class="pq-dots">${dots}</span></div>`;
@@ -641,11 +661,17 @@ class PaddleQuizApp {
       )
       .join("");
 
-    const dimRow = (label, key) => `
+    // A null dim is one the visitor's answers took out of play (today only
+    // "Budget fit", on a "no budget" answer — see budgetScore). Drop the whole
+    // row rather than render a meter that stands for nothing.
+    const dimRow = (label, key) => {
+      if (top.every(({ dims }) => dims[key] == null)) return "";
+      return `
       <tr>
         <th class="pq-compare-label" scope="row">${label}</th>
         ${top.map(({ dims }) => `<td>${meterHtml(dims[key], label)}</td>`).join("")}
       </tr>`;
+    };
 
     const weightRow = `
       <tr>
@@ -671,6 +697,7 @@ class PaddleQuizApp {
 
     const links = top.map(({ paddle }) => vendorLinkFor(paddle, this.affiliateMap));
     const anyAffiliate = links.some((l) => l && l.isAffiliate);
+    const anyAmazon = links.some((l) => l && l.isAmazon);
 
     const linkRow = `
       <tr class="pq-compare-links">
@@ -690,8 +717,12 @@ class PaddleQuizApp {
     // Disclosure sits with the buy links and tells the truth for the current
     // state: only claim a commission when at least one pick actually links
     // through an affiliate program.
+    // Amazon's Operating Agreement requires this statement verbatim wherever
+    // Associates links appear. Gated on anyAmazon rather than anyAffiliate so
+    // an all-brand-DTC result set doesn't claim an Amazon tie it doesn't have.
+    const amazonNotice = anyAmazon ? " As an Amazon Associate I earn from qualifying purchases." : "";
     const disclosure = anyAffiliate
-      ? `<p class="affiliate-disclosure" id="buy">Some paddle links above are affiliate links — we may earn a commission if you buy, at no extra cost to you. It never changes which paddles we recommend or our court data. <a href="/affiliate-disclosure">How this works</a>.</p>`
+      ? `<p class="affiliate-disclosure" id="buy">Some paddle links above are affiliate links — we may earn a commission if you buy, at no extra cost to you. It never changes which paddles we recommend or our court data.${amazonNotice} <a href="/affiliate-disclosure">How this works</a>.</p>`
       : `<p class="affiliate-disclosure" id="buy">These links go straight to each brand's own site — we don't earn a commission from them today. If that changes, we'll say so right here and on our <a href="/affiliate-disclosure">disclosure page</a>.</p>`;
 
     return `
@@ -709,9 +740,8 @@ class PaddleQuizApp {
             ${dimRow("Spin", "spin")}
             ${dimRow("Forgiveness", "forgiveness")}
             ${weightRow}
-            ${dimRow("Swing weight fit", "swingWeightFit")}
+            ${dimRow("Weight &amp; swing fit", "weightFit")}
             ${dimRow("Twist weight fit", "twistWeightFit")}
-            ${dimRow("Total weight fit", "weightFit")}
             ${dimRow("Budget fit", "budgetFit")}
             ${linkRow}
           </tbody>

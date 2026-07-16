@@ -187,7 +187,7 @@ service cloud.firestore {
           && data.email.size() <= 254
           && data.email.matches('^[^@\\s]+@[^@\\s]+[.][^@\\s]+$')
           && data.answers is map
-          && data.answers.keys().hasOnly(['experience', 'frequency', 'style', 'current', 'shape', 'sensitivity', 'weight', 'swingWeight', 'twistWeight', 'tournament', 'budget'])
+          && data.answers.keys().hasOnly(['experience', 'frequency', 'style', 'current', 'shape', 'sensitivity', 'weight', 'twistWeight', 'tournament', 'budget'])
           && data.answers.experience is string
           && data.answers.frequency is string
           && data.answers.style is string
@@ -195,7 +195,6 @@ service cloud.firestore {
           && data.answers.shape is string
           && data.answers.sensitivity is string
           && data.answers.weight is string
-          && data.answers.swingWeight is string
           && data.answers.twistWeight is string
           && data.answers.tournament is string
           && data.answers.budget is string
