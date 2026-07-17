@@ -4,16 +4,20 @@
 // the quiz answers "which paddle fits me?", this answers "show me everything."
 // No framework — one class that re-renders its own root, matching paddle-quiz.js.
 //
-// Two things it deliberately does NOT do:
-//   1. It does not build its own buy links. vendorLinkFor is imported from
-//      assets/affiliate-links.js so the Amazon allowlist, ASIN deep-links and
-//      the isAffiliate flag can never drift between the quiz and the grid.
-//   2. It does not bind its own click tracking. paddle-quiz.js's
-//      trackVendorClicks() is delegated on document against a[data-pq-paddle],
-//      so the cards below are already attributed. A second listener would
-//      double-count every affiliate_click.
+// Nothing here is reimplemented that the quiz already decided:
+//   - Buy links come from vendorLinkFor (assets/affiliate-links.js), so the
+//     Amazon allowlist, ASIN deep-links and the isAffiliate flag can never
+//     drift between the quiz and the grid.
+//   - Click attribution comes from trackVendorClicks (same module). It's
+//     idempotent and delegated on document, so calling it from both surfaces
+//     binds exactly one listener and every affiliate_click is counted once.
+//   - The four trait ratings come from assets/paddle-ratings.js, so "the most
+//     powerful paddle" is the same claim here as in the quiz's results.
 
-import { vendorLinkFor } from "/assets/affiliate-links.js";
+import { vendorLinkFor, trackVendorClicks } from "/assets/affiliate-links.js";
+// The same four ratings the quiz uses — so "most powerful" means one thing on
+// this site. See assets/paddle-ratings.js.
+import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf } from "/assets/paddle-ratings.js";
 
 const esc = (s) => window.PBUtils.escapeHtml(s);
 
@@ -61,6 +65,82 @@ const PRICE_TEST = {
   over200: (p) => p.price > 200,
 };
 
+// ---------- Ranking ----------
+//
+// The filters are exact-match, so everything that survives one matches it
+// equally — "Power" is true of 187 paddles and says nothing about which is the
+// most powerful. Ranking answers that second question: given what you asked
+// for, how strongly does this paddle actually embody it.
+//
+// Only `type` and `skill` carry a gradient. Shape is categorical (a paddle is
+// elongated or it isn't) and price is already a band the filter enforced, so
+// neither can rank anything — selecting them narrows without reordering, which
+// is the honest outcome rather than a fabricated tiebreak.
+//
+// Scores are 0-1 and averaged, so adding a second ranking filter re-weights
+// rather than letting the first one dominate by accumulating points.
+const TYPE_FIT = {
+  Power: (p) => powerRating(p),
+  Control: (p) => controlRating(p),
+  // Balance, not mediocrity: closest to an even split between power and control.
+  "All-Court": (p) => 1 - Math.abs(powerRating(p) - controlRating(p)),
+};
+
+const SKILL_FIT = {
+  // A beginner's paddle forgives: a big sweet spot matters more than pace.
+  Beginner: (p) => forgivenessRatingOf(p),
+  // Advanced play rewards what you can DO with the ball over what you survive.
+  Advanced: (p) => (powerRating(p) + spinRatingOf(p)) / 2,
+  // The all-rounder's compromise — some touch, still forgiving.
+  Intermediate: (p) => (controlRating(p) + forgivenessRatingOf(p)) / 2,
+};
+
+// null = nothing selected that can rank, so the catalog keeps its own order and
+// no rank numbers are shown. A "#1" with no basis would be theatre.
+function fitScore(paddle, filters) {
+  const terms = [];
+  const t = TYPE_FIT[filters.type];
+  if (t) terms.push(t(paddle));
+  const s = SKILL_FIT[filters.skill];
+  if (s) terms.push(s(paddle));
+  if (!terms.length) return null;
+  return terms.reduce((a, b) => a + b, 0) / terms.length;
+}
+
+const rankable = (filters) => Boolean(TYPE_FIT[filters.type] || SKILL_FIT[filters.skill]);
+
+// Ties are not an edge case here, they're the norm: powerPercentile is coarsened
+// to four quartile tiers (the licensing firewall — see TIER_WORD), so filtering
+// to Power leaves ~187 paddles sharing about five distinct fit scores. Roughly
+// 37 paddles tie at each.
+//
+// Without a tiebreak the sort is stable and the order inside a tier is just
+// catalog order — i.e. alphabetical by brand, so "#1 most powerful" would
+// really mean "first paddle whose brand starts with a digit". The rank number
+// would be an accident wearing a precision costume.
+//
+// So ties fall to the traits the filter didn't ask about: among equally
+// powerful paddles, prefer the one that also bites and forgives. That's a real
+// preference, applied consistently, and it degrades to name order only when two
+// paddles are genuinely indistinguishable on every axis we hold.
+function tiebreak(a, b) {
+  const spin = spinRatingOf(b) - spinRatingOf(a);
+  if (Math.abs(spin) > 1e-9) return spin;
+  const forgive = forgivenessRatingOf(b) - forgivenessRatingOf(a);
+  if (Math.abs(forgive) > 1e-9) return forgive;
+  return `${a.brand} ${a.name}`.localeCompare(`${b.brand} ${b.name}`);
+}
+
+// Brand and model only. Matching the spec fields too would mean typing "16"
+// and getting every 16mm paddle, which is what the filters are for.
+function matchesQuery(paddle, q) {
+  if (!q) return true;
+  const hay = `${paddle.brand} ${paddle.name}`.toLowerCase();
+  // Every whitespace-separated term must appear, so "joola 16" narrows rather
+  // than widens — people type a brand and a hint, not an exact string.
+  return q.split(/\s+/).filter(Boolean).every((term) => hay.includes(term));
+}
+
 class PaddleGrid {
   constructor(root, paddles, affiliateMap) {
     this.root = root;
@@ -68,8 +148,14 @@ class PaddleGrid {
     this.total = paddles.length;
     this.affiliateMap = affiliateMap;
     this.filters = { type: "all", shape: "all", price: "all", skill: "all" };
+    this.query = "";
     root.addEventListener("change", (e) => this.onChange(e));
     root.addEventListener("click", (e) => this.onClick(e));
+    root.addEventListener("input", (e) => this.onInput(e));
+    // A search box inside a form would submit-and-reload on Enter, throwing away
+    // the filters. Filtering is already live on input, so Enter has nothing left
+    // to do.
+    root.addEventListener("submit", (e) => e.preventDefault());
   }
 
   onChange(e) {
@@ -79,17 +165,32 @@ class PaddleGrid {
     this.render();
   }
 
-  onClick(e) {
-    if (!e.target.closest('[data-action="reset-grid"]')) return;
-    this.filters = { type: "all", shape: "all", price: "all", skill: "all" };
-    // The selects outlive a render now, so state has to be pushed back into
-    // them rather than re-emitted as markup with `selected` on the right option.
-    this.root.querySelectorAll("select[data-filter]").forEach((s) => { s.value = "all"; });
+  onInput(e) {
+    const box = e.target.closest('[data-role="pg-search"]');
+    if (!box) return;
+    this.query = box.value.trim().toLowerCase();
     this.render();
   }
 
+  onClick(e) {
+    if (!e.target.closest('[data-action="reset-grid"]')) return;
+    this.filters = { type: "all", shape: "all", price: "all", skill: "all" };
+    this.query = "";
+    // The controls outlive a render now, so state has to be pushed back into
+    // them rather than re-emitted as markup with `selected` on the right option.
+    this.root.querySelectorAll("select[data-filter]").forEach((s) => { s.value = "all"; });
+    const box = this.root.querySelector('[data-role="pg-search"]');
+    if (box) box.value = "";
+    this.render();
+  }
+
+  activeFilterCount() {
+    return FILTERS.filter((f) => this.filters[f.key] !== "all").length;
+  }
+
   filtered() {
-    return this.paddles.filter((p) => {
+    const list = this.paddles.filter((p) => {
+      if (!matchesQuery(p, this.query)) return false;
       for (const f of FILTERS) {
         const v = this.filters[f.key];
         if (v === "all") continue;
@@ -99,6 +200,14 @@ class PaddleGrid {
       }
       return true;
     });
+
+    if (!rankable(this.filters)) return list;
+    // Score once per paddle, not once per comparison — sort() calls the
+    // comparator O(n log n) times and these ratings are not free.
+    return list
+      .map((p) => ({ p, fit: fitScore(p, this.filters) }))
+      .sort((a, b) => (Math.abs(b.fit - a.fit) > 1e-9 ? b.fit - a.fit : tiebreak(a.p, b.p)))
+      .map(({ p }) => p);
   }
 
   filterHtml() {
@@ -112,7 +221,14 @@ class PaddleGrid {
       );
       return `<select class="pg-select" data-filter="${f.key}" aria-label="${esc(f.label)}">${opts.join("")}</select>`;
     });
-    return `<div class="pg-filters">${sels.join("")}<button type="button" class="pg-reset" data-action="reset-grid">Reset filters</button></div>`;
+    return `
+      <div class="pg-search">
+        <label class="visually-hidden" for="pg-search-input">Search paddles by brand or model</label>
+        <svg class="pg-search-icon" width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"></circle><line x1="13.2" y1="13.2" x2="17" y2="17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line></svg>
+        <input id="pg-search-input" type="search" data-role="pg-search" autocomplete="off"
+               placeholder="Search a brand or model — JOOLA, Perseus…">
+      </div>
+      <div class="pg-filters">${sels.join("")}<button type="button" class="pg-reset" data-action="reset-grid">Reset</button></div>`;
   }
 
   cardHtml(p, i) {
@@ -154,9 +270,15 @@ class PaddleGrid {
         `data-pq-surface="grid"`,
         `data-pq-position="${i + 1}"`,
       ].join(" ");
+      // link.label, not a generic "Check price": vendorLinkFor already knows
+      // whether this is a verified deep link to the exact model ("Buy on
+      // Amazon"), a search that may or may not surface it ("Search Amazon",
+      // "Search Six Zero"), or just the brand's front door ("Visit Gearbox").
+      // Saying which is honest about what the click will actually do, and it's
+      // what the quiz's results have always said.
       foot = `<div class="pg-foot">
           <span class="pg-note">${esc(note)}</span>
-          <a class="btn pg-buy" href="${esc(link.href)}" target="_blank" rel="${rel}" ${data}>Check price<span class="visually-hidden"> for ${esc(p.brand)} ${esc(p.name)} (opens in new tab)</span></a>
+          <a class="btn pg-buy" href="${esc(link.href)}" target="_blank" rel="${rel}" ${data}>${esc(link.label)}<span class="visually-hidden"> — ${esc(p.brand)} ${esc(p.name)} (opens in new tab)</span></a>
         </div>`;
     } else {
       const note = approvalNote(p);
@@ -168,10 +290,13 @@ class PaddleGrid {
     // every bucket, but the card still has to say something true.
     const price = typeof p.price === "number" ? `$${Math.round(p.price)}` : "Price n/a";
 
+    // Rank only when the filters actually rank something (see fitScore).
+    const rank = this.ranked ? `<span class="rank-badge${i === 0 ? " top" : ""}">#${i + 1}</span>` : "";
+
     return `<li class="pg-card">
       <div class="pg-head">
         <div>
-          <div class="pg-brand">${esc(p.brand)}</div>
+          <div class="pg-brand">${rank}${esc(p.brand)}</div>
           <h3 class="pg-model">${esc(p.name)}</h3>
         </div>
         <div class="pg-price">${esc(price)}</div>
@@ -209,11 +334,17 @@ class PaddleGrid {
 
   render() {
     const list = this.filtered();
+    this.ranked = rankable(this.filters);
     const links = list.map((p) => vendorLinkFor(p, this.affiliateMap)).filter(Boolean);
     const anyAmazon = links.some((l) => l.isAmazon);
     const anyAffiliate = links.some((l) => l.isAffiliate);
 
-    this.countEl.textContent = `Showing ${list.length} of ${this.total} paddles in the full catalog.`;
+    // Say WHY the order is what it is. A ranked list that doesn't explain its
+    // ranking reads as an endorsement; naming the basis makes it a filter.
+    const basis = this.ranked
+      ? ` Ranked by fit for ${[this.filters.type, this.filters.skill].filter((v) => v && v !== "all").join(" · ").toLowerCase()}.`
+      : "";
+    this.countEl.textContent = `Showing ${list.length} of ${this.total} paddles in the full catalog.${basis}`;
 
     // The Amazon Associates sentence is required verbatim by the Operating
     // Agreement wherever Associates links appear, and the disclosure sits with
@@ -231,13 +362,17 @@ class PaddleGrid {
     this.bodyEl.innerHTML = list.length
       ? `<ul class="pg-grid">${list.map((p, i) => this.cardHtml(p, i)).join("")}</ul>`
       : `<div class="pg-empty">
-           <p>No paddles match those filters.</p>
-           <button type="button" class="btn" data-action="reset-grid">Reset filters</button>
+           <p>${this.query ? `No paddles match “${esc(this.query)}”${this.activeFilterCount() ? " with those filters" : ""}.` : "No paddles match those filters."}</p>
+           <button type="button" class="btn" data-action="reset-grid">Reset</button>
          </div>`;
   }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // Bound before the mount guard and idempotent — the grid now lives on its own
+  // page, where paddle-quiz.js isn't loaded, so it has to bind its own
+  // attribution or every buy click here goes uncounted.
+  trackVendorClicks();
   const root = document.getElementById("paddle-grid-app");
   if (!root) return;
   try {

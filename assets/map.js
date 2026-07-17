@@ -251,6 +251,25 @@
     return "Other";
   }
 
+  // ?skill= deep link. An inbound link shouldn't have to know the internal
+  // bucket label — /learn's "Find a beginner court" CTA says ?skill=beginner
+  // and lands on the map already filtered. Only the buckets worth linking to
+  // are mapped; anything else is ignored rather than guessed at.
+  const SKILL_PARAM = {
+    beginner: "Beginner-friendly",
+    "beginner-friendly": "Beginner-friendly",
+    advanced: "Advanced / competitive",
+    competitive: "Advanced / competitive",
+    "all-levels": "All levels",
+  };
+  // The reverse, so the filter round-trips: pick "Beginner-friendly" in the UI
+  // and the URL says ?skill=beginner, which is then a link worth sharing.
+  const SKILL_SLUG = {
+    "Beginner-friendly": "beginner",
+    "Advanced / competitive": "advanced",
+    "All levels": "all-levels",
+  };
+
   function courtsBucket(record) {
     const n = record.courts;
     if (typeof n !== "number") return "Not specified";
@@ -537,6 +556,24 @@
         el.value = cityName;
       }
 
+      // Same shape as setCityFilter: seed the option if refreshFilterOptions
+      // hasn't built it yet (this runs before the first applyFilters), then set
+      // the value. The rebuild preserves a value that's still eligible, so the
+      // filter survives first render.
+      function setSkillFilter(slug) {
+        const el = fieldEls.skillBucket;
+        const bucket = SKILL_PARAM[String(slug).toLowerCase()];
+        if (!el || !bucket) return false;
+        if (![...el.options].some((o) => o.value === bucket)) {
+          const opt = document.createElement("option");
+          opt.value = bucket;
+          opt.textContent = bucket;
+          el.appendChild(opt);
+        }
+        el.value = bucket;
+        return true;
+      }
+
       function resolveCityName(cityHint, slug) {
         if (cityHint && records.some((r) => r.city === cityHint)) return cityHint;
         const rec = records.find((r) => citySlug(r.city) === slug);
@@ -803,11 +840,16 @@
         }
 
         try {
-          history.replaceState(
-            null,
-            "",
-            cityVal ? `/map?city=${encodeURIComponent(citySlug(cityVal))}` : "/map"
-          );
+          // City and skill both round-trip, so a filtered view stays a linkable
+          // thing — /learn's CTA arrives as ?skill=beginner, and a reader who
+          // narrows the map themselves gets a URL they can send on. The other
+          // nine filters stay out of the URL deliberately: they're refinements,
+          // not destinations, and encoding all of them makes an unreadable link.
+          const parts = [];
+          if (cityVal) parts.push(`city=${encodeURIComponent(citySlug(cityVal))}`);
+          const skillSlug = SKILL_SLUG[fieldEls.skillBucket ? fieldEls.skillBucket.value : ""];
+          if (skillSlug) parts.push(`skill=${skillSlug}`);
+          history.replaceState(null, "", parts.length ? `/map?${parts.join("&")}` : "/map");
         } catch (e) {
           /* replaceState can throw on file:// — non-fatal */
         }
@@ -1101,10 +1143,17 @@
       const params = new URLSearchParams(window.location.search);
       const cityParam = params.get("city");
       const venueParam = params.get("venue");
+      const skillParam = params.get("skill");
       if (cityParam) {
         const cityName = resolveCityName(null, citySlug(cityParam));
         if (cityName) setCityFilter(cityName);
         else setStatus(statusEl, `No courts found for "${cityParam}".`);
+      }
+      // Say the filter is on, and say how to turn it off — arriving at a
+      // pre-filtered map with no explanation looks like a map missing 180 courts.
+      if (skillParam && setSkillFilter(skillParam)) {
+        const bucket = SKILL_PARAM[String(skillParam).toLowerCase()];
+        setStatus(statusEl, `Filtered to ${bucket.toLowerCase()} courts — clear the Skill filter to see all ${records.length}.`);
       }
 
       // First render fits the map. We render synchronously first because some

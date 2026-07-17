@@ -92,6 +92,46 @@
    design's paddle-grid spec; the markup is generated, so these selectors are
    the contract with paddle-grid.js. */
 
+/* Search leads the controls: it's the fastest path when you already know the
+   paddle's name, and the filters below are for when you don't. */
+.pg-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--paper);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 10px 18px;
+  margin-bottom: 10px;
+  max-width: 460px;
+}
+
+.pg-search:focus-within {
+  border-color: var(--bay);
+}
+
+.pg-search-icon {
+  flex: none;
+  color: var(--ink-soft);
+}
+
+.pg-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+
+/* The UA's own clear affordance — no need to draw a second one. */
+.pg-search input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
 .pg-filters {
   display: flex;
   flex-wrap: wrap;
@@ -198,7 +238,12 @@
   gap: 8px;
 }
 
+/* The rank rides the brand line rather than taking its own row — it's an
+   ordering cue, not a title, and the card is already dense. */
 .pg-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--font-mono);
   font-size: 0.65625rem;
   color: var(--ink-soft);
@@ -236,6 +281,10 @@
   font-weight: 700;
   background: var(--fog-dim);
   color: var(--ink-soft);
+}
+
+.pg-brand .rank-badge {
+  flex: none;
 }
 
 .pg-specs {
@@ -298,4 +347,14 @@
   .pg-specs {
     grid-template-columns: 1fr;
   }
+}
+
+/* The sourcing promise under the rent hero — the one thing the hero doesn't
+   say, kept as a plain line rather than a second stage-head. */
+.rent-note {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+  margin: 0 0 var(--space-2);
+  max-width: 70ch;
 }

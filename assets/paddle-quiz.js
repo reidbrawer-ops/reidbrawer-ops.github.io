@@ -10,7 +10,11 @@
 import { firebaseConfig, isFirebaseConfigured } from "/assets/firebase-config.js";
 // Buy-link construction is shared with the browsable paddle grid — see
 // assets/affiliate-links.js for why it is imported rather than duplicated.
-import { vendorLinkFor } from "/assets/affiliate-links.js";
+import { vendorLinkFor, trackVendorClicks } from "/assets/affiliate-links.js";
+
+// The four trait ratings are shared with the browsable catalog so the site has
+// one opinion about how powerful a paddle is — see assets/paddle-ratings.js.
+import { clamp01, isSoftImpact, powerRating, controlRating, spinRatingOf, forgivenessRatingOf } from "/assets/paddle-ratings.js";
 
 // dom-utils.js (a plain script, loaded before this module on every page that
 // mounts the quiz — see its header) owns the single escapeHtml definition.
@@ -123,9 +127,6 @@ const QUESTIONS = [
   },
 ];
 
-function clamp01(n) {
-  return Math.max(0, Math.min(1, n));
-}
 
 // 1 inside [min, max], decaying linearly to 0 over `falloff` outside either edge.
 function trapezoid(value, min, max, falloff) {
@@ -204,13 +205,7 @@ function isTournamentLegal(paddle) {
   return paddle.approvalBody === "USAP" || paddle.approvalBody === "USAP/UPA-A";
 }
 
-function isSoftImpact(paddle) {
-  return paddle.impactFeel === "Soft/Dense" || paddle.impactFeel === "Soft/Hollow";
-}
 
-function isStiffImpact(paddle) {
-  return paddle.impactFeel === "Stiff/Dense" || paddle.impactFeel === "Stiff/Hollow";
-}
 
 // ---------- Comparison-table dimension ratings ----------
 //
@@ -222,25 +217,9 @@ function isStiffImpact(paddle) {
 // paraphrased into a dot rating rather than citing the exact proprietary
 // lab-tested labels/percentiles those numbers come from.
 
-function powerRating(paddle) {
-  const base = paddle.paddleType === "Power" ? 0.85 : paddle.paddleType === "All-Court" ? 0.5 : paddle.paddleType === "Control" ? 0.2 : 0.5;
-  return paddle.powerPercentile != null ? base * 0.4 + paddle.powerPercentile * 0.6 : base;
-}
 
-function controlRating(paddle) {
-  let base = paddle.paddleType === "Control" ? 0.85 : paddle.paddleType === "All-Court" ? 0.5 : paddle.paddleType === "Power" ? 0.2 : 0.5;
-  if (isSoftImpact(paddle)) base = clamp01(base + 0.15);
-  else if (isStiffImpact(paddle)) base = clamp01(base - 0.15);
-  return base;
-}
 
-function spinRatingOf(paddle) {
-  return { "Very High": 1, High: 0.75, Medium: 0.45, Low: 0.15 }[paddle.spinRating] ?? 0.5;
-}
 
-function forgivenessRatingOf(paddle) {
-  return paddle.twistWeightPercentile != null ? paddle.twistWeightPercentile : 0.5;
-}
 
 function toDots(score) {
   if (score == null) return null; // A dimension the visitor's answers took out of play.
@@ -249,15 +228,47 @@ function toDots(score) {
   return 1;
 }
 
+// DISPLAY ONLY. totalScore() adds the 1-3 toDots values straight into a sum
+// alongside hand-tuned integer bonuses (+3 for a shape match, +1 for a light
+// paddle, -1 for a stiff one). Widening toDots to 0-10 would silently multiply
+// every dimension's weight against those constants and re-rank the whole quiz —
+// so the finer scale the comparison table shows is computed separately from the
+// same raw 0-1 rating, and never reaches the scorer.
+// Floor of 1: a rendered row with zero filled dots reads as "no data" rather
+// than "lowest", and every paddle here rated on something.
+function toDots10(score) {
+  if (score == null) return null;
+  return Math.min(10, Math.max(1, Math.round(score * 10)));
+}
+
 function dimensionsFor(paddle, fullAnswers) {
+  // Rated once, read twice: toDots() feeds the scorer, toDots10() feeds the
+  // table. Same source of truth, two resolutions.
+  const raw = {
+    power: powerRating(paddle),
+    control: controlRating(paddle),
+    spin: spinRatingOf(paddle),
+    forgiveness: forgivenessRatingOf(paddle),
+  };
   return {
-    power: toDots(powerRating(paddle)),
-    control: toDots(controlRating(paddle)),
-    spin: toDots(spinRatingOf(paddle)),
-    forgiveness: toDots(forgivenessRatingOf(paddle)),
+    power: toDots(raw.power),
+    control: toDots(raw.control),
+    spin: toDots(raw.spin),
+    forgiveness: toDots(raw.forgiveness),
     weightFit: toDots(weightFitScore(paddle, fullAnswers.weight)),
     twistWeightFit: toDots(twistWeightPrefScore(paddle, fullAnswers.twistWeight)),
     budgetFit: toDots(budgetScore(paddle, fullAnswers.budget)),
+    // The 0-10 scale the comparison table renders. Only the four traits that
+    // describe the PADDLE get one — the *Fit rows measure the visitor's own
+    // answers, and since all three picks were selected to fit those answers,
+    // they land nearly identical and differentiate nothing. They stay above,
+    // where the scorer still uses them.
+    display: {
+      power: toDots10(raw.power),
+      control: toDots10(raw.control),
+      spin: toDots10(raw.spin),
+      forgiveness: toDots10(raw.forgiveness),
+    },
     // Tagged once in assets/paddles.json from forgiveness (twist weight
     // percentile), core thickness, and paddle type — see the prep script for
     // the exact rule. Shown directly in the table (as a level-badge, not
@@ -456,9 +467,9 @@ export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function meterHtml(dots, label) {
-  const cells = Array.from({ length: 3 }, (_, i) => `<span class="pq-meter-dot ${i < dots ? "is-filled" : ""}"></span>`).join("");
-  return `<span class="pq-meter" role="img" aria-label="${label}: ${dots} of 3">${cells}</span>`;
+function meterHtml(dots, label, max = 10) {
+  const cells = Array.from({ length: max }, (_, i) => `<span class="pq-meter-dot ${i < dots ? "is-filled" : ""}"></span>`).join("");
+  return `<span class="pq-meter" role="img" aria-label="${label}: ${dots} of ${max}">${cells}</span>`;
 }
 
 class PaddleQuizApp {
@@ -601,15 +612,17 @@ class PaddleQuizApp {
       )
       .join("");
 
-    // A null dim is one the visitor's answers took out of play (today only
-    // "Budget fit", on a "no budget" answer — see budgetScore). Drop the whole
-    // row rather than render a meter that stands for nothing.
+    // Four rows, not seven. These are the traits of the PADDLE, so they're what
+    // actually separates the three picks; the weight/twist-weight/budget "fit"
+    // rows measured the visitor's own answers, and every pick here was chosen
+    // to fit those answers, so they rendered near-identical rows that added
+    // length without adding a decision. The scorer still uses them.
     const dimRow = (label, key) => {
-      if (top.every(({ dims }) => dims[key] == null)) return "";
+      if (top.every(({ dims }) => dims.display[key] == null)) return "";
       return `
       <tr>
         <th class="pq-compare-label" scope="row">${label}</th>
-        ${top.map(({ dims }) => `<td>${meterHtml(dims[key], label)}</td>`).join("")}
+        ${top.map(({ dims }) => `<td>${meterHtml(dims.display[key], label)}</td>`).join("")}
       </tr>`;
     };
 
@@ -659,6 +672,11 @@ class PaddleQuizApp {
               `data-pq-brand="${escapeAttr(p.brand)}"`,
               `data-pq-link-type="${escapeAttr(link.linkType || "unknown")}"`,
               `data-pq-affiliate="${link.isAffiliate ? "1" : "0"}"`,
+              // Positions here are 1..3 of a scored shortlist; the browse grid's
+              // are 1..N of a filtered catalog. Same GA4 dimension, so each
+              // click has to say which surface it came from or any average over
+              // `position` silently mixes the two scales.
+              `data-pq-surface="quiz"`,
               `data-pq-position="${i + 1}"`,
             ].join(" ");
             return `<td><a class="book-btn" href="${link.href}" target="_blank" rel="${rel}" ${data}>${link.label} →<span class="visually-hidden"> (opens in new tab)</span></a></td>`;
@@ -692,9 +710,6 @@ class PaddleQuizApp {
             ${dimRow("Spin", "spin")}
             ${dimRow("Forgiveness", "forgiveness")}
             ${weightRow}
-            ${dimRow("Weight &amp; swing fit", "weightFit")}
-            ${dimRow("Twist weight fit", "twistWeightFit")}
-            ${dimRow("Budget fit", "budgetFit")}
             ${linkRow}
           </tbody>
         </table>
@@ -792,37 +807,6 @@ class PaddleQuizApp {
   }
 }
 
-// Outbound buy-link tracking.
-//
-// Amazon's Associates reporting stopped exposing order-level data on 2026-03-09:
-// it gives a topline click count and an earnings figure, but will not say which
-// paddle, which link type, or which result position earned them. This measures
-// that ourselves, and covers brand-direct links too — which Amazon was never
-// going to report on at all.
-//
-// Delegated on document (rather than bound per-render) because the results table
-// is re-rendered on every retake; one listener outlives them all.
-//
-// It deliberately no-ops when gtag is missing. analytics.js does not define gtag
-// AT ALL for visitors who send Global Privacy Control / Do Not Track, or who used
-// the opt-out on /privacy — so an absent gtag means the visitor declined tracking,
-// and an affiliate tracker must not be the thing that quietly reinstates it.
-function trackVendorClicks() {
-  document.addEventListener("click", (e) => {
-    const t = e.target;
-    if (!t || typeof t.closest !== "function") return;
-    const a = t.closest("a[data-pq-paddle]");
-    if (!a) return;
-    if (typeof window.gtag !== "function") return; // opted out — see above
-    window.gtag("event", "affiliate_click", {
-      paddle_id: a.dataset.pqPaddle,
-      brand: a.dataset.pqBrand,
-      link_type: a.dataset.pqLinkType, // brand-program | amazon-deep | amazon-search | plain
-      is_affiliate: a.dataset.pqAffiliate === "1",
-      position: Number(a.dataset.pqPosition),
-    });
-  });
-}
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Bound before the mount guard, and delegated on document, so it covers every

@@ -85,3 +85,45 @@ export function vendorLinkFor(paddle, affiliateMap) {
   // 3) No program yet — an honest, un-tagged link to the brand's own site.
   return { href: base, label: searchUrl ? `Search ${paddle.brand}` : `Visit ${paddle.brand}`, isAffiliate: false, linkType: "plain" };
 }
+// Outbound buy-link tracking.
+//
+// Amazon's Associates reporting stopped exposing order-level data on 2026-03-09:
+// it gives a topline click count and an earnings figure, but will not say which
+// paddle, which link type, or which result position earned them. This measures
+// that ourselves, and covers brand-direct links too — which Amazon was never
+// going to report on at all.
+//
+// Delegated on document (rather than bound per-render) because the results table
+// is re-rendered on every retake; one listener outlives them all.
+//
+// It deliberately no-ops when gtag is missing. analytics.js does not define gtag
+// AT ALL for visitors who send Global Privacy Control / Do Not Track, or who used
+// the opt-out on /privacy — so an absent gtag means the visitor declined tracking,
+// and an affiliate tracker must not be the thing that quietly reinstates it.
+let vendorClicksBound = false;
+
+export function trackVendorClicks() {
+  // Idempotent: both paddle-quiz.js and paddle-grid.js call this, and after the
+  // /paddles split they live on different pages — but a module is a singleton,
+  // so if a page ever mounted both, a second listener would double-count every
+  // affiliate_click and there is no way to tell the duplicates apart in GA4.
+  if (vendorClicksBound) return;
+  vendorClicksBound = true;
+  document.addEventListener("click", (e) => {
+    const t = e.target;
+    if (!t || typeof t.closest !== "function") return;
+    const a = t.closest("a[data-pq-paddle]");
+    if (!a) return;
+    if (typeof window.gtag !== "function") return; // opted out — see above
+    window.gtag("event", "affiliate_click", {
+      paddle_id: a.dataset.pqPaddle,
+      brand: a.dataset.pqBrand,
+      link_type: a.dataset.pqLinkType, // brand-program | amazon-deep | amazon-search | plain
+      is_affiliate: a.dataset.pqAffiliate === "1",
+      // "quiz" (1..3 of a scored shortlist) or "grid" (1..N of a filtered
+      // catalog) — without this the two position scales average into nonsense.
+      surface: a.dataset.pqSurface || "unknown",
+      position: Number(a.dataset.pqPosition),
+    });
+  });
+}

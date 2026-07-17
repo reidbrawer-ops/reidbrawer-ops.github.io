@@ -496,20 +496,18 @@
   border-radius: var(--radius-m);
 }
 
-/* The design reads map-then-key, but the key is more useful ANNOUNCED first,
-   so the legend stays ahead of the map in the DOM for screen readers and is
-   only moved visually. `order` beats reordering the markup. */
+/* The key sits above the map it explains — you read the shapes before you read
+   the pins, not after. It's also first in the DOM, so no `order` juggling: the
+   visual and announced sequences are the same thing now. */
 .finder-map-wrap .map-legend {
-  order: 2;
-  margin: 14px 0 0;
-  padding-top: 14px;
-  border-top: 1px solid var(--rule-12);
+  margin: 0 0 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule-12);
 }
 
 /* Inside the hub the map fills the remaining panel height rather than the
    standalone fixed height it uses elsewhere. */
 .finder .venue-map {
-  order: 1;
   height: auto;
   flex: 1 1 auto;
   min-height: 0;

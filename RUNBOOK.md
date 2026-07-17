@@ -47,9 +47,21 @@ New venue also needs lat/lon: add `lat`/`lon` to its `venues.json` entry
 2. Commit the file. Badges show a hardcoded `fetchedAt` date; this is a manual
    refresh, not a live sync (see `GOOGLE_RATINGS_SETUP.md`).
 
+## Paddles & Gear (three pages)
+
+`/paddles` is the quiz, `/paddles/browse` the catalog, `/paddles/rent` the shop
+directory — `paddles.html`, `paddles/browse.html`, `paddles/rent.html`. The
+section nav is inlined on all three; edit one, edit all three (the invariant
+check fails if a lane stops linking to the other two). `/paddles#quiz` is the
+CTA on 43 pages, so the quiz must stay at `/paddles` with that anchor intact.
+Buy links and click tracking come from `assets/affiliate-links.js`; the trait
+ratings from `assets/paddle-ratings.js`. Neither is duplicated — don't.
+
 ## Site-wide chrome (nav / head / lane-router)
 
-- Header: edit `partials/site-header.html` → `node scripts/sync-header.js`.
+- Header: edit `partials/site-header.html` → `node scripts/sync-header.js`
+  (covers root pages + `cities/*` + `paddles/*`; add a directory to `targets()`
+  when you add one, or its pages silently keep a stale nav forever).
 - "Before you head out" block: edit `partials/lane-router.html` →
   `node scripts/sync-lane-router.js`.
 - (`scripts/build.mjs` regenerates head/header/footer from a template but its

@@ -217,6 +217,19 @@ classes** — recolor in one place or legend and pins desync.
   into both legal pages and drifted in its comments before it was promoted.)
 - **Sub-element naming**: short prefixes, not full BEM — `mv-`, `rf-`, `p-`,
   `gsr-`, `fr-`, `fd-`, `pq-`. Match the existing prefix when extending.
+- **Shared JS lives in its own module, imported — never copied.** Three exist,
+  each because two surfaces needed the same answer and a second copy would drift
+  invisibly: `assets/affiliate-links.js` (`vendorLinkFor` + `trackVendorClicks`
+  — the Amazon allowlist, ASINs and the `isAffiliate` flag that drives both
+  `rel="sponsored"` and the disclosure), `assets/paddle-ratings.js` (the four
+  0-1 trait ratings, so "the most powerful paddle" is one claim site-wide), and
+  `assets/dom-utils.js` (`escapeHtml`/`citySlug`). Import them; don't re-roll.
+- **Paddles & Gear is three pages**, one per lane: `/paddles` (the quiz —
+  keeps the `#quiz` anchor that 43 pages target via the lane-router),
+  `/paddles/browse` (the 486-paddle catalog) and `/paddles/rent`. They share a
+  section nav built from `.pf-choose`/`.pf-choice`, inlined on each of the three
+  and marked with `aria-current="page"`. `sync-header.js` maps `paddles/*` to
+  the `/paddles` nav tab, so the tab lights on all three.
 - **Chrome is generated, not hand-copied**: the header comes from
   `partials/site-header.html` → `node scripts/sync-header.js`; the "Before you
   head out" block from `partials/lane-router.html` → `node

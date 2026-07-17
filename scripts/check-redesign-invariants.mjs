@@ -17,7 +17,14 @@ const ROOT = process.argv[2] || '/Users/reidbrawer/Developer/Money/pickleball-ba
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const cityPages = fs.readdirSync(path.join(ROOT, 'cities')).filter((f) => f.endsWith('.html') && f !== 'index.html');
 const rootPages = fs.readdirSync(ROOT).filter((f) => f.endsWith('.html'));
-const allPages = [...rootPages, ...cityPages.map((f) => `cities/${f}`), 'cities/index.html'];
+// Discovered, not listed: a hand-maintained list is how a new page quietly
+// escapes every sitewide check below. Mirrors sync-header.js's targets().
+const nestedPages = ['cities', 'paddles'].flatMap((dir) => {
+  const abs = path.join(ROOT, dir);
+  if (!fs.existsSync(abs)) return [];
+  return fs.readdirSync(abs).filter((f) => f.endsWith('.html')).map((f) => `${dir}/${f}`);
+});
+const allPages = [...rootPages, ...nestedPages];
 
 let fails = 0, passes = 0;
 const ok = (m) => { passes++; };
@@ -61,7 +68,6 @@ group('Paddles — revenue + legal');
   const h = read('paddles.html');
   check(/id="paddle-quiz-app"/.test(h), 'paddles.html missing #paddle-quiz-app (quiz mount)');
   check(/id="quiz"/.test(h), 'paddles.html missing #quiz (money CTA target from 43 pages)');
-  check(/id="rent"/.test(h), 'paddles.html missing #rent');
 
   const js = read('assets/paddle-quiz.js');
   const links = read('assets/affiliate-links.js');
@@ -75,7 +81,7 @@ group('Paddles — revenue + legal');
   check(!/function vendorLinkFor/.test(js) && !/function vendorLinkFor/.test(grid),
     'vendorLinkFor is DUPLICATED — it must exist only in affiliate-links.js');
   for (const [f, src] of [['paddle-quiz.js', js], ['paddle-grid.js', grid]]) {
-    check(/import \{ vendorLinkFor \} from "\/assets\/affiliate-links.js"/.test(src),
+    check(/import \{[^}]*\bvendorLinkFor\b[^}]*\} from "\/assets\/affiliate-links\.js"/.test(src),
       `${f}: must import vendorLinkFor from the shared module, not redefine it`);
   }
 
@@ -95,17 +101,28 @@ group('Paddles — revenue + legal');
       `${f}: verbatim Amazon Associates sentence gone (Operating Agreement violation)`);
     check(/affiliate-disclosure/.test(src), `${f}: affiliate disclosure gone`);
   }
-  check(/affiliate_click/.test(js), 'paddle-quiz.js: affiliate_click GA4 event gone');
+  check(/affiliate_click/.test(links), 'affiliate-links.js: affiliate_click GA4 event gone');
+  // One listener, bound by whichever surface is on the page, guarded so two
+  // importers can't double-count.
+  check(/vendorClicksBound/.test(links), 'affiliate-links.js: trackVendorClicks lost its idempotence guard — two surfaces would double-count');
+  check(/surface: a\.dataset\.pqSurface/.test(links), 'affiliate-links.js: affiliate_click no longer reports which surface fired it');
+  for (const [f, src] of [['paddle-quiz.js', js], ['paddle-grid.js', grid]]) {
+    check(/import \{[^}]*\btrackVendorClicks\b[^}]*\}/.test(src) && /trackVendorClicks\(\)/.test(src),
+      `${f}: must import AND call trackVendorClicks — its buy clicks are otherwise unattributed`);
+  }
   check(/class="affiliate-disclosure" id="buy"/.test(js), 'paddle-quiz.js: .affiliate-disclosure#buy gone');
 
-  // Exactly one delegated click listener, bound before the quiz mount guard so
-  // the grid's links are attributed even though the grid binds nothing itself.
-  check(!/addEventListener\("click"/.test(grid.replace(/root\.addEventListener/g, '')) || !/a\[data-pq-paddle\]/.test(grid),
-    'paddle-grid.js: binds its own a[data-pq-paddle] listener — would double-count every affiliate_click');
-  const guardAt = js.indexOf('const root = document.getElementById("paddle-quiz-app")');
-  const trackAt = js.indexOf('trackVendorClicks();', js.indexOf('DOMContentLoaded'));
-  check(trackAt > 0 && trackAt < guardAt,
-    'paddle-quiz.js: trackVendorClicks() must bind BEFORE the quiz mount guard, or the grid loses attribution');
+  // Each surface binds before its own mount guard, so a page that fails to
+  // mount still attributes any buy links it rendered.
+  for (const [f, src, guard] of [
+    ['paddle-quiz.js', js, 'const root = document.getElementById("paddle-quiz-app")'],
+    ['paddle-grid.js', grid, 'const root = document.getElementById("paddle-grid-app")'],
+  ]) {
+    const guardAt = src.indexOf(guard);
+    const trackAt = src.indexOf('trackVendorClicks();', src.indexOf('DOMContentLoaded'));
+    check(trackAt > 0 && guardAt > 0 && trackAt < guardAt,
+      `${f}: trackVendorClicks() must bind BEFORE the mount guard, or buy clicks go unattributed`);
+  }
 
   // The data-licensing firewall: percentiles are coarsened to quartile tiers on
   // the way out (RUNBOOK), and the site paraphrases rather than citing them.
@@ -115,11 +132,24 @@ group('Paddles — revenue + legal');
   check(!/th pct|thpct/.test(gridCode), 'paddle-grid.js: renders a raw percentile — violates the data-licensing firewall');
   check(/TIER_WORD/.test(grid), 'paddle-grid.js: tier-word mapping for powerPercentile gone');
 
+  // Paddles & Gear is three pages: /paddles (quiz), /paddles/browse, /paddles/rent.
   const ph = read('paddles.html');
-  check(/id="paddle-grid-app"/.test(ph), 'paddles.html missing #paddle-grid-app (grid mount)');
-  check(/id="browse"/.test(ph), 'paddles.html missing #browse anchor');
-  check(/paddle-grid\.js/.test(ph), 'paddles.html no longer loads paddle-grid.js');
-  check(/\(rent\|quiz\|browse\)/.test(ph), 'paddles.html: on-load hash jump does not know about #browse');
+  const pb = read('paddles/browse.html');
+  const pr = read('paddles/rent.html');
+  check(/id="paddle-quiz-app"/.test(ph), 'paddles.html missing #paddle-quiz-app (quiz mount)');
+  // /paddles#quiz is the CTA on 43 pages (lane-router) — the anchor has to
+  // survive on whichever page the quiz lives on.
+  check(/id="quiz"/.test(ph), 'paddles.html missing #quiz — the money CTA on 43 pages targets it');
+  check(/id="paddle-grid-app"/.test(pb), 'paddles/browse.html missing #paddle-grid-app (grid mount)');
+  check(/paddle-grid\.js/.test(pb), 'paddles/browse.html no longer loads paddle-grid.js');
+  check(/id="rent"/.test(pr), 'paddles/rent.html missing #rent');
+  // Each lane must reach the other two, or the split strands them.
+  for (const [f, src] of [['paddles.html', ph], ['paddles/browse.html', pb], ['paddles/rent.html', pr]]) {
+    for (const href of ['/paddles', '/paddles/browse', '/paddles/rent']) {
+      check(src.includes(`href="${href}"`), `${f}: section nav missing a link to ${href}`);
+    }
+    check(/aria-current="page"/.test(src), `${f}: section nav marks no current page`);
+  }
 
   const map = JSON.parse(read('assets/affiliate-map.json'));
   check(map.amazonFallback?.tag === 'pickleballb06-20', 'affiliate-map.json: Associates tag changed!');
@@ -216,6 +246,19 @@ group('CSS selector coverage vs v3 baseline');
     }
     return out;
   };
+  // Selectors whose FEATURE was deliberately removed after the v3 baseline was
+  // taken. Listed explicitly, with the reason, so that "this selector is gone"
+  // stays a loud failure for everything else — an allowlist you have to add to
+  // on purpose is the point.
+  const RETIRED = new Set([
+    // The cities page's "Jump to a city" tag row was removed by request; its
+    // only mount (cities/index.html) and its renderer (assets/city-tags.js) are
+    // gone with it. .city-jump-* was already dead CSS before that — nothing has
+    // ever emitted it.
+    '.city-quick-jump', '.city-tag', '.city-tag-group', '.city-tag-region',
+    '.city-jump-tag', '.city-jump-group',
+  ]);
+
   // A page stylesheet legitimately DROPS a selector when it was only a
   // page-local override of a global rule — the repo's own convention is "don't
   // duplicate a global rule in a page file". So a selector only counts as lost
@@ -226,7 +269,7 @@ group('CSS selector coverage vs v3 baseline');
     if (!fs.existsSync(basePath)) continue;
     const before = new Set(fs.readFileSync(basePath, 'utf8').split('\n').filter(Boolean));
     const after = selectorsIn(rel);
-    const lost = [...before].filter((s) => !after.has(s) && !global.has(s));
+    const lost = [...before].filter((s) => !after.has(s) && !global.has(s) && !RETIRED.has(s));
     check(lost.length === 0, `${rel}: ${lost.length} selector(s) lost from BOTH ${rel} and style.css: ${lost.join(' ')}`);
   }
 }

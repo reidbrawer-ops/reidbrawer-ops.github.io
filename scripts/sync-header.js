@@ -33,6 +33,10 @@ const headerRe = /(?:[ \t]*<!-- site-header:start[\s\S]*?<!-- site-header:end --
 // (homepage, privacy, affiliate-disclosure, 404).
 function activeHref(rel) {
   if (rel.startsWith("cities/")) return "/cities/";
+  // The three Paddles & Gear lanes (/paddles, /paddles/browse, /paddles/rent)
+  // are one nav destination — the tab stays lit on all of them, and the pages
+  // link to each other with their own in-page section nav.
+  if (rel.startsWith("paddles/")) return "/paddles";
   return {
     "map.html": "/map",
     "rankings.html": "/rankings",
@@ -45,11 +49,18 @@ function activeHref(rel) {
 
 function targets() {
   const root = fs.readdirSync(ROOT).filter((f) => f.endsWith(".html"));
-  const cities = fs
-    .readdirSync(path.join(ROOT, "cities"))
-    .filter((f) => f.endsWith(".html"))
-    .map((f) => path.join("cities", f));
-  return [...root, ...cities];
+  // Any directory that holds pages carrying the shared header. Add one here and
+  // its pages are synced — a page that silently misses the sync keeps a stale
+  // nav forever, and nothing else would catch it.
+  const nested = ["cities", "paddles"].flatMap((dir) => {
+    const abs = path.join(ROOT, dir);
+    if (!fs.existsSync(abs)) return [];
+    return fs
+      .readdirSync(abs)
+      .filter((f) => f.endsWith(".html"))
+      .map((f) => path.join(dir, f));
+  });
+  return [...root, ...nested];
 }
 
 function main() {

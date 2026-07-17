@@ -423,20 +423,37 @@
 
 /* Same dot device as .pq-dot above, so the two systems on this page share one
    empty value rather than drifting apart at 8px and 10px. */
+/* Ten dots, not three. At 10px/0.3rem the old three-dot meter's spacing would
+   run ~127px per cell across three columns; these are sized so a full row fits
+   a phone without wrapping into an unreadable second line. nowrap because a
+   meter that wraps stops reading as one scale. */
 .pq-meter {
   display: inline-flex;
-  gap: 0.3rem;
+  gap: 3px;
+  flex-wrap: nowrap;
 }
 
 .pq-meter-dot {
-  width: 10px;
-  height: 10px;
+  width: 7px;
+  height: 7px;
+  flex: none;
   border-radius: 50%;
-  background: rgba(var(--ink-rgb), 0.2);
+  background: rgba(var(--ink-rgb), 0.16);
 }
 
 .pq-meter-dot.is-filled {
   background: var(--bay);
+}
+
+@media (max-width: 560px) {
+  .pq-meter {
+    gap: 2px;
+  }
+
+  .pq-meter-dot {
+    width: 6px;
+    height: 6px;
+  }
 }
 
 /* ---------- Affiliate disclosure ---------- */
