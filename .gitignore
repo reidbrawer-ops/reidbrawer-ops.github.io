@@ -13,3 +13,12 @@ scripts/serviceAccountKey.json
 # prototype source next to it, which IS tracked and is what DESIGN.md and the
 # code comments cite by line number. Keep your local copy to click through.
 design_handoff_pickleball_redesign/Pickleball Bay Area - design reference.html
+
+# Raw research working files. Untracked because origin is a PUBLIC GitHub Pages
+# repo that serves whatever it holds — there is no firebase.json-style ignore on
+# that side, so tracking these published them at /pickleheads-research/*.json.
+# They're working notes, not site content: methodology, named contacts and phone
+# numbers, verbatim reproduction of Pickleheads' dataset, and explicit
+# soft/unverified caveats. Nothing builds from them — assets/courts-data.json is
+# the source of truth (see RUNBOOK). Keep your local copy; it stays on disk.
+pickleheads-research/
