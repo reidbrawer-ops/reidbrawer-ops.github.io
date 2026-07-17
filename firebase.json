@@ -35,6 +35,8 @@
       "audit/**",
       "quiz/**",
       "design_handoff_pickleball_redesign/**",
+      "design_handoff_paddle_comparison/**",
+      "_pc-test.html",
       "**/*.md",
       "firestore.rules",
       "**/*.log"
