@@ -113,6 +113,16 @@
   --space-4: 3rem;
   --space-5: 5rem;
 
+  /* The vertical rhythm between plain content sections (.section). Was a flat
+     var(--space-5) = 80px per side (160px between sections), which read as too
+     airy on interior pages and was worst on mobile, where 80px of dead space
+     preceded every section. Now responsive: ~44px on a phone, ramping to 56px
+     on desktop — a single-rhythm ~88–112px between sections instead of 160.
+     Tunable here in one place. The home page's full-bleed colour bands set
+     their own generous padding (see home.css) and are deliberately NOT on this
+     token; directory pages (cities/rent regions) go tighter still. */
+  --section-y: clamp(2.75rem, 5vw, 3.5rem);
+
   --font-display: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
@@ -1170,7 +1180,7 @@ img, svg {
 /* ---------- Sections / regions ---------- */
 
 .section {
-  padding: var(--space-5) 0;
+  padding: var(--section-y) 0;
 }
 
 .section + .section {

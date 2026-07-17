@@ -132,7 +132,12 @@ Courts drops to a single column at `1023px` (see `map.css`).
 ## Layout primitives
 
 - `.container` — centers at `--max`, side padding `--space-3`.
-- `.section` — vertical padding; consecutive sections get a top border.
+- `.section` — vertical padding from `--section-y` (`clamp(2.75rem, 5vw,
+  3.5rem)`, ~44px mobile → 56px desktop → ~88–112px between sections);
+  consecutive sections get a top border. Tune the whole site's section rhythm
+  from that one token. The home page's full-bleed colour bands set their own
+  larger padding (`home.css`) and are deliberately off this token; directory
+  pages (`.cities-region`, `.rent-region`) go tighter still at 24px.
 - `.section--dark` — the ink-ground band: `--cream` headings, `--footer-body`
   copy, `--optic` mono labels. Used by the footer, the home trust section, the
   rankings methodology callout and the Learn CTA.
