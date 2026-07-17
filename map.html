@@ -73,22 +73,24 @@
 
 <main id="main" tabindex="-1">
 
+<!-- This page is a tool, not an article: the heading earns one line and then
+     gets out of the way so the map is visible on load rather than pushed under
+     a screenful of chrome. The search moved down into the toolbar, next to the
+     list it filters. -->
 <section class="page-hero finder-hero">
   <div class="container">
     <p class="eyebrow">Find courts</p>
     <h1>Find a court near you.</h1>
-    <p class="lede">Search a Bay Area city or neighborhood to recenter the map on its courts, browse them in the list beside it, and open any one for hours, surface, wait, ratings, and directions. Open <strong>Filters</strong> to narrow by price, skill, courts, indoor/outdoor, hours, and more.</p>
-    <!-- The global-search component (assets/global-search.js) mounts its large
-         hero input here and dispatches pbsearch:select, which map.js listens
-         for to recenter in place; this page also honors a ?city=<slug> deep-link. -->
-    <div class="hero-search" data-search-scope="courts" data-search-target="map"></div>
   </div>
 </section>
 
 <section class="section finder-section">
   <div class="container">
     <div class="finder-toolbar">
-      <div id="map-status" class="map-status" role="status">Loading court data…</div>
+      <!-- The global-search component (assets/global-search.js) mounts its large
+           input here and dispatches pbsearch:select, which map.js listens for to
+           recenter in place; this page also honors ?city=<slug> and ?skill=. -->
+      <div class="hero-search" data-search-scope="courts" data-search-target="map"></div>
       <div class="finder-toolbar-actions">
         <button type="button" class="finder-locate" id="finder-locate" aria-pressed="false">
           <span class="finder-locate-icon" aria-hidden="true"></span>
@@ -98,12 +100,20 @@
           <span class="finder-scope-label" id="finder-scope-label"></span>
           <button type="button" class="finder-scope-clear" id="finder-clear">Clear</button>
         </span>
-        <button type="button" class="finder-filters-toggle" id="finder-filters-toggle" aria-expanded="false" aria-controls="finder-filters">
-          <span class="ff-toggle-icon" aria-hidden="true"></span>
-          Filters<span class="ff-active-count" id="finder-filter-count" hidden></span>
-        </button>
+        <div class="finder-filters-group">
+          <button type="button" class="finder-filters-toggle" id="finder-filters-toggle" aria-expanded="false" aria-controls="finder-filters">
+            <span class="ff-toggle-icon" aria-hidden="true"></span>
+            Filters<span class="ff-active-count" id="finder-filter-count" hidden></span>
+          </button>
+          <!-- Shown only while a filter is actually on (map.js toggles it with
+               the badge). The panel's own Clear button is unreachable until you
+               open the panel, which is the one moment you don't need it. -->
+          <button type="button" class="finder-clear-filters" id="finder-clear-filters" hidden>Clear filters</button>
+        </div>
       </div>
     </div>
+
+    <div id="map-status" class="map-status" role="status">Loading court data…</div>
 
     <form id="finder-filters" class="finder-filters" aria-label="Filter courts" hidden>
       <div class="filter-field">

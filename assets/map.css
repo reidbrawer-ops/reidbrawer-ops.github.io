@@ -271,12 +271,34 @@
 
 /* ---------- Phase 3: Find-courts hub (search + list + map + detail) ---------- */
 
-/* Phase 2's hero search mounts into this empty node; collapse it until then. */
-.finder-hero .hero-search {
-  margin-top: 1.25rem;
+/* The tool starts above the fold. This page's job is the map, so the hero is a
+   label — eyebrow + h1 — not an introduction: the long lede that used to sit
+   here (plus the search) filled the entire first viewport and pushed the map
+   below it, so the first thing you saw of a map page was prose about a map. */
+.finder-hero {
+  padding-bottom: var(--space-2);
+  /* No rule under it: the heading and the tool below are one unit, and a border
+     plus the section's 80px rhythm read as "unrelated next section" — which is
+     what pushed the map off the first screen. */
+  border-bottom: none;
 }
-.finder-hero .hero-search:empty {
-  margin-top: 0;
+
+/* The global .section rhythm (80px) separates things that ARE separate. Here it
+   was 80px of nothing between a one-line heading and the tool it names. */
+.finder-section {
+  padding-top: 0;
+}
+
+/* The search sits with the courts it searches, not up in the hero. It leads the
+   toolbar and takes the free space; the actions hold their intrinsic width. */
+.finder-toolbar .hero-search {
+  flex: 1 1 320px;
+  min-width: 0;
+  margin: 0;
+}
+
+.finder-toolbar .hero-search:empty {
+  display: none;
 }
 
 .finder-toolbar {
@@ -285,13 +307,16 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.6rem 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-.finder-toolbar .map-status {
-  margin: 0;
-  font-size: 0.85rem;
+/* The status line moved out of the toolbar and under it — inside, it competed
+   with the search for the same row and forced the actions to wrap. */
+.finder-section .map-status {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
   color: var(--ink-soft);
+  margin: 0 0 0.5rem;
 }
 
 .finder-toolbar-actions {
@@ -1219,4 +1244,39 @@
 
 .finder-ooa-close:hover {
   color: var(--ink);
+}
+
+
+/* ---------- Clear filters (the way out, next to the way in) ---------- */
+
+/* Stacked under the Filters button rather than beside it, so appearing and
+   disappearing with the filter count can't reflow the toolbar row. */
+.finder-filters-group {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+/* Deliberately quiet: clay text, no chrome. It's an escape hatch, not a third
+   button competing with Filters and Use my location. map.js toggles [hidden]
+   with the same active-count that drives the badge. */
+.finder-clear-filters {
+  align-self: center;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--poppy-deep);
+  cursor: pointer;
+}
+
+.finder-clear-filters:hover {
+  text-decoration: underline;
+}
+
+.finder-clear-filters[hidden] {
+  display: none;
 }

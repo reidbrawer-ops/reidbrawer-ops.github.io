@@ -42,6 +42,7 @@
   const formEl = document.getElementById("finder-filters");
   const filtersToggle = document.getElementById("finder-filters-toggle");
   const filterBadgeEl = document.getElementById("finder-filter-count");
+  const clearFiltersEl = document.getElementById("finder-clear-filters");
   const hoursStartEl = document.getElementById("f-hours-start");
   const hoursEndEl = document.getElementById("f-hours-end");
   const hoursLabelEl = document.getElementById("hours-slider-label");
@@ -823,11 +824,16 @@
             } your filters`
           : "";
 
-        // Filters button badge
+        // Filters button badge, and the clear-filters escape hatch beside it.
+        // Both are driven by the same `active` count: the way out of a filtered
+        // view should appear exactly when there is something to get out of, and
+        // the panel's own Clear button is behind the very panel you'd have to
+        // open to reach it.
         if (filterBadgeEl) {
           filterBadgeEl.textContent = active ? String(active) : "";
           filterBadgeEl.hidden = active === 0;
         }
+        if (clearFiltersEl) clearFiltersEl.hidden = active === 0;
 
         // City scope pill (driven by the city filter — one source of truth)
         const cityVal = filters.city;
@@ -945,6 +951,8 @@
       };
       const fClear = document.getElementById("f-clear");
       if (fClear) fClear.addEventListener("click", clearFilters);
+      // Same handler, not a second implementation — two buttons, one behaviour.
+      if (clearFiltersEl) clearFiltersEl.addEventListener("click", clearFilters);
 
       if (filtersToggle && formEl) {
         filtersToggle.addEventListener("click", () => {
