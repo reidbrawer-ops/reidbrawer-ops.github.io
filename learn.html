@@ -92,7 +92,12 @@
   .step-card .eyebrow { margin: 0; }
   .step-card h2 { font-size: 22px; margin: 0; }
   .step-card p { font-size: 14px; line-height: 1.6; margin: 0; }
-  .step-card .btn { margin-top: 8px; }
+  /* auto, not a fixed gap: the two steps have different-length copy, so the
+     buttons only line up if each is pushed to the floor of its own card.
+     The paragraph carries the 8px instead — side by side auto eats it, but
+     stacked there's no free space and it's what keeps the copy off the btn. */
+  .step-card p:not(.eyebrow) { margin-bottom: 8px; }
+  .step-card .btn { margin-top: auto; }
 
   .step-card--paper { background: var(--fog-dim); }
   .step-card--paper .eyebrow { color: var(--poppy-deep); }
