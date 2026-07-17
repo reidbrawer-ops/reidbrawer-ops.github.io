@@ -27,44 +27,9 @@
 <link rel="canonical" href="https://pickleball-bay-area.com/privacy">
 <link rel="stylesheet" href="/assets/style.css">
 <style>
-  /* Legal shell — shared verbatim with /affiliate-disclosure. The design's
-     legal pages are deliberately quiet: a 720px column, a mono "Legal" label,
-     a serif H1, and one uninterrupted prose measure. No hero rule, no cards.
-     Duplicated rather than added to style.css because these four pages were
-     re-skinned in isolation; safe to promote to style.css. */
-  .legal-col { max-width: 720px; }
-
-  .legal-hero {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  .legal-hero h1 { font-size: clamp(28px, 4vw, 40px); }
-
-  .legal-body { padding-top: 24px; }
-
-  .legal-prose {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    font-size: 15.5px;
-    line-height: 1.7;
-    color: var(--body-ink);
-  }
-
-  .legal-prose > p { margin: 0; }
-
-  /* Subheads the prototype's 4-paragraph mock doesn't have, but the real
-     policy does — it carries hosting, analytics, CCPA and third-party
-     sections that need anchors and scan targets. */
-  .legal-prose h2 {
-    font-size: 20px;
-    margin: 18px 0 0;
-  }
-
-  .legal-prose h2:first-child { margin-top: 0; }
-
-  /* Privacy-only: the Do-Not-Sell/opt-out control layout. */
+  /* The .legal-* shell (column, hero, prose measure) is shared with
+     /affiliate-disclosure and lives in style.css. Only the rules unique to
+     this page belong here — today, the Do-Not-Sell/opt-out control. */
   .dns-optout { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
   .dns-optout-status { font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-soft); }
 </style>

@@ -174,6 +174,12 @@ to ink-on-optic** on hover) · `.clear-btn` / `.book-btn` (outlined pill) ·
 **Callouts** — `.callout` · `.source-checked` (teal-pale, hosts the 64px stamp
 on city pages).
 
+**Legal shell** — `.legal-col` (720px) + `.legal-hero` (no bottom rule; these
+pages open straight into prose) + `.legal-body` + `.legal-prose` (the single
+flex measure; `> p` and `h2` are styled by it). Shared by `/privacy` and
+`/affiliate-disclosure`. Rules unique to one of them — privacy's `.dns-optout`,
+the disclosure's `.legal-lead` — stay in that page's own inline `<style>`.
+
 **Ratings/voting** — `.star-rating` (read-only; CSS-only partial fill via the
 `--fill` custom property) · `.star-picker` (interactive; `row-reverse` + `~`
 sibling combinators give a working right-to-left picker with no JS re-render —
@@ -202,6 +208,13 @@ classes** — recolor in one place or legend and pins desync.
   **Don't add page-specific rules to `style.css`, and don't duplicate a global
   rule in a page file** (a page file legitimately *drops* a rule that the
   global sheet already covers).
+  A page with only a handful of rules of its own keeps them in an inline
+  `<style>` instead of paying a request for a near-empty file — `404.html`,
+  `about.html`, `learn.html`, `privacy.html` and `affiliate-disclosure.html`
+  all do this, and it's fine. What is *not* fine is the same block appearing
+  inline on two pages: the moment a rule is shared, it belongs in `style.css`.
+  (That's exactly how the `.legal-*` shell went wrong — it was pasted verbatim
+  into both legal pages and drifted in its comments before it was promoted.)
 - **Sub-element naming**: short prefixes, not full BEM — `mv-`, `rf-`, `p-`,
   `gsr-`, `fr-`, `fd-`, `pq-`. Match the existing prefix when extending.
 - **Chrome is generated, not hand-copied**: the header comes from
