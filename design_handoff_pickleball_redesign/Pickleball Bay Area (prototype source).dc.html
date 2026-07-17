@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pickleball Bay Area — verified public courts, mapped &amp; ranked</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&amp;family=Manrope:wght@400;500;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; -webkit-font-smoothing: antialiased; background: #F7F2E7; }
+  * { box-sizing: border-box; }
+  ::selection { background: #D6E14A; color: #16211F; }
+  a { color: #1E6E66; text-decoration: none; }
+  a:hover { color: #154F49; }
+  input, select, textarea, button { font-family: inherit; }
+  button { cursor: pointer; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid #1E6E66; outline-offset: 2px; }
+  @keyframes pbaFadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pbaPulse { 0% { box-shadow: 0 0 0 0 rgba(30,110,102,0.4); } 70% { box-shadow: 0 0 0 12px rgba(30,110,102,0); } 100% { box-shadow: 0 0 0 0 rgba(30,110,102,0); } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+  [data-reduce-motion="true"] *, [data-reduce-motion="true"] *::before, [data-reduce-motion="true"] *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+</style>
+</helmet>
+<div data-reduce-motion="{{ reduceMotionStr }}" style="min-height:100vh;display:flex;flex-direction:column;background:#F7F2E7;">
+<a href="#main-content" style="position:absolute;left:-9999px;top:0;z-index:200;background:#16211F;color:#F7F2E7;padding:14px 20px;font-family:Manrope,sans-serif;font-weight:700;border-radius:0 0 8px 0;" style-focus="left:0;">Skip to content</a>
+
+<header style="position:sticky;top:0;z-index:100;background:rgba(247,242,231,0.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(22,33,31,0.12);">
+  <div style="max-width:1320px;margin:0 auto;padding:16px clamp(20px,5vw,40px);display:flex;align-items:center;gap:24px;">
+    <button onClick="{{ goHome }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:0;background:none;border:none;padding:0;text-align:left;">
+      <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#55655F;font-weight:700;">PICKLEBALL</span>
+      <span style="font-family:'Source Serif 4',serif;font-size:22px;font-style:italic;font-weight:600;color:#16211F;margin-top:-2px;">Bay Area</span>
+    </button>
+
+    <sc-if value="{{ isDesktopNav }}" hint-placeholder-val="{{ true }}">
+    <nav aria-label="Primary" style="display:flex;align-items:center;gap:2px;margin-left:8px;">
+      <a href="#" onClick="{{ goFindCourts }}" aria-current="{{ findCourtsCurrent }}" style="padding:10px 14px;border-radius:8px;font-family:Manrope,sans-serif;font-weight:600;font-size:15px;color:#16211F;" style-hover="background:rgba(22,33,31,0.06);">Find Courts</a>
+      <a href="#" onClick="{{ goCities }}" aria-current="{{ citiesCurrent }}" style="padding:10px 14px;border-radius:8px;font-family:Manrope,sans-serif;font-weight:600;font-size:15px;color:#16211F;" style-hover="background:rgba(22,33,31,0.06);">Cities</a>
+      <a href="#" onClick="{{ goRankings }}" aria-current="{{ rankingsCurrent }}" style="padding:10px 14px;border-radius:8px;font-family:Manrope,sans-serif;font-weight:600;font-size:15px;color:#16211F;" style-hover="background:rgba(22,33,31,0.06);">Rankings</a>
+      <a href="#" onClick="{{ goPaddles }}" aria-current="{{ paddlesCurrent }}" style="padding:10px 14px;border-radius:8px;font-family:Manrope,sans-serif;font-weight:600;font-size:15px;color:#16211F;" style-hover="background:rgba(22,33,31,0.06);">Paddles &amp; Gear</a>
+      <a href="#" onClick="{{ goAbout }}" aria-current="{{ aboutCurrent }}" style="padding:10px 14px;border-radius:8px;font-family:Manrope,sans-serif;font-weight:600;font-size:15px;color:#16211F;" style-hover="background:rgba(22,33,31,0.06);">About</a>
+      <div style="position:relative;">
+        <button onClick="{{ toggleMoreMenu }}" aria-expanded="{{ moreMenuOpenStr }}" style="padding:10px 14px;border-radius:8px;font-family:Manrope,sans-serif;font-weight:600;font-size:15px;color:#16211F;background:none;border:none;display:flex;align-items:center;gap:4px;" style-hover="background:rgba(22,33,31,0.06);">
+          More
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+        <sc-if value="{{ moreMenuOpen }}" hint-placeholder-val="{{ false }}">
+        <div role="menu" style="position:absolute;top:calc(100% + 8px);right:0;background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:12px;box-shadow:0 12px 32px rgba(22,33,31,0.14);padding:8px;min-width:220px;display:flex;flex-direction:column;gap:2px;">
+          <a href="#" onClick="{{ goLearn }}" aria-current="{{ learnCurrent }}" style="padding:10px 12px;border-radius:8px;font-family:Manrope,sans-serif;font-size:14px;font-weight:600;color:#16211F;" style-hover="background:rgba(22,33,31,0.06);">Learn to Play</a>
+          <a href="#" onClick="{{ goReport }}" aria-current="{{ reportCurrent }}" style="padding:10px 12px;border-radius:8px;font-family:Manrope,sans-serif;font-size:14px;font-weight:600;color:#16211F;" style-hover="background:rgba(22,33,31,0.06);">Report a Correction</a>
+          <div style="height:1px;background:rgba(22,33,31,0.1);margin:4px 8px;"></div>
+          <a href="#" onClick="{{ goAffiliate }}" style="padding:10px 12px;border-radius:8px;font-family:Manrope,sans-serif;font-size:13px;color:#55655F;" style-hover="background:rgba(22,33,31,0.06);">Affiliate Disclosure</a>
+          <a href="#" onClick="{{ goPrivacy }}" style="padding:10px 12px;border-radius:8px;font-family:Manrope,sans-serif;font-size:13px;color:#55655F;" style-hover="background:rgba(22,33,31,0.06);">Privacy</a>
+        </div>
+        </sc-if>
+      </div>
+    </nav>
+    <form onSubmit="{{ submitGlobalSearch }}" style="margin-left:auto;display:flex;align-items:center;gap:8px;background:#FDFBF4;border:1px solid rgba(22,33,31,0.16);border-radius:999px;padding:8px 8px 8px 16px;width:240px;">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;color:#55655F;"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"></circle><line x1="13.2" y1="13.2" x2="17" y2="17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line></svg>
+      <input type="text" value="{{ globalQuery }}" onChange="{{ setGlobalQuery }}" placeholder="Search city or court" aria-label="Search city or court" style="border:none;background:none;font-size:13px;font-family:Manrope,sans-serif;color:#16211F;flex:1;min-width:0;outline:none;">
+    </form>
+    </sc-if>
+
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ toggleMobileMenu }}" aria-expanded="{{ mobileMenuOpenStr }}" aria-label="Menu" style="margin-left:auto;background:none;border:2px solid #16211F;border-radius:8px;padding:10px;display:flex;align-items:center;justify-content:center;">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="3" y1="5.5" x2="17" y2="5.5" stroke="#16211F" stroke-width="1.8" stroke-linecap="round"></line><line x1="3" y1="10" x2="17" y2="10" stroke="#16211F" stroke-width="1.8" stroke-linecap="round"></line><line x1="3" y1="14.5" x2="17" y2="14.5" stroke="#16211F" stroke-width="1.8" stroke-linecap="round"></line></svg>
+    </button>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ showMobileMenu }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#FDFBF4;border-top:1px solid rgba(22,33,31,0.12);padding:16px clamp(20px,5vw,40px) 24px;display:flex;flex-direction:column;gap:2px;">
+    <form onSubmit="{{ submitGlobalSearch }}" style="display:flex;align-items:center;gap:8px;background:#F7F2E7;border:1px solid rgba(22,33,31,0.16);border-radius:999px;padding:10px 8px 10px 16px;margin-bottom:12px;">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;color:#55655F;"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"></circle><line x1="13.2" y1="13.2" x2="17" y2="17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line></svg>
+      <input type="text" value="{{ globalQuery }}" onChange="{{ setGlobalQuery }}" placeholder="Search city or court" aria-label="Search city or court" style="border:none;background:none;font-size:15px;font-family:Manrope,sans-serif;color:#16211F;flex:1;min-width:0;outline:none;">
+    </form>
+    <a href="#" onClick="{{ goFindCourts }}" aria-current="{{ findCourtsCurrent }}" style="padding:14px 8px;font-family:Manrope,sans-serif;font-weight:600;font-size:17px;color:#16211F;border-bottom:1px solid rgba(22,33,31,0.08);">Find Courts</a>
+    <a href="#" onClick="{{ goCities }}" aria-current="{{ citiesCurrent }}" style="padding:14px 8px;font-family:Manrope,sans-serif;font-weight:600;font-size:17px;color:#16211F;border-bottom:1px solid rgba(22,33,31,0.08);">Cities</a>
+    <a href="#" onClick="{{ goRankings }}" aria-current="{{ rankingsCurrent }}" style="padding:14px 8px;font-family:Manrope,sans-serif;font-weight:600;font-size:17px;color:#16211F;border-bottom:1px solid rgba(22,33,31,0.08);">Rankings</a>
+    <a href="#" onClick="{{ goPaddles }}" aria-current="{{ paddlesCurrent }}" style="padding:14px 8px;font-family:Manrope,sans-serif;font-weight:600;font-size:17px;color:#16211F;border-bottom:1px solid rgba(22,33,31,0.08);">Paddles &amp; Gear</a>
+    <a href="#" onClick="{{ goLearn }}" aria-current="{{ learnCurrent }}" style="padding:14px 8px;font-family:Manrope,sans-serif;font-weight:600;font-size:17px;color:#16211F;border-bottom:1px solid rgba(22,33,31,0.08);">Learn to Play</a>
+    <a href="#" onClick="{{ goAbout }}" aria-current="{{ aboutCurrent }}" style="padding:14px 8px;font-family:Manrope,sans-serif;font-weight:600;font-size:17px;color:#16211F;border-bottom:1px solid rgba(22,33,31,0.08);">About</a>
+    <a href="#" onClick="{{ goReport }}" aria-current="{{ reportCurrent }}" style="padding:14px 8px;font-family:Manrope,sans-serif;font-weight:600;font-size:17px;color:#16211F;">Report a Correction</a>
+  </div>
+  </sc-if>
+</header>
+
+<main id="main-content" style="flex:1;">
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div data-view="home" data-screen-label="Home" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;">
+  <section style="position:relative;background:#F7F2E7;overflow:hidden;padding:56px clamp(20px,5vw,40px) 0;">
+    <div style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit, minmax(420px, 1fr));gap:56px;align-items:center;padding-bottom:64px;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.1em;color:#154F49;background:#DCEEEA;border:1px solid rgba(30,110,102,0.25);padding:6px 14px;border-radius:999px;font-weight:700;animation:pbaFadeUp 0.6s ease both;">SAN FRANCISCO BAY AREA · PUBLIC COURT DIRECTORY</div>
+        <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(40px,6vw,72px);line-height:1.02;font-weight:600;color:#16211F;margin:20px 0 0;letter-spacing:-0.01em;animation:pbaFadeUp 0.6s ease 0.05s both;">Every court, actually verified.</h1>
+        <p style="font-family:Manrope,sans-serif;font-size:19px;line-height:1.55;color:#3E4A45;max-width:540px;margin:20px 0 0;animation:pbaFadeUp 0.6s ease 0.1s both;">A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing.</p>
+        <form onSubmit="{{ submitHeroSearch }}" style="margin-top:28px;display:flex;gap:10px;max-width:520px;flex-wrap:wrap;animation:pbaFadeUp 0.6s ease 0.15s both;">
+          <div style="flex:1;min-width:240px;display:flex;align-items:center;gap:10px;background:#FDFBF4;border:2px solid #16211F;border-radius:12px;padding:14px 18px;">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;color:#55655F;"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"></circle><line x1="13.2" y1="13.2" x2="17" y2="17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line></svg>
+            <input type="text" value="{{ heroQuery }}" onChange="{{ setHeroQuery }}" placeholder="Search a city or court — Palo Alto, Mitchell Park…" aria-label="Search a city or court" style="border:none;background:none;font-size:16px;font-family:Manrope,sans-serif;color:#16211F;flex:1;min-width:0;outline:none;">
+          </div>
+          <button type="submit" style="background:#D6E14A;color:#16211F;border:2px solid #16211F;border-radius:12px;padding:0 24px;font-family:Manrope,sans-serif;font-weight:700;font-size:15px;white-space:nowrap;transition:background 0.15s, color 0.15s;" style-hover="background:#16211F;color:#D6E14A;">Search</button>
+        </form>
+        
+      </div>
+      
+    </div>
+  </section>
+
+  <section style="background:#EDE5CF;padding:80px clamp(20px,5vw,40px);">
+    <div style="max-width:1320px;margin:0 auto;">
+      <h2 style="font-family:'Source Serif 4',serif;font-size:clamp(28px,3.5vw,40px);font-weight:600;color:#16211F;margin:0 0 40px;">Three ways in.</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:24px;">
+        <button onClick="{{ goFindCourts }}" style="text-align:left;background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:14px;transition:transform 0.18s, box-shadow 0.18s;" style-hover="transform:translateY(-4px);box-shadow:0 16px 32px rgba(22,33,31,0.12);border-color:#D6E14A;">
+          <div style="width:44px;height:44px;border-radius:10px;background:#F2F6D6;display:flex;align-items:center;justify-content:center;">
+            <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="4" stroke="#56621A" stroke-width="1.6"></circle><line x1="10" y1="1.5" x2="10" y2="4" stroke="#56621A" stroke-width="1.6" stroke-linecap="round"></line><line x1="10" y1="16" x2="10" y2="18.5" stroke="#56621A" stroke-width="1.6" stroke-linecap="round"></line><line x1="1.5" y1="10" x2="4" y2="10" stroke="#56621A" stroke-width="1.6" stroke-linecap="round"></line><line x1="16" y1="10" x2="18.5" y2="10" stroke="#56621A" stroke-width="1.6" stroke-linecap="round"></line></svg>
+          </div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#55655F;text-transform:uppercase;">Locals &amp; visitors</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;color:#16211F;">Find a court near you</div>
+          <p style="font-family:Manrope,sans-serif;font-size:15px;line-height:1.55;color:#3E4A45;margin:0;">Search a city or venue, scan the map &amp; list, open a court for the details.</p>
+          <span style="margin-top:auto;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;color:#154F49;display:flex;align-items:center;gap:6px;">Find courts <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+        </button>
+        <button onClick="{{ goLearn }}" style="text-align:left;background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:14px;transition:transform 0.18s, box-shadow 0.18s;" style-hover="transform:translateY(-4px);box-shadow:0 16px 32px rgba(22,33,31,0.12);border-color:#1E6E66;">
+          <div style="width:44px;height:44px;border-radius:10px;background:#DCEEEA;display:flex;align-items:center;justify-content:center;">
+            <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><path d="M3 5.5C3 4.7 3.7 4 4.5 4H9V16H4.5C3.7 16 3 15.3 3 14.5V5.5Z" stroke="#154F49" stroke-width="1.5"></path><path d="M17 5.5C17 4.7 16.3 4 15.5 4H11V16H15.5C16.3 16 17 15.3 17 14.5V5.5Z" stroke="#154F49" stroke-width="1.5"></path></svg>
+          </div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#55655F;text-transform:uppercase;">New to pickleball</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;color:#16211F;">Never played before?</div>
+          <p style="font-family:Manrope,sans-serif;font-size:15px;line-height:1.55;color:#3E4A45;margin:0;">Learn the basics, find a beginner-friendly court, rent a paddle before you buy.</p>
+          <span style="margin-top:auto;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;color:#154F49;display:flex;align-items:center;gap:6px;">Learn to play <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+        </button>
+        <button onClick="{{ goPaddles }}" style="text-align:left;background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:14px;transition:transform 0.18s, box-shadow 0.18s;" style-hover="transform:translateY(-4px);box-shadow:0 16px 32px rgba(22,33,31,0.12);border-color:#C1552C;">
+          <div style="width:44px;height:44px;border-radius:10px;background:#F5E1D6;display:flex;align-items:center;justify-content:center;">
+            <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="8" rx="6" ry="7" stroke="#9C4322" stroke-width="1.5"></ellipse><line x1="10" y1="15" x2="10" y2="19" stroke="#9C4322" stroke-width="1.5" stroke-linecap="round"></line></svg>
+          </div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#55655F;text-transform:uppercase;">Ready to buy</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;color:#16211F;">Find your paddle</div>
+          <p style="font-family:Manrope,sans-serif;font-size:15px;line-height:1.55;color:#3E4A45;margin:0;">Take the quick quiz, see matched picks, buy the one that fits.</p>
+          <span style="margin-top:auto;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;color:#154F49;display:flex;align-items:center;gap:6px;">Find your paddle <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#F7F2E7;padding:88px clamp(20px,5vw,40px);">
+    <div style="max-width:1320px;margin:0 auto;">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:40px;">
+        <h2 style="font-family:'Source Serif 4',serif;font-size:clamp(28px,3.5vw,40px);font-weight:600;color:#16211F;margin:0;">Browse by region.</h2>
+        <a href="#" onClick="{{ goCities }}" style="font-family:Manrope,sans-serif;font-weight:700;font-size:14px;color:#154F49;">See all cities →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;">
+        <sc-for list="{{ regionCards }}" as="region" hint-placeholder-count="5">
+        <button onClick="{{ region.browse }}" style="text-align:left;background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:10px;transition:transform 0.18s, border-color 0.18s;width:100%;" style-hover="transform:translateY(-3px);border-color:#16211F;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <span style="font-family:'Source Serif 4',serif;font-size:21px;font-weight:600;color:#16211F;">{{ region.name }}</span>
+            <span style="font-family:'Space Mono',monospace;font-size:12px;color:#55655F;white-space:nowrap;">{{ region.cityCountLabel }}</span>
+          </div>
+          <p style="font-family:Manrope,sans-serif;font-size:14px;line-height:1.55;color:#3E4A45;margin:0;">{{ region.description }}</p>
+        </button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#16211F;padding:88px clamp(20px,5vw,40px);">
+    <div style="max-width:1320px;margin:0 auto;">
+      <h2 style="font-family:'Source Serif 4',serif;font-size:clamp(28px,3.5vw,40px);font-weight:600;color:#F3EEDD;margin:0 0 44px;">How this stays honest.</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:36px;">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#D6E14A;text-transform:uppercase;margin-bottom:12px;">What we check</div>
+          <p style="font-family:Manrope,sans-serif;font-size:16px;line-height:1.65;color:#C9CFC0;margin:0;">Every venue is cross-referenced against its city's own recreation department page or facility directory — not pulled from an app and left unverified.</p>
+        </div>
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#D6E14A;text-transform:uppercase;margin-bottom:12px;">What we don't do</div>
+          <p style="font-family:Manrope,sans-serif;font-size:16px;line-height:1.65;color:#C9CFC0;margin:0;">No ads. No pay-to-list. Nothing sponsors or influences the court data. Some paddle &amp; gear links are affiliate — always disclosed at the link. If a city's scene is thin or contested, we say so.</p>
+        </div>
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#D6E14A;text-transform:uppercase;margin-bottom:12px;">How to use it</div>
+          <p style="font-family:Manrope,sans-serif;font-size:16px;line-height:1.65;color:#C9CFC0;margin:0;">Court counts, hours, and fees move with city budgets and construction. Treat this as a starting point, then check the source link on each city's page. Data verified July 2026.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</sc-if>
+<sc-if value="{{ isFindCourts }}" hint-placeholder-val="{{ false }}">
+<div data-view="find-courts" data-screen-label="Find Courts" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:1360px;margin:0 auto;padding:40px clamp(20px,5vw,40px) 96px;">
+  <div style="margin-bottom:24px;">
+    <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:8px;">Find courts</div>
+    <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(30px,4vw,44px);font-weight:600;color:#16211F;margin:0;">Search the map, filter the list.</h1>
+    <p style="font-family:Manrope,sans-serif;font-size:15px;color:#55655F;margin:10px 0 0;max-width:640px;">Showing {{ filteredCount }} of 16 sample venues in this preview — the live directory covers ~200 verified venues across the Bay.</p>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:14px;padding:14px;margin-bottom:24px;">
+    <select value="{{ findFilters.region }}" onChange="{{ onRegionFilterChange }}" aria-label="Filter by region" style="padding:10px 14px;border-radius:999px;border:1.5px solid rgba(22,33,31,0.22);background:#FDFBF4;font-family:Manrope,sans-serif;font-size:13px;font-weight:600;color:#16211F;">
+      <option value="all">All regions</option>
+      <option value="sf">San Francisco</option>
+      <option value="peninsula">Peninsula</option>
+      <option value="south-bay">South Bay</option>
+      <option value="east-bay">East Bay</option>
+      <option value="north-bay">North Bay</option>
+    </select>
+    <select value="{{ findFilters.type }}" onChange="{{ onTypeFilterChange }}" aria-label="Filter by court type" style="padding:10px 14px;border-radius:999px;border:1.5px solid rgba(22,33,31,0.22);background:#FDFBF4;font-family:Manrope,sans-serif;font-size:13px;font-weight:600;color:#16211F;">
+      <option value="all">Indoor + outdoor</option>
+      <option value="outdoor">Outdoor</option>
+      <option value="indoor">Indoor</option>
+    </select>
+    <select value="{{ findFilters.price }}" onChange="{{ onPriceFilterChange }}" aria-label="Filter by price" style="padding:10px 14px;border-radius:999px;border:1.5px solid rgba(22,33,31,0.22);background:#FDFBF4;font-family:Manrope,sans-serif;font-size:13px;font-weight:600;color:#16211F;">
+      <option value="all">Free + paid</option>
+      <option value="free">Free</option>
+      <option value="paid">Paid</option>
+    </select>
+    <select value="{{ findFilters.access }}" onChange="{{ onAccessFilterChange }}" aria-label="Filter by access" style="padding:10px 14px;border-radius:999px;border:1.5px solid rgba(22,33,31,0.22);background:#FDFBF4;font-family:Manrope,sans-serif;font-size:13px;font-weight:600;color:#16211F;">
+      <option value="all">Walk-up + reservable</option>
+      <option value="walkup">Walk-up</option>
+      <option value="reservable">Reservable</option>
+    </select>
+    <button onClick="{{ toggleBeginnerOnly }}" aria-pressed="{{ beginnerChip.pressed }}" style="padding:10px 16px;border-radius:999px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;background:{{ beginnerChip.bg }};color:{{ beginnerChip.color }};border:1.5px solid {{ beginnerChip.border }};">Beginner-friendly</button>
+    <button onClick="{{ toggleLightsFilter }}" aria-pressed="{{ lightsChip.pressed }}" style="padding:10px 16px;border-radius:999px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;background:{{ lightsChip.bg }};color:{{ lightsChip.color }};border:1.5px solid {{ lightsChip.border }};">Lights</button>
+    <button onClick="{{ toggleRestroomFilter }}" aria-pressed="{{ restroomChip.pressed }}" style="padding:10px 16px;border-radius:999px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;background:{{ restroomChip.bg }};color:{{ restroomChip.color }};border:1.5px solid {{ restroomChip.border }};">Restroom</button>
+    <button onClick="{{ toggleWaterFilter }}" aria-pressed="{{ waterChip.pressed }}" style="padding:10px 16px;border-radius:999px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;background:{{ waterChip.bg }};color:{{ waterChip.color }};border:1.5px solid {{ waterChip.border }};">Water</button>
+    <button onClick="{{ toggleParkingFilter }}" aria-pressed="{{ parkingChip.pressed }}" style="padding:10px 16px;border-radius:999px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;background:{{ parkingChip.bg }};color:{{ parkingChip.color }};border:1.5px solid {{ parkingChip.border }};">Parking</button>
+    <button onClick="{{ resetFindFilters }}" style="margin-left:auto;padding:10px 16px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#9C4322;background:none;border:none;">Reset filters</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(440px,1fr));gap:24px;align-items:start;">
+    <div style="position:sticky;top:88px;background:#DCEEEA;border:1px solid rgba(22,33,31,0.16);border-radius:16px;padding:16px;">
+      <svg viewBox="0 0 400 460" width="100%" role="img" aria-label="Hand-illustrated map of the Bay Area with court pins" style="display:block;">
+        <defs>
+          <linearGradient id="pbaWater" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#E7F1ED"></stop>
+            <stop offset="100%" stop-color="#C3DFD8"></stop>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="400" height="460" fill="url(#pbaWater)"></rect>
+        <path d="M155 78 C 150 88 150 95 145 90" fill="none" stroke="#16211F" stroke-width="1.4" stroke-dasharray="3 2" opacity="0.55"></path>
+        <path d="M100 82 L145 78" fill="none" stroke="#16211F" stroke-width="1.4" stroke-dasharray="3 2" opacity="0.55"></path>
+        <path d="M148 130 L240 140" fill="none" stroke="#16211F" stroke-width="1.4" stroke-dasharray="3 2" opacity="0.55"></path>
+        <path d="M158 268 L248 258" fill="none" stroke="#16211F" stroke-width="1.4" stroke-dasharray="3 2" opacity="0.55"></path>
+        <path d="M155 12 C 130 20 118 45 128 65 C 135 80 150 88 168 90 C 195 93 225 92 248 82 C 265 74 270 55 260 38 C 250 20 225 8 195 8 C 180 8 165 8 155 12 Z" fill="#F7F2E7" stroke="#16211F" stroke-width="2"></path>
+        <path d="M163 24 C 180 18 208 18 232 27" fill="none" stroke="#16211F" stroke-width="1" stroke-opacity="0.14"></path>
+        <path d="M95 78 C 75 82 62 100 65 120 C 67 138 78 155 98 162 C 118 168 140 158 148 138 C 154 122 150 100 135 88 C 122 78 108 74 95 78 Z" fill="#F7F2E7" stroke="#16211F" stroke-width="2"></path>
+        <path d="M108 152 C 85 158 68 178 70 205 C 72 230 88 245 95 268 C 102 292 82 310 78 335 C 74 360 85 385 105 398 C 125 410 148 400 155 378 C 162 355 148 335 145 312 C 142 288 158 268 160 242 C 162 215 155 188 140 168 C 130 155 118 149 108 152 Z" fill="#F7F2E7" stroke="#16211F" stroke-width="2"></path>
+        <path d="M90 175 C 100 210 92 250 100 285" fill="none" stroke="#16211F" stroke-width="1" stroke-opacity="0.14"></path>
+        <path d="M100 320 C 112 345 108 368 118 388" fill="none" stroke="#16211F" stroke-width="1" stroke-opacity="0.14"></path>
+        <path d="M195 372 C 165 368 140 382 138 405 C 136 428 155 448 185 454 C 220 460 260 458 292 445 C 318 434 332 412 322 392 C 312 372 285 362 255 365 C 235 367 215 375 195 372 Z" fill="#F7F2E7" stroke="#16211F" stroke-width="2"></path>
+        <path d="M275 75 C 245 78 232 100 238 125 C 244 150 262 162 265 185 C 268 208 250 225 248 250 C 246 275 258 295 262 318 C 266 342 255 362 268 375 C 285 372 305 358 318 335 C 332 310 328 285 322 260 C 316 235 330 215 335 190 C 340 165 355 145 358 120 C 361 98 345 80 320 76 C 305 74 290 73 275 75 Z" fill="#F7F2E7" stroke="#16211F" stroke-width="2"></path>
+        <path d="M290 95 C 310 130 296 165 308 195" fill="none" stroke="#16211F" stroke-width="1" stroke-opacity="0.14"></path>
+        <path d="M300 230 C 320 260 302 295 315 325" fill="none" stroke="#16211F" stroke-width="1" stroke-opacity="0.14"></path>
+        <g opacity="0.75">
+          <line x1="374" y1="34" x2="374" y2="14" stroke="#16211F" stroke-width="1.3"></line>
+          <path d="M374 14L369 22L379 22Z" fill="#16211F"></path>
+          <text x="374" y="46" font-family="Space Mono, monospace" font-size="9" fill="#16211F" text-anchor="middle" font-weight="700">N</text>
+        </g>
+        <text x="197" y="35" font-family="Space Mono, monospace" font-size="9" fill="#55655F" text-anchor="middle" letter-spacing="1">NORTH BAY</text>
+        <text x="106" y="145" font-family="Space Mono, monospace" font-size="9" fill="#55655F" text-anchor="middle" letter-spacing="1">SF</text>
+        <text x="112" y="262" font-family="Space Mono, monospace" font-size="9" fill="#55655F" text-anchor="middle" letter-spacing="1">PENINSULA</text>
+        <text x="228" y="440" font-family="Space Mono, monospace" font-size="9" fill="#55655F" text-anchor="middle" letter-spacing="1">SOUTH BAY</text>
+        <text x="296" y="235" font-family="Space Mono, monospace" font-size="9" fill="#55655F" text-anchor="middle" letter-spacing="1">EAST BAY</text>
+        <sc-for list="{{ allVenuesForMap }}" as="v" hint-placeholder-count="16">
+        <g transform="translate({{ v.mapX }}, {{ v.mapY }})" opacity="{{ v.pinOpacity }}" pointer-events="{{ v.pinPointerEvents }}" onClick="{{ v.select }}" onMouseEnter="{{ v.onHover }}" onMouseLeave="{{ v.onLeave }}" onKeyDown="{{ v.onKeyActivate }}" tabIndex="0" role="button" aria-label="{{ v.name }}" style="cursor:pointer;">
+          <title>{{ v.name }}</title>
+          <sc-if value="{{ v.isSelected }}" hint-placeholder-val="{{ false }}">
+          <circle r="14" fill="none" stroke="#1E6E66" stroke-width="1.5" style="animation:pbaPulse 1.6s ease-out infinite;"></circle>
+          </sc-if>
+          <sc-if value="{{ v.topPick }}" hint-placeholder-val="{{ false }}">
+          <circle r="12.5" fill="none" stroke="#9C4322" stroke-width="1.3" stroke-dasharray="2 2"></circle>
+          </sc-if>
+          <sc-if value="{{ v.isOutdoor }}" hint-placeholder-val="{{ true }}">
+          <circle r="8" fill="#D6E14A" stroke="#16211F" stroke-width="1.8"></circle>
+          </sc-if>
+          <sc-if value="{{ v.isIndoor }}" hint-placeholder-val="{{ false }}">
+          <rect x="-8" y="-8" width="16" height="16" rx="3" fill="#1E6E66" stroke="#16211F" stroke-width="1.8"></rect>
+          </sc-if>
+          <sc-if value="{{ v.isBoth }}" hint-placeholder-val="{{ false }}">
+          <path d="M0 -9L9 0L0 9L-9 0Z" fill="#C1552C" stroke="#16211F" stroke-width="1.8"></path>
+          </sc-if>
+        </g>
+        </sc-for>
+      </svg>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(22,33,31,0.12);">
+        <div style="display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#D6E14A" stroke="#16211F" stroke-width="1.4"></circle></svg><span style="font-family:Manrope,sans-serif;font-size:12px;color:#3E4A45;">Outdoor</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="1" width="12" height="12" rx="2.5" fill="#1E6E66" stroke="#16211F" stroke-width="1.4"></rect></svg><span style="font-family:Manrope,sans-serif;font-size:12px;color:#3E4A45;">Indoor</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 0.5L13.5 7L7 13.5L0.5 7Z" fill="#C1552C" stroke="#16211F" stroke-width="1.4"></path></svg><span style="font-family:Manrope,sans-serif;font-size:12px;color:#3E4A45;">Both</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="none" stroke="#9C4322" stroke-width="1.3" stroke-dasharray="2 2"></circle></svg><span style="font-family:Manrope,sans-serif;font-size:12px;color:#3E4A45;">Top pick</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <sc-if value="{{ hasNoResults }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#FDFBF4;border:1px dashed rgba(22,33,31,0.25);border-radius:16px;padding:40px;text-align:center;">
+        <p style="font-family:'Source Serif 4',serif;font-size:20px;color:#16211F;margin:0 0 8px;">No courts match those filters.</p>
+        <p style="font-family:Manrope,sans-serif;font-size:14px;color:#55655F;margin:0 0 16px;">Try widening the region or clearing an amenity filter.</p>
+        <button onClick="{{ resetFindFilters }}" style="background:#D6E14A;color:#16211F;border:2px solid #16211F;border-radius:10px;padding:10px 20px;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;">Reset filters</button>
+      </div>
+      </sc-if>
+      <sc-for list="{{ filteredVenues }}" as="v" hint-placeholder-count="6">
+      <div onMouseEnter="{{ v.onHover }}" onMouseLeave="{{ v.onLeave }}" style="background:{{ v.cardBg }};border:2px solid {{ v.cardBorderColor }};border-radius:16px;padding:{{ courtCardPadding }};display:flex;flex-direction:column;gap:{{ courtCardGap }};transition:border-color 0.15s, background 0.15s;position:relative;">
+        <sc-if value="{{ v.topPick }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:-10px;left:20px;background:#9C4322;color:#FDFBF4;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.08em;padding:4px 10px;border-radius:999px;text-transform:uppercase;">Top pick</div>
+        </sc-if>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+          <div>
+            <div style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;color:#16211F;">{{ v.name }}</div>
+            <div style="font-family:'Space Mono',monospace;font-size:12px;color:#55655F;margin-top:3px;">{{ v.cityName }} · {{ v.regionName }}</div>
+          </div>
+          <button onClick="{{ v.toggleFav }}" aria-label="Save to favorites" aria-pressed="{{ v.favPressed }}" style="background:none;border:none;padding:4px;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="{{ v.heartFill }}" stroke="#9C4322" stroke-width="1.6"><path d="M12 20.5s-7.5-4.6-10-9.3C0.3 8 1.8 4.5 5 3.6c2.2-0.6 4.4 0.4 5.9 2.4 1.5-2 3.7-3 5.9-2.4 3.2 0.9 4.7 4.4 3 7.6-2.5 4.7-10 9.3-10 9.3z"></path></svg>
+          </button>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;background:{{ v.typeBadgeBg }};color:{{ v.typeBadgeColor }};border:1px solid {{ v.typeBadgeBorder }};">{{ v.typeLabel }} · {{ v.courts }} courts</span>
+          <span style="display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;background:{{ v.skillBadgeBg }};color:{{ v.skillBadgeColor }};">{{ v.skillBadgeLabel }}</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;">
+          <div style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#55655F" stroke-width="1.3"></circle><text x="8" y="11" font-family="Space Mono, monospace" font-size="8" fill="#55655F" text-anchor="middle">$</text></svg><div><div style="font-family:Manrope,sans-serif;font-size:10.5px;color:#8B9892;text-transform:uppercase;letter-spacing:0.04em;">Price</div><div style="font-family:'Space Mono',monospace;font-size:12.5px;color:#16211F;font-weight:700;">{{ v.priceLabel }}</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="#55655F" stroke-width="1.3"></rect><line x1="2" y1="6.5" x2="14" y2="6.5" stroke="#55655F" stroke-width="1.3"></line></svg><div><div style="font-family:Manrope,sans-serif;font-size:10.5px;color:#8B9892;text-transform:uppercase;letter-spacing:0.04em;">Access</div><div style="font-family:'Space Mono',monospace;font-size:12.5px;color:#16211F;font-weight:700;">{{ v.accessLabel }}</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#55655F" stroke-width="1.3"></circle><path d="M8 4.5V8L10.5 9.5" stroke="#55655F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg><div><div style="font-family:Manrope,sans-serif;font-size:10.5px;color:#8B9892;text-transform:uppercase;letter-spacing:0.04em;">Hours</div><div style="font-family:'Space Mono',monospace;font-size:12.5px;color:#16211F;font-weight:700;">{{ v.hours }}</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 2H12.5M3.5 14H12.5M4 2C4 6 12 6 12 2M4 14C4 10 12 10 12 14" stroke="#55655F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg><div><div style="font-family:Manrope,sans-serif;font-size:10.5px;color:#8B9892;text-transform:uppercase;letter-spacing:0.04em;">Typical wait</div><div style="font-family:'Space Mono',monospace;font-size:12.5px;color:#16211F;font-weight:700;">{{ v.waitLabel }}</div></div></div>
+        </div>
+
+        <sc-if value="{{ showCardExtras }}" hint-placeholder-val="{{ true }}">
+        <p style="font-family:Manrope,sans-serif;font-size:13.5px;line-height:1.5;color:#3E4A45;margin:0;background:#F7F2E7;border-radius:8px;padding:10px 12px;">{{ v.surface }} · {{ v.skillLabel }}</p>
+        </sc-if>
+
+        <sc-if value="{{ showCardExtras }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <sc-if value="{{ v.lights }}" hint-placeholder-val="{{ false }}"><div title="Lights" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #1E6E66;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#154F49;">L</div></sc-if>
+          <sc-if value="{{ v.restroom }}" hint-placeholder-val="{{ false }}"><div title="Restroom" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #1E6E66;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#154F49;">R</div></sc-if>
+          <sc-if value="{{ v.water }}" hint-placeholder-val="{{ false }}"><div title="Water" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #1E6E66;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#154F49;">W</div></sc-if>
+          <sc-if value="{{ v.parking }}" hint-placeholder-val="{{ false }}"><div title="Parking" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #1E6E66;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#154F49;">P</div></sc-if>
+        </div>
+        </sc-if>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid rgba(22,33,31,0.08);flex-wrap:wrap;">
+          <sc-if value="{{ v.hasRatings }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;gap:1px;">
+              <sc-for list="{{ v.stars }}" as="star" hint-placeholder-count="5">
+              <span style="position:relative;width:15px;height:15px;display:inline-block;">
+                <svg width="15" height="15" viewBox="0 0 20 20" style="position:absolute;top:0;left:0;" fill="none"><path d="M10 1.5L12.5 7.5L19 8.2L14 12.6L15.5 19L10 15.6L4.5 19L6 12.6L1 8.2L7.5 7.5Z" stroke="#C9BFA0" stroke-width="1"></path></svg>
+                <span style="position:absolute;top:0;left:0;overflow:hidden;width:{{ star.fillPct }}%;height:100%;">
+                  <svg width="15" height="15" viewBox="0 0 20 20" fill="#D6E14A" stroke="#16211F" stroke-width="0.6"><path d="M10 1.5L12.5 7.5L19 8.2L14 12.6L15.5 19L10 15.6L4.5 19L6 12.6L1 8.2L7.5 7.5Z"></path></svg>
+                </span>
+              </span>
+              </sc-for>
+            </div>
+            <span style="font-family:'Space Mono',monospace;font-size:12px;color:#55655F;">{{ v.communityRating }} ({{ v.communityRatingCount }})</span>
+          </div>
+          </sc-if>
+          <sc-if value="{{ v.noRatings }}" hint-placeholder-val="{{ false }}">
+          <div style="font-family:Manrope,sans-serif;font-size:13px;color:#8B9892;font-style:italic;">Not yet rated — be the first</div>
+          </sc-if>
+          <sc-if value="{{ showGoogleRating }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:5px;background:#EDE5CF;padding:4px 10px;border-radius:999px;">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#55655F;">G</span>
+            <span style="font-family:'Space Mono',monospace;font-size:12px;color:#16211F;font-weight:700;">{{ v.googleRating }}</span>
+          </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-family:Manrope,sans-serif;font-size:12px;color:#8B9892;">Your rating:</span>
+          <div style="display:flex;gap:2px;">
+            <sc-for list="{{ v.userStars }}" as="ustar" hint-placeholder-count="5">
+            <button onClick="{{ ustar.onClick }}" aria-label="Rate {{ ustar.n }} stars" style="background:none;border:none;padding:2px;">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="{{ ustar.fillColor }}" stroke="#16211F" stroke-width="0.8"><path d="M10 1.5L12.5 7.5L19 8.2L14 12.6L15.5 19L10 15.6L4.5 19L6 12.6L1 8.2L7.5 7.5Z"></path></svg>
+            </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid rgba(22,33,31,0.08);">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#1E6E66" stroke-width="1.3" stroke-dasharray="2 2"></circle><path d="M6 10.2L8.7 13L14 7" stroke="#1E6E66" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span style="font-family:'Space Mono',monospace;font-size:11px;color:#55655F;">Verified {{ v.lastVerified }}</span>
+          </div>
+          <a href="{{ v.directionsUrl }}" target="_blank" rel="noopener" style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#154F49;display:flex;align-items:center;gap:4px;">Directions <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+        </div>
+      </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+<sc-if value="{{ isCities }}" hint-placeholder-val="{{ false }}">
+<div data-view="cities" data-screen-label="Cities" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:1320px;margin:0 auto;padding:40px clamp(20px,5vw,40px) 96px;">
+  <div style="margin-bottom:48px;">
+    <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:8px;">Cities</div>
+    <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(30px,4vw,44px);font-weight:600;color:#16211F;margin:0;">42 cities, 5 regions.</h1>
+    <p style="font-family:Manrope,sans-serif;font-size:15px;color:#55655F;margin:10px 0 0;max-width:640px;">Every city we track, grouped by region. Cities without a verified venue yet are marked — we'd rather say so than guess.</p>
+  </div>
+  <sc-for list="{{ citiesIndex }}" as="region" hint-placeholder-count="5">
+  <div style="margin-bottom:48px;">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap;">
+      <h2 style="font-family:'Source Serif 4',serif;font-size:26px;font-weight:600;color:#16211F;margin:0;">{{ region.name }}</h2>
+      <span style="font-family:'Space Mono',monospace;font-size:12px;color:#55655F;">{{ region.cityCountLabel }}</span>
+    </div>
+    <p style="font-family:Manrope,sans-serif;font-size:14px;color:#55655F;margin:0 0 20px;max-width:720px;">{{ region.description }}</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:14px;">
+      <sc-for list="{{ region.citiesVM }}" as="city" hint-placeholder-count="6">
+      <button onClick="{{ city.open }}" style="text-align:left;background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:4px;transition:border-color 0.15s, transform 0.15s;" style-hover="border-color:#16211F;transform:translateY(-2px);">
+        <span style="font-family:'Source Serif 4',serif;font-size:16px;font-weight:600;color:#16211F;">{{ city.name }}</span>
+        <span style="font-family:'Space Mono',monospace;font-size:11.5px;color:{{ city.statColor }};">{{ city.statLabel }}</span>
+      </button>
+      </sc-for>
+    </div>
+  </div>
+  </sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCityDetail }}" hint-placeholder-val="{{ false }}">
+<div data-view="city-detail" data-screen-label="City Detail" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:1320px;margin:0 auto;padding:40px clamp(20px,5vw,40px) 96px;">
+  <div style="display:flex;align-items:center;gap:8px;font-family:Manrope,sans-serif;font-size:13px;color:#55655F;margin-bottom:24px;flex-wrap:wrap;">
+    <a href="#" onClick="{{ goCities }}" style="color:#154F49;font-weight:600;">Cities</a>
+    <span>/</span>
+    <span>{{ cityDetail.region.name }}</span>
+    <span>/</span>
+    <span style="color:#16211F;font-weight:700;">{{ cityDetail.city.name }}</span>
+  </div>
+
+  <sc-if value="{{ hasCityDetail }}" hint-placeholder-val="{{ true }}">
+  <div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(380px,1fr));gap:32px;align-items:start;margin-bottom:56px;">
+      <div>
+        <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(34px,5vw,54px);font-weight:600;color:#16211F;margin:0;">{{ cityDetail.city.name }}</h1>
+        <div style="font-family:'Space Mono',monospace;font-size:12px;color:#55655F;margin-top:8px;letter-spacing:0.04em;text-transform:uppercase;">{{ cityDetail.region.name }} · {{ cityDetail.venueCountLabel }} · {{ cityDetail.totalCourts }} courts</div>
+        <p style="font-family:Manrope,sans-serif;font-size:17px;line-height:1.6;color:#3E4A45;margin:18px 0 0;max-width:560px;">{{ cityDetail.intro }}</p>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-start;gap:16px;background:#DCEEEA;border-radius:16px;padding:24px;">
+        <div style="width:64px;height:64px;border-radius:50%;background:#FDFBF4;border:2px solid #16211F;transform:rotate(-6deg);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><path d="M4 10.5L8 14.5L16 5.5" stroke="#1E6E66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.06em;color:#154F49;text-transform:uppercase;">Source-checked</div>
+          <div style="font-family:Manrope,sans-serif;font-size:13.5px;color:#16211F;margin-top:4px;max-width:220px;">Cross-referenced against {{ cityDetail.city.name }}'s Parks &amp; Recreation listing.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#9C4322;text-transform:uppercase;margin-bottom:14px;">Top pick in {{ cityDetail.city.name }}</div>
+      <div style="max-width:520px;">
+        <div style="background:#FDFBF4;border:2px solid #16211F;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative;">
+          <div style="position:absolute;top:-10px;left:20px;background:#9C4322;color:#FDFBF4;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.08em;padding:4px 10px;border-radius:999px;text-transform:uppercase;">Top pick</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#16211F;">{{ cityDetail.topPick.name }}</div>
+          <div style="font-family:Manrope,sans-serif;font-size:14px;color:#3E4A45;">{{ cityDetail.topPick.courts }} courts · {{ cityDetail.topPick.typeLabel }} · {{ cityDetail.topPick.surface }}</div>
+          <div style="font-family:Manrope,sans-serif;font-size:14px;color:#3E4A45;">{{ cityDetail.topPick.priceLabel }} · {{ cityDetail.topPick.accessLabel }} · {{ cityDetail.topPick.hours }}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:12px;color:#55655F;">★ {{ cityDetail.topPick.communityRating }} community ({{ cityDetail.topPick.communityRatingCount }})<sc-if value="{{ showGoogleRating }}" hint-placeholder-val="{{ true }}"> · G {{ cityDetail.topPick.googleRating }}</sc-if></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:14px;">All verified courts</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(340px,1fr));gap:20px;">
+        <sc-for list="{{ cityDetail.venues }}" as="v" hint-placeholder-count="3">
+        <div style="background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:'Source Serif 4',serif;font-size:18px;font-weight:600;color:#16211F;">{{ v.name }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="padding:4px 10px;border-radius:999px;font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;background:{{ v.typeBadgeBg }};color:{{ v.typeBadgeColor }};">{{ v.typeLabel }} · {{ v.courts }}</span>
+            <span style="padding:4px 10px;border-radius:999px;font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;background:{{ v.skillBadgeBg }};color:{{ v.skillBadgeColor }};">{{ v.skillBadgeLabel }}</span>
+          </div>
+          <div style="font-family:Manrope,sans-serif;font-size:13.5px;color:#3E4A45;">{{ v.priceLabel }} · {{ v.accessLabel }} · {{ v.hours }}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid rgba(22,33,31,0.08);">
+            <span style="font-family:'Space Mono',monospace;font-size:11.5px;color:#55655F;">Verified {{ v.lastVerified }}</span>
+            <a href="{{ v.directionsUrl }}" target="_blank" rel="noopener" style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#154F49;">Directions →</a>
+          </div>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ cityDetailMissing }}" hint-placeholder-val="{{ false }}">
+  <div style="text-align:center;padding:80px 20px;max-width:520px;margin:0 auto;">
+    <h1 style="font-family:'Source Serif 4',serif;font-size:32px;font-weight:600;color:#16211F;margin:0 0 12px;">{{ cityDetail.city.name }} is on the list — not yet verified.</h1>
+    <p style="font-family:Manrope,sans-serif;font-size:15px;line-height:1.6;color:#55655F;margin:0 0 24px;">We haven't cross-referenced a public court in {{ cityDetail.city.name }} against the city's own rec department listing yet. Rather than guess, we're leaving it blank until we do.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button onClick="{{ goCities }}" style="background:#FDFBF4;border:2px solid #16211F;color:#16211F;border-radius:10px;padding:12px 22px;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;">Back to cities</button>
+      <button onClick="{{ goReport }}" style="background:#D6E14A;border:2px solid #16211F;color:#16211F;border-radius:10px;padding:12px 22px;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;">Suggest a court here</button>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ isRankings }}" hint-placeholder-val="{{ false }}">
+<div data-view="rankings" data-screen-label="Rankings" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:1100px;margin:0 auto;padding:40px clamp(20px,5vw,40px) 96px;">
+  <div style="margin-bottom:28px;">
+    <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:8px;">Rankings</div>
+    <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(30px,4vw,44px);font-weight:600;color:#16211F;margin:0;">The Bay's top-rated courts.</h1>
+    <p style="font-family:Manrope,sans-serif;font-size:15px;color:#55655F;margin:10px 0 0;max-width:640px;">Ranked by community star rating, not Google's — and weighted toward venues with more ratings, so one 5-star review can't jump the line.</p>
+  </div>
+
+  <div style="background:#16211F;border-radius:16px;padding:24px 28px;margin-bottom:40px;display:flex;flex-direction:column;gap:6px;">
+    <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#D6E14A;text-transform:uppercase;">How ranking works</div>
+    <p style="font-family:Manrope,sans-serif;font-size:14.5px;line-height:1.6;color:#C9CFC0;margin:0;">We show Google's rating alongside for reference but never blend the two into one score. No court can pay to rank higher — there's nothing to buy. Venues with zero ratings sit outside the list until someone rates them.</p>
+  </div>
+
+  <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:14px;">Top 10</div>
+  <div style="display:flex;gap:14px;overflow-x:auto;padding-bottom:14px;margin-bottom:32px;">
+    <sc-for list="{{ topTenVenues }}" as="v" hint-placeholder-count="10">
+    <button onClick="{{ v.openCity }}" style="text-align:left;min-width:200px;flex-shrink:0;background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px;transition:transform 0.15s;" style-hover="transform:translateY(-3px);">
+      <div style="font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:{{ v.rankColor }};">#{{ v.rank }}</div>
+      <div style="font-family:'Source Serif 4',serif;font-size:17px;font-weight:600;color:#16211F;">{{ v.name }}</div>
+      <div style="font-family:'Space Mono',monospace;font-size:11px;color:#55655F;">{{ v.cityName }}</div>
+      <div style="font-family:'Space Mono',monospace;font-size:14px;color:#16211F;font-weight:700;">★ {{ v.communityRating }} <span style="color:#8B9892;font-weight:400;">({{ v.communityRatingCount }})</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">
+        <sc-if value="{{ v.topRated }}" hint-placeholder-val="{{ false }}"><span style="padding:3px 8px;border-radius:999px;font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;background:#16211F;color:#D6E14A;text-transform:uppercase;">Top rated</span></sc-if>
+        <sc-if value="{{ v.mostLoved }}" hint-placeholder-val="{{ false }}"><span style="padding:3px 8px;border-radius:999px;font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;background:#9C4322;color:#FDFBF4;text-transform:uppercase;">Most loved</span></sc-if>
+      </div>
+    </button>
+    </sc-for>
+  </div>
+
+  <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:6px;">Full list</div>
+  <div style="background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;overflow:hidden;">
+    <sc-for list="{{ rankedVenues }}" as="v" hint-placeholder-count="16">
+    <div style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid rgba(22,33,31,0.08);flex-wrap:wrap;">
+      <div style="font-family:'Space Mono',monospace;font-size:19px;font-weight:700;color:{{ v.rankColor }};width:34px;flex-shrink:0;">{{ v.rank }}</div>
+      <div style="flex:1;min-width:150px;">
+        <div style="font-family:'Source Serif 4',serif;font-size:16.5px;font-weight:600;color:#16211F;">{{ v.name }}</div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:#55655F;">{{ v.cityName }} · {{ v.regionName }}</div>
+      </div>
+      <sc-if value="{{ v.topRated }}" hint-placeholder-val="{{ false }}"><span style="padding:3px 9px;border-radius:999px;font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;background:#16211F;color:#D6E14A;text-transform:uppercase;">Top rated</span></sc-if>
+      <sc-if value="{{ v.mostLoved }}" hint-placeholder-val="{{ false }}"><span style="padding:3px 9px;border-radius:999px;font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;background:#9C4322;color:#FDFBF4;text-transform:uppercase;">Most loved</span></sc-if>
+      <div style="font-family:'Space Mono',monospace;font-size:13px;color:#16211F;font-weight:700;white-space:nowrap;">★ {{ v.communityRating }} <span style="color:#8B9892;font-weight:400;">({{ v.communityRatingCount }})</span></div>
+      <sc-if value="{{ showGoogleRating }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:4px;background:#EDE5CF;padding:4px 10px;border-radius:999px;white-space:nowrap;">
+        <span style="font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;color:#55655F;">G</span>
+        <span style="font-family:'Space Mono',monospace;font-size:11.5px;color:#16211F;font-weight:700;">{{ v.googleRating }}</span>
+      </div>
+      </sc-if>
+    </div>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{ unratedVenues.length }}" hint-placeholder-val="{{ false }}">
+  <div style="margin-top:32px;">
+    <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:10px;">Not yet rated</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;">
+      <sc-for list="{{ unratedVenues }}" as="v" hint-placeholder-count="1">
+      <div style="background:#FDFBF4;border:1px dashed rgba(22,33,31,0.25);border-radius:12px;padding:12px 16px;">
+        <span style="font-family:'Source Serif 4',serif;font-size:15px;font-weight:600;color:#16211F;">{{ v.name }}</span>
+        <span style="font-family:'Space Mono',monospace;font-size:11px;color:#8B9892;margin-left:8px;">{{ v.cityName }} · be the first to rate</span>
+      </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ isPaddles }}" hint-placeholder-val="{{ false }}">
+<div data-view="paddles" data-screen-label="Paddles and Gear" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:1200px;margin:0 auto;padding:40px clamp(20px,5vw,40px) 96px;">
+  <div style="margin-bottom:32px;">
+    <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:8px;">Paddles &amp; Gear</div>
+    <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(30px,4vw,44px);font-weight:600;color:#16211F;margin:0;">Find your paddle.</h1>
+    <p style="font-family:Manrope,sans-serif;font-size:15px;color:#55655F;margin:10px 0 0;max-width:640px;">No paddles are sponsored. Some links below are affiliate links — always disclosed.</p>
+  </div>
+
+  <div style="background:#EDE5CF;border-radius:20px;padding:clamp(24px,4vw,44px);margin-bottom:64px;">
+    <sc-if value="{{ quizShowResults }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#16211F;margin:0 0 6px;">Your 3 matches.</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:14px;color:#55655F;margin:0 0 24px;">Based on your answers — not on which brand pays the most.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px,1fr));gap:18px;">
+        <sc-for list="{{ quizResults }}" as="p" hint-placeholder-count="3">
+        <div style="background:#FDFBF4;border:2px solid #16211F;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+            <div>
+              <div style="font-family:'Space Mono',monospace;font-size:11px;color:#55655F;text-transform:uppercase;letter-spacing:0.04em;">{{ p.brand }}</div>
+              <div style="font-family:'Source Serif 4',serif;font-size:19px;font-weight:600;color:#16211F;">{{ p.model }}</div>
+            </div>
+            <div style="font-family:'Space Mono',monospace;font-size:17px;font-weight:700;color:#16211F;">${{ p.price }}</div>
+          </div>
+          <p style="font-family:Manrope,sans-serif;font-size:13.5px;line-height:1.55;color:#3E4A45;margin:0;">{{ p.why }}</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid rgba(22,33,31,0.1);">
+            <sc-if value="{{ showAffiliateNote }}" hint-placeholder-val="{{ true }}"><span style="font-family:Manrope,sans-serif;font-size:10.5px;color:#8B9892;font-style:italic;">Affiliate link</span></sc-if>
+            <a href="{{ p.buyUrl }}" target="_blank" rel="noopener sponsored" style="background:#D6E14A;border:2px solid #16211F;color:#16211F;border-radius:8px;padding:9px 16px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;margin-left:auto;">Check price</a>
+          </div>
+        </div>
+        </sc-for>
+      </div>
+      <button onClick="{{ quizRestart }}" style="margin-top:24px;background:none;border:2px solid #16211F;color:#16211F;border-radius:10px;padding:12px 22px;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;">Retake the quiz</button>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ quizAsking }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <sc-for list="{{ quizDots }}" as="dot" hint-placeholder-count="4">
+        <span style="width:8px;height:8px;border-radius:50%;background:{{ dot.color }};"></span>
+        </sc-for>
+        <span style="font-family:'Space Mono',monospace;font-size:11px;color:#55655F;margin-left:6px;">Question {{ quizStepNum }} of 4</span>
+      </div>
+
+      <sc-if value="{{ quizStepIsSkill }}" hint-placeholder-val="{{ true }}">
+      <h2 style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#16211F;margin:10px 0 20px;">What's your skill level?</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;">
+        <sc-for list="{{ skillOptions }}" as="opt" hint-placeholder-count="3">
+        <button onClick="{{ opt.onClick }}" aria-pressed="{{ opt.pressed }}" style="padding:22px 16px;border-radius:14px;font-family:Manrope,sans-serif;font-weight:700;font-size:15px;background:{{ opt.bg }};color:{{ opt.color }};border:2px solid {{ opt.border }};text-align:center;">{{ opt.label }}</button>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ quizStepIsPref }}" hint-placeholder-val="{{ false }}">
+      <h2 style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#16211F;margin:10px 0 20px;">Power, control, or a bit of both?</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;">
+        <sc-for list="{{ prefOptions }}" as="opt" hint-placeholder-count="3">
+        <button onClick="{{ opt.onClick }}" aria-pressed="{{ opt.pressed }}" style="padding:22px 16px;border-radius:14px;font-family:Manrope,sans-serif;font-weight:700;font-size:15px;background:{{ opt.bg }};color:{{ opt.color }};border:2px solid {{ opt.border }};text-align:center;">{{ opt.label }}</button>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ quizStepIsBudget }}" hint-placeholder-val="{{ false }}">
+      <h2 style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#16211F;margin:10px 0 20px;">What's your budget?</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;">
+        <sc-for list="{{ budgetOptions }}" as="opt" hint-placeholder-count="3">
+        <button onClick="{{ opt.onClick }}" aria-pressed="{{ opt.pressed }}" style="padding:22px 16px;border-radius:14px;font-family:Manrope,sans-serif;font-weight:700;font-size:15px;background:{{ opt.bg }};color:{{ opt.color }};border:2px solid {{ opt.border }};text-align:center;">{{ opt.label }}</button>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ quizStepIsWeight }}" hint-placeholder-val="{{ false }}">
+      <h2 style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#16211F;margin:10px 0 20px;">Lighter or heavier paddle?</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;">
+        <sc-for list="{{ weightOptions }}" as="opt" hint-placeholder-count="3">
+        <button onClick="{{ opt.onClick }}" aria-pressed="{{ opt.pressed }}" style="padding:22px 16px;border-radius:14px;font-family:Manrope,sans-serif;font-weight:700;font-size:15px;background:{{ opt.bg }};color:{{ opt.color }};border:2px solid {{ opt.border }};text-align:center;">{{ opt.label }}</button>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:28px;">
+        <sc-if value="{{ quizStepGtZero }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ quizBack }}" style="background:none;border:2px solid rgba(22,33,31,0.3);color:#16211F;border-radius:10px;padding:12px 20px;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;">Back</button>
+        </sc-if>
+        <button onClick="{{ quizNext }}" disabled="{{ quizNextDisabled }}" style="margin-left:auto;background:#D6E14A;border:2px solid #16211F;color:#16211F;border-radius:10px;padding:12px 24px;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;opacity:{{ quizNextOpacity }};">{{ quizNextLabel }}</button>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:14px;padding:14px;margin-bottom:24px;">
+    <select value="{{ paddleFilters.type }}" onChange="{{ onPaddleTypeChange }}" aria-label="Filter by type" style="padding:10px 14px;border-radius:999px;border:1.5px solid rgba(22,33,31,0.22);background:#FDFBF4;font-family:Manrope,sans-serif;font-size:13px;font-weight:600;color:#16211F;">
+      <option value="all">All types</option>
+      <option value="Power">Power</option>
+      <option value="Control">Control</option>
+      <option value="All-court">All-court</option>
+    </select>
+    <select value="{{ paddleFilters.shape }}" onChange="{{ onPaddleShapeChange }}" aria-label="Filter by shape" style="padding:10px 14px;border-radius:999px;border:1.5px solid rgba(22,33,31,0.22);background:#FDFBF4;font-family:Manrope,sans-serif;font-size:13px;font-weight:600;color:#16211F;">
+      <option value="all">All shapes</option>
+      <option value="Elongated">Elongated</option>
+      <option value="Widebody">Widebody</option>
+      <option value="Hybrid">Hybrid</option>
+    </select>
+    <select value="{{ paddleFilters.price }}" onChange="{{ onPaddlePriceChange }}" aria-label="Filter by price" style="padding:10px 14px;border-radius:999px;border:1.5px solid rgba(22,33,31,0.22);background:#FDFBF4;font-family:Manrope,sans-serif;font-size:13px;font-weight:600;color:#16211F;">
+      <option value="all">All prices</option>
+      <option value="under120">Under $120</option>
+      <option value="120to200">$120–$200</option>
+      <option value="over200">$200+</option>
+    </select>
+    <select value="{{ paddleFilters.skill }}" onChange="{{ onPaddleSkillChange }}" aria-label="Filter by skill level" style="padding:10px 14px;border-radius:999px;border:1.5px solid rgba(22,33,31,0.22);background:#FDFBF4;font-family:Manrope,sans-serif;font-size:13px;font-weight:600;color:#16211F;">
+      <option value="all">All skill levels</option>
+      <option value="Beginner">Beginner</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+    </select>
+    <button onClick="{{ resetPaddleFilters }}" style="margin-left:auto;padding:10px 16px;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#9C4322;background:none;border:none;">Reset filters</button>
+  </div>
+
+  <p style="font-family:Manrope,sans-serif;font-size:13.5px;color:#8B9892;margin:0 0 18px;">Showing {{ filteredPaddles.length }} of 486 paddles in the full catalog.</p>
+
+  <div style="background:#DCEEEA;border-radius:14px;padding:18px 22px;margin-bottom:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+    <span style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#154F49;text-transform:uppercase;letter-spacing:0.06em;">New to the game?</span>
+    <span style="font-family:Manrope,sans-serif;font-size:13.5px;color:#16211F;">Rent a paddle at a beginner-friendly court before you buy — most run $5–10 for the session.</span>
+    <a href="#" onClick="{{ goLearn }}" style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#154F49;margin-left:auto;">Learn to play →</a>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(240px,1fr));gap:16px;">
+    <sc-for list="{{ filteredPaddles }}" as="p" hint-placeholder-count="8">
+    <div style="background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:10.5px;color:#55655F;text-transform:uppercase;letter-spacing:0.04em;">{{ p.brand }}</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:17px;font-weight:600;color:#16211F;">{{ p.model }}</div>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:#16211F;">${{ p.price }}</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">
+        <span style="padding:3px 9px;border-radius:999px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;background:#EDE5CF;color:#55655F;">{{ p.shape }}</span>
+        <span style="padding:3px 9px;border-radius:999px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;background:#EDE5CF;color:#55655F;">{{ p.type }}</span>
+        <span style="padding:3px 9px;border-radius:999px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;background:#EDE5CF;color:#55655F;">{{ p.skillLevel }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;font-family:Manrope,sans-serif;font-size:12px;color:#3E4A45;">
+        <div>Weight <b style="color:#16211F;">{{ p.weight }}oz</b></div>
+        <div>Core <b style="color:#16211F;">{{ p.coreThickness }}mm</b></div>
+        <div>Spin <b style="color:#16211F;">{{ p.spinRating }}</b></div>
+        <div>Power <b style="color:#16211F;">{{ p.powerPercentile }}th pct</b></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid rgba(22,33,31,0.08);">
+        <span style="font-family:Manrope,sans-serif;font-size:10px;color:#8B9892;font-style:italic;">{{ p.approval }} approved<sc-if value="{{ showAffiliateNote }}" hint-placeholder-val="{{ true }}"> · affiliate</sc-if></span>
+        <a href="{{ p.buyUrl }}" target="_blank" rel="noopener sponsored" style="background:#D6E14A;border:2px solid #16211F;color:#16211F;border-radius:8px;padding:8px 14px;font-family:Manrope,sans-serif;font-weight:700;font-size:12.5px;white-space:nowrap;">Check price</a>
+      </div>
+    </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+<sc-if value="{{ isLearn }}" hint-placeholder-val="{{ false }}">
+<div data-view="learn" data-screen-label="Learn to Play" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:900px;margin:0 auto;padding:40px clamp(20px,5vw,40px) 96px;">
+  <div style="margin-bottom:40px;">
+    <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:8px;">Learn to play</div>
+    <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(30px,4vw,44px);font-weight:600;color:#16211F;margin:0;">Never played before? Start here.</h1>
+    <p style="font-family:Manrope,sans-serif;font-size:16px;color:#55655F;margin:10px 0 0;max-width:600px;">Four things to know before your first game — everything else you'll pick up on court.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(360px,1fr));gap:20px;margin-bottom:56px;">
+    <div style="background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:26px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#154F49;text-transform:uppercase;margin-bottom:10px;">01 · Scoring</div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;color:#16211F;margin:0 0 10px;">Games go to 11, win by 2.</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:14.5px;line-height:1.6;color:#3E4A45;margin:0;">Only the serving side can score a point. In doubles, the score is called as three numbers: your score, their score, then your server number — 1 or 2.</p>
+    </div>
+    <div style="background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:26px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#154F49;text-transform:uppercase;margin-bottom:10px;">02 · The kitchen</div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;color:#16211F;margin:0 0 10px;">The 7-foot no-volley zone.</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:14.5px;line-height:1.6;color:#3E4A45;margin:0;">You can't hit the ball out of the air while standing inside the kitchen. Step in only to play a ball that has already bounced, then step back out.</p>
+    </div>
+    <div style="background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:26px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#154F49;text-transform:uppercase;margin-bottom:10px;">03 · The serve</div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;color:#16211F;margin:0 0 10px;">Underhand, below the waist.</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:14.5px;line-height:1.6;color:#3E4A45;margin:0;">Serve diagonally, clearing the kitchen. Both the serve and the return must bounce once before anyone can volley — the "two-bounce rule."</p>
+    </div>
+    <div style="background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:26px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#154F49;text-transform:uppercase;margin-bottom:10px;">04 · Court etiquette</div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;color:#16211F;margin:0 0 10px;">Call your own lines, share the court.</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:14.5px;line-height:1.6;color:#3E4A45;margin:0;">Line calls are on the honor system — call your own out balls. On a busy court, rotate off after 15–20 minutes if others are waiting.</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px,1fr));gap:20px;">
+    <div style="background:#16211F;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:12px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#D6E14A;text-transform:uppercase;">Step one</div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#F3EEDD;margin:0;">Find a beginner-friendly court.</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:14px;line-height:1.6;color:#C9CFC0;margin:0;">We flag courts that are welcoming to new players — usually free, walk-up, and rarely packed with league regulars.</p>
+      <button onClick="{{ goFindBeginnerCourts }}" style="margin-top:8px;align-self:flex-start;background:#D6E14A;color:#16211F;border:2px solid #D6E14A;border-radius:10px;padding:12px 22px;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;">See beginner-friendly courts</button>
+    </div>
+    <div style="background:#EDE5CF;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:12px;">
+      <div style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#9C4322;text-transform:uppercase;">Step two</div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#16211F;margin:0;">Rent before you buy.</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:14px;line-height:1.6;color:#3E4A45;margin:0;">Most beginner-friendly courts and community centers rent paddles for a few dollars. Play a few sessions before you spend on your own.</p>
+      <button onClick="{{ goPaddles }}" style="margin-top:8px;align-self:flex-start;background:none;color:#16211F;border:2px solid #16211F;border-radius:10px;padding:12px 22px;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;">Browse paddles anyway</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+<div data-view="about" data-screen-label="About" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:820px;margin:0 auto;padding:40px clamp(20px,5vw,40px) 96px;">
+  <div style="margin-bottom:36px;">
+    <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:8px;">About</div>
+    <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(30px,4vw,44px);font-weight:600;color:#16211F;margin:0;">A directory, not a marketplace.</h1>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:28px;">
+    <div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;color:#16211F;margin:0 0 8px;">Who runs this</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:15.5px;line-height:1.65;color:#3E4A45;margin:0;">Pickleball Bay Area is built and kept up by a small group of Bay Area players who got tired of stale listings and app data that hadn't been checked in years. No investors, no ad sales team — just people who wanted a directory they'd trust with their own Saturday morning plans.</p>
+    </div>
+    <div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;color:#16211F;margin:0 0 8px;">How verification works</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:15.5px;line-height:1.65;color:#3E4A45;margin:0;">Every venue on this site is checked against its city's own parks &amp; recreation department page or facility directory — not scraped from a crowdsourced app and left to rot. When a city's own listing is vague, thin, or contradicts itself, we note that instead of papering over it.</p>
+    </div>
+    <div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;color:#16211F;margin:0 0 8px;">Independence</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:15.5px;line-height:1.65;color:#3E4A45;margin:0;">No court, city, or club can pay for placement, a higher rank, or a better badge. The only paid links on this site are paddle and gear links, and every one is labeled as affiliate at the point of the link — see the <a href="#" onClick="{{ goAffiliate }}" style="color:#154F49;font-weight:600;">affiliate disclosure</a> for the full policy.</p>
+    </div>
+    <div>
+      <h2 style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;color:#16211F;margin:0 0 8px;">Corrections</h2>
+      <p style="font-family:Manrope,sans-serif;font-size:15.5px;line-height:1.65;color:#3E4A45;margin:0;">Courts change — a city adds lights, a fee goes up, a shared tennis court gets dedicated lines. If something here is wrong, <a href="#" onClick="{{ goReport }}" style="color:#154F49;font-weight:600;">tell us</a> and we'll check it against the source and fix it.</p>
+    </div>
+  </div>
+  <div style="margin-top:40px;width:104px;height:104px;border-radius:50%;background:#FDFBF4;border:2px solid #16211F;transform:rotate(-7deg);display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <span style="font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.08em;color:#16211F;">VERIFIED</span>
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="margin:2px 0;"><path d="M4 10.5L8 14.5L16 5.5" stroke="#1E6E66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <span style="font-family:'Space Mono',monospace;font-size:8.5px;color:#55655F;">METHOD, NOT MAGIC</span>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
+<div data-view="report" data-screen-label="Report a Correction" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:640px;margin:0 auto;padding:40px clamp(20px,5vw,40px) 96px;">
+  <div style="margin-bottom:32px;">
+    <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:8px;">Report a correction</div>
+    <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(28px,4vw,40px);font-weight:600;color:#16211F;margin:0;">Help us keep it accurate.</h1>
+    <p style="font-family:Manrope,sans-serif;font-size:15px;color:#55655F;margin:10px 0 0;">Wrong hours, a closed court, a fee that changed — tell us what you saw and we'll check it against the source.</p>
+  </div>
+
+  <sc-if value="{{ reportSubmitted }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#DCEEEA;border-radius:16px;padding:32px;text-align:center;">
+    <svg width="36" height="36" viewBox="0 0 20 20" fill="none" style="margin-bottom:12px;"><circle cx="10" cy="10" r="9" stroke="#1E6E66" stroke-width="1.4"></circle><path d="M6 10.2L8.7 13L14 7" stroke="#1E6E66" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <h2 style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#16211F;margin:0 0 8px;">Thanks — we've got it.</h2>
+    <p style="font-family:Manrope,sans-serif;font-size:14.5px;color:#3E4A45;margin:0;">We check corrections against the city's own listing before updating anything. No reply needed unless we have a question.</p>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ reportNotSubmitted }}" hint-placeholder-val="{{ true }}">
+  <form onSubmit="{{ submitReport }}" style="display:flex;flex-direction:column;gap:18px;background:#FDFBF4;border:1px solid rgba(22,33,31,0.14);border-radius:16px;padding:28px;">
+    <label style="display:flex;flex-direction:column;gap:6px;">
+      <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#16211F;">Venue *</span>
+      <select value="{{ reportForm.venue }}" onChange="{{ onReportVenueChange }}" required="true" style="padding:12px 14px;border-radius:10px;border:1.5px solid rgba(22,33,31,0.22);background:#F7F2E7;font-family:Manrope,sans-serif;font-size:14px;color:#16211F;">
+        <option value="">Select a venue…</option>
+        <sc-for list="{{ allVenues }}" as="v" hint-placeholder-count="16">
+        <option value="{{ v.name }}">{{ v.name }} — {{ v.cityName }}</option>
+        </sc-for>
+        <option value="other">Other / not listed</option>
+      </select>
+    </label>
+    <label style="display:flex;flex-direction:column;gap:6px;">
+      <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#16211F;">What's wrong? *</span>
+      <select value="{{ reportForm.issue }}" onChange="{{ onReportIssueChange }}" required="true" style="padding:12px 14px;border-radius:10px;border:1.5px solid rgba(22,33,31,0.22);background:#F7F2E7;font-family:Manrope,sans-serif;font-size:14px;color:#16211F;">
+        <option value="">Select an issue…</option>
+        <option value="hours">Hours are wrong</option>
+        <option value="price">Price/fee is wrong</option>
+        <option value="closed">Court is closed or removed</option>
+        <option value="courts">Court count or surface is wrong</option>
+        <option value="new">A court is missing entirely</option>
+        <option value="other">Something else</option>
+      </select>
+    </label>
+    <label style="display:flex;flex-direction:column;gap:6px;">
+      <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#16211F;">Details</span>
+      <textarea value="{{ reportForm.details }}" onChange="{{ onReportDetailsChange }}" rows="4" placeholder="What did you see, and when?" style="padding:12px 14px;border-radius:10px;border:1.5px solid rgba(22,33,31,0.22);background:#F7F2E7;font-family:Manrope,sans-serif;font-size:14px;color:#16211F;resize:vertical;"></textarea>
+    </label>
+    <label style="display:flex;flex-direction:column;gap:6px;">
+      <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#16211F;">Email (optional)</span>
+      <input type="email" value="{{ reportForm.email }}" onChange="{{ onReportEmailChange }}" placeholder="Only if you're OK with a follow-up question" style="padding:12px 14px;border-radius:10px;border:1.5px solid rgba(22,33,31,0.22);background:#F7F2E7;font-family:Manrope,sans-serif;font-size:14px;color:#16211F;">
+    </label>
+    <button type="submit" disabled="{{ reportSubmitDisabled }}" style="background:#D6E14A;border:2px solid #16211F;color:#16211F;border-radius:10px;padding:13px 24px;font-family:Manrope,sans-serif;font-weight:700;font-size:15px;opacity:{{ reportSubmitOpacity }};">Submit correction</button>
+  </form>
+  </sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ isAffiliate }}" hint-placeholder-val="{{ false }}">
+<div data-view="affiliate" data-screen-label="Affiliate Disclosure" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:720px;margin:0 auto;padding:40px clamp(20px,5vw,40px) 96px;">
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:8px;">Legal</div>
+  <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(28px,4vw,40px);font-weight:600;color:#16211F;margin:0 0 24px;">Affiliate disclosure.</h1>
+  <div style="display:flex;flex-direction:column;gap:18px;font-family:Manrope,sans-serif;font-size:15.5px;line-height:1.7;color:#3E4A45;">
+    <p style="margin:0;">Court data on this site is never for sale — no venue, city, or club can pay for placement, rank, or a badge.</p>
+    <p style="margin:0;">Some links on the Paddles &amp; Gear page and in paddle quiz results are affiliate links. If you buy through one, we may earn a small commission at no extra cost to you. Every affiliate link is labeled "Affiliate link" at the point of the link — we don't hide it in fine print.</p>
+    <p style="margin:0;">Affiliate relationships never influence which paddles appear, how they're described, or how the quiz scores them. The quiz matches you to paddles based on your answers only.</p>
+    <p style="margin:0;">Questions about a specific link? <a href="#" onClick="{{ goReport }}" style="color:#154F49;font-weight:600;">Let us know</a>.</p>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPrivacy }}" hint-placeholder-val="{{ false }}">
+<div data-view="privacy" data-screen-label="Privacy" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:720px;margin:0 auto;padding:40px clamp(20px,5vw,40px) 96px;">
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#55655F;text-transform:uppercase;margin-bottom:8px;">Legal</div>
+  <h1 style="font-family:'Source Serif 4',serif;font-size:clamp(28px,4vw,40px);font-weight:600;color:#16211F;margin:0 0 24px;">Privacy.</h1>
+  <div style="display:flex;flex-direction:column;gap:18px;font-family:Manrope,sans-serif;font-size:15.5px;line-height:1.7;color:#3E4A45;">
+    <p style="margin:0;">This site doesn't run ads, doesn't sell data, and doesn't track you across other sites. There's no account to create and nothing to sign up for.</p>
+    <p style="margin:0;">If you submit a correction with an email address, we use it only to follow up on that report, and only if we have a question.</p>
+    <p style="margin:0;">Favorites and ratings you set while browsing stay in this browser session — we don't attach them to an identity or store them on a server.</p>
+    <p style="margin:0;">Paddle links may be operated by third-party retailers with their own privacy practices once you leave this site.</p>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is404 }}" hint-placeholder-val="{{ false }}">
+<div data-view="404" data-screen-label="Not Found" style="animation:pbaFadeUp 0.5s cubic-bezier(.16,.8,.3,1) both;max-width:520px;margin:0 auto;padding:120px 20px;text-align:center;">
+  <div style="width:96px;height:96px;border-radius:50%;background:#FDFBF4;border:2px solid #16211F;transform:rotate(-8deg);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 28px;">
+    <span style="font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.08em;color:#16211F;">UNVERIFIED</span>
+    <span style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;color:#9C4322;margin-top:2px;">404</span>
+  </div>
+  <h1 style="font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;color:#16211F;margin:0 0 10px;">This court isn't on the map.</h1>
+  <p style="font-family:Manrope,sans-serif;font-size:15px;line-height:1.6;color:#55655F;margin:0 0 24px;">The page you're looking for doesn't exist, or moved. Let's get you back to solid ground.</p>
+  <button onClick="{{ goHome }}" style="background:#D6E14A;border:2px solid #16211F;color:#16211F;border-radius:10px;padding:12px 24px;font-family:Manrope,sans-serif;font-weight:700;font-size:14px;">Back to home</button>
+</div>
+</sc-if>
+<span data-anchor="page-insert" style="display:none"></span>
+</main>
+
+<footer style="background:#16211F;color:#C9CFC0;padding:64px clamp(20px,5vw,40px) 32px;">
+  <div style="max-width:1320px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:40px;padding-bottom:40px;border-bottom:1px solid rgba(243,238,221,0.15);">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#8FA39C;font-weight:700;">PICKLEBALL</div>
+        <div style="font-family:'Source Serif 4',serif;font-size:22px;font-style:italic;font-weight:600;color:#F3EEDD;margin-top:-2px;">Bay Area</div>
+        <p style="font-family:Manrope,sans-serif;font-size:13px;line-height:1.6;color:#8FA39C;margin:16px 0 0;max-width:240px;">An independent, ad-free directory of verified public pickleball courts.</p>
+      </div>
+      <div>
+        <div style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#F3EEDD;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.04em;">Regions</div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+          <sc-for list="{{ regionCards }}" as="region" hint-placeholder-count="5">
+          <a href="#" onClick="{{ region.browse }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">{{ region.name }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#F3EEDD;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.04em;">Site</div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+          <a href="#" onClick="{{ goFindCourts }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">Find Courts</a>
+          <a href="#" onClick="{{ goRankings }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">Rankings</a>
+          <a href="#" onClick="{{ goPaddles }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">Paddles &amp; Gear</a>
+          <a href="#" onClick="{{ goLearn }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">Learn to Play</a>
+          <a href="#" onClick="{{ goAbout }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">About</a>
+          <a href="#" onClick="{{ goReport }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">Report a Correction</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:#F3EEDD;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.04em;">Popular cities</div>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+          <a href="#" onClick="{{ goPaloAlto }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">Palo Alto</a>
+          <a href="#" onClick="{{ goOakland }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">Oakland</a>
+          <a href="#" onClick="{{ goSF }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">San Francisco</a>
+          <a href="#" onClick="{{ goBerkeley }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">Berkeley</a>
+          <a href="#" onClick="{{ goSunnyvale }}" style="font-family:Manrope,sans-serif;font-size:14px;color:#C9CFC0;">Sunnyvale</a>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-top:24px;">
+      <p style="font-family:Manrope,sans-serif;font-size:12.5px;color:#8FA39C;margin:0;">© 2026 Pickleball Bay Area. Independent &amp; ad-free. Some gear links are affiliate — <a href="#" onClick="{{ goAffiliate }}" style="color:#8FA39C;text-decoration:underline;">disclosed here</a>.</p>
+      <div style="display:flex;gap:20px;">
+        <a href="#" onClick="{{ goAffiliate }}" style="font-family:Manrope,sans-serif;font-size:12.5px;color:#8FA39C;">Affiliate Disclosure</a>
+        <a href="#" onClick="{{ goPrivacy }}" style="font-family:Manrope,sans-serif;font-size:12.5px;color:#8FA39C;">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;defaultLandingView&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;home&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;home&quot;, &quot;find-courts&quot;, &quot;cities&quot;, &quot;rankings&quot;, &quot;paddles&quot;, &quot;learn&quot;, &quot;about&quot;], &quot;section&quot;: &quot;Behavior&quot;},
+  &quot;courtCardDensity&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;comfortable&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;comfortable&quot;, &quot;compact&quot;], &quot;section&quot;: &quot;Behavior&quot;},
+  &quot;reduceMotion&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Behavior&quot;},
+  &quot;showGoogleRating&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Content&quot;},
+  &quot;showAffiliateNote&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Content&quot;}
+}">
+class Component extends DCLogic {
+  state = {
+    currentView: 'home',
+    mobileMenuOpen: false,
+    moreMenuOpen: false,
+    windowWidth: (typeof window !== 'undefined' ? window.innerWidth : 1280),
+    heroQuery: '',
+    globalQuery: '',
+    findFilters: { region: 'all', type: 'all', price: 'all', access: 'all', beginnerOnly: false, amenities: { lights:false, restroom:false, water:false, parking:false } },
+    selectedVenueId: null,
+    hoveredVenueId: null,
+    favorites: {},
+    userRatings: {},
+    quiz: { step: 0, answers: { skill: null, pref: null, budget: null, weight: null } },
+    reportForm: { venue: '', issue: '', details: '', email: '' },
+    reportSubmitted: false,
+    selectedCitySlug: 'palo-alto',
+    paddleFilters: { type: 'all', shape: 'all', price: 'all', skill: 'all' },
+  };
+
+  regions = [
+    { id:'sf', name:'San Francisco', description:"Fog, wind, and a rec department racing to convert tennis courts as fast as demand grows.", cities:[
+      {slug:'san-francisco', name:'San Francisco'},
+    ]},
+    { id:'peninsula', name:'Peninsula', description:"From Daly City down to San Carlos — a 15-court flagship in Palo Alto, plus neighborhood-park scenes in Menlo Park, San Mateo, Burlingame, Belmont and more.", cities:[
+      {slug:'daly-city', name:'Daly City'}, {slug:'south-san-francisco', name:'South San Francisco'}, {slug:'san-bruno', name:'San Bruno'},
+      {slug:'burlingame', name:'Burlingame'}, {slug:'san-mateo', name:'San Mateo'}, {slug:'belmont', name:'Belmont'},
+      {slug:'redwood-city', name:'Redwood City'}, {slug:'menlo-park', name:'Menlo Park'}, {slug:'palo-alto', name:'Palo Alto'}, {slug:'san-carlos', name:'San Carlos'},
+    ]},
+    { id:'south-bay', name:'South Bay', description:"San Jose, Sunnyvale, Santa Clara, Cupertino, Mountain View, Los Gatos and beyond — the highest court count in the Bay, and its most contentious siting fight.", cities:[
+      {slug:'san-jose', name:'San Jose'}, {slug:'sunnyvale', name:'Sunnyvale'}, {slug:'santa-clara', name:'Santa Clara'}, {slug:'cupertino', name:'Cupertino'},
+      {slug:'mountain-view', name:'Mountain View'}, {slug:'los-gatos', name:'Los Gatos'}, {slug:'campbell', name:'Campbell'}, {slug:'saratoga', name:'Saratoga'},
+      {slug:'milpitas', name:'Milpitas'}, {slug:'gilroy', name:'Gilroy'},
+    ]},
+    { id:'east-bay', name:'East Bay', description:"Oakland, Berkeley, Fremont, Walnut Creek, Alameda and a dozen more — free city parks a few miles from members-only clubs.", cities:[
+      {slug:'oakland', name:'Oakland'}, {slug:'berkeley', name:'Berkeley'}, {slug:'fremont', name:'Fremont'}, {slug:'walnut-creek', name:'Walnut Creek'},
+      {slug:'alameda', name:'Alameda'}, {slug:'richmond', name:'Richmond'}, {slug:'hayward', name:'Hayward'}, {slug:'san-leandro', name:'San Leandro'},
+      {slug:'concord', name:'Concord'}, {slug:'pleasanton', name:'Pleasanton'}, {slug:'dublin', name:'Dublin'}, {slug:'livermore', name:'Livermore'},
+      {slug:'union-city', name:'Union City'}, {slug:'newark', name:'Newark'}, {slug:'castro-valley', name:'Castro Valley'}, {slug:'albany', name:'Albany'},
+      {slug:'emeryville', name:'Emeryville'}, {slug:'danville', name:'Danville'},
+    ]},
+    { id:'north-bay', name:'North Bay', description:"San Rafael, Novato and Vallejo — a small, indoor-heavy scene that's easy to book ahead.", cities:[
+      {slug:'san-rafael', name:'San Rafael'}, {slug:'novato', name:'Novato'}, {slug:'vallejo', name:'Vallejo'},
+    ]},
+  ];
+
+  venues = [
+    { id:'mitchell-park', name:'Mitchell Park', citySlug:'palo-alto', cityName:'Palo Alto', regionId:'peninsula', regionName:'Peninsula', courts:15, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Dedicated hard court, permanent lines & nets', priceLabel:'Free', priceType:'free', accessKey:'walkup', accessLabel:'Walk-up', hours:'6am–10pm daily', waitLabel:'Moderate midday, high evenings', skillLabel:'Popular with all levels; mornings skew competitive', beginnerFriendly:true, lights:true, restroom:true, water:true, parking:true, communityRating:4.8, communityRatingCount:312, googleRating:4.7, lastVerified:'Jul 2026', topPick:true, mapX:110, mapY:340 },
+    { id:'buena-vista-park', name:'Buena Vista Park', citySlug:'san-francisco', cityName:'San Francisco', regionId:'sf', regionName:'San Francisco', courts:4, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Hard court', priceLabel:'Free', priceType:'free', accessKey:'mixed', accessLabel:'Walk-on + reserve', hours:'Dawn–dusk', waitLabel:'High weekends', skillLabel:'Mixed levels, social weekend scene', beginnerFriendly:true, lights:false, restroom:true, water:false, parking:false, communityRating:4.3, communityRatingCount:98, googleRating:4.4, lastVerified:'Jun 2026', topPick:false, mapX:105, mapY:120 },
+    { id:'bushrod-park', name:'Bushrod Park', citySlug:'oakland', cityName:'Oakland', regionId:'east-bay', regionName:'East Bay', courts:4, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Blended/shared tennis lines', priceLabel:'$2–4 drop-in', priceType:'paid', accessKey:'mixed', accessLabel:'Scheduled sessions', hours:'Scheduled sessions; high wait', waitLabel:'High', skillLabel:'Competitive-leaning; drop-in sessions', beginnerFriendly:false, lights:true, restroom:true, water:true, parking:true, communityRating:4.0, communityRatingCount:156, googleRating:4.1, lastVerified:'Jul 2026', topPick:false, mapX:290, mapY:200 },
+    { id:'cedar-rose-park', name:'Cedar Rose Park', citySlug:'berkeley', cityName:'Berkeley', regionId:'east-bay', regionName:'East Bay', courts:4, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Dedicated, permanent lines/nets', priceLabel:'$7–8/hr', priceType:'paid', accessKey:'mixed', accessLabel:'Mixed', hours:'Tue–Fri 10am–8pm, wknd 10am–6pm', waitLabel:'Moderate', skillLabel:'Mixed levels', beginnerFriendly:true, lights:true, restroom:true, water:true, parking:false, communityRating:4.6, communityRatingCount:204, googleRating:4.5, lastVerified:'Jul 2026', topPick:false, mapX:300, mapY:160 },
+    { id:'central-park-knoll', name:'Central Park Knoll', citySlug:'fremont', cityName:'Fremont', regionId:'east-bay', regionName:'East Bay', courts:8, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Acrylic, dedicated', priceLabel:'Free', priceType:'free', accessKey:'walkup', accessLabel:'Walk-up', hours:'Dawn–dusk, no lights', waitLabel:'Low–moderate', skillLabel:'Beginner-friendly', beginnerFriendly:true, lights:false, restroom:true, water:true, parking:true, communityRating:4.7, communityRatingCount:167, googleRating:4.6, lastVerified:'Jun 2026', topPick:false, mapX:310, mapY:340 },
+    { id:'sunnyvale-cc', name:'Sunnyvale Community Center', citySlug:'sunnyvale', cityName:'Sunnyvale', regionId:'south-bay', regionName:'South Bay', courts:6, typeKey:'indoor', typeLabel:'Indoor', surface:'Indoor courts', priceLabel:'$5/session or $45/yr', priceType:'paid', accessKey:'walkup', accessLabel:'Walk-up', hours:'Limited — call to confirm', waitLabel:'Varies', skillLabel:'Beginner-friendly', beginnerFriendly:true, lights:true, restroom:true, water:true, parking:true, communityRating:4.2, communityRatingCount:89, googleRating:4.3, lastVerified:'May 2026', topPick:false, mapX:190, mapY:400 },
+    { id:'the-hub', name:'The HUB Silicon Valley', citySlug:'campbell', cityName:'Campbell', regionId:'south-bay', regionName:'South Bay', courts:20, typeKey:'indoor', typeLabel:'Indoor', surface:'Indoor hard court (57,000 sq ft)', priceLabel:'Membership; $40 day pass', priceType:'paid', accessKey:'reservable', accessLabel:'Reservable', hours:'Mon–Fri 6am–11pm', waitLabel:'Low (reservable)', skillLabel:'All levels; competitive leagues', beginnerFriendly:true, lights:true, restroom:true, water:true, parking:true, communityRating:4.9, communityRatingCount:441, googleRating:4.8, lastVerified:'Jul 2026', topPick:true, mapX:210, mapY:430 },
+    { id:'flyte-racquet-club', name:'Flyte Racquet Club', citySlug:'san-rafael', cityName:'San Rafael', regionId:'north-bay', regionName:'North Bay', courts:23, typeKey:'both', typeLabel:'Indoor & outdoor', surface:'Dedicated hard/acrylic', priceLabel:'Private; initiation fee', priceType:'paid', accessKey:'reservable', accessLabel:'Reservable', hours:'Mon–Fri 9am–9pm', waitLabel:'Low (reservable)', skillLabel:'Competitive; member coaching', beginnerFriendly:false, lights:true, restroom:true, water:true, parking:true, communityRating:4.6, communityRatingCount:73, googleRating:4.7, lastVerified:'Jun 2026', topPick:true, mapX:190, mapY:70 },
+    { id:'rengstorff-park', name:'Rengstorff Park', citySlug:'mountain-view', cityName:'Mountain View', regionId:'south-bay', regionName:'South Bay', courts:6, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Dedicated, resurfaced 2025', priceLabel:'Free', priceType:'free', accessKey:'walkup', accessLabel:'Walk-up', hours:'Dawn–dusk', waitLabel:'Moderate', skillLabel:'Beginner-friendly', beginnerFriendly:true, lights:true, restroom:true, water:true, parking:true, communityRating:4.5, communityRatingCount:61, googleRating:4.4, lastVerified:'Jul 2026', topPick:false, mapX:170, mapY:390 },
+    { id:'blackford-park', name:'Blackford Park', citySlug:'san-jose', cityName:'San Jose', regionId:'south-bay', regionName:'South Bay', courts:10, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Dedicated acrylic', priceLabel:'Free', priceType:'free', accessKey:'mixed', accessLabel:'Walk-up + limited reserve', hours:'6am–9pm', waitLabel:'Moderate–high', skillLabel:'Mixed levels', beginnerFriendly:true, lights:true, restroom:true, water:true, parking:true, communityRating:4.4, communityRatingCount:118, googleRating:4.3, lastVerified:'Jun 2026', topPick:false, mapX:230, mapY:420 },
+    { id:'burgess-park', name:'Burgess Park', citySlug:'menlo-park', cityName:'Menlo Park', regionId:'peninsula', regionName:'Peninsula', courts:5, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Dedicated, permanent lines', priceLabel:'Free', priceType:'free', accessKey:'walkup', accessLabel:'Walk-up', hours:'7am–9pm', waitLabel:'Low–moderate', skillLabel:'Beginner-friendly', beginnerFriendly:true, lights:true, restroom:true, water:true, parking:true, communityRating:4.5, communityRatingCount:54, googleRating:4.5, lastVerified:'Jul 2026', topPick:false, mapX:105, mapY:310 },
+    { id:'laurelwood-park', name:'Laurelwood Park', citySlug:'san-mateo', cityName:'San Mateo', regionId:'peninsula', regionName:'Peninsula', courts:4, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Shared lines w/ tennis', priceLabel:'Free', priceType:'free', accessKey:'walkup', accessLabel:'Walk-up', hours:'Dawn–dusk', waitLabel:'Low', skillLabel:'Mixed levels', beginnerFriendly:true, lights:false, restroom:false, water:true, parking:true, communityRating:3.9, communityRatingCount:33, googleRating:4.0, lastVerified:'May 2026', topPick:false, mapX:95, mapY:230 },
+    { id:'grant-park-courts', name:'Grant Park Courts', citySlug:'alameda', cityName:'Alameda', regionId:'east-bay', regionName:'East Bay', courts:6, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Dedicated, new 2024', priceLabel:'Free', priceType:'free', accessKey:'walkup', accessLabel:'Walk-up', hours:'6am–10pm', waitLabel:'Low', skillLabel:'Mixed levels', beginnerFriendly:true, lights:true, restroom:true, water:true, parking:true, communityRating:4.6, communityRatingCount:47, googleRating:4.6, lastVerified:'Jul 2026', topPick:false, mapX:300, mapY:220 },
+    { id:'heather-farm-park', name:'Heather Farm Park', citySlug:'walnut-creek', cityName:'Walnut Creek', regionId:'east-bay', regionName:'East Bay', courts:8, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Dedicated', priceLabel:'Free', priceType:'free', accessKey:'reservable', accessLabel:'Reservable (permit)', hours:'6am–9pm', waitLabel:'Moderate', skillLabel:'Mixed levels', beginnerFriendly:true, lights:true, restroom:true, water:true, parking:true, communityRating:4.5, communityRatingCount:68, googleRating:4.5, lastVerified:'Jun 2026', topPick:false, mapX:330, mapY:180 },
+    { id:'novato-rec-center', name:'Novato Rec Center Courts', citySlug:'novato', cityName:'Novato', regionId:'north-bay', regionName:'North Bay', courts:4, typeKey:'indoor', typeLabel:'Indoor', surface:'Indoor, shared gym lines', priceLabel:'$6/session', priceType:'paid', accessKey:'reservable', accessLabel:'Reservable', hours:'Mon/Wed/Fri 6–9pm', waitLabel:'Varies', skillLabel:'Beginner-friendly', beginnerFriendly:true, lights:true, restroom:true, water:true, parking:true, communityRating:4.1, communityRatingCount:21, googleRating:4.2, lastVerified:'May 2026', topPick:false, mapX:195, mapY:40 },
+    { id:'vallejo-community-courts', name:'Vallejo Community Courts', citySlug:'vallejo', cityName:'Vallejo', regionId:'north-bay', regionName:'North Bay', courts:3, typeKey:'outdoor', typeLabel:'Outdoor', surface:'Shared lines', priceLabel:'Free', priceType:'free', accessKey:'walkup', accessLabel:'Walk-up', hours:'Dawn–dusk', waitLabel:'Low', skillLabel:'New scene; all levels', beginnerFriendly:true, lights:false, restroom:false, water:false, parking:true, communityRating:0, communityRatingCount:0, googleRating:3.8, lastVerified:'Apr 2026', topPick:false, mapX:240, mapY:55 },
+  ];
+
+  paddles = [
+    { id:'p1', brand:'Franklin', model:'Signature Pro', price:89, shape:'Widebody', type:'Control', skillLevel:'Beginner', coreThickness:16, weight:7.6, spinRating:'Medium', powerPercentile:35, approval:'UPA-A' },
+    { id:'p2', brand:'ONIX', model:'Sabre', price:99, shape:'Widebody', type:'All-court', skillLevel:'Beginner', coreThickness:16, weight:7.8, spinRating:'Medium', powerPercentile:42, approval:'UPA-A' },
+    { id:'p3', brand:'Vulcan', model:'V550', price:109, shape:'Widebody', type:'Control', skillLevel:'Intermediate', coreThickness:16, weight:7.7, spinRating:'Med-High', powerPercentile:40, approval:'UPA-A' },
+    { id:'p4', brand:'Six Zero', model:'Double Black Diamond', price:219, shape:'Elongated', type:'Power', skillLevel:'Advanced', coreThickness:14, weight:8.1, spinRating:'High', powerPercentile:88, approval:'UPA-A' },
+    { id:'p5', brand:'Selkirk', model:'Vanguard Control Air', price:200, shape:'Hybrid', type:'Control', skillLevel:'Advanced', coreThickness:16, weight:7.8, spinRating:'High', powerPercentile:55, approval:'UPA-A' },
+    { id:'p6', brand:'Selkirk', model:'Luxx Control Air', price:190, shape:'Elongated', type:'Control', skillLevel:'Intermediate', coreThickness:16, weight:7.6, spinRating:'High', powerPercentile:50, approval:'UPA-A' },
+    { id:'p7', brand:'JOOLA', model:'Perseus', price:220, shape:'Elongated', type:'Power', skillLevel:'Advanced', coreThickness:14, weight:8.2, spinRating:'High', powerPercentile:90, approval:'UPA-A' },
+    { id:'p8', brand:'JOOLA', model:'Solaire', price:180, shape:'Widebody', type:'All-court', skillLevel:'Intermediate', coreThickness:16, weight:7.9, spinRating:'Med-High', powerPercentile:60, approval:'UPA-A' },
+    { id:'p9', brand:'Paddletek', model:'Bantam TS-5', price:170, shape:'Widebody', type:'All-court', skillLevel:'All levels', coreThickness:16, weight:7.9, spinRating:'Medium', powerPercentile:58, approval:'UPA-A' },
+    { id:'p10', brand:'Paddletek', model:'Tempest Wave Pro', price:160, shape:'Elongated', type:'Control', skillLevel:'Intermediate', coreThickness:16, weight:7.7, spinRating:'Med-High', powerPercentile:48, approval:'UPA-A' },
+    { id:'p11', brand:'Engage', model:'Pursuit EX 6.0', price:200, shape:'Widebody', type:'Control', skillLevel:'Advanced', coreThickness:16, weight:7.8, spinRating:'High', powerPercentile:52, approval:'UPA-A' },
+    { id:'p12', brand:'Engage', model:'Encore EX 6.0', price:220, shape:'Elongated', type:'Power', skillLevel:'Advanced', coreThickness:14, weight:8.0, spinRating:'High', powerPercentile:85, approval:'UPA-A' },
+    { id:'p13', brand:'CRBN', model:'1X Power Series', price:250, shape:'Elongated', type:'Power', skillLevel:'Advanced', coreThickness:14, weight:8.3, spinRating:'High', powerPercentile:95, approval:'UPA-A' },
+    { id:'p14', brand:'CRBN', model:'2X Control', price:250, shape:'Widebody', type:'Control', skillLevel:'Advanced', coreThickness:16, weight:7.9, spinRating:'High', powerPercentile:58, approval:'UPA-A' },
+    { id:'p15', brand:'Gearbox', model:'CX14E', price:260, shape:'Elongated', type:'Power', skillLevel:'Advanced', coreThickness:14, weight:8.2, spinRating:'Med-High', powerPercentile:92, approval:'UPA-A' },
+    { id:'p16', brand:'Gearbox', model:'Pro Power Widebody', price:250, shape:'Widebody', type:'Power', skillLevel:'Advanced', coreThickness:14, weight:8.1, spinRating:'Medium', powerPercentile:87, approval:'UPA-A' },
+    { id:'p17', brand:'ProKennex', model:'Pro Speed II', price:180, shape:'Hybrid', type:'All-court', skillLevel:'Intermediate', coreThickness:16, weight:7.8, spinRating:'Medium', powerPercentile:55, approval:'UPA-A' },
+    { id:'p18', brand:'ProKennex', model:'Ovation Speed', price:150, shape:'Widebody', type:'Control', skillLevel:'Beginner', coreThickness:16, weight:7.6, spinRating:'Medium', powerPercentile:44, approval:'UPA-A' },
+    { id:'p19', brand:'Diadem', model:'Warrior Edge V3', price:190, shape:'Elongated', type:'Power', skillLevel:'Intermediate', coreThickness:14, weight:8.0, spinRating:'High', powerPercentile:80, approval:'UPA-A' },
+    { id:'p20', brand:'Diadem', model:'Icon', price:140, shape:'Widebody', type:'All-court', skillLevel:'Beginner', coreThickness:16, weight:7.7, spinRating:'Medium', powerPercentile:46, approval:'UPA-A' },
+    { id:'p21', brand:'Six Zero', model:'Control Pro', price:189, shape:'Widebody', type:'Control', skillLevel:'Intermediate', coreThickness:16, weight:7.7, spinRating:'High', powerPercentile:47, approval:'UPA-A' },
+    { id:'p22', brand:'Selkirk', model:'Amped Epic', price:170, shape:'Widebody', type:'All-court', skillLevel:'Intermediate', coreThickness:16, weight:7.9, spinRating:'Med-High', powerPercentile:62, approval:'UPA-A' },
+    { id:'p23', brand:'JOOLA', model:'Vision', price:100, shape:'Widebody', type:'All-court', skillLevel:'Beginner', coreThickness:16, weight:7.8, spinRating:'Medium', powerPercentile:45, approval:'UPA-A' },
+    { id:'p24', brand:'Vulcan', model:'VForce', price:120, shape:'Elongated', type:'Power', skillLevel:'Beginner', coreThickness:16, weight:7.8, spinRating:'Med-High', powerPercentile:65, approval:'UPA-A' },
+  ];
+
+  componentDidMount() {
+    this._onResize = () => this.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', this._onResize);
+    if (this.props.defaultLandingView && this.props.defaultLandingView !== 'home') {
+      this.setState({ currentView: this.props.defaultLandingView });
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+  }
+
+  navTo = (view) => { this.setState({ currentView: view, mobileMenuOpen: false, moreMenuOpen: false }); window.scrollTo(0,0); };
+  goHome = () => this.navTo('home');
+  goFindCourts = () => this.navTo('find-courts');
+  goCities = () => this.navTo('cities');
+  goRankings = () => this.navTo('rankings');
+  goPaddles = () => this.navTo('paddles');
+  goLearn = () => this.navTo('learn');
+  goAbout = () => this.navTo('about');
+  goReport = () => this.navTo('report');
+  goAffiliate = () => this.navTo('affiliate');
+  goPrivacy = () => this.navTo('privacy');
+  go404 = () => this.navTo('404');
+  navToCity = (slug) => { this.setState({ currentView:'city-detail', selectedCitySlug: slug, mobileMenuOpen:false, moreMenuOpen:false }); window.scrollTo(0,0); };
+  goPaloAlto = () => this.navToCity('palo-alto');
+  goOakland = () => this.navToCity('oakland');
+  goSF = () => this.navToCity('san-francisco');
+  goBerkeley = () => this.navToCity('berkeley');
+  goSunnyvale = () => this.navToCity('sunnyvale');
+
+  toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
+  toggleMoreMenu = () => this.setState(s => ({ moreMenuOpen: !s.moreMenuOpen }));
+
+  setHeroQuery = (e) => this.setState({ heroQuery: e.target.value });
+  submitHeroSearch = (e) => { e.preventDefault(); this.setState({ currentView:'find-courts', globalQuery: this.state.heroQuery, mobileMenuOpen:false }); window.scrollTo(0,0); };
+  setGlobalQuery = (e) => this.setState({ globalQuery: e.target.value });
+  submitGlobalSearch = (e) => { e.preventDefault(); this.navTo('find-courts'); };
+
+  setFindFilter = (key, val) => this.setState(s => ({ findFilters: { ...s.findFilters, [key]: val } }));
+  onRegionFilterChange = (e) => this.setFindFilter('region', e.target.value);
+  onTypeFilterChange = (e) => this.setFindFilter('type', e.target.value);
+  onPriceFilterChange = (e) => this.setFindFilter('price', e.target.value);
+  onAccessFilterChange = (e) => this.setFindFilter('access', e.target.value);
+  toggleBeginnerOnly = () => this.setState(s => ({ findFilters: { ...s.findFilters, beginnerOnly: !s.findFilters.beginnerOnly } }));
+  toggleAmenityFilter = (key) => this.setState(s => ({ findFilters: { ...s.findFilters, amenities: { ...s.findFilters.amenities, [key]: !s.findFilters.amenities[key] } } }));
+  toggleLightsFilter = () => this.toggleAmenityFilter('lights');
+  toggleRestroomFilter = () => this.toggleAmenityFilter('restroom');
+  toggleWaterFilter = () => this.toggleAmenityFilter('water');
+  toggleParkingFilter = () => this.toggleAmenityFilter('parking');
+  resetFindFilters = () => this.setState({ findFilters:{ region:'all', type:'all', price:'all', access:'all', beginnerOnly:false, amenities:{lights:false,restroom:false,water:false,parking:false} }, globalQuery:'' });
+
+  selectVenue = (id) => this.setState(s => ({ selectedVenueId: s.selectedVenueId === id ? null : id }));
+  hoverVenue = (id) => this.setState({ hoveredVenueId: id });
+  unhoverVenue = () => this.setState({ hoveredVenueId: null });
+  toggleFavorite = (id) => this.setState(s => ({ favorites: { ...s.favorites, [id]: !s.favorites[id] } }));
+  rateVenue = (id, n) => this.setState(s => ({ userRatings: { ...s.userRatings, [id]: n } }));
+  filterByRegion = (regionId) => { this.setState({ currentView:'find-courts', findFilters: { ...this.state.findFilters, region: regionId } }); window.scrollTo(0,0); };
+  goFindBeginnerCourts = () => { this.setState({ currentView:'find-courts', findFilters: { ...this.state.findFilters, beginnerOnly: true } }); window.scrollTo(0,0); };
+
+  setQuizAnswer = (field, val) => this.setState(s => ({ quiz: { ...s.quiz, answers: { ...s.quiz.answers, [field]: val } } }));
+  setSkillBeginner = () => this.setQuizAnswer('skill','Beginner');
+  setSkillIntermediate = () => this.setQuizAnswer('skill','Intermediate');
+  setSkillAdvanced = () => this.setQuizAnswer('skill','Advanced');
+  setPrefPower = () => this.setQuizAnswer('pref','Power');
+  setPrefControl = () => this.setQuizAnswer('pref','Control');
+  setPrefAllCourt = () => this.setQuizAnswer('pref','All-court');
+  setBudgetLow = () => this.setQuizAnswer('budget','under120');
+  setBudgetMid = () => this.setQuizAnswer('budget','120to200');
+  setBudgetHigh = () => this.setQuizAnswer('budget','over200');
+  setWeightLight = () => this.setQuizAnswer('weight','light');
+  setWeightStandard = () => this.setQuizAnswer('weight','standard');
+  setWeightHeavier = () => this.setQuizAnswer('weight','heavier');
+  quizNext = () => this.setState(s => ({ quiz: { ...s.quiz, step: Math.min(s.quiz.step+1, 4) } }));
+  quizBack = () => this.setState(s => ({ quiz: { ...s.quiz, step: Math.max(s.quiz.step-1, 0) } }));
+  quizRestart = () => this.setState({ quiz: { step:0, answers:{skill:null,pref:null,budget:null,weight:null} } });
+
+  setReportField = (key, val) => this.setState(s => ({ reportForm: { ...s.reportForm, [key]: val } }));
+  onReportVenueChange = (e) => this.setReportField('venue', e.target.value);
+  onReportIssueChange = (e) => this.setReportField('issue', e.target.value);
+  onReportDetailsChange = (e) => this.setReportField('details', e.target.value);
+  onReportEmailChange = (e) => this.setReportField('email', e.target.value);
+  submitReport = (e) => { e.preventDefault(); this.setState({ reportSubmitted: true }); };
+
+  chipStyle = (active) => active ? { bg:'#1E6E66', color:'#FDFBF4', border:'#1E6E66', pressed:'true' } : { bg:'#FDFBF4', color:'#16211F', border:'rgba(22,33,31,0.22)', pressed:'false' };
+
+  buildVenueVM = (v) => {
+    const isFavorite = !!this.state.favorites[v.id];
+    const isSelected = this.state.selectedVenueId === v.id;
+    const isHovered = this.state.hoveredVenueId === v.id;
+    const userRating = this.state.userRatings[v.id] || 0;
+    const rating = v.communityRating;
+    const stars = [1,2,3,4,5].map(n => ({ n, fillPct: rating >= n ? 100 : (rating > n-1 ? Math.round((rating-(n-1))*100) : 0) }));
+    const userStars = [1,2,3,4,5].map(n => ({ n, filled: userRating >= n, fillColor: userRating >= n ? '#D6E14A' : '#F0EBDA', onClick: () => this.rateVenue(v.id, n) }));
+    let typeBadgeBg, typeBadgeColor, typeBadgeBorder;
+    if (v.typeKey === 'outdoor') { typeBadgeBg = '#F2F6D6'; typeBadgeColor = '#56621A'; typeBadgeBorder = 'rgba(86,98,26,0.3)'; }
+    else if (v.typeKey === 'indoor') { typeBadgeBg = '#DCEEEA'; typeBadgeColor = '#154F49'; typeBadgeBorder = 'rgba(21,79,73,0.3)'; }
+    else { typeBadgeBg = '#F5E1D6'; typeBadgeColor = '#9C4322'; typeBadgeBorder = 'rgba(156,67,34,0.3)'; }
+    return {
+      ...v,
+      isFavorite, isSelected, isHovered,
+      userRating, stars, userStars,
+      hasRatings: v.communityRatingCount > 0,
+      noRatings: v.communityRatingCount === 0,
+      isOutdoor: v.typeKey === 'outdoor', isIndoor: v.typeKey === 'indoor', isBoth: v.typeKey === 'both',
+      typeBadgeBg, typeBadgeColor, typeBadgeBorder,
+      skillBadgeLabel: v.beginnerFriendly ? 'Beginner-friendly' : 'Competitive',
+      skillBadgeBg: v.beginnerFriendly ? '#F2F6D6' : '#F5E1D6',
+      skillBadgeColor: v.beginnerFriendly ? '#56621A' : '#9C4322',
+      cardBorderColor: isSelected ? '#16211F' : 'rgba(22,33,31,0.14)',
+      cardBg: isSelected ? '#F2F6D6' : '#FDFBF4',
+      favPressed: isFavorite ? 'true' : 'false',
+      heartFill: isFavorite ? '#C1552C' : 'none',
+      select: () => this.selectVenue(v.id),
+      onHover: () => this.hoverVenue(v.id),
+      onLeave: () => this.unhoverVenue(),
+      onKeyActivate: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.selectVenue(v.id); } },
+      toggleFav: () => this.toggleFavorite(v.id),
+      directionsUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.name + ', ' + v.cityName + ', CA'),
+    };
+  };
+
+  getAllVenueVMs = () => this.venues.map(this.buildVenueVM);
+
+  venueMatchesFilters = (v) => {
+    const f = this.state.findFilters;
+    const q = (this.state.globalQuery || '').trim().toLowerCase();
+    if (f.region !== 'all' && v.regionId !== f.region) return false;
+    if (f.type !== 'all') { const m = v.typeKey === f.type || v.typeKey === 'both'; if (!m) return false; }
+    if (f.price !== 'all' && v.priceType !== f.price) return false;
+    if (f.access !== 'all') { const m = v.accessKey === f.access || v.accessKey === 'mixed'; if (!m) return false; }
+    if (f.beginnerOnly && !v.beginnerFriendly) return false;
+    if (f.amenities.lights && !v.lights) return false;
+    if (f.amenities.restroom && !v.restroom) return false;
+    if (f.amenities.water && !v.water) return false;
+    if (f.amenities.parking && !v.parking) return false;
+    if (q && !(v.name.toLowerCase().includes(q) || v.cityName.toLowerCase().includes(q) || v.regionName.toLowerCase().includes(q))) return false;
+    return true;
+  };
+
+  getFilteredVenues = () => this.getAllVenueVMs().filter(this.venueMatchesFilters);
+
+  getRegionCards = () => this.regions.map(r => {
+    const rv = this.venues.filter(v => v.regionId === r.id);
+    const cityCount = r.cities.length;
+    return { ...r, cityCount, cityCountLabel: cityCount + (cityCount===1 ? ' city' : ' cities'), sampleVenueCount: rv.length, sampleCourts: rv.reduce((s,v)=>s+v.courts,0), browse: () => this.filterByRegion(r.id) };
+  });
+
+  getCitiesIndex = () => this.regions.map(r => ({
+    ...r,
+    cityCountLabel: r.cities.length + (r.cities.length===1 ? ' city' : ' cities'),
+    citiesVM: r.cities.map(c => {
+      const cv = this.venues.filter(v => v.citySlug === c.slug);
+      const courts = cv.reduce((s,v)=>s+v.courts,0);
+      const hasData = cv.length > 0;
+      return { ...c, venueCount: cv.length, courts, hasData,
+        statLabel: hasData ? (cv.length + ' venue' + (cv.length>1?'s':'') + ' · ' + courts + ' courts') : 'Not yet verified',
+        statColor: hasData ? '#154F49' : '#8B9892',
+        open: () => this.navToCity(c.slug) };
+    }),
+  }));
+
+  cityIntros = {
+    'palo-alto': "Fifteen dedicated courts at Mitchell Park make Palo Alto the Peninsula's flagship scene — busy, well-run, and free. Mornings skew competitive; evenings get crowded fast.",
+    'san-francisco': "Fog rolls over Buena Vista Park most mornings, but the courts stay full anyway. The city's rec department is racing to convert tennis courts faster than almost anywhere in the Bay.",
+    'oakland': "Bushrod Park runs scheduled sessions on shared tennis lines — expect a wait, and expect good competition. A useful blueprint for the East Bay's mixed-use courts.",
+    'berkeley': "Cedar Rose Park's dedicated courts run a tight weekly schedule for a modest hourly fee — one of the few Bay Area courts that charges by the hour, and worth every dollar.",
+    'campbell': "The HUB is the Bay's biggest indoor scene by far — 20 reservable courts inside a 57,000 sq ft facility, with leagues running most weeknights.",
+    'san-rafael': "Flyte Racquet Club is North Bay's premium option: private, reservable, and the highest court count in the region — a different scene than the free city parks nearby.",
+  };
+  getCityDetail = () => {
+    const slug = this.state.selectedCitySlug;
+    let city = null, region = null;
+    for (const r of this.regions) { const c = r.cities.find(x => x.slug === slug); if (c) { city = c; region = r; break; } }
+    if (!city) return null;
+    const venuesVM = this.getAllVenueVMs().filter(v => v.citySlug === slug);
+    const topPick = venuesVM.find(v => v.topPick) || venuesVM[0] || null;
+    const totalCourts = venuesVM.reduce((s,v) => s+v.courts, 0);
+    const intro = this.cityIntros[slug] || (venuesVM.length ? (city.name + "'s " + venuesVM.length + (venuesVM.length===1 ? ' verified venue spans ' : ' verified venues span ') + totalCourts + ' courts, cross-referenced against the city\'s own recreation department listing.') : '');
+    const venueCountLabel = venuesVM.length + (venuesVM.length===1 ? ' verified venue' : ' verified venues');
+    return { city, region, venues: venuesVM, topPick, hasData: venuesVM.length > 0, totalCourts, intro, venueCountLabel };
+  };
+
+  getRankedVenues = () => {
+    const rated = this.getAllVenueVMs().filter(v => v.hasRatings);
+    rated.sort((a,b) => b.communityRating - a.communityRating || b.communityRatingCount - a.communityRatingCount);
+    const maxCount = rated.length ? Math.max.apply(null, rated.map(v=>v.communityRatingCount)) : 0;
+    return rated.map((v,i) => ({ ...v, rank: i+1, isTopTen: i<10, mostLoved: v.communityRatingCount === maxCount, topRated: i<3, rankColor: i===0 ? '#9C4322' : (i<3 ? '#16211F' : '#55655F'), openCity: () => this.navToCity(v.citySlug) }));
+  };
+
+  setPaddleFilter = (key, val) => this.setState(s => ({ paddleFilters: { ...s.paddleFilters, [key]: val } }));
+  onPaddleTypeChange = (e) => this.setPaddleFilter('type', e.target.value);
+  onPaddleShapeChange = (e) => this.setPaddleFilter('shape', e.target.value);
+  onPaddlePriceChange = (e) => this.setPaddleFilter('price', e.target.value);
+  onPaddleSkillChange = (e) => this.setPaddleFilter('skill', e.target.value);
+  resetPaddleFilters = () => this.setState({ paddleFilters: { type:'all', shape:'all', price:'all', skill:'all' } });
+
+  buildPaddleVM = (p) => ({ ...p, buyUrl: 'https://www.google.com/search?q=' + encodeURIComponent(p.brand + ' ' + p.model + ' pickleball paddle') });
+
+  getFilteredPaddles = () => {
+    const f = this.state.paddleFilters;
+    return this.paddles.filter(p => {
+      if (f.type !== 'all' && p.type !== f.type) return false;
+      if (f.shape !== 'all' && p.shape !== f.shape) return false;
+      if (f.skill !== 'all' && p.skillLevel !== f.skill && p.skillLevel !== 'All levels') return false;
+      if (f.price === 'under120' && p.price >= 120) return false;
+      if (f.price === '120to200' && (p.price < 120 || p.price > 200)) return false;
+      if (f.price === 'over200' && p.price <= 200) return false;
+      return true;
+    }).map(this.buildPaddleVM);
+  };
+
+  buildWhyText = (p, a) => {
+    const prefText = (a.pref||'all-court').toLowerCase();
+    const budgetText = a.budget === 'under120' ? 'budget-friendly' : a.budget === '120to200' ? 'mid-range' : 'premium';
+    const weightText = a.weight === 'light' ? 'quick hands at the net' : a.weight === 'heavier' ? 'stability and drive from the baseline' : 'balanced all-around play';
+    return p.brand + ' ' + p.model + ' is a ' + p.shape.toLowerCase() + ' ' + p.type.toLowerCase() + ' paddle that fits your ' + prefText + ' game at a ' + budgetText + ' price — ' + p.weight + 'oz suits ' + weightText + '.';
+  };
+
+  computeQuizResults = () => {
+    const a = this.state.quiz.answers;
+    const scored = this.paddles.map(p => {
+      let score = 0;
+      if (a.pref && p.type === a.pref) score += 3;
+      else if (a.pref && p.type === 'All-court') score += 1.5;
+      if (a.skill && (p.skillLevel === a.skill || p.skillLevel === 'All levels')) score += 2;
+      if (a.budget === 'under120' && p.price < 120) score += 2;
+      if (a.budget === '120to200' && p.price >= 120 && p.price <= 200) score += 2;
+      if (a.budget === 'over200' && p.price > 200) score += 2;
+      if (a.weight === 'light' && p.weight < 7.75) score += 1;
+      if (a.weight === 'standard' && p.weight >= 7.75 && p.weight <= 8.0) score += 1;
+      if (a.weight === 'heavier' && p.weight > 8.0) score += 1;
+      return { ...p, score };
+    });
+    scored.sort((x,y) => y.score - x.score);
+    return scored.slice(0,3).map(p => ({ ...this.buildPaddleVM(p), why: this.buildWhyText(p, a) }));
+  };
+
+  renderVals() {
+    const isMobile = this.state.windowWidth < 900;
+    const view = this.state.currentView;
+    const filteredVenues = this.getFilteredVenues();
+    const filteredIds = {}; filteredVenues.forEach(v => { filteredIds[v.id] = true; });
+    const allVenuesForMap = this.getAllVenueVMs().map(v => ({ ...v, matchesFilter: !!filteredIds[v.id], pinOpacity: filteredIds[v.id] ? 1 : 0.25, pinPointerEvents: filteredIds[v.id] ? 'auto' : 'none' }));
+    const f = this.state.findFilters;
+    const beginnerChip = this.chipStyle(f.beginnerOnly);
+    const lightsChip = this.chipStyle(f.amenities.lights);
+    const restroomChip = this.chipStyle(f.amenities.restroom);
+    const waterChip = this.chipStyle(f.amenities.water);
+    const parkingChip = this.chipStyle(f.amenities.parking);
+    const cityDetail = this.getCityDetail();
+    const rankedVenues = this.getRankedVenues();
+    const topTenVenues = rankedVenues.filter(v => v.isTopTen);
+    const restVenues = rankedVenues.filter(v => !v.isTopTen);
+    const unratedVenues = this.getAllVenueVMs().filter(v => !v.hasRatings);
+    const qa = this.state.quiz.answers;
+    const quizComplete = !!(qa.skill && qa.pref && qa.budget && qa.weight);
+    const quizResults = quizComplete ? this.computeQuizResults() : [];
+    const quizStep = this.state.quiz.step;
+    const stepFields = ['skill','pref','budget','weight'];
+    const quizCurrentAnswered = quizStep < 4 ? !!qa[stepFields[quizStep]] : true;
+    const quizShowResults = quizStep >= 4;
+    const quizDots = [0,1,2,3].map(i => ({ color: i <= quizStep ? '#16211F' : 'rgba(22,33,31,0.2)' }));
+    const mkOpt = (label, val, active, onClick) => { const c = this.chipStyle(active); return { label, val, onClick, bg:c.bg, color:c.color, border:c.border, pressed:c.pressed }; };
+    const skillOptions = [ mkOpt('Beginner','Beginner', qa.skill==='Beginner', this.setSkillBeginner), mkOpt('Intermediate','Intermediate', qa.skill==='Intermediate', this.setSkillIntermediate), mkOpt('Advanced','Advanced', qa.skill==='Advanced', this.setSkillAdvanced) ];
+    const prefOptions = [ mkOpt('Power','Power', qa.pref==='Power', this.setPrefPower), mkOpt('Control','Control', qa.pref==='Control', this.setPrefControl), mkOpt('All-court balance','All-court', qa.pref==='All-court', this.setPrefAllCourt) ];
+    const budgetOptions = [ mkOpt('Under $120','under120', qa.budget==='under120', this.setBudgetLow), mkOpt('$120–$200','120to200', qa.budget==='120to200', this.setBudgetMid), mkOpt('$200+','over200', qa.budget==='over200', this.setBudgetHigh) ];
+    const weightOptions = [ mkOpt('Lighter & quicker','light', qa.weight==='light', this.setWeightLight), mkOpt('Standard balance','standard', qa.weight==='standard', this.setWeightStandard), mkOpt('Heavier & stable','heavier', qa.weight==='heavier', this.setWeightHeavier) ];
+    const filteredPaddles = this.getFilteredPaddles();
+    const pf = this.state.paddleFilters;
+    const reduceMotionOn = !!this.props.reduceMotion;
+    const isCompact = this.props.courtCardDensity === 'compact';
+    const courtCardPadding = isCompact ? '14px' : '22px';
+    const courtCardGap = isCompact ? '8px' : '14px';
+    const showCardExtras = !isCompact;
+    const showGoogleRating = this.props.showGoogleRating ?? true;
+    const showAffiliateNote = this.props.showAffiliateNote ?? true;
+
+    return {
+      isMobile,
+      isDesktopNav: !isMobile,
+      mobileMenuOpen: this.state.mobileMenuOpen,
+      mobileMenuOpenStr: this.state.mobileMenuOpen ? 'true' : 'false',
+      showMobileMenu: isMobile && this.state.mobileMenuOpen,
+      toggleMobileMenu: this.toggleMobileMenu,
+      moreMenuOpen: this.state.moreMenuOpen,
+      moreMenuOpenStr: this.state.moreMenuOpen ? 'true' : 'false',
+      toggleMoreMenu: this.toggleMoreMenu,
+      goHome: this.goHome, goFindCourts: this.goFindCourts, goCities: this.goCities, goRankings: this.goRankings,
+      goPaddles: this.goPaddles, goLearn: this.goLearn, goAbout: this.goAbout, goReport: this.goReport,
+      goAffiliate: this.goAffiliate, goPrivacy: this.goPrivacy, go404: this.go404,
+      goPaloAlto: this.goPaloAlto, goOakland: this.goOakland, goSF: this.goSF, goBerkeley: this.goBerkeley, goSunnyvale: this.goSunnyvale,
+      goFindBeginnerCourts: this.goFindBeginnerCourts,
+      isHome: view==='home', isFindCourts: view==='find-courts', isCities: view==='cities', isCityDetail: view==='city-detail',
+      isRankings: view==='rankings', isPaddles: view==='paddles', isLearn: view==='learn', isAbout: view==='about',
+      isReport: view==='report', isAffiliate: view==='affiliate', isPrivacy: view==='privacy', is404: view==='404',
+      findCourtsCurrent: view==='find-courts' ? 'page' : undefined,
+      citiesCurrent: (view==='cities'||view==='city-detail') ? 'page' : undefined,
+      rankingsCurrent: view==='rankings' ? 'page' : undefined,
+      paddlesCurrent: view==='paddles' ? 'page' : undefined,
+      aboutCurrent: view==='about' ? 'page' : undefined,
+      learnCurrent: view==='learn' ? 'page' : undefined,
+      reportCurrent: view==='report' ? 'page' : undefined,
+      heroQuery: this.state.heroQuery, setHeroQuery: this.setHeroQuery, submitHeroSearch: this.submitHeroSearch,
+      globalQuery: this.state.globalQuery, setGlobalQuery: this.setGlobalQuery, submitGlobalSearch: this.submitGlobalSearch,
+      regionCards: this.getRegionCards(),
+      findFilters: this.state.findFilters,
+      beginnerChip, lightsChip, restroomChip, waterChip, parkingChip,
+      onRegionFilterChange: this.onRegionFilterChange, onTypeFilterChange: this.onTypeFilterChange,
+      onPriceFilterChange: this.onPriceFilterChange, onAccessFilterChange: this.onAccessFilterChange,
+      toggleBeginnerOnly: this.toggleBeginnerOnly,
+      toggleLightsFilter: this.toggleLightsFilter, toggleRestroomFilter: this.toggleRestroomFilter,
+      toggleWaterFilter: this.toggleWaterFilter, toggleParkingFilter: this.toggleParkingFilter,
+      resetFindFilters: this.resetFindFilters,
+      filteredVenues, filteredCount: filteredVenues.length, hasNoResults: filteredVenues.length === 0,
+      allVenuesForMap,
+      citiesIndex: this.getCitiesIndex(),
+      cityDetail, hasCityDetail: !!(cityDetail && cityDetail.hasData), cityDetailMissing: !!(cityDetail && !cityDetail.hasData),
+      rankedVenues, topTenVenues, restVenues, unratedVenues,
+      quizStep, quizAnswers: qa, quizComplete, quizResults,
+      quizCurrentAnswered, quizShowResults, quizAsking: !quizShowResults, quizDots,
+      quizStepIsSkill: quizStep===0, quizStepIsPref: quizStep===1, quizStepIsBudget: quizStep===2, quizStepIsWeight: quizStep===3,
+      quizStepNum: quizStep+1, quizStepGtZero: quizStep>0,
+      quizNextLabel: quizStep===3 ? 'See my matches' : 'Next question',
+      quizNextDisabled: !quizCurrentAnswered, quizNextOpacity: quizCurrentAnswered?1:0.45,
+      skillOptions, prefOptions, budgetOptions, weightOptions,
+      setSkillBeginner: this.setSkillBeginner, setSkillIntermediate: this.setSkillIntermediate, setSkillAdvanced: this.setSkillAdvanced,
+      setPrefPower: this.setPrefPower, setPrefControl: this.setPrefControl, setPrefAllCourt: this.setPrefAllCourt,
+      setBudgetLow: this.setBudgetLow, setBudgetMid: this.setBudgetMid, setBudgetHigh: this.setBudgetHigh,
+      setWeightLight: this.setWeightLight, setWeightStandard: this.setWeightStandard, setWeightHeavier: this.setWeightHeavier,
+      quizNext: this.quizNext, quizBack: this.quizBack, quizRestart: this.quizRestart,
+      filteredPaddles, paddleFilters: pf,
+      reduceMotionStr: reduceMotionOn ? 'true' : 'false',
+      courtCardPadding, courtCardGap, showCardExtras, showGoogleRating, showAffiliateNote,
+      onPaddleTypeChange: this.onPaddleTypeChange, onPaddleShapeChange: this.onPaddleShapeChange,
+      onPaddlePriceChange: this.onPaddlePriceChange, onPaddleSkillChange: this.onPaddleSkillChange,
+      resetPaddleFilters: this.resetPaddleFilters,
+      reportForm: this.state.reportForm, reportSubmitted: this.state.reportSubmitted, reportNotSubmitted: !this.state.reportSubmitted,
+      onReportVenueChange: this.onReportVenueChange, onReportIssueChange: this.onReportIssueChange,
+      onReportDetailsChange: this.onReportDetailsChange, onReportEmailChange: this.onReportEmailChange,
+      submitReport: this.submitReport,
+      reportCanSubmit: !!(this.state.reportForm.venue && this.state.reportForm.issue),
+      reportSubmitDisabled: !(this.state.reportForm.venue && this.state.reportForm.issue),
+      reportSubmitOpacity: (this.state.reportForm.venue && this.state.reportForm.issue) ? 1 : 0.5,
+      allVenues: this.getAllVenueVMs(),
+    };
+  }
+}
+</script>
+</body>
+</html>

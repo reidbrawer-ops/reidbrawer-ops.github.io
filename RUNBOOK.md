@@ -68,8 +68,9 @@ New venue also needs lat/lon: add `lat`/`lon` to its `venues.json` entry
 
 | Command | What it does |
 |---|---|
-| `npm run validate` | Data-integrity gate (lockstep, ids, enums, paddle tiers). Predeploy hook. |
-| `npm run check` | `validate` + `check-venue-cards` (fuller pre-deploy pass). |
+| `npm run validate` | Data-integrity gate (lockstep, ids, enums, paddle tiers). Predeploy hook. **Data only — it never opens an .html file, so it cannot catch a broken page.** |
+| `npm run check` | `validate` + `check-venue-cards` + `check-redesign-invariants` (fuller pre-deploy pass). |
+| `node scripts/check-redesign-invariants.mjs` | The HTML/JS contract `validate` can't see: the map ids that are dereferenced unguarded, the `data-pq-*` revenue attributes, the verbatim Amazon Associates sentence, the single-definition rule for `vendorLinkFor`, the sync-script anchors, and the fonts/tokens. Add an assertion here whenever you find a hook whose loss would be silent. |
 | `npm run generate-venues` | Rebuild `venues.json` + `map-data.json` from `courts-data.json`. |
 | `npm run sync` | Re-inject the shared header + lane-router partials. |
 | `npm run build` | Regenerate head/header/footer boilerplate (see caveat above). |

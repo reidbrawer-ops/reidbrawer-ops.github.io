@@ -8,6 +8,6 @@
     "sync": "node scripts/sync-header.js && node scripts/sync-lane-router.js",
     "generate-venues": "node scripts/generate-venues.mjs",
     "validate": "node scripts/validate.mjs",
-    "check": "node scripts/validate.mjs && node scripts/check-venue-cards.mjs"
+    "check": "node scripts/validate.mjs && node scripts/check-venue-cards.mjs && node scripts/check-redesign-invariants.mjs"
   }
 }

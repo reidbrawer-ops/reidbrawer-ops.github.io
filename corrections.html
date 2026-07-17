@@ -7,7 +7,7 @@
 <meta name="description" content="Spot stale hours, a closed court, or a wrong address? Tell us and we'll check it — this guide is hand-maintained, not a database.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -34,7 +34,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span></a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -50,6 +50,9 @@
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
           <a href="/corrections" aria-current="page">Report a correction</a>
+          <div class="nav-dropdown-rule"></div>
+          <a href="/affiliate-disclosure">Affiliate disclosure</a>
+          <a href="/privacy">Privacy</a>
         </div>
       </details>
       <a href="/about">About</a>
@@ -72,8 +75,12 @@
   <div class="container">
 
     <div class="corr-thanks" id="corr-thanks">
-      <p class="eyebrow">Got it</p>
-      <p>Thanks — that's been sent over and we'll check it against the source before updating the page.</p>
+      <svg class="corr-thanks-tick" width="36" height="36" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.4"></circle>
+        <path d="M6 10.2L8.7 13L14 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <h2>Thanks — we've got it.</h2>
+      <p>We check corrections against the city's own listing before updating anything. No reply needed unless we have a question.</p>
     </div>
 
     <!--
@@ -177,7 +184,7 @@
       </div>
 
       <div class="corr-field">
-        <label for="corr-link">Supporting link <span style="text-transform:none; letter-spacing:0;">(optional)</span></label>
+        <label for="corr-link">Supporting link (optional)</label>
         <input type="url" id="corr-link" name="link" placeholder="City rec page, reservation site, listing you found, etc.">
         <p class="hint">A source we can check against — the correct reservation link, a city page, whatever backs this up.</p>
       </div>
@@ -188,7 +195,7 @@
       </div>
 
       <div class="corr-field">
-        <label for="corr-email">Your email <span style="text-transform:none; letter-spacing:0;">(optional)</span></label>
+        <label for="corr-email">Your email (optional)</label>
         <input type="email" id="corr-email" name="email" placeholder="only if you want a reply">
         <p class="hint">We won't use this for anything else.</p>
       </div>
@@ -213,6 +220,10 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span>
+        <p>An independent, ad-free directory of verified public pickleball courts.</p>
+      </div>
       <div>
         <h4>Regions</h4>
         <ul>

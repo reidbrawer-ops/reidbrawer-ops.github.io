@@ -34,8 +34,10 @@
       "pickleheads-research/**",
       "audit/**",
       "quiz/**",
+      "design_handoff_pickleball_redesign/**",
       "**/*.md",
-      "firestore.rules"
+      "firestore.rules",
+      "**/*.log"
     ]
   }
 }

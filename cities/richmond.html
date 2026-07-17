@@ -7,7 +7,7 @@
 <meta name="description" content="Where to play pickleball in Richmond: 14 courts across four venues, from the free outdoor courts at Booker T. Anderson Park to indoor drop-in gyms and a YMCA club.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -36,7 +36,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span></a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -52,6 +52,9 @@
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
           <a href="/corrections">Report a correction</a>
+          <div class="nav-dropdown-rule"></div>
+          <a href="/affiliate-disclosure">Affiliate disclosure</a>
+          <a href="/privacy">Privacy</a>
         </div>
       </details>
       <a href="/about">About</a>
@@ -62,9 +65,9 @@
 
 <main id="main" tabindex="-1">
 
-<section class="page-hero">
+<section class="page-hero page-hero--city">
   <div class="container">
-    <p class="eyebrow"><a href="/cities/#east-bay">East Bay region</a></p>
+    <p class="eyebrow crumbs"><a href="/cities/">Cities</a> / <a href="/cities/#east-bay">East Bay</a> / <span aria-current="page">Richmond</span></p>
     <h1>Richmond</h1>
     <p class="lede">Four venues, 14 courts: a busy free outdoor park, two indoor gyms, and a YMCA club with scheduled open play. Craneway Pavilion, the 12-court facility that dominates "Richmond pickleball" search results, isn't among them — it closed in 2025 and the building remains vacant.</p>
     <div class="stat-strip">
@@ -184,9 +187,18 @@
       <li>Richmond Parkway YMCA requires a YMCA of the East Bay membership for regular access; DUPR Round Robin sessions cost non-members a $15 guest fee.</li>
     </ul>
 
-    <p class="sources">Sources: <a href="https://www.pickleheads.com/courts/us/california/richmond" target="_blank" rel="noopener">Pickleheads — Richmond</a> · <a href="https://www.ci.richmond.ca.us/2194/Richmond-Recreation-Complex" target="_blank" rel="noopener">City of Richmond — Recreation Complex</a> · <a href="https://www.ci.richmond.ca.us/1624/Booker-T-Anderson-Jr-Park" target="_blank" rel="noopener">City of Richmond — Booker T. Anderson Jr. Park</a> · <a href="https://richmondconfidential.org/2023/10/23/richmond-pickleball-players-say-they-need-more-courts-it-has-been-a-challenge-for-towns-across-the-country/" target="_blank" rel="noopener">Richmond Confidential</a> · <a href="https://rpal.org/" target="_blank" rel="noopener">RPAL</a> · <a href="https://www.ci.richmond.ca.us/1044/Police-Activities-League" target="_blank" rel="noopener">City of Richmond — Police Activities League</a> · <a href="https://www.ymcaeastbay.org/health-and-fitness/pickleball" target="_blank" rel="noopener">YMCA of the East Bay — Pickleball</a>. Verified July 2026 — always confirm hours before a special trip.</p>
+    <div class="source-checked">
+      <div class="stamp stamp--s" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10.5L8 14.5L16 5.5" stroke="var(--bay)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div>
+        <p class="eyebrow">Source-checked</p>
+        <p><a href="https://www.pickleheads.com/courts/us/california/richmond" target="_blank" rel="noopener">Pickleheads — Richmond</a> · <a href="https://www.ci.richmond.ca.us/2194/Richmond-Recreation-Complex" target="_blank" rel="noopener">City of Richmond — Recreation Complex</a> · <a href="https://www.ci.richmond.ca.us/1624/Booker-T-Anderson-Jr-Park" target="_blank" rel="noopener">City of Richmond — Booker T. Anderson Jr. Park</a> · <a href="https://richmondconfidential.org/2023/10/23/richmond-pickleball-players-say-they-need-more-courts-it-has-been-a-challenge-for-towns-across-the-country/" target="_blank" rel="noopener">Richmond Confidential</a> · <a href="https://rpal.org/" target="_blank" rel="noopener">RPAL</a> · <a href="https://www.ci.richmond.ca.us/1044/Police-Activities-League" target="_blank" rel="noopener">City of Richmond — Police Activities League</a> · <a href="https://www.ymcaeastbay.org/health-and-fitness/pickleball" target="_blank" rel="noopener">YMCA of the East Bay — Pickleball</a>. Verified July 2026 — always confirm hours before a special trip.</p>
+      </div>
+    </div>
   </div>
 </section>
+
+
+</main>
 
 <!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
 <section class="section">
@@ -215,11 +227,13 @@
 </section>
 <!-- lane-router:end -->
 
-</main>
-
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span>
+        <p>An independent, ad-free directory of verified public pickleball courts.</p>
+      </div>
       <div>
         <h4>Regions</h4>
         <ul>

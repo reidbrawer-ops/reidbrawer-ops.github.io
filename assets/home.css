@@ -1,0 +1,150 @@
+/* Home — scoped styles layered on top of style.css */
+
+/* Almost everything the home page needs already lives in style.css: .hero and
+   its 0/0.05/0.1/0.15s child stagger, .eyebrow-pill, .home-lane (-4px + the
+   only shadow in the system + the optic/teal/clay hover borders), .region-head,
+   .region-card, .trio, .section--dark. What's left below is the handful of
+   things that exist on this page and nowhere else. */
+
+/* ---------- Section bands ----------
+   Home is the one page authored as four full-bleed bands rather than
+   hairline-separated sections (prototype 99 / 118 / 153 / 173): paper, paper
+   deep, paper, ink. The band edge IS the divider, so .section + .section's
+   hairline has to stand down between them. */
+
+.home-band + .home-band {
+  border-top: none;
+}
+
+.home-hero {
+  background: var(--fog);
+  overflow: hidden;
+  padding: 56px 0 0;
+}
+
+/* One child, deliberately: the auto-fit second track collapses to 0, which is
+   what makes the hero single-column without a media query. The min() keeps the
+   track from forcing a 420px floor on a 375px phone — bare minmax(420px, 1fr)
+   overflows the viewport there. */
+.home-hero .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: 56px;
+  align-items: center;
+  padding-bottom: 64px;
+}
+
+/* The hint rides with the search as one lockup, so it takes the search's own
+   0.15s step rather than arriving unannounced ahead of it. */
+.home-hero .hero-search-hint {
+  animation: pbaFadeUp 0.6s var(--ease) 0.15s both;
+}
+
+.home-lanes-band {
+  background: var(--fog-dim);
+  padding: 80px 0;
+}
+
+.home-regions {
+  background: var(--fog);
+  padding: 88px 0;
+}
+
+.home-trust {
+  padding: 88px 0;
+}
+
+/* Each band's head is a lone headline (or headline + "see all"), with no
+   sub-paragraph under it — so .region-head's own 40px is the whole gap. */
+.home-band .region-head h2 {
+  margin-bottom: 0;
+}
+
+/* ---------- Lane icon tile ---------- */
+
+/* 44px tint tile, one accent per lane — same optic / teal / clay order the
+   lane borrows on hover, so the tile telegraphs the hover before you get
+   there. The colour sits on the tile so each inline SVG can stroke
+   currentColor instead of hardcoding the three deep shades. */
+.home-lane-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-s);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-lane:nth-child(1) .home-lane-icon {
+  background: var(--kitchen-tint);
+  color: var(--optic-text);
+}
+
+.home-lane:nth-child(2) .home-lane-icon {
+  background: var(--bay-tint);
+  color: var(--bay-deep);
+}
+
+.home-lane:nth-child(3) .home-lane-icon {
+  background: var(--poppy-tint);
+  color: var(--poppy-deep);
+}
+
+/* ---------- Lane CTA ---------- */
+
+/* The lane CTA is a plain arrow link, not a .btn (prototype 129/138/147): the
+   card is already the route, and three filled buttons here would each shout as
+   loud as the hero search. Pinned to the card bottom so all three align no
+   matter how the body copy wraps. */
+.home-lane-link {
+  margin-top: auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--bay-deep);
+  text-decoration: none;
+}
+
+.home-lane-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Region card head ---------- */
+
+/* Region name and city count share one row (prototype 162), rather than the
+   count sitting above the name as a standalone eyebrow. */
+.region-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.region-card-head .eyebrow {
+  white-space: nowrap;
+}
+
+/* ---------- Trust columns ---------- */
+
+/* The trust subheads wear the mono data label but are still real headings, so
+   they stay <h3 class="eyebrow"> rather than becoming the prototype's bare
+   <div>. .trio h3 (0,1,1) outguns .eyebrow (0,1,0) on size and margin, so both
+   get restated; the mono face, tracking, casing and the --optic colour all
+   still come from .eyebrow + .section--dark .eyebrow. */
+.home-trust .trio h3 {
+  font-size: 0.6875rem;
+  margin-bottom: 12px;
+}
+
+/* .trio p and .section--dark p tie at (0,1,1), and .trio p is later in
+   style.css — so on an ink band the columns would resolve to --body-ink, which
+   is near-black on near-black. Restated here to unblock this page; the durable
+   fix is a .section--dark .trio p rule in style.css (flagged in handoff). */
+.home-trust .trio p {
+  color: var(--footer-body);
+}

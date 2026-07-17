@@ -7,7 +7,7 @@
 <meta name="description" content="What Pickleball Bay Area is, how listings are checked, and what to do if something's out of date.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -29,6 +29,32 @@
 { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://pickleball-bay-area.com/" }, { "@type": "ListItem", "position": 2, "name": "About", "item": "https://pickleball-bay-area.com/about" } ] }
 </script>
 <link rel="stylesheet" href="/assets/style.css">
+<style>
+  /* About-only: the 820px column and the stacked prose blocks. */
+  .about-col { max-width: 820px; }
+
+  .about-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .about-stack h2 {
+    font-size: 20px;
+    margin: 0 0 8px;
+  }
+
+  .about-stack p {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--body-ink);
+    margin: 0;
+  }
+
+  /* The stamp signs off the page — the design's one recurring signature
+     device, not a decoration. Component lives in style.css. */
+  .about-signoff { margin-top: 40px; }
+</style>
 </head>
 <body>
 
@@ -36,7 +62,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span></a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -52,6 +78,9 @@
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
           <a href="/corrections">Report a correction</a>
+          <div class="nav-dropdown-rule"></div>
+          <a href="/affiliate-disclosure">Affiliate disclosure</a>
+          <a href="/privacy">Privacy</a>
         </div>
       </details>
       <a href="/about" aria-current="page">About</a>
@@ -63,34 +92,41 @@
 <main id="main" tabindex="-1">
 
 <section class="page-hero">
-  <div class="container">
+  <div class="container about-col">
     <p class="eyebrow">About</p>
-    <h1>An independent field guide, not a court finder.</h1>
-    <p class="lede">Bay Area cities, checked by hand against each city's own recreation department page — plus the local context an app won't give you, like which cities are still fighting over where to put their first court.</p>
+    <h1>A directory, not a marketplace.</h1>
   </div>
 </section>
 
 <section class="section">
-  <div class="container">
-    <div class="trio">
+  <div class="container about-col">
+    <div class="about-stack">
       <div>
-        <h3>Sourcing</h3>
-        <p>City rec pages first, cross-checked against Pickleheads, PicklePlay, DailyPB, and local clubs for what cities don't publish. Where sources disagree, we say so.</p>
+        <h2>Who runs this</h2>
+        <p>Pickleball Bay Area is built and kept up by one Bay Area player who got tired of stale listings and app data that hadn't been checked in years. No investors, no ad sales team — just one person who wanted a directory they'd trust with their own Saturday morning plans.</p>
       </div>
       <div>
-        <h3>Scope</h3>
-        <p>No ads, no sponsored placements, no pay-to-list. Our court data stays independent — no private club schedules or anything that needs an account to verify. Some paddle &amp; gear links may be affiliate links that earn us a commission; that never affects which venues we list or how they rank. <a href="/affiliate-disclosure">How this works</a>.</p>
+        <h2>How verification works</h2>
+        <p>City rec pages come first: where a city publishes its own parks &amp; recreation listing or facility directory, that's what a venue is checked against — not scraped from a crowdsourced app and left to rot. Not every venue has one. Private clubs and commercial facilities aren't in any city's directory, so those we check against the venue's own listing, and we cross-check community sources like Pickleheads, PicklePlay, DailyPB, and local clubs for what cities don't publish. Where sources disagree, or a city's own listing is vague, thin, or contradicts itself, we say so instead of papering over it.</p>
       </div>
       <div>
-        <h3>Coverage</h3>
+        <h2>Coverage</h2>
         <p>Every Bay Area city we can verify, from a full scene to a single park. A city with one park gets a short page — that's the whole scene, not a gap.</p>
+      </div>
+      <div>
+        <h2>Independence</h2>
+        <p>No court, city, or club can pay for placement, a higher rank, or a better badge. The only paid links on this site are paddle and gear links, and every one is disclosed as an affiliate link right where it appears — see the <a href="/affiliate-disclosure">affiliate disclosure</a> for the full policy.</p>
+      </div>
+      <div>
+        <h2>Corrections</h2>
+        <p>Courts change — a city adds lights, a fee goes up, a shared tennis court gets dedicated lines. If something here is wrong, <a href="/corrections">tell us</a> and we'll check it against the source and fix it.</p>
       </div>
     </div>
   </div>
 </section>
 
 <section class="section">
-  <div class="container">
+  <div class="container about-col">
     <div class="region-head">
       <div>
         <h2 id="how-we-rank">How we rank courts</h2>
@@ -120,7 +156,7 @@
 </section>
 
 <section class="section">
-  <div class="container">
+  <div class="container about-col">
     <div class="callout">
       <p class="eyebrow">Before you drive out</p>
       <p>Hours, fees, and reservation systems change with city budgets and construction. Check the source link at the bottom of each city's page before making a special trip.</p>
@@ -130,7 +166,7 @@
 </section>
 
 <section class="section">
-  <div class="container">
+  <div class="container about-col">
     <div class="region-head">
       <div>
         <h2>Also on this site</h2>
@@ -151,6 +187,11 @@
         <p>Rent one to try it, take the quiz to find your match, then buy — all in one place.</p>
       </div>
     </div>
+    <div class="stamp about-signoff" aria-hidden="true">
+      <span class="stamp-label">Verified</span>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10.5L8 14.5L16 5.5" stroke="var(--bay)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <span class="stamp-note">Method, not magic</span>
+    </div>
   </div>
 </section>
 
@@ -159,6 +200,10 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span>
+        <p>An independent, ad-free directory of verified public pickleball courts.</p>
+      </div>
       <div>
         <h4>Regions</h4>
         <ul>

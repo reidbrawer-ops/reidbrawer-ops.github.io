@@ -12,203 +12,241 @@ value, or pattern.
 
 ## Direction
 
-> "Court colors, daylight" (see the header comment in `style.css`).
+> "Editorial field guide" — v4 (see the header comment in `style.css`).
 
-Light, plain, legible — a reference you'd trust, not a moody SaaS landing
-page. No blur, no glow, no glassmorphism, no ambient gradients, no pulsing
-animation. The accent palette is drawn from the court itself in its daylight
-register: the blue of the outer court, the green of the kitchen, the
-terracotta of the perimeter apron, and optic yellow reserved for exactly
-**one thing** — marking the top pick. Don't reach for optic yellow as a
-generic accent; it means "#1."
+Part atlas, part almanac. Warm paper tones, a confident serif for headlines
+**and venue names**, a monospace "data voice" for stats, addresses and
+verification dates, and hand-drawn line icons. The page is warm paper, not
+fog; sections alternate paper → paper-deep, and the page *ends* on ink.
+
+This replaced v3 ("court colors, daylight") wholesale — the cool grey/white
+ground, the condensed all-caps Bebas headline, and the "optic yellow means
+#1 and nothing else" rule are all gone. In v4 optic is the **primary
+accent** (buttons, active states, outdoor courts) and teal carries links and
+focus.
+
+The one deliberate signature device is the **Verified stamp** — a rotated,
+single-ring circular mark. It appears in exactly three places (About, City
+Detail, 404). Keep it literal and recurring; don't turn it into generic
+decoration, and don't add a fourth variant without a reason.
 
 ## Tokens (`:root` in `style.css`)
+
+Variable **names are deliberately stable across versions** and describe a
+**role, not a hue**. That indirection is load-bearing: it's the only reason a
+total repaint landed on 53 pages and six stylesheets without touching their
+selectors. `--bay` is "primary accent" (now teal, was blue). `--poppy` is
+"warm accent" (now clay). `--kitchen` is "secondary accent" (now optic
+olive). **Don't rename them to match the current palette.**
 
 ### Color
 
 | Token | Hex | Use |
 |---|---|---|
-| `--fog` | `#f5f7f6` | Page background |
-| `--fog-dim` | `#eaeeec` | Footer bg, empty states |
-| `--paper` | `#ffffff` | Card / surface background |
-| `--ink` | `#17232b` | Primary text |
-| `--ink-soft` | `#5b6b70` | Secondary text, meta, labels |
-| `--line` | `#dfe5e2` | Borders, dividers (cards, dividers, non-interactive surfaces) |
-| `--line-strong` | `#7d8783` | Borders of **interactive form controls only** (text inputs, selects, textareas) — `--line` is ~1.3:1 and fails WCAG 1.4.11's 3:1 for UI boundaries; this is ~3.8:1 |
-| `--bay` / `--bay-deep` | `#1d6b85` / `#123240` | Primary brand blue — links, primary buttons, focus rings |
-| `--kitchen` / `--kitchen-deep` | `#2f7a57` / `#1f5a40` | Secondary green — eyebrows, "beginner" badges, bullet marks |
-| `--optic` / `--optic-deep` | `#d7e94b` / `#9aa81e` | **#1 / top-pick marker only** — rank badges, selection highlight, borders/rings, underline accents. Backgrounds & non-text marks only. |
-| `--optic-text` | `#6c7714` | The **only** optic that passes WCAG contrast as **foreground text/graphics** (~4.9:1 on white). Use for any optic-colored text, numeral, or rating-star fill — `--optic`/`--optic-deep` fail (~2.6:1) as text. |
-| `--poppy` / `--poppy-deep` | `#b54b2c` / `#8f3a20` | Warm accent — callouts, "competitive" badges, favorite/heart, errors |
-| `--bay-tint` / `--kitchen-tint` / `--poppy-tint` | pale washes | Badge/pill backgrounds paired with their `-deep` text color |
-| `--pin-outdoor` / `--pin-indoor` | `#2166a8` / `#3a8a4a` | **Map pins only** — deliberately ~80° apart in hue so they're distinguishable at 9–16px; don't reuse `--bay`/`--kitchen` for pins (they're only ~40° apart and look identical at that size) |
+| `--fog` | `#f7f2e7` | Paper — page background |
+| `--fog-dim` | `#ede5cf` | Paper deep — alternating section bg, Google pill, spec chips |
+| `--paper` | `#fdfbf4` | Card / panel surface |
+| `--cream` | `#f3eedd` | Heading color **on dark** (footer, trust, methodology) |
+| `--ink` | `#16211f` | Primary text, borders, **and dark section bg** |
+| `--ink-soft` | `#55655f` | Secondary text, meta, mono labels |
+| `--ink-faint` | `#8b9892` | Tertiary — placeholders, fact labels, "not yet rated" |
+| `--body-ink` | `#3e4a45` | Paragraph copy (softer than `--ink` so long copy doesn't vibrate on warm paper) |
+| `--bay` / `--bay-deep` | `#1e6e66` / `#154f49` | **Primary accent — teal.** Links, focus rings, indoor courts, secondary buttons |
+| `--kitchen` / `--kitchen-deep` | `#56621a` | Optic olive — the **only** optic that passes as text |
+| `--optic` | `#d6e14a` | Optic — primary buttons, active states, outdoor courts. **Fills, borders and star fills only** |
+| `--optic-text` / `--optic-deep` | `#56621a` | The text-safe optic (~4.9:1). Any optic-colored text, numeral or icon stroke uses this |
+| `--poppy` / `--poppy-deep` | `#c1552c` / `#9c4322` | Clay decorative (heart fill, "both" pin) / clay text-safe (rank #1, Top Pick ribbon) |
+| `--bay-tint` / `--kitchen-tint` / `--poppy-tint` | `#dceeea` / `#f2f6d6` / `#f5e1d6` | Chip + callout backgrounds, paired with their `-deep`/olive text |
+| `--footer-body` / `--footer-muted` | `#c9cfc0` / `#8fa39c` | Body / fine print on ink |
+| `--star-empty` | `#c9bfa0` | Unfilled **community** star (an outline on paper) |
+| `--star-empty-user` | `#f0ebda` | Unset **user** star (a filled-but-unset swatch). **Not interchangeable with the above** |
+| `--pin-outdoor` / `--pin-indoor` / `--pin-both` | `#d6e14a` / `#1e6e66` / `#c1552c` | Map pins |
 
-Badge/pill color pairing convention: background = `*-tint`, text = `*-deep`,
-border = `rgba(<accent>, 0.3)`. See `.level-badge`, `.badge-most-loved`.
+**The hairline is a ramp, not one value.** `--line` (`rgba(22,33,31,0.14)`) is
+the default card border, but the design uses ten distinct alpha steps and
+flattening them loses the depth cue between a card edge, a form control and a
+dashed empty state. Use the ramp: `--rule-06` (nav hover) · `--rule-08`
+(in-card divider) · `--rule-10` (menu divider) · `--rule-12` (header hairline)
+· `--rule-16` (search/map panel border) · `--rule-25` (dashed empty state) ·
+`--rule-30` (quiz Back button). `--line-strong` (`0.22`) is for **interactive
+form-control borders only** (input/select/textarea) — WCAG 1.4.11 wants 3:1
+for UI boundaries.
+
+Badge/pill pairing convention: background = `*-tint`, text = `*-deep` (or
+`--kitchen` for optic-pale chips). See `.level-badge`, `.badge-most-loved`.
+
+**v4 pins convey type by SHAPE first** — circle (outdoor), rounded square
+(indoor), diamond (both) — each with a 2px ink stroke, so the fills can safely
+be brand accents. v3 needed a bespoke wide-hue blue/green pair only because
+color was carrying the meaning alone at 16px. Shape carries it now.
 
 ### Type
 
 | Token | Stack | Use |
 |---|---|---|
-| `--font-display` | Space Grotesk, Arial Narrow, sans-serif | h3/h4, brand, buttons, UI labels, venue/city names |
-| `--font-headline` | Bebas Neue → `--font-display` fallback | h1/h2 **only** — condensed all-caps poster headlines |
-| `--font-body` | Inter, system sans | Body copy |
-| `--font-mono` | IBM Plex Mono, ui-monospace | Eyebrows, meta/stat text, addresses, badges, mono labels — the site's "data" voice |
+| `--font-headline` | Source Serif 4 → Georgia, serif | **All** headings h1–h4, **including venue/city/paddle names** |
+| `--font-display` | Manrope | UI: buttons, nav, labels, chips |
+| `--font-body` | Manrope | Body copy |
+| `--font-mono` | Space Mono | The **data voice** — stats, addresses, badges, prices, "Verified" dates |
 
-Rule: `--font-headline` is for hero/section headlines (h1, h2) only. Never
-apply it to a venue name, city name, or UI control — those stay on
-`--font-display` so they don't read as shouty.
+The v3 rule ("`--font-headline` is h1/h2 only; venue names stay
+`--font-display`") is **reversed**: in v4 the editorial serif *is* the
+headline face, so every heading including a venue name gets it, and
+`--font-display` is left as the UI face. That split is why per-page CSS
+reaching for `--font-display` on a button still gets the right thing.
+
+Mono is almost always uppercase with `letter-spacing: 0.04–0.16em`.
+Fonts load from a Google Fonts `<link>` in each page's `<head>` (not an
+`@import` — v3's Bebas `@import` was render-blocking inside the CSS).
 
 ### Spacing / radius / motion
 
-- Spacing scale: `--space-1` (0.5rem) → `--space-5` (5rem). Use these instead
-  of arbitrary rem values for section/hero padding and vertical rhythm.
-- Radius: `--radius-s` (10px) for buttons/inputs/small panels,
-  `--radius-m` (16px) for cards and larger surfaces.
-- `--ease`: `cubic-bezier(0.16, 1, 0.3, 1)` — the one easing curve used
-  everywhere (hovers, dropdown chevrons, hero rise-in). Reuse it; don't
-  introduce a second curve.
-- `--max`: 1120px page content width, applied via `.container`.
-- All motion is wrapped by the global `prefers-reduced-motion: reduce` block
-  at the top of `style.css` — you don't need to hand-write reduced-motion
-  overrides for new animations, but keep any hover transform ≤ 2px and any
-  transition ≤ ~0.2s so it stays consistent with the rest of the site.
+- Spacing scale: `--space-2` (1rem) → `--space-5` (5rem).
+- Radius: `--radius-s` (10px) buttons/inputs, `--radius-m` (16px) cards. Also
+  in use: `999px` pills/chips, `20px` (quiz panel only), `14px` (filter bars,
+  rank cards, quiz options), `12px` (city cards, hero search), `8px` (nav
+  links, description strip).
+- `--ease`: `cubic-bezier(0.16, 0.8, 0.3, 1)` — the one curve. Don't add a second.
+- `--max`: 1120px, applied via `.container`.
+- Two keyframes only: `pbaFadeUp` (fade + 16px rise) and `pbaPulse` (the
+  selected map pin's expanding ring — a `box-shadow` animation, which is why
+  it works on Leaflet's HTML markers).
+- Hover lift ladder **in `style.css`**: **-4px** feature cards (`.home-lane`,
+  which also get a shadow) → **-3px** region cards → **-2px** city cards.
+  `.venue-card` has **no** lift; it transitions border-color/background only.
+  Page stylesheets set their own and are not bound by that ladder — today
+  `rankings.css` lifts rank cards -3px, `paddles.css` lifts `.pf-choice` -2px
+  *with* a shadow, and `paddle-quiz.css` lifts `.pq-option` -1px. Match the
+  nearest neighbour rather than "correcting" these to the list above.
+- All motion is wrapped by the global `prefers-reduced-motion: reduce` block.
+
+### Breakpoints
+
+`900px` is the nav breakpoint (hamburger + stacked panel below it). A
+`(min-width: 901px) and (max-width: 1040px)` band compresses the nav — the
+real nav has six items plus a 240px search pill and needs ~983px to hold one
+line, so without it 900–983px would render the two-line header the breakpoint
+exists to prevent. Then `860px` / `640px` / `560px` for content reflow. Find
+Courts drops to a single column at `1023px` (see `map.css`).
 
 ## Layout primitives
 
-- `.container` — centers content at `--max`, side padding `--space-3`. Every
-  section wraps its content in one.
-- `.section` — vertical padding `--space-4`; consecutive `.section`s get a
-  top border automatically (`.section + .section`).
-- `.hero` — homepage hero only, with the `rise` keyframe stagger on
-  `h1` → `.lede` → `.stat-strip`.
-- `.page-hero` — the interior-page equivalent (about, gear, cities, etc.):
-  smaller heading scale, bottom border, no rise animation.
-- `.region-head` — flex header row (title + description + optional link)
-  used above a grid/list section. Bare `<h2>` sections (e.g. a city page's
-  "Where to play") skip `.region-head` but are sized to match via
-  `.section > .container > h2`.
+- `.container` — centers at `--max`, side padding `--space-3`.
+- `.section` — vertical padding; consecutive sections get a top border.
+- `.section--dark` — the ink-ground band: `--cream` headings, `--footer-body`
+  copy, `--optic` mono labels. Used by the footer, the home trust section, the
+  rankings methodology callout and the Learn CTA.
+- `.hero` (home) / `.page-hero` (interior pages) — carry the `pbaFadeUp`
+  entrance. **The entrance is on `.hero`/`.page-hero`, not `<main>`**: a
+  transform on `<main>` would make it the containing block for every
+  `position: fixed` descendant and silently break `map.css`'s mobile detail drawer.
+- `.region-head` — flex header row (title + description + optional link).
 
 ## Components
 
-Reuse these before adding new markup patterns. Class names are stable across
-CSS redesigns (only values change), so grep `style.css` for the class before
-assuming something needs inventing.
+Reuse these before adding new markup. Class names are stable across CSS
+redesigns (only values change), so grep `style.css` before inventing.
 
-**Header/nav** — `.site-header` (sticky) → `.brand` (logo dot + wordmark) +
-`.main-nav` (flat links, `aria-current="page"` on the active one) +
-`.nav-dropdown` (a `<details>/<summary>` "More" menu, no JS needed for
-open/close) + `.global-search` (icon + input + results dropdown, driven by
-`assets/global-search.js`).
+**Header/nav** — `.site-header` (sticky, translucent paper + `backdrop-filter`)
+→ `.brand` (the **two-line lockup**: `.brand-eyebrow` mono micro-label over
+`.brand-word` italic serif) + `.main-nav` + `.nav-dropdown` (a `<details>` "More"
+menu; `.nav-dropdown-rule` separates the legal links, which are smaller and
+unweighted) + `.global-search` (240px paper pill).
 
-**Buttons** — `.btn` (solid bay, primary CTA) · `.clear-btn` /
-`.book-btn` (outlined pill, mono font, fills solid on hover) ·
-`.favorite-btn` (heart toggle, poppy) · `.rating-form-toggle` (text-only,
-underlined).
+**Stamp** — `.stamp` (+ `.stamp--m` / `.stamp--s`), with `.stamp-label`
+(mono "VERIFIED"/"UNVERIFIED"), `.stamp-code` (the serif "404") and
+`.stamp-note` ("METHOD, NOT MAGIC"). Circle, `--paper` ground, **single** 2px
+ink ring, rotated. Three instances: About 104px/-7°, 404 96px/-8°, City Detail
+64px/-6° (checkmark only, inside `.source-checked`).
 
-**Cards** — `.city-card` (grid tile, arrow nudges right on hover) ·
-`.venue-card` (left-border accent, `.top-pick` modifier switches the
-left-border + wash to optic) · `.region-card` (dark bay-deep panel, home page
-only) · `.directory-card` (compact venue card for narrow viewports).
+**Buttons** — `.btn` (primary optic: `--optic` ground, 2px ink border, **inverts
+to ink-on-optic** on hover) · `.clear-btn` / `.book-btn` (outlined pill) ·
+`.favorite-btn` (heart, clay) · `.rating-form-toggle`.
 
-**Badges/pills** — `.stat-chip` (neutral mono pill with a bold value) ·
-`.level-badge` (`.beginner` / `.competitive` / `.mixed`) · `.rank-badge`
-(`.top` modifier = optic) · `.badge-top-rated` / `.badge-most-loved` ·
-`.city-tag` / `.city-jump-tag` (quick-jump link pills).
+**Cards** — `.city-card` · `.venue-card` (+ `.top-pick` → the clay-deep
+`.top-pick-badge` ribbon pinned to the top-left corner) · `.region-card` ·
+`.home-lane` · `.directory-card`.
 
-**Lists** — `.mini-venue-list` / `.mini-venue-row` (compact bordered rows,
-`mv-` prefixed sub-elements) · `.know-list` (square-bullet info list) ·
-`.leaderboard` / `.leaderboard-row` (rankings; `.is-compact` for the Top 10
-strip, `rank-1/2/3` color the rank number).
+**Badges/pills** — `.eyebrow-pill` (teal-pale hero pill) · `.stat-chip` ·
+`.level-badge` (`.beginner`/`.competitive`/`.mixed`) · `.rank-badge` (`.top`) ·
+`.badge-top-rated` / `.badge-most-loved` · `.city-tag` / `.city-jump-tag`.
 
-**Ratings/voting** — `.star-rating` (read-only, CSS-only fill via `--fill`
-custom property) · `.star-picker` (interactive, `row-reverse` + `~` sibling
-hover trick for a working right-to-left star picker with no JS star
-re-render) · `.rating-form` / `.rating-form-row` (`rf-` prefix) ·
-`.google-rating-badge` (always shown **separately** from the community
-rating, never blended into one number).
+**Callouts** — `.callout` · `.source-checked` (teal-pale, hosts the 64px stamp
+on city pages).
 
-**Forms/filters** — `.directory-filters` / `.filter-field` (labeled selects)
-· `.hours-slider` (dual-thumb range, `-thumb`/`-track`/`-range` layered divs).
+**Ratings/voting** — `.star-rating` (read-only; CSS-only partial fill via the
+`--fill` custom property) · `.star-picker` (interactive; `row-reverse` + `~`
+sibling combinators give a working right-to-left picker with no JS re-render —
+**the reverse 5→1 DOM order and flat sibling structure are load-bearing**) ·
+`.rating-form` (`rf-` prefix) · `.google-rating-badge` (always shown
+**separately** from the community rating, never blended into one number).
 
-**Callouts** — `.callout` (poppy left-border block for warnings/notices).
+**Icons** — the shared sprite at `assets/icons.svg`, via
+`<use href="/assets/icons.svg#ic-…">`. Symbols carry no `fill`/`stroke` so they
+inherit via `currentColor` — never hardcode a color in the sprite.
 
-**Icons** — a shared line-icon sprite lives at `assets/icons.svg`, referenced
-with `<use href="/assets/icons.svg#ic-…">` (ids: `ic-court`, `ic-outdoor`,
-`ic-indoor`, `ic-reservable`, `ic-cost`, `ic-hours`, `ic-skill`, `ic-surface`,
-`ic-weather`, `ic-wait`, `ic-restroom`, `ic-water`, `ic-lights`, `ic-parking`,
-`ic-quiet`). Style: 24×24 grid, 1.7px stroke, round caps/joins, court-line /
-daylight feel. **Symbols carry no `fill`/`stroke`** so they inherit them from
-the referencing `<svg>` — recolor via `currentColor`, never hardcode a color in
-the sprite. Today the venue-card rating pills use it: `.rating-pill` is
-`.rp-ico` (the leading 19px icon, `--ink-soft`) + `.rp-body` (`.rlabel` mono
-caps + `.rvalue`, with `good`/`caution`/`neutral` value colors), laid out as a
-2-up grid that stacks to 1 column at 560px. Reuse this sprite for any new
-fact/amenity icon rather than inlining new SVG per page.
-
-**Map** — `.venue-map` container + `.pba-pin` (`--outdoor`/`--indoor`/`--both`
-gradient split/`--unknown` modifiers, `.top-pick` adds an optic ring) +
-Leaflet control/popup overrides scoped under `.leaflet-*` selectors so the
-plugin's default theme never leaks through.
+**Map** — `.venue-map` + `.pba-pin` (`--outdoor`/`--indoor`/`--both`/`--unknown`,
+`.top-pick` adds a dashed clay ring). Shape comes from `--pin-radius` /
+`--pin-spin` custom properties; the diamond is a rotated square rather than a
+`clip-path` polygon, because `clip-path` would shave the 2px stroke off its own
+diagonals. `.map-legend`'s `.legend-dot` **reuses the same `.pba-pin--*`
+classes** — recolor in one place or legend and pins desync.
 
 ## Conventions
 
-- **File layout**: `assets/style.css` is the global system (tokens, type,
-  header/footer, buttons, cards, badges — anything used on 2+ pages). Each
-  page that needs more gets a same-named stylesheet layered on top
-  (`directory.css`, `map.css`, `rankings.css`, `global-search.css`) — every
-  one of those files opens with the comment `/* <Page> — scoped styles
-  layered on top of style.css */`. Follow that pattern for new pages: don't
-  add page-specific rules to `style.css`, and don't duplicate a global rule
-  in a page file.
-- **Sub-element naming**: components prefix their internal parts with a
-  short tag instead of full BEM — `mv-` (mini-venue-row), `rf-`
-  (rating-form-row), `p-` (map popup), `gsr-` (global-search-result). Match
-  the existing prefix when extending a component; pick a new short prefix
-  when adding one.
-- **Head/header/footer boilerplate is generated, not hand-copied**: the
-  `<head>` boilerplate (fonts, favicons, theme-color, OG/Twitter mirroring),
-  `<header class="site-header">` nav, and `<footer class="site-footer">` are
-  defined once in `scripts/build.mjs` and written back into all 30 HTML
-  pages by that script — they're no longer meant to be hand-edited
-  identically across every page. To change any of them, edit the template
-  functions in `scripts/build.mjs`, then run `node scripts/build.mjs`
-  (add `--check` for a dry run) before deploying. Per-page content — title,
-  description, canonical, extra `<head>` links/CSS, body content, and
-  script tags — is still edited directly in each page's own file; the
-  script reads that back out and leaves it untouched. See
-  `audit/html-duplication.md` for why.
-- **Accessibility**: every interactive control needs a visible
-  `:focus-visible` state (the global 3px `--bay` outline covers most cases
-  automatically); nav links use `aria-current="page"` rather than a
-  hardcoded "active" class; don't rely on color alone (see the `--pin-`
-  hue-spread reasoning above) — pair color with a label, icon, or position;
-  optic-colored text/graphics use `--optic-text` (never `--optic-deep`) so
-  they clear contrast. Every page is a `.skip-link` (first body child, from
-  the header partial) → `<main id="main" tabindex="-1">` (wraps everything
-  between the synced header and the footer) landmark pair — new pages must
-  keep that wrapper, and the skip link's `href="#main"` depends on it.
-- **Don't introduce**: a second font family, a second easing curve, drop
-  shadows heavier than the existing `rgba(23, 35, 43, …)` ink-tinted ones,
-  saturated/neon colors outside the defined palette, or blur/backdrop-filter
-  (explicitly removed in the v3 redesign — see the `style.css` header
-  comment).
+- **File layout**: `assets/style.css` is the global system (anything on 2+
+  pages). Each page that needs more gets a same-named stylesheet layered on
+  top — `home.css`, `cities.css`, `map.css`, `paddles.css`, `paddle-quiz.css`,
+  `rankings.css`, `corrections.css` — each opening with
+  `/* <Page> — scoped styles layered on top of style.css */`.
+  **Don't add page-specific rules to `style.css`, and don't duplicate a global
+  rule in a page file** (a page file legitimately *drops* a rule that the
+  global sheet already covers).
+- **Sub-element naming**: short prefixes, not full BEM — `mv-`, `rf-`, `p-`,
+  `gsr-`, `fr-`, `fd-`, `pq-`. Match the existing prefix when extending.
+- **Chrome is generated, not hand-copied**: the header comes from
+  `partials/site-header.html` → `node scripts/sync-header.js`; the "Before you
+  head out" block from `partials/lane-router.html` → `node
+  scripts/sync-lane-router.js`. Never hand-edit the marked regions in the 53
+  pages. **`scripts/build.mjs` is stale and fails extraction on every page —
+  don't run it** (see RUNBOOK).
+- **Two markup rules the build scripts enforce by throwing**: nav links in the
+  partial must be exactly `<a href="/x">` with **no other attributes**
+  (sync-header string-matches them to inject `aria-current`), and every page
+  must keep the literal `<footer class="site-footer">` opening tag
+  (sync-lane-router uses it as its insertion anchor). Style nav links via
+  `.main-nav a`.
+- **The footer is not synced** — 6 pages carry deliberate variation (the
+  "Popular" column drops the current city; paddles/rankings have tailored
+  `.footer-note` text). Edit it per-page or script it, and preserve that.
+- **Accessibility**: every control needs a visible `:focus-visible` (the global
+  3px `--bay` outline covers most); nav uses `aria-current="page"`, not a hardcoded
+  class; don't rely on color alone; **optic-colored text/graphics use
+  `--optic-text`, never bare `--optic`** (it fails contrast at ~2.6:1).
+  (`--optic-deep` is an alias of `--optic-text` in v4 and is equally safe — it
+  was the failing `#9aa81e` in v3, which is why older habits avoid it.)
+  Every page is a `.skip-link` → `<main id="main" tabindex="-1">` pair.
+- **Don't introduce**: a second easing curve, a fourth font family, pure `#fff`
+  or black-tinted shadows (use `--paper`/`--cream` and `rgba(var(--ink-rgb), …)`
+  — warm paper has no true white in it), or saturated colors outside the palette.
 
 ## Checklist for a new page or component
 
 1. Can this be built from existing classes (`.btn`, `.*-card`, `.*-badge`,
-   `.stat-chip`, `.section`/`.container`/`.page-hero`) with no new CSS? Prefer
-   that.
-2. If new CSS is needed, does it belong in `style.css` (used on 2+ pages) or
-   a new `<page>.css` (single page)?
-3. Colors, spacing, radius, and easing come from the tokens above — no new
-   hex values or magic numbers unless the token set genuinely can't express
-   it (and if so, add the token to `:root` and document it here).
-4. Headlines: `h1`/`h2` get the condensed `--font-headline` treatment
-   automatically from the global `h1, h2` rule — don't override per-page
-   unless there's a real reason (see `.hero h1` / `.page-hero h1` for the
-   size-only precedent).
-5. New badge/pill/status color follows the `tint` bg + `deep` text +
-   `rgba(accent, 0.3)` border pattern.
-6. Test at 640px and 560px breakpoints — those are the site's two standard
-   mobile breakpoints (table→card swaps, nav wrapping, form stacking).
+   `.stat-chip`, `.section`/`.container`/`.page-hero`, `.stamp`,
+   `.section--dark`) with no new CSS? Prefer that.
+2. If new CSS is needed, does it belong in `style.css` (2+ pages) or a
+   `<page>.css` (single page)?
+3. Colors, spacing, radius and easing come from the tokens above — no new hex
+   or magic numbers unless the token set genuinely can't express it (and if so,
+   add the token to `:root` and document it here).
+4. Headings get the serif automatically from the global `h1,h2,h3,h4` rule —
+   don't override per-page without a real reason.
+5. New badge/pill color follows the `tint` bg + `deep`/olive text pattern.
+6. Test at 900px (nav), 640px and 560px.
+7. **Before shipping**, re-read the JS hooks your markup carries. `npm run
+   validate` is data-only and asserts *nothing* about HTML, so it cannot catch
+   a redesign that deletes an id. `npm run check` must still report **169
+   venue-cards across 43 city pages** — if it says "Checked 0", you broke
+   `CARD_RE` in `scripts/check-venue-cards.mjs` and the guard is now a silent
+   no-op.

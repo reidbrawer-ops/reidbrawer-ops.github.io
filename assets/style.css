@@ -1,72 +1,110 @@
-/* Pickleball Bay Area — design system, v3 ("court colors, daylight")
-   Direction: light, plain, and legible — a reference you'd actually trust,
-   not a moody SaaS landing page. Dropped the dark glass/glow treatment
-   entirely (no blur, no neon shadows, no ambient gradients, no pulsing).
-   The accent palette is still drawn from the court itself, just in its
-   daylight register: the blue of the outer court, the green of the
-   kitchen, the terracotta of a court's perimeter apron, the ball's optic
-   yellow saved for exactly one thing (the top pick). Variable NAMES kept
-   stable across every version so far, so no HTML had to change — only
-   values, plus removal of blur/backdrop-filter/glow/animation rules.
+/* Pickleball Bay Area — design system, v4 ("editorial field guide")
+   Direction: part atlas, part almanac. Warm paper tones, a confident serif
+   for headlines and venue names, a monospace "data voice" for stats,
+   addresses and verification dates, and hand-drawn line icons. Replaces v3's
+   cool grey/white "court colors, daylight" register wholesale: the page is
+   warm paper (#F7F2E7) rather than fog, headlines are a serif rather than a
+   condensed all-caps poster face, and the accent pair is teal + optic rather
+   than bay blue + kitchen green.
 
-   --font-headline is a later, narrower addition: a condensed all-caps
-   face for hero and section headlines only (not venue names or UI
-   labels), for a bolder, more poster-like headline pass than
-   --font-display gives on its own. */
+   Variable NAMES are still kept stable across versions — that's the whole
+   reason a total visual change like this one lands on 53 pages and five
+   page-level stylesheets without touching their selectors. The names now
+   describe a ROLE, not a hue: --bay is "primary accent" (now teal), --poppy
+   is "warm accent" (now clay), --kitchen is "secondary accent" (now optic
+   olive). Don't rename them to match the new palette; the indirection is
+   load-bearing.
 
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+   Font roles shifted in v4 and the split matters:
+     --font-headline  serif — every heading, h1..h4, incl. venue/city names
+     --font-display   Manrope — UI: buttons, nav, labels, chips
+     --font-body      Manrope — body copy
+     --font-mono      Space Mono — the data voice
+   v3 pointed h3/h4 at --font-display; v4 points all headings at
+   --font-headline and leaves --font-display as the UI face, so per-page CSS
+   that reaches for --font-display on a button still gets the right thing. */
 
 :root {
-  --fog: #f5f7f6;
-  --fog-dim: #eaeeec;
-  --paper: #ffffff;
-  --ink: #17232b;
-  --ink-soft: #5b6b70;
-  --line: #dfe5e2;
-  /* Stronger line for the visible boundary of interactive form controls
-     (text inputs, selects): --line is ~1.3:1 on white and fails WCAG 1.4.11's
-     3:1 minimum for UI component boundaries. --line-strong is ~3.8:1. Use it
-     for input/select/textarea borders only; --line stays for cards/dividers. */
-  --line-strong: #7d8783;
+  --fog: #f7f2e7;
+  --fog-dim: #ede5cf;
+  --paper: #fdfbf4;
+  --ink: #16211f;
+  --ink-soft: #55655f;
+  /* Tertiary text: placeholders, "not yet rated", fact labels. */
+  --ink-faint: #8b9892;
+  /* Paragraph ink — deliberately softer than --ink so long-form copy on warm
+     paper doesn't vibrate. Headings/values stay --ink. */
+  --body-ink: #3e4a45;
+  --line: rgba(22, 33, 31, 0.14);
+  /* The hairline is a ramp, not one value — the design uses ten distinct
+     alpha steps and collapsing them loses the depth cue between a card edge
+     (0.14), a form control (0.22), and a dashed empty state (0.25). */
+  --rule-06: rgba(22, 33, 31, 0.06);
+  --rule-08: rgba(22, 33, 31, 0.08);
+  --rule-10: rgba(22, 33, 31, 0.1);
+  --rule-12: rgba(22, 33, 31, 0.12);
+  --rule-16: rgba(22, 33, 31, 0.16);
+  --rule-25: rgba(22, 33, 31, 0.25);
+  --rule-30: rgba(22, 33, 31, 0.3);
+  /* Border of interactive form controls (input/select/textarea) only.
+     WCAG 1.4.11 wants 3:1 for UI boundaries; --line is ~1.2:1 on paper. */
+  --line-strong: rgba(22, 33, 31, 0.22);
 
-  --bay: #1d6b85;
-  --bay-deep: #123240;
-  --kitchen: #2f7a57;
-  --kitchen-deep: #1f5a40;
-  --optic: #d7e94b;
-  --optic-deep: #9aa81e;
-  /* Optic is a light chartreuse: as a *background* it's high-contrast with
-     --bay-deep text, but as *foreground text/graphics* --optic and
-     --optic-deep fail WCAG contrast (~2.6:1 on white). --optic-text is the
-     only optic that passes as colored text/graphic (~4.9:1 on white) — use it
-     for any optic-colored text, numeral, or rating-star fill; keep --optic /
-     --optic-deep for fills, borders, and underline accents only. */
-  --optic-text: #6c7714;
-  --poppy: #b54b2c;
-  --poppy-deep: #8f3a20;
+  /* Primary accent — teal. Links, primary/secondary buttons, focus rings. */
+  --bay: #1e6e66;
+  --bay-deep: #154f49;
+  /* Secondary accent — optic olive. The only optic that passes as text. */
+  --kitchen: #56621a;
+  --kitchen-deep: #56621a;
+  --optic: #d6e14a;
+  --optic-deep: #56621a;
+  /* Optic is a light chartreuse: high-contrast as a *background* under ink
+     text, but as *foreground text/graphics* it fails WCAG (~2.6:1). Use
+     --optic-text for any optic-colored text, numeral or star fill; keep
+     --optic for fills, borders and underline accents only. */
+  --optic-text: #56621a;
+  /* Warm accent — clay. Decorative fills (heart, pins) use --poppy; anything
+     that has to read as text uses --poppy-deep (clay fails AA on paper). */
+  --poppy: #c1552c;
+  --poppy-deep: #9c4322;
 
-  --bay-tint: #e8f1f4;
-  --kitchen-tint: #e7f3ec;
-  --poppy-tint: #f7eae4;
+  --bay-tint: #dceeea;
+  --kitchen-tint: #f2f6d6;
+  --poppy-tint: #f5e1d6;
+
+  /* Creams. Three distinct ones, and they are not interchangeable:
+     --paper is the card surface, --fog the page, --cream the heading color
+     on dark (footer / trust / methodology panels). */
+  --cream: #f3eedd;
+  --footer-body: #c9cfc0;
+  --footer-muted: #8fa39c;
+
+  /* Star fills. The read-only community star and the interactive "your
+     rating" star have DIFFERENT empty colors by design — the community one
+     is an outline on paper, the user one is a filled-but-unset swatch. */
+  --star-empty: #c9bfa0;
+  --star-empty-user: #f0ebda;
 
   /* RGB triplets of the above, for rgba()/alpha use (box-shadow, overlays) —
      CSS custom properties can't derive R/G/B components from a hex value,
      so these exist purely so alpha colors can reference one source of
      truth instead of hardcoding each accent's RGB triplet at every call
      site. */
-  --ink-rgb: 23, 35, 43;
-  --bay-rgb: 29, 107, 133;
-  --bay-deep-rgb: 18, 50, 64;
-  --kitchen-rgb: 47, 122, 87;
-  --optic-rgb: 215, 233, 75;
-  --poppy-rgb: 181, 75, 44;
-  --fog-rgb: 245, 247, 246;
+  --ink-rgb: 22, 33, 31;
+  --bay-rgb: 30, 110, 102;
+  --bay-deep-rgb: 21, 79, 73;
+  --kitchen-rgb: 86, 98, 26;
+  --optic-rgb: 214, 225, 74;
+  --poppy-rgb: 193, 85, 44;
+  --fog-rgb: 247, 242, 231;
 
-  /* Map-only pin colors: bay/kitchen sit only ~40° apart in hue and read as
-     near-identical at 9-16px, so indoor/outdoor pins get their own wider-
-     spread blue/green pair (~80° apart) instead of reusing the brand tokens. */
-  --pin-outdoor: #2166a8;
-  --pin-indoor: #3a8a4a;
+  /* Map pins. v4 conveys type by SHAPE first (circle/square/diamond) with a
+     2px ink stroke on every pin, so the fills can safely be the brand accents
+     — v3's bespoke blue/green pair existed only because color was carrying
+     the meaning alone at 16px. Shape carries it now; --pin-both is new. */
+  --pin-outdoor: #d6e14a;
+  --pin-indoor: #1e6e66;
+  --pin-both: #c1552c;
 
   --radius-s: 10px;
   --radius-m: 16px;
@@ -75,13 +113,13 @@
   --space-4: 3rem;
   --space-5: 5rem;
 
-  --font-display: "Space Grotesk", "Arial Narrow", sans-serif;
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
-  --font-headline: "Bebas Neue", var(--font-display), "Arial Narrow", sans-serif;
+  --font-display: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+  --font-headline: "Source Serif 4", Georgia, "Times New Roman", serif;
 
   --max: 1120px;
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease: cubic-bezier(0.16, 0.8, 0.3, 1);
 }
 
 * {
@@ -120,41 +158,48 @@ body {
 
 ::selection {
   background: var(--optic);
-  color: var(--bay-deep);
-}
-
-h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  line-height: 1.08;
-  margin: 0 0 0.5em;
-  letter-spacing: -0.01em;
   color: var(--ink);
 }
 
-/* Hero and section headlines get a bolder, condensed all-caps pass —
-   venue/city names (h3) and utility headings (h4) keep --font-display. */
-h1, h2 {
+/* v4: every heading is the serif, including venue and city names (h3) —
+   the editorial voice IS the headline face, so there's no second treatment
+   to opt into. v3's separate condensed all-caps h1/h2 pass is gone. */
+h1, h2, h3, h4 {
   font-family: var(--font-headline);
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  line-height: 0.97;
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0 0 0.5em;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-transform: none;
+}
+
+h1 {
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.02;
+}
+
+h2 {
+  font-size: clamp(28px, 3.5vw, 40px);
 }
 
 p {
   margin: 0 0 1em;
+  color: var(--body-ink);
 }
 
+/* Links are teal and unadorned by default — v3's optic underline read as a
+   highlighter on warm paper. Underline on hover instead. */
 a {
   color: var(--bay);
-  text-decoration-color: var(--optic-deep);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 
 a:hover {
-  color: var(--kitchen-deep);
+  color: var(--bay-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
 }
 
 :focus-visible {
@@ -190,18 +235,20 @@ input[type="search"]:focus-visible {
   left: 0;
   z-index: 1000;
   transform: translateY(-120%);
-  padding: 0.6rem 1rem;
-  background: var(--bay-deep);
-  color: #fff;
+  padding: 14px 20px;
+  background: var(--ink);
+  color: var(--fog);
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
-  border-radius: 0 0 var(--radius-s) 0;
+  border-radius: 0 0 8px 0;
   transition: transform 0.15s var(--ease);
 }
 
 .skip-link:focus {
   transform: translateY(0);
+  color: var(--fog);
+  text-decoration: none;
 }
 
 /* Programmatic focus target for the skip link — no visible ring on the
@@ -222,15 +269,77 @@ img, svg {
   padding: 0 var(--space-3);
 }
 
+/* ---------- Motion ----------
+   The design has exactly two keyframes and one curve (--ease). Everything
+   that moves on this site is one of: a pbaFadeUp entrance, a pbaPulse ring,
+   or a hover lift. Don't add a third.
+
+   pbaPulse lives here rather than in map.css because it's the shared
+   "live/selected" ring; map.css is its only caller today.
+
+   NOTE: the page-level entrance deliberately targets .hero / .page-hero and
+   NOT <main>. `animation-fill-mode: both` retains the final transform, and a
+   transform on <main> would make it the containing block for every
+   position:fixed descendant — which would silently break map.css's mobile
+   .finder-detail drawer and .finder-scrim. Animate the hero, never the
+   landmark. Reduced motion is handled by the global block above. */
+
+@keyframes pbaFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pbaPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--bay-rgb), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(var(--bay-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--bay-rgb), 0);
+  }
+}
+
 /* ---------- Eyebrow / mono labels ---------- */
 
+/* The mono label is the design's connective tissue: it sits above every
+   headline, heads every column and names every card. Uppercase Space Mono
+   700 at 11px/0.1em, in --ink-soft on paper and --optic on ink. */
 .eyebrow {
   font-family: var(--font-mono);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 0.72rem;
-  color: var(--kitchen-deep);
-  font-weight: 500;
+  letter-spacing: 0.1em;
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+/* The teal-pale hero pill — a louder .eyebrow for the one label per page
+   that has to carry the whole positioning line (home hero). Must stay after
+   .eyebrow so `class="eyebrow eyebrow-pill"` resolves to the pill. */
+.eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--bay-deep);
+  background: var(--bay-tint);
+  border: 1px solid rgba(var(--bay-rgb), 0.25);
+  border-radius: 999px;
+  padding: 6px 14px;
+  margin: 0 0 0.5rem;
 }
 
 .stat-chip {
@@ -238,11 +347,13 @@ img, svg {
   align-items: baseline;
   gap: 0.35em;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0.3em 0.85em;
+  padding: 5px 11px;
   color: var(--ink-soft);
   white-space: nowrap;
 }
@@ -259,82 +370,199 @@ img, svg {
   margin: var(--space-2) 0;
 }
 
+/* ---------- Verified stamp ----------
+   The site's signature device: a rotated rubber stamp, circle of --paper
+   under a single 2px ink ring. Three pages share it at three sizes, so it
+   lives here rather than in any one page's stylesheet.
+
+     .stamp             104px / -7deg   About  ("VERIFIED / ✓ / METHOD, NOT MAGIC")
+     .stamp.stamp--m     96px / -8deg   404    ("UNVERIFIED / 404")
+     .stamp.stamp--s     64px / -6deg   City detail (checkmark only)
+
+   It is a SINGLE ring, not a double one — the handoff README claims a double
+   ring; the prototype (lines 793, 882, 442) does not have one.
+
+   Markup contract for the pages that use it:
+     <div class="stamp" aria-hidden="true">        (or .stamp--m / .stamp--s)
+       <span class="stamp-label">Verified</span>   Space Mono micro-caps
+       <svg …>…</svg>                              optional 20–22px check
+       <span class="stamp-code">404</span>         optional serif code line
+       <span class="stamp-note">Method, not magic</span>
+     </div>
+   Every text child is uppercased in CSS — author it in sentence case. */
+
+.stamp {
+  --stamp-size: 104px;
+  width: var(--stamp-size);
+  height: var(--stamp-size);
+  flex: none;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  transform: rotate(-7deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.stamp--m {
+  --stamp-size: 96px;
+  transform: rotate(-8deg);
+}
+
+.stamp--s {
+  --stamp-size: 64px;
+  transform: rotate(-6deg);
+}
+
+.stamp svg {
+  margin: 2px 0;
+  flex: none;
+}
+
+.stamp-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.stamp-code {
+  font-family: var(--font-headline);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--poppy-deep);
+  margin-top: 2px;
+}
+
+.stamp-note {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
 /* ---------- Header ---------- */
 
+/* Translucent paper over a 10px blur, so the page scrolls *under* the header
+   as tinted paper rather than sliding behind an opaque bar. */
 .site-header {
-  border-bottom: 1px solid var(--line);
-  background: var(--paper);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
+  background: rgba(var(--fog-rgb), 0.94);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule-12);
 }
 
 .site-header .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding-top: 0.9rem;
-  padding-bottom: 0.9rem;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
+/* Two-line typographic lockup: a Space Mono micro-label stacked over the
+   italic serif wordmark, pulled up 2px so the two lines read as one object.
+   v3's 28px logo mark is deliberately gone — the design's brand is purely
+   typographic, and a square mark next to a tightened two-line stack fights
+   the -2px optical join. /assets/logo/mark.svg is still the favicon source,
+   so the file stays; only the header stopped rendering it. */
 .brand {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--ink);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  flex: none;
   text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
+  color: var(--ink);
 }
 
 .brand:hover {
   color: var(--ink);
+  text-decoration: none;
 }
 
-.brand img {
-  display: block;
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  flex: none;
+.brand-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
+.brand-word {
+  font-family: var(--font-headline);
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: -2px;
+  line-height: 1.15;
+}
+
+/* flex:1 so the search that global-search.js appends as .main-nav's last
+   child can push itself to the container's right edge with margin-left:auto,
+   the way the design has it — nav packed left beside the brand, search far
+   right. Without JS the nav just packs left and the space stays empty. */
 .main-nav {
   display: flex;
-  gap: 1.25rem;
-  font-size: 0.92rem;
+  align-items: center;
+  flex: 1 1 auto;
+  gap: 2px;
+  margin-left: 0.5rem;
+  font-size: 0.9375rem;
   flex-wrap: wrap;
 }
 
 .main-nav a {
-  color: var(--ink-soft);
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: background 0.15s var(--ease);
+}
+
+.main-nav a:hover {
+  color: var(--ink);
+  background: var(--rule-06);
   text-decoration: none;
 }
 
-.main-nav a:hover,
+/* Active state can't be the hover background (they'd be indistinguishable),
+   and can't be color alone. An optic underline rule reads as a marker line
+   under the current section — the one place v4 still uses optic as an
+   underline, because it sits under ink text rather than being the text. */
 .main-nav a[aria-current="page"] {
   color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--optic-deep);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
+  box-shadow: inset 0 -2px 0 0 var(--optic);
 }
 
 /* ---------- Mobile nav toggle (hamburger) ---------- */
 
 .nav-toggle {
-  display: none; /* shown only under the mobile breakpoint below */
+  display: none; /* shown only under the nav breakpoint below */
   flex-direction: column;
   justify-content: center;
   gap: 5px;
   width: 44px;
   height: 44px;
   padding: 0;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--paper);
+  margin-left: auto;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background: none;
   cursor: pointer;
   flex: none;
 }
@@ -358,7 +586,11 @@ img, svg {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 720px) {
+/* The nav breakpoint is 900px, not 720px: at 900px the six nav items plus the
+   240px search pill stop fitting beside the brand lockup and start wrapping.
+   Below it, the nav becomes the design's stacked panel — full-bleed paper,
+   hairline-separated rows, search on top. */
+@media (max-width: 900px) {
   .nav-toggle {
     display: flex;
   }
@@ -368,13 +600,15 @@ img, svg {
   /* Nav collapses into a full-width panel below the brand/toggle row. */
   .main-nav {
     display: none;
-    flex-basis: 100%;
+    flex: 0 0 100%;
     flex-direction: column;
     align-items: stretch;
-    gap: 0.1rem;
-    margin-top: 0.5rem;
-    padding-top: 0.35rem;
-    border-top: 1px solid var(--line);
+    gap: 0;
+    margin-left: 0;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule-12);
+    font-size: 1.0625rem;
   }
   .main-nav.is-open {
     display: flex;
@@ -385,6 +619,14 @@ img, svg {
     align-items: center;
     min-height: 44px;
     width: 100%;
+    padding: 14px 8px;
+    border-radius: 0;
+    border-bottom: 1px solid var(--rule-08);
+  }
+  .main-nav > a[aria-current="page"] {
+    /* The 2px optic rule would collide with the row's own bottom hairline;
+       in the stacked panel the marker moves to the leading edge. */
+    box-shadow: inset 3px 0 0 0 var(--optic);
   }
   .main-nav .nav-dropdown {
     width: 100%;
@@ -392,17 +634,31 @@ img, svg {
   /* "More" opens inline in the panel rather than as a floating flyout. */
   .main-nav .nav-dropdown-menu {
     position: static;
+    background: none;
     box-shadow: none;
     border: none;
     padding: 0 0 0 1rem;
     min-width: 0;
   }
+  .main-nav .nav-dropdown-menu a {
+    min-height: 44px;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--rule-08);
+    border-radius: 0;
+  }
   .main-nav .nav-dropdown-menu::before {
     display: none;
   }
+  /* Search leads the panel, as in the design's mobile sheet. */
   .main-nav .global-search {
+    order: -1;
     width: 100%;
-    margin-top: 0.4rem;
+    margin: 0 0 0.75rem;
+    background: var(--fog);
+    padding: 10px 8px 10px 16px;
+  }
+  .main-nav .global-search-input {
+    font-size: 0.9375rem;
   }
 }
 
@@ -412,13 +668,19 @@ img, svg {
   position: relative;
 }
 
+/* summary carries the same optic-rule/hover-wash treatment as a nav link. */
 .nav-dropdown summary {
-  color: var(--ink-soft);
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
   cursor: pointer;
   list-style: none;
   display: flex;
   align-items: center;
   gap: 0.3em;
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: background 0.15s var(--ease);
 }
 
 .nav-dropdown summary::-webkit-details-marker {
@@ -443,24 +705,26 @@ img, svg {
 .nav-dropdown[open] summary,
 .nav-dropdown summary[aria-current="page"] {
   color: var(--ink);
+  background: var(--rule-06);
 }
 
-.nav-dropdown summary[aria-current="page"]::after {
-  border-color: var(--optic-deep);
+.nav-dropdown summary[aria-current="page"] {
+  box-shadow: inset 0 -2px 0 0 var(--optic);
 }
 
 .nav-dropdown-menu {
   position: absolute;
   top: calc(100% + 0.9rem);
   left: 0;
-  min-width: 190px;
+  min-width: 220px;
   display: flex;
   flex-direction: column;
-  padding: 0.4rem;
+  gap: 2px;
+  padding: 8px;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: var(--radius-s);
-  box-shadow: 0 16px 32px -12px rgba(var(--ink-rgb), 0.18);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(var(--ink-rgb), 0.14);
   z-index: 20;
 }
 
@@ -480,35 +744,76 @@ img, svg {
 }
 
 .nav-dropdown-menu a {
-  padding: 0.55rem 0.7rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 10px 12px;
+  border-radius: 8px;
   white-space: nowrap;
 }
 
 .nav-dropdown-menu a:hover,
 .nav-dropdown-menu a[aria-current="page"] {
-  background: var(--fog);
+  background: var(--rule-06);
   text-decoration: none;
   color: var(--ink);
 }
 
+.nav-dropdown-menu a[aria-current="page"] {
+  box-shadow: inset 2px 0 0 0 var(--optic);
+}
+
+/* The "More" menu has two tiers: the primary destinations (Learn, Report a
+   correction) and, below a rule, the legal pages — smaller, lighter and
+   unweighted so they read as fine print rather than as peers of the nav. */
+.nav-dropdown-rule {
+  height: 1px;
+  margin: 4px 8px;
+  background: var(--rule-10);
+}
+
+.nav-dropdown-rule ~ a {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
 /* ---------- Sitewide global search (assets/global-search.js) ---------- */
 
+/* The nav search is a 240px paper pill with asymmetric padding — 16px of
+   lead-in before the icon, 8px around the input so a future clear/submit
+   control would sit flush. The *pill* is the control surface now: the input
+   inside it is borderless and transparent, and the focus ring is drawn on
+   the wrapper so it traces the pill instead of boxing the bare input.
+   v3's width-expands-on-focus input is gone — the pill is a fixed shape. */
 .global-search {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.5em;
+  gap: 8px;
+  flex: none;
   margin-left: auto;
+  width: 240px;
+  padding: 8px 8px 8px 16px;
+  background: var(--paper);
+  border: 1px solid var(--rule-16);
+  border-radius: 999px;
+  transition: border-color 0.15s var(--ease);
+}
+
+.global-search:focus-within {
+  border-color: var(--ink-soft);
+  outline: 3px solid var(--bay);
+  outline-offset: 2px;
 }
 
 .global-search-icon {
   position: relative;
   display: inline-block;
-  width: 0.8em;
-  height: 0.8em;
-  border: 1.5px solid var(--ink-soft);
+  width: 11px;
+  height: 11px;
+  border: 1.6px solid var(--ink-soft);
   border-radius: 50%;
   flex: none;
 }
@@ -516,8 +821,8 @@ img, svg {
 .global-search-icon::after {
   content: "";
   position: absolute;
-  width: 0.55em;
-  height: 1.5px;
+  width: 6px;
+  height: 1.6px;
   background: var(--ink-soft);
   top: 95%;
   left: 95%;
@@ -526,20 +831,27 @@ img, svg {
 }
 
 .global-search-input {
-  width: 128px;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   color: var(--ink);
-  background: var(--fog);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-s);
-  padding: 0.4em 0.6em;
-  transition: width 0.15s ease;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
+.global-search-input::placeholder {
+  color: var(--ink-faint);
+}
+
+/* The pill owns the ring (see .global-search:focus-within) — this beats both
+   the sitewide :focus-visible rule and the compact-control override. */
 .global-search-input:focus,
-.global-search-input:not(:placeholder-shown) {
-  width: 190px;
+.global-search-input:focus-visible {
+  outline: none;
 }
 
 .global-search-results[hidden] {
@@ -555,59 +867,83 @@ img, svg {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 0.4rem;
+  gap: 2px;
+  padding: 8px;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: var(--radius-s);
-  box-shadow: 0 8px 24px rgba(var(--ink-rgb), 0.12);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(var(--ink-rgb), 0.14);
   z-index: 20;
 }
 
 .global-search-result {
   display: flex;
   flex-direction: column;
-  padding: 0.5rem 0.65rem;
-  border-radius: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
   text-decoration: none;
   color: var(--ink);
 }
 
 .global-search-result:hover,
 .global-search-result.is-active {
-  background: var(--fog);
+  background: var(--rule-06);
+  text-decoration: none;
 }
 
+/* Venue and city names are the serif everywhere else on the site; the search
+   popup is the same list, so it uses the same face. */
 .global-search-result .gsr-label {
-  font-size: 0.9rem;
+  font-family: var(--font-headline);
+  font-size: 0.9375rem;
   font-weight: 600;
+  color: var(--ink);
 }
 
 .global-search-result .gsr-sublabel {
-  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
   color: var(--ink-soft);
 }
 
 .global-search-empty {
-  padding: 0.55rem 0.65rem;
+  padding: 8px 12px;
   font-size: 0.85rem;
   color: var(--ink-soft);
 }
 
-@media (max-width: 560px) {
-  .global-search {
-    margin-left: 0;
+/* Compression band. The nav breakpoint is 900px by design, but the *real*
+   nav is wider than the prototype's mock: six items (incl. "Paddles & Gear")
+   plus the 240px pill need ~983px of viewport beside the brand to stay on one
+   line. Left alone, 900–983px would show a two-line header — the exact state
+   the breakpoint exists to prevent. So the nav tightens before it collapses:
+   the pill gives back 72px and the link padding another ~48px, which buys the
+   ~120px needed to hold one line all the way down to the panel.
+   min-width:901px keeps this mutually exclusive with the panel block above,
+   so neither has to out-specify the other. */
+@media (min-width: 901px) and (max-width: 1040px) {
+  .main-nav {
+    gap: 0;
+    flex-wrap: nowrap;
   }
-
-  .global-search-input,
-  .global-search-input:focus,
-  .global-search-input:not(:placeholder-shown) {
-    width: 100px;
+  .main-nav a,
+  .nav-dropdown summary {
+    padding: 10px 8px;
   }
+  .main-nav .global-search {
+    width: 168px;
+    padding: 8px 8px 8px 12px;
+  }
+}
 
-  .global-search-results {
-    right: auto;
+/* In the stacked panel the pill is full-width, so its results popup should
+   trace the pill rather than float at a fixed 260px off the right edge.
+   (v3 shrank the input to 100px at 560px instead; the panel makes that moot.) */
+@media (max-width: 900px) {
+  .main-nav .global-search-results {
+    right: 0;
     left: 0;
-    width: min(260px, 80vw);
+    width: auto;
   }
 }
 
@@ -627,63 +963,66 @@ img, svg {
   background: var(--line);
 }
 
-/* ---------- Phase 2: hero search ---------- */
+/* ---------- Hero search ---------- */
 /* The large hero shape mounted into <div class="hero-search"
-   data-search-scope="courts">. Reuses the .global-search markup at ~2–3× the
-   nav pill's size. Nav-pill rules above are untouched. */
+   data-search-scope="courts">. Reuses the .global-search markup, but it is
+   NOT a scaled-up nav pill: the design gives the hero search the same 2px ink
+   border and 12px radius as the primary button standing next to it, so the
+   two read as one search lockup (prototype lines 108–112). The 999px pill is
+   the *nav* shape only (lines 66–69). Radius and border are re-declared here
+   rather than inherited, since .global-search hands down 999px/1px. */
 
 .hero-search {
   width: 100%;
-  max-width: 560px;
-  margin: 1.25rem 0 0;
+  max-width: 520px;
+  margin: 1.75rem 0 0;
 }
 
 .global-search--hero {
   display: flex;
   align-items: center;
-  gap: 0.6em;
+  gap: 10px;
   width: 100%;
   margin-left: 0;
+  padding: 14px 18px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+}
+
+.global-search--hero:focus-within {
+  border-color: var(--ink);
 }
 
 .global-search--hero .global-search-icon {
-  width: 1.15em;
-  height: 1.15em;
-  border-width: 2px;
+  width: 13px;
+  height: 13px;
+  border-width: 1.8px;
 }
 
-.global-search--hero .global-search-input,
-.global-search--hero .global-search-input:focus,
-.global-search--hero .global-search-input:not(:placeholder-shown) {
-  flex: 1 1 auto;
-  width: 100%;
-  font-size: 1.15rem;
-  padding: 0.75em 0.9em;
-  border-radius: var(--radius-m, 10px);
-  background: var(--paper);
-  box-shadow: 0 1px 2px rgba(var(--ink-rgb), 0.06);
+.global-search--hero .global-search-icon::after {
+  width: 7px;
+  height: 1.8px;
 }
 
-.global-search--hero .global-search-input:focus {
-  border-color: var(--ink-soft);
-  box-shadow: 0 0 0 3px rgba(var(--ink-rgb), 0.08);
-  outline: none;
+.global-search--hero .global-search-input {
+  font-size: 1rem;
 }
 
 .global-search--hero .global-search-results {
   top: calc(100% + 0.5rem);
   right: 0;
   left: 0;
-  width: 100%;
+  width: auto;
   max-height: 380px;
 }
 
 .global-search--hero .global-search-result .gsr-label {
-  font-size: 1rem;
+  font-size: 1.0625rem;
 }
 
 .global-search--hero .global-search-result .gsr-sublabel {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
 }
 
 @media (max-width: 640px) {
@@ -691,53 +1030,57 @@ img, svg {
     max-width: none;
   }
 
-  .global-search--hero .global-search-input,
-  .global-search--hero .global-search-input:focus,
-  .global-search--hero .global-search-input:not(:placeholder-shown) {
-    font-size: 1.05rem;
-    padding: 0.65em 0.8em;
-  }
-}
-
-@media (max-width: 560px) {
-  .global-search--hero .global-search-input,
-  .global-search--hero .global-search-input:focus,
-  .global-search--hero .global-search-input:not(:placeholder-shown) {
-    width: 100%;
+  .global-search--hero {
+    padding: 12px 14px;
   }
 
-  .global-search--hero .global-search-results {
-    right: 0;
-    left: 0;
-    width: 100%;
+  .global-search--hero .global-search-input {
+    font-size: 0.9375rem;
   }
 }
 
 /* ---------- Hero ---------- */
 
+/* The page entrance. Deliberately on .hero/.page-hero rather than <main> —
+   see the note by @keyframes pbaFadeUp for why a transform on the landmark
+   would break map.css's fixed drawer. */
+.hero,
+.page-hero {
+  animation: pbaFadeUp 0.5s var(--ease) both;
+}
+
 .hero {
-  padding: var(--space-5) 0 var(--space-4);
+  padding: var(--space-4) 0 var(--space-5);
+}
+
+/* Hero children re-run the same rise on a 0 / 0.05 / 0.1 / 0.15s ladder, so
+   the block assembles top-down instead of arriving as one slab. */
+.hero .eyebrow,
+.hero .eyebrow-pill {
+  /* the 20px above the h1 is the only gap the design wants here */
+  margin-bottom: 0;
+  animation: pbaFadeUp 0.6s var(--ease) both;
 }
 
 .hero h1 {
-  font-size: clamp(2.6rem, 6vw, 4.2rem);
-  animation: rise 0.6s var(--ease) both;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1.02;
+  margin: 20px 0 0;
+  animation: pbaFadeUp 0.6s var(--ease) 0.05s both;
 }
 
 .hero .lede {
-  font-size: 1.1rem;
-  color: var(--ink-soft);
-  max-width: 46ch;
-  animation: rise 0.6s var(--ease) 0.08s both;
+  font-size: 1.1875rem;
+  line-height: 1.55;
+  color: var(--body-ink);
+  max-width: 540px;
+  margin: 20px 0 0;
+  animation: pbaFadeUp 0.6s var(--ease) 0.1s both;
 }
 
+.hero .hero-search,
 .hero .stat-strip {
-  animation: rise 0.6s var(--ease) 0.16s both;
-}
-
-@keyframes rise {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  animation: pbaFadeUp 0.6s var(--ease) 0.15s both;
 }
 
 .page-hero {
@@ -745,95 +1088,216 @@ img, svg {
   border-bottom: 1px solid var(--line);
 }
 
-.page-hero .eyebrow {
-  margin-bottom: 0.5rem;
-}
-
 .page-hero h1 {
-  font-size: clamp(2.3rem, 5.5vw, 3.3rem);
+  font-size: clamp(30px, 4vw, 44px);
+  margin: 0;
 }
 
 .page-hero .lede {
-  max-width: 60ch;
+  max-width: 640px;
   color: var(--ink-soft);
-  font-size: 1.05rem;
+  font-size: 0.9375rem;
+  margin: 10px 0 0;
+}
+
+/* City Detail runs a larger H1 than the other interior pages — a city name is
+   the title of the page in a way "Rankings" isn't. Used by all 42 city pages,
+   so it lives here rather than in a page stylesheet. */
+.page-hero--city h1 {
+  font-size: clamp(34px, 5vw, 54px);
+}
+
+/* The breadcrumb rides on .eyebrow for its spacing, but the design puts it in
+   the UI face, not the mono data voice — a trail of links is navigation, not
+   data. Overriding .eyebrow's mono/tracking/caps is the whole point of the
+   class, so it has to come after it. */
+.crumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+
+.crumbs a {
+  color: var(--bay-deep);
+  font-weight: 600;
+}
+
+.crumbs [aria-current="page"] {
+  color: var(--ink);
+  font-weight: 700;
 }
 
 /* ---------- Buttons ---------- */
 
+/* The primary button is the optic chip: optic fill inside a 2px ink rule,
+   ink label. Hover *inverts* it (ink fill, optic label) rather than darkening
+   — the whole button flips, which is why it needs no shadow and no lift.
+   v3's teal pill with a drop shadow is gone. */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.95rem;
-  padding: 0.75em 1.4em;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  padding: 0.8em 1.5em;
   border-radius: var(--radius-s);
-  background: var(--bay);
-  color: #fff;
+  background: var(--optic);
+  color: var(--ink);
   text-decoration: none;
-  border: none;
-  box-shadow: 0 6px 16px -6px rgba(var(--bay-rgb), 0.4);
-  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
+  border: 2px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
 }
 
+/* text-decoration must be re-killed on hover: .btn is an <a> on most pages and
+   the sitewide `a:hover { text-decoration: underline }` would otherwise win. */
 .btn:hover {
-  color: #fff;
-  background: var(--bay-deep);
-  transform: translateY(-1px);
-  box-shadow: 0 10px 20px -6px rgba(var(--bay-deep-rgb), 0.35);
+  background: var(--ink);
+  color: var(--optic);
+  text-decoration: none;
 }
 
 /* ---------- Sections / regions ---------- */
 
 .section {
-  padding: var(--space-4) 0;
+  padding: var(--space-5) 0;
 }
 
 .section + .section {
   border-top: 1px solid var(--line);
 }
 
+/* ---------- Dark section band ----------
+   The ink panel: footer, "How this stays honest", the rankings methodology
+   note, the Learn "step one" CTA. Full-bleed ink, cream headings, --footer-body
+   copy, and mono labels in --optic. Optic is only ever safe as *text* on ink —
+   on paper it must stay a fill (see --optic-text), which is why these overrides
+   are scoped to .section--dark rather than being global.
+   Add the class to an existing <section class="section">; it bleeds edge to
+   edge on its own because .container inside keeps the measure. */
+
+.section--dark {
+  background: var(--ink);
+  color: var(--footer-body);
+}
+
+/* A hairline between two bands only makes sense when both are paper. */
+.section--dark,
+.section--dark + .section {
+  border-top: none;
+}
+
+.section--dark h1,
+.section--dark h2,
+.section--dark h3,
+.section--dark h4 {
+  color: var(--cream);
+}
+
+.section--dark p,
+.section--dark li {
+  color: var(--footer-body);
+}
+
+.section--dark .eyebrow {
+  color: var(--optic);
+}
+
+.section--dark .lede {
+  color: var(--footer-muted);
+}
+
+/* Teal is ~2.6:1 on ink and unusable here; optic is ~11:1.
+   :not(.btn) is load-bearing, not defensive. A bare `.section--dark a` is
+   (0,1,1) and outranks `.btn`'s own `color: var(--ink)` (0,1,0), so any button
+   inside a dark section got optic text on its optic ground — 1.00:1, a
+   perfectly invisible label. A button already carries its own foreground;
+   this rule is only for the bare links around it. */
+.section--dark a:not(.btn) {
+  color: var(--optic);
+}
+
+.section--dark a:not(.btn):hover {
+  color: var(--optic);
+}
+
+/* On ink the button's 2px rule has to become the optic itself — an ink border
+   on an ink ground is invisible. Hover still inverts, just the other way. */
+.section--dark .btn {
+  border-color: var(--optic);
+}
+
+.section--dark .btn:hover {
+  background: transparent;
+  color: var(--optic);
+  border-color: var(--optic);
+}
+
+.section--dark :focus-visible {
+  outline-color: var(--optic);
+}
+
+/* Baseline-aligned section head: headline left, "see all →" right. The design
+   aligns the two on their baselines, not their boxes. */
 .region-head {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  gap: 1rem;
+  align-items: baseline;
+  gap: 1.25rem;
   flex-wrap: wrap;
-  margin-bottom: var(--space-3);
+  margin-bottom: 40px;
 }
 
 .region-head h2 {
-  font-size: clamp(1.8rem, 3.4vw, 2.3rem);
   margin-bottom: 0.2em;
 }
 
 /* Bare section h2s (e.g. city pages' "Where to play") aren't wrapped in
-   .region-head, but should read at the same headline scale. */
+   .region-head, but should read at the same headline scale — which is now
+   just the base h2 scale, so this only owns the spacing. */
 .section > .container > h2 {
-  font-size: clamp(1.8rem, 3.4vw, 2.3rem);
   margin-bottom: 0.9rem;
 }
 
 .region-head p {
-  color: var(--ink-soft);
+  color: var(--body-ink);
   max-width: 60ch;
   margin: 0;
 }
 
+/* The design's "See all cities →" is the Manrope UI face in deep teal, not
+   another mono data label — it's an action, not a stat. */
 .region-head .overview-link {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--bay-deep);
   white-space: nowrap;
 }
 
 .city-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
+  gap: 20px;
 }
 
+/* Hover lift ladder — the design uses depth to rank, so the distances are
+   fixed and not interchangeable:
+     -4px + shadow   feature cards (.home-lane) — the only ones that get a shadow
+     -3px, no shadow .region-card / rankings cards
+     -2px, no shadow .city-card
+     none            .venue-card (border + wash only; see there)
+   A city card is a leaf, so it moves least. */
 .city-card {
   background: var(--paper);
   border: 1px solid var(--line);
@@ -844,14 +1308,14 @@ img, svg {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  transition: transform 0.18s var(--ease), border-color 0.18s var(--ease);
 }
 
 .city-card:hover {
   transform: translateY(-2px);
-  border-color: var(--bay);
-  box-shadow: 0 16px 32px -16px rgba(var(--ink-rgb), 0.22);
+  border-color: var(--ink);
   color: var(--ink);
+  text-decoration: none;
 }
 
 .city-card .name-row {
@@ -862,14 +1326,14 @@ img, svg {
 }
 
 .city-card h3 {
-  font-size: 1.2rem;
+  font-size: 1.3125rem;
   margin: 0;
 }
 
 .city-card .arrow {
   font-family: var(--font-mono);
-  color: var(--kitchen-deep);
-  transition: transform 0.2s var(--ease);
+  color: var(--bay-deep);
+  transition: transform 0.18s var(--ease);
 }
 
 .city-card:hover .arrow {
@@ -878,35 +1342,49 @@ img, svg {
 
 .city-card p {
   margin: 0;
-  color: var(--ink-soft);
-  font-size: 0.95rem;
+  color: var(--body-ink);
+  font-size: 0.875rem;
+  line-height: 1.55;
   flex: 1;
 }
 
 /* ---------- Venue cards (city detail pages) ---------- */
 
+/* 20px gap, not 12px: the "Top pick" ribbon hangs 10px above its card and
+   needs the room. */
 .venue-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 20px;
 }
 
+/* position:relative is load-bearing — it's the containing block for the
+   ribbon below, which is pinned to the card edge from inside .name-row on
+   some city pages and from the card itself on others.
+   The venue card is the one card with NO hover lift: it's a dense record, and
+   203 of them nudging under the pointer would read as noise. Border and wash
+   only. */
 .venue-card {
+  position: relative;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-left: 3px solid var(--bay);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
+  border-radius: var(--radius-m);
+  padding: 20px;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.venue-card:hover {
+  border-color: var(--rule-30);
 }
 
 .venue-card h3 {
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   margin-bottom: 0.15em;
 }
 
 .venue-card .addr {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--ink-soft);
   margin-bottom: 0.5rem;
   display: block;
@@ -915,18 +1393,23 @@ img, svg {
 .venue-card .facts {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 8px;
   margin-bottom: 0.5rem;
 }
 
 .venue-card p:last-child {
   margin-bottom: 0;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
 }
 
+/* v3 marked the top pick with a teal→olive left rule and an optic wash. v4
+   promotes it to a 2px ink outline plus the clay ribbon: the card is
+   *stamped*, not tinted. */
 .venue-card.top-pick {
-  border-left-color: var(--optic-deep);
-  background: rgba(var(--optic-rgb), 0.09);
+  border: 2px solid var(--ink);
+  padding: 19px; /* absorb the extra border so the row doesn't jump 1px */
+  background: var(--paper);
 }
 
 .venue-card .name-row {
@@ -940,23 +1423,37 @@ img, svg {
   margin-bottom: 0;
 }
 
+/* The ribbon. city-top-pick.js drops <span class="rank-badge top">Top pick</span>
+   into the empty [data-role="top-pick-badge"] slot on the winning card and
+   toggles .top-pick on the card — so pin the *slot*, and leave .rank-badge.top
+   itself an ordinary inline pill. That split matters: about.html sets the same
+   <span class="rank-badge top"> inline in a sentence, and absolutely
+   positioning .rank-badge.top would rip it out of that paragraph. */
+.venue-card.top-pick .top-pick-badge {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  z-index: 1;
+}
+
 .rank-badge {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   background: var(--bay-tint);
   color: var(--bay-deep);
-  border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0.2em 0.7em;
+  padding: 4px 10px;
   white-space: nowrap;
 }
 
 .rank-badge.top {
-  background: var(--optic);
-  color: var(--bay-deep);
-  border-color: var(--optic-deep);
+  background: var(--poppy-deep);
+  color: var(--paper);
 }
 
 /* ---------- Address row / directions link ---------- */
@@ -974,12 +1471,14 @@ img, svg {
   margin-bottom: 0;
 }
 
+/* "Directions →" is an action, so it takes the Manrope UI face in deep teal
+   rather than the mono data voice the address beside it uses. */
 .directions-link,
 .mini-venue-row .mv-directions {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--bay);
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--bay-deep);
   text-decoration: none;
   white-space: nowrap;
   flex: 0 0 auto;
@@ -997,33 +1496,35 @@ img, svg {
 
 /* ---------- Beginner / competitive quick badge ---------- */
 
+/* Every pill on this site is the same object: 999px, Space Mono 700, tinted
+   ground, text-safe ink of the matching hue. The tint carries the category and
+   the label carries the meaning, so the border v3 needed to separate pill from
+   card is gone — the tints are warm enough to hold their own edge on paper. */
 .level-badge {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 600;
+  font-size: 0.6875rem;
+  font-weight: 700;
   letter-spacing: 0.02em;
   border-radius: 999px;
-  padding: 0.2em 0.75em;
+  padding: 5px 11px;
   white-space: nowrap;
-  border: 1px solid transparent;
 }
 
 .level-badge.beginner {
   background: var(--kitchen-tint);
   color: var(--kitchen-deep);
-  border-color: rgba(var(--kitchen-rgb), 0.3);
 }
 
 .level-badge.competitive {
   background: var(--poppy-tint);
   color: var(--poppy-deep);
-  border-color: rgba(var(--poppy-rgb), 0.3);
 }
 
 .level-badge.mixed {
   background: var(--bay-tint);
   color: var(--bay-deep);
-  border-color: rgba(var(--bay-rgb), 0.3);
 }
 
 /* ---------- Rating breakdown ---------- */
@@ -1070,17 +1571,23 @@ img, svg {
   min-width: 0;
 }
 
+/* The data-voice inversion the design insists on: the *label* is the quiet UI
+   face (Manrope) and the *value* is the mono. v3 had it the other way round.
+   The label is --ink-soft rather than the design's --ink-faint: at 10.5px
+   --ink-faint lands ~2.8:1 on paper and fails AA for real text. */
 .rating-pill .rlabel {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-family: var(--font-display);
+  font-size: 0.65625rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   color: var(--ink-soft);
 }
 
 .rating-pill .rvalue {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.78125rem;
+  font-weight: 700;
   color: var(--ink);
   line-height: 1.35;
 }
@@ -1109,19 +1616,24 @@ img, svg {
    buttons via .clear-btn — same outline-fills-on-hover pill, just an <a>
    in one case and a <button> in the other) ---------- */
 
+/* The secondary button: same invert-on-hover logic as .btn, in the ink
+   outline the design gives every non-primary action ("Back to cities",
+   "Browse paddles anyway"), kept in its established pill shape rather than
+   the primary's 10px box — these are utility actions sitting inside cards
+   and filter bars, not page-level CTAs. */
 .book-btn,
 .clear-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--bay);
-  background: transparent;
-  border: 1.5px solid var(--bay);
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
   border-radius: 999px;
-  padding: 0.55em 1.1em;
+  padding: 0.55em 1.2em;
   min-height: 44px;
   text-decoration: none;
   cursor: pointer;
@@ -1134,8 +1646,9 @@ img, svg {
 
 .book-btn:hover,
 .clear-btn:hover {
-  background: var(--bay);
-  color: #fff;
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
 }
 
 /* ---------- Compact / minor venue list ---------- */
@@ -1144,7 +1657,7 @@ img, svg {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--line);
-  border-radius: var(--radius-s);
+  border-radius: var(--radius-m);
   overflow: hidden;
   margin: 1rem 0;
 }
@@ -1159,13 +1672,15 @@ img, svg {
 }
 
 .mini-venue-row + .mini-venue-row {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--rule-08);
 }
 
+/* A venue name is a venue name — same serif here as on a full .venue-card,
+   just smaller. v3 set this one in the display face. */
 .mini-venue-row .mv-name {
-  font-family: var(--font-display);
+  font-family: var(--font-headline);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
   flex: 1 1 170px;
   color: var(--ink);
 }
@@ -1193,11 +1708,13 @@ img, svg {
 
 /* ---------- Callout ---------- */
 
+/* v3's 4px left rule is gone: the design has no left-rule device anywhere —
+   a tinted panel with a full hairline is how it flags an aside. */
 .callout {
   background: var(--poppy-tint);
-  border-left: 4px solid var(--poppy);
-  border-radius: var(--radius-s);
-  padding: 1.1rem 1.3rem;
+  border: 1px solid rgba(var(--poppy-rgb), 0.25);
+  border-radius: var(--radius-m);
+  padding: 1.3rem 1.5rem;
   margin: var(--space-3) 0;
 }
 
@@ -1207,6 +1724,40 @@ img, svg {
 
 .callout p:last-child {
   margin-bottom: 0;
+}
+
+/* ---------- Source-checked panel (city detail) ---------- */
+/* The teal-pale panel that hosts the 64px .stamp--s beside a one-line
+   provenance claim. Shared by every city page, so it lives here.
+     <div class="source-checked">
+       <div class="stamp stamp--s" aria-hidden="true"><svg …check…/></div>
+       <div>
+         <p class="eyebrow">Source-checked</p>
+         <p>Cross-referenced against …'s Parks &amp; Recreation listing.</p>
+       </div>
+     </div> */
+
+.source-checked {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bay-tint);
+  border-radius: var(--radius-m);
+  padding: 1.5rem;
+}
+
+.source-checked .eyebrow {
+  color: var(--bay-deep);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.25rem;
+}
+
+.source-checked p {
+  color: var(--ink);
+  font-size: 0.84375rem;
+  line-height: 1.5;
+  max-width: 34ch;
+  margin: 0;
 }
 
 /* ---------- Good to know list ---------- */
@@ -1240,40 +1791,49 @@ img, svg {
 
 .region-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
 }
 
+/* v3 made these dark teal slabs so they'd read as "the browse grid" against
+   light lanes above. v4 inverts the strategy: paper is the default, and the
+   *ink* band (.section--dark) is what stands out — so the region card becomes
+   an ordinary paper card that borrows the ink rule on hover. -3px lift. */
 .region-card {
-  background: var(--bay-deep);
-  color: var(--fog);
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
   border-radius: var(--radius-m);
-  padding: 1.4rem 1.5rem;
+  padding: 26px;
   text-decoration: none;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  gap: 10px;
+  transition: transform 0.18s var(--ease), border-color 0.18s var(--ease);
 }
 
 .region-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 32px -14px rgba(var(--bay-deep-rgb), 0.45);
-  color: var(--fog);
+  transform: translateY(-3px);
+  border-color: var(--ink);
+  color: var(--ink);
+  text-decoration: none;
 }
 
 .region-card .eyebrow {
-  color: var(--optic);
+  color: var(--ink-soft);
+  margin-bottom: 0;
 }
 
 .region-card h3 {
-  color: var(--fog);
-  margin-bottom: 0.1em;
+  font-size: 1.3125rem;
+  color: var(--ink);
+  margin: 0;
 }
 
 .region-card p {
-  color: rgba(var(--fog-rgb), 0.75);
-  font-size: 0.92rem;
+  color: var(--body-ink);
+  font-size: 0.875rem;
+  line-height: 1.55;
   margin: 0;
 }
 
@@ -1281,18 +1841,23 @@ img, svg {
 
 .trio {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 36px;
 }
 
+/* Serif, not the olive display face v3 used. On an ink band these become
+   cream via .section--dark's heading rule — which is exactly the pairing the
+   design uses for its dark cards (mono label over a cream serif heading). */
 .trio h3 {
-  font-size: 1.05rem;
-  color: var(--kitchen-deep);
+  font-size: 1.125rem;
+  color: var(--ink);
+  margin-bottom: 0.4em;
 }
 
 .trio p {
-  color: var(--ink-soft);
-  font-size: 0.95rem;
+  color: var(--body-ink);
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
 .rank-note {
@@ -1302,26 +1867,58 @@ img, svg {
 
 /* ---------- Footer ---------- */
 
+/* The footer is the site's largest .section--dark: ink ground, cream column
+   heads, --footer-body links, --footer-muted fine print. v3's warm-grey
+   .fog-dim slab is gone — the page now *ends* on ink. */
 .site-footer {
-  border-top: 1px solid var(--line);
-  background: var(--fog-dim);
-  padding: var(--space-4) 0 var(--space-3);
+  border-top: none;
+  background: var(--ink);
+  color: var(--footer-body);
+  padding: var(--space-4) 0 2rem;
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr;
-  gap: var(--space-3);
-  margin-bottom: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  margin-bottom: 0;
+  padding-bottom: 40px;
+  /* --cream at 15% is the divider the design uses; --fog-rgb is within a
+     rounding error of --cream at this alpha over ink, and using it keeps this
+     rule on a token instead of a fourth hardcoded cream. */
+  border-bottom: 1px solid rgba(var(--fog-rgb), 0.15);
+}
+
+/* The footer repeats the header's two-line lockup, recoloured for ink ground.
+   It reuses .brand-eyebrow/.brand-word rather than restating their metrics, so
+   the lockup can only ever be tuned in one place. */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-brand .brand-eyebrow {
+  color: var(--footer-muted);
+}
+
+.footer-brand .brand-word {
+  color: var(--cream);
+}
+
+.footer-brand p {
+  margin: 16px 0 0;
+  max-width: 240px;
 }
 
 .footer-grid h4 {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.75rem;
-  color: var(--ink-soft);
-  margin-bottom: 0.8em;
+  letter-spacing: 0.04em;
+  font-size: 0.8125rem;
+  color: var(--cream);
+  margin-bottom: 14px;
 }
 
 .footer-grid ul {
@@ -1330,38 +1927,64 @@ img, svg {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 10px;
 }
 
 .footer-grid a {
-  color: var(--ink-soft);
+  font-family: var(--font-display);
+  color: var(--footer-body);
   text-decoration: none;
-  font-size: 0.92rem;
+  font-size: 0.875rem;
 }
 
 .footer-grid a:hover {
-  color: var(--ink);
+  color: var(--cream);
   text-decoration: underline;
 }
 
+.footer-grid p {
+  color: var(--footer-muted);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
 .footer-note {
-  color: var(--ink-soft);
-  font-size: 0.85rem;
-  border-top: 1px solid var(--line);
-  padding-top: 1.2rem;
+  color: var(--footer-muted);
+  font-size: 0.78125rem;
+  border-top: none;
+  padding-top: 24px;
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  align-items: center;
+  gap: 1.25rem;
   flex-wrap: wrap;
+}
+
+.footer-note p {
+  color: var(--footer-muted);
+  margin: 0;
+}
+
+.footer-note a {
+  color: var(--footer-muted);
+  font-size: 0.78125rem;
+}
+
+.footer-note a:hover {
+  color: var(--cream);
+}
+
+.site-footer :focus-visible {
+  outline-color: var(--optic);
 }
 
 .sources {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--ink-soft);
   margin-top: var(--space-3);
   padding-top: var(--space-2);
-  border-top: 1px dashed var(--line);
+  border-top: 1px dashed var(--rule-25);
 }
 
 .sources a {
@@ -1395,15 +2018,16 @@ img, svg {
 }
 
 @media (max-width: 560px) {
-  .main-nav {
-    gap: 0.8rem;
-    font-size: 0.85rem;
-  }
+  /* v3 shrank the inline nav here. Below 900px there is no inline nav to
+     shrink — it's the stacked panel, whose rows are deliberately 17px/44px
+     touch targets — so the old .main-nav override is gone rather than
+     re-tuned; it would only have fought the panel. */
   .footer-grid {
     grid-template-columns: 1fr;
   }
   .footer-note {
     flex-direction: column;
+    align-items: flex-start;
   }
 }
 
@@ -1432,20 +2056,28 @@ img, svg {
   line-height: 1;
 }
 
+/* --fill is set per-star by rating-widgets.js for partial fills — the ::after
+   clip is the whole mechanism, so only the colors change here. */
 .star-rating .star::before {
-  color: var(--line);
+  color: var(--star-empty);
 }
 
+/* The design's star is an optic *fill inside an ink stroke*, not optic text —
+   bare optic is ~2.6:1 on paper and fails 1.4.11 as a graphic. -webkit-text-stroke
+   reproduces the prototype's stroke on a glyph we can't give a real outline to;
+   where it isn't supported the star degrades to a flat optic fill, which is no
+   worse than having no stroke rule at all. */
 .star-rating .star::after {
   width: var(--fill, 0%);
   overflow: hidden;
   white-space: nowrap;
-  color: var(--optic-text);
+  color: var(--optic);
+  -webkit-text-stroke: 0.5px var(--ink);
 }
 
 .rating-value-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--ink-soft);
   margin-left: 0.4em;
 }
@@ -1468,6 +2100,12 @@ a:hover .rating-summary.is-unrated .rating-value-label {
   gap: 1px;
 }
 
+/* "Your rating" uses --star-empty-user, NOT --star-empty: the community star
+   is an outline on paper, the user's unset star is a filled-but-unset swatch.
+   The tokens are not interchangeable. The swatch alone is ~1.1:1 on paper
+   though, so it takes an outline in the community empty colour to be
+   perceivable at all — same fill-inside-a-stroke construction as the
+   community star, one step quieter. */
 .star-picker button {
   background: none;
   border: none;
@@ -1475,7 +2113,8 @@ a:hover .rating-summary.is-unrated .rating-value-label {
   cursor: pointer;
   font-size: 1.5rem;
   line-height: 1;
-  color: var(--line);
+  color: var(--star-empty-user);
+  -webkit-text-stroke: 0.5px var(--star-empty);
   /* larger touch target for closely-spaced rating stars */
   display: inline-flex;
   align-items: center;
@@ -1488,25 +2127,30 @@ a:hover .rating-summary.is-unrated .rating-value-label {
   content: "\2605";
 }
 
+/* The reverse-DOM (5→1) sibling trick — do not reorder or wrap the buttons. */
 .star-picker button:hover,
 .star-picker button:hover ~ button,
 .star-picker button.is-selected,
 .star-picker button.is-selected ~ button {
-  color: var(--optic-text);
+  color: var(--optic);
+  -webkit-text-stroke: 0.5px var(--ink);
 }
 
+/* Clay is the favourite/heart colour throughout. The outline heart is the
+   unset state, the solid heart the set one — the glyph carries the state, not
+   just the fill, so this doesn't rely on colour alone. */
 .favorite-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
   color: var(--poppy-deep);
   background: var(--paper);
   border: 1.5px solid var(--poppy);
   border-radius: 999px;
-  padding: 0.55em 1em;
+  padding: 0.55em 1.1em;
   min-height: 44px;
   cursor: pointer;
   transition: background 0.15s var(--ease), color 0.15s var(--ease);
@@ -1521,60 +2165,72 @@ a:hover .rating-summary.is-unrated .rating-value-label {
   background: var(--poppy-tint);
 }
 
+/* --poppy-deep, not --poppy: the set state reverses to a solid ground and
+   --paper on --poppy is only ~3.6:1. Same clay family, one step down, ~5.4:1. */
 .favorite-btn.is-favorited {
-  background: var(--poppy);
-  color: #fff;
+  background: var(--poppy-deep);
+  border-color: var(--poppy-deep);
+  color: var(--paper);
 }
 
 .favorite-btn.is-favorited::before {
   content: "\2665";
 }
 
+/* The two accolade badges are the design's *reversed* pills — solid ground,
+   paper/optic label — so they outrank the tinted .level-badge beside them.
+   Optic-on-ink is the one place optic is safe as text (~11:1). */
 .badge-top-rated,
 .badge-most-loved {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-size: 0.59375rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   border-radius: 999px;
-  padding: 0.2em 0.75em;
+  padding: 3px 9px;
   white-space: nowrap;
-  border: 1px solid transparent;
   display: inline-flex;
   align-items: center;
   gap: 0.3em;
 }
 
 .badge-top-rated {
-  background: var(--optic);
-  color: var(--bay-deep);
-  border-color: var(--optic-deep);
+  background: var(--ink);
+  color: var(--optic);
 }
 
 .badge-most-loved {
-  background: var(--poppy-tint);
-  color: var(--poppy-deep);
-  border-color: rgba(var(--poppy-rgb), 0.3);
+  background: var(--poppy-deep);
+  color: var(--paper);
 }
 
 .rating-form {
   margin-top: 0.8rem;
   padding-top: 0.8rem;
-  border-top: 1px dashed var(--line);
+  border-top: 1px dashed var(--rule-25);
 }
 
+/* v3 underlined this in optic-deep. v4 dropped the optic underline sitewide
+   (it read as a highlighter on warm paper) — this is a link-shaped button, so
+   it gets a link's underline in its own colour. */
 .rating-form-toggle {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
   color: var(--bay);
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
   text-decoration: underline;
-  text-decoration-color: var(--optic-deep);
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
+}
+
+.rating-form-toggle:hover {
+  color: var(--bay-deep);
 }
 
 .rating-form-body:not([hidden]) {
@@ -1631,29 +2287,57 @@ a:hover .rating-summary.is-unrated .rating-value-label {
    "start here" against the dark .region-card browse grid further down. */
 .home-lanes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
 }
 
+/* The feature card — top of the hover ladder at -4px, and the only card in
+   the system that gets a shadow. That exclusivity is the point: the shadow is
+   what marks these three as the page's primary route, so don't hand it to
+   .region-card or .city-card as well.
+   Each lane borrows a different accent on hover (optic / teal / clay), which
+   is what visually separates "find a court" from "learn" from "buy" — but the
+   lanes are authored in a fixed order in index.html, so this is :nth-child
+   rather than three modifier classes nobody would remember to apply. */
 .home-lane {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 14px;
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--radius-m);
-  padding: 1.5rem 1.6rem;
+  padding: 32px;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+
+.home-lane:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(var(--ink-rgb), 0.12);
+  border-color: var(--optic);
+}
+
+.home-lane:nth-child(2):hover {
+  border-color: var(--bay);
+}
+
+.home-lane:nth-child(3):hover {
+  border-color: var(--poppy);
+}
+
+.home-lane .eyebrow {
+  margin-bottom: 0;
 }
 
 .home-lane h3 {
-  font-size: 1.15rem;
-  color: var(--kitchen-deep);
+  font-size: 1.5rem;
+  color: var(--ink);
   margin: 0;
 }
 
 .home-lane > p {
-  color: var(--ink-soft);
-  font-size: 0.95rem;
+  color: var(--body-ink);
+  font-size: 0.9375rem;
+  line-height: 1.55;
   margin: 0;
 }
 
@@ -1686,9 +2370,9 @@ a:hover .rating-summary.is-unrated .rating-value-label {
   height: 1.4rem;
   border-radius: 999px;
   background: var(--bay-tint);
-  color: var(--bay);
+  color: var(--bay-deep);
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1742,24 +2426,29 @@ a:hover .rating-summary.is-unrated .rating-value-label {
   margin-left: 0.6em;
 }
 
+/* Google's number is always its own pill on the deep-paper ground — never
+   merged into the community star line beside it. The --fog-dim ground is what
+   says "this came from somewhere else". */
 .google-rating-badge {
   display: inline-flex;
   align-items: center;
+  gap: 4px;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--ink-soft);
-  background: var(--fog);
-  border: 1px solid var(--line);
+  font-size: 0.71875rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--fog-dim);
+  border: none;
   border-radius: 999px;
-  padding: 0.15em 0.7em;
+  padding: 4px 10px;
   text-decoration: none;
   white-space: nowrap;
+  transition: background 0.15s var(--ease);
 }
 
 a.google-rating-badge:hover {
-  color: var(--bay-deep);
-  border-color: var(--bay);
+  color: var(--ink);
+  background: var(--rule-10);
   text-decoration: none;
 }
 
@@ -1793,7 +2482,8 @@ a.google-rating-badge:hover {
 
 .city-tag-region {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--ink-soft);
@@ -1803,11 +2493,12 @@ a.google-rating-badge:hover {
 .city-jump-tag {
   display: inline-flex;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0.3em 0.85em;
+  padding: 5px 11px;
   color: var(--ink-soft);
   text-decoration: none;
   white-space: nowrap;
@@ -1818,7 +2509,8 @@ a.google-rating-badge:hover {
 .city-tag:focus-visible,
 .city-jump-tag:hover,
 .city-jump-tag:focus-visible {
-  border-color: var(--bay);
+  border-color: rgba(var(--bay-rgb), 0.25);
   color: var(--bay-deep);
   background: var(--bay-tint);
+  text-decoration: none;
 }

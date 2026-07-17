@@ -1,4 +1,10 @@
-/* Rankings page — leaderboards, rank numbers, CTA strip. */
+/* Rankings page — scoped styles layered on top of style.css */
+
+/* The rankings column runs 1100px, 20px inside the global --max. Scoped to
+   <main> so the header and footer keep the site-wide measure. */
+main .container {
+  max-width: 1100px;
+}
 
 .rankings-cta {
   display: flex;
@@ -127,11 +133,19 @@
   background: var(--paper);
 }
 
+/* An author display rule beats the UA's [hidden]{display:none} whatever the
+   specificity, so the display:flex above would keep an empty bordered box on
+   screen every time rankings.js sets top10El.hidden (which it does until the
+   first ratings land). */
+.leaderboard[hidden] {
+  display: none;
+}
+
 .leaderboard-row {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem 1.2rem;
+  gap: 16px;
+  padding: 14px 20px;
 }
 
 /* The search/city filter hides non-matching rows via the [hidden] attribute.
@@ -142,8 +156,11 @@
   display: none;
 }
 
+/* The design draws a --rule-08 hairline under every row; taking it as a
+   border-top on subsequent rows instead lands the same rules without stacking
+   a redundant one on the card's own bottom edge. */
 .leaderboard-row + .leaderboard-row {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--rule-08);
 }
 
 .leaderboard-row.is-jump-target {
@@ -152,26 +169,27 @@
   transition: background 2s var(--ease), box-shadow 2s var(--ease);
 }
 
+/* The rank is the mono data voice, flush left in a fixed 34px cell so every
+   name in the list starts on the same edge whether the rank is #1 or #10. */
 .rank-number {
   flex: none;
-  width: 2.1em;
-  font-family: var(--font-display);
+  width: 34px;
+  font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 19px;
+  line-height: 1.4;
   color: var(--ink-soft);
-  text-align: center;
 }
 
+/* Only the winner gets the clay; 2 and 3 get full ink and the rest stay soft.
+   The ramp is rank-as-emphasis, not three competing accent colors. */
 .rank-number.rank-1 {
-  color: var(--optic-text);
+  color: var(--poppy-deep);
 }
 
-.rank-number.rank-2 {
-  color: var(--bay);
-}
-
+.rank-number.rank-2,
 .rank-number.rank-3 {
-  color: var(--poppy);
+  color: var(--ink);
 }
 
 .leaderboard-main {
@@ -187,14 +205,22 @@
   margin-bottom: 0.2rem;
 }
 
-.leaderboard-name-row h3 {
-  font-size: 1.05rem;
+/* rankings.js renders the court name as an h3 in the Top 10 and an h5 in the
+   city lists (heading *level* tracks document outline, not size), so the size
+   has to be pinned across both or the two lists disagree. */
+.leaderboard-name-row h3,
+.leaderboard-name-row h4,
+.leaderboard-name-row h5 {
+  font-family: var(--font-headline);
+  font-size: 16.5px;
+  font-weight: 600;
+  line-height: 1.3;
   margin: 0;
 }
 
 .leaderboard-city-tag {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 11px;
   color: var(--ink-soft);
 }
 
@@ -215,18 +241,10 @@
 }
 
 /* Compact Top 10 rows: skip the full 6-factor rating form (that lives in
-   the by-city leaderboards below) and lay name + rating on one line, so
-   the Top 10 reads as a scannable leaderboard rather than stacked cards. */
+   the by-city leaderboards below), so the Top 10 stays scannable. */
 .leaderboard-row.is-compact {
   align-items: center;
   padding: 0.7rem 1.2rem;
-}
-
-.leaderboard-row.is-compact .leaderboard-main {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  column-gap: 0.9rem;
 }
 
 .leaderboard-row.is-compact .leaderboard-name-row,
@@ -234,10 +252,81 @@
   margin: 0;
 }
 
-.leaderboard-row.is-compact .leaderboard-side {
+/* ---------- Bay Area Top 10 — the scrolling rank strip ----------
+   rankings.js re-renders #top10-list from scratch on every rating update and
+   emits the same .leaderboard / .leaderboard-row markup as the city lists, so
+   the strip is entirely a CSS re-lay of those rows: the card carousel is not
+   in the DOM, it's in here. */
+#top10-list {
+  flex-direction: row;
+  gap: 14px;
+  overflow-x: auto;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  /* .leaderboard's overflow:hidden still clips the y axis, so the -3px hover
+     lift and the cards' focus rings need room carved out of the padding. */
+  padding: 6px 2px 14px;
+}
+
+#top10-list .leaderboard-row.is-compact {
+  /* display is restated (not inherited from .leaderboard-row) so this rule
+     outranks the max-width:640px grid below, which must not reach the cards. */
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 200px;
+  max-width: 250px;
+  padding: 18px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: transform 0.15s var(--ease);
+}
+
+/* The card rule above outguns the generic .leaderboard-row[hidden], so the
+   search and city filters would quietly stop hiding Top 10 cards without this. */
+#top10-list .leaderboard-row.is-compact[hidden] {
+  display: none;
+}
+
+#top10-list .leaderboard-row.is-compact:hover {
+  transform: translateY(-3px);
+}
+
+/* The rank is the card's headline — it carries the whole strip at a glance. */
+#top10-list .rank-number {
+  width: auto;
+  font-size: 28px;
+  line-height: 1;
+}
+
+#top10-list .leaderboard-row.is-compact .leaderboard-main {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+#top10-list .leaderboard-name-row {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+#top10-list .leaderboard-name-row h3 {
+  font-size: 17px;
+}
+
+#top10-list .leaderboard-row.is-compact .leaderboard-side {
   flex-direction: row;
   align-items: center;
-  gap: 0.7rem;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
 }
 
 .review-link {
@@ -255,16 +344,38 @@
   color: var(--kitchen-deep);
 }
 
+/* The design has no mobile spec for these rows. Left as a wrapping flex line
+   they go ragged — the favorite button drops to its own line but lands under
+   the rank cell, not the name, and the badges break mid-row. A two-column grid
+   pins the rank in its own column and stacks everything else on the name's
+   left edge. The Top 10 cards opt out above (they restate display:flex). */
 @media (max-width: 640px) {
   .leaderboard-row {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    column-gap: 12px;
+    row-gap: 8px;
+    align-items: start;
+    padding: 14px 16px;
   }
+
+  .rank-number {
+    grid-column: 1;
+    width: auto;
+    font-size: 16px;
+  }
+
+  .leaderboard-main {
+    grid-column: 2;
+    min-width: 0;
+  }
+
   .leaderboard-side {
-    align-items: flex-start;
-    flex: 1 1 100%;
-  }
-  .leaderboard-row.is-compact .leaderboard-side {
+    grid-column: 2;
     flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 }
 
@@ -305,9 +416,15 @@
   margin: 0.9rem 0 0.4rem;
 }
 
+/* The design's "Not yet rated" chip — paper ground, dashed --rule-25, 12px —
+   applied to the group rather than to each venue. The prototype collapses an
+   unrated venue to a name-and-city pill, but these rows carry the live rating
+   form: the entire point of the group is that they're the rateable ones, so
+   they keep their full height and the chip language lands on the container. */
 .leaderboard--unranked {
-  background: var(--paper-alt, transparent);
-  border-style: dashed;
+  background: var(--paper);
+  border: 1px dashed var(--rule-25);
+  border-radius: 12px;
 }
 
 .leaderboard-row.is-unranked {
@@ -319,27 +436,74 @@
   font-weight: 500;
 }
 
-/* "How community rankings work" disclosure in the hero. */
+/* ---------- "How ranking works" callout ----------
+   The design's ink band, but as a rounded card on the hero's own measure
+   rather than the full-bleed .section--dark: the note answers the h1 above it,
+   so it belongs inside the hero column, not in a band of its own. Everything
+   else is that block's language verbatim — ink ground, optic mono label,
+   --footer-body copy — which is also why the on-ink overrides are repeated
+   here instead of borrowed: .section--dark's descendant rules are scoped to
+   that class and none of them reach a card. */
 .rankings-method {
-  margin-top: var(--space-2);
-  max-width: 62ch;
+  background: var(--ink);
+  border-radius: var(--radius-m);
+  padding: 24px 28px;
+  margin-top: var(--space-3);
+  max-width: 640px;
 }
 
-.rankings-method summary {
+.rankings-method-label {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--bay);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--optic);
+  margin: 0 0 6px;
+}
+
+.rankings-method-body {
+  font-family: var(--font-body);
+  font-size: 0.90625rem;
+  line-height: 1.6;
+  color: var(--footer-body);
+  margin: 0;
+}
+
+/* The deeper community-vs-editorial explanation folds away under the headline
+   claim rather than competing with it. */
+.rankings-method-more {
+  margin-top: 14px;
+}
+
+.rankings-method-more summary {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--optic);
   cursor: pointer;
   width: fit-content;
 }
 
-.rankings-method summary:hover {
+.rankings-method-more summary:hover {
   text-decoration: underline;
 }
 
-.rankings-method p {
-  margin-top: var(--space-1);
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: var(--ink-soft);
+.rankings-method-more p {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--footer-muted);
+  margin: 10px 0 0;
+}
+
+/* Teal is ~2.6:1 on ink; optic is the only accent that survives here. */
+.rankings-method-more a {
+  color: var(--optic);
+}
+
+.rankings-method :focus-visible {
+  outline-color: var(--optic);
 }

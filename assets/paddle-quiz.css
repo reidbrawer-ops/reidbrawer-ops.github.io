@@ -1,67 +1,86 @@
 /* Paddle quiz — scoped styles layered on top of style.css */
 
+/* The quiz panel — paper-deep, and the one 20px radius in the whole design
+   (cards are 16px, controls 14px/10px). It is the page's most important
+   surface, so it gets its own footing rather than sitting flat on the band.
+   `flow-root` establishes a block formatting context so the Back/Next row's
+   floats (see .pq-back) stay inside the panel's padding. It's used instead of
+   an `overflow` clearfix on purpose: overflow would clip the results table's
+   `position: sticky` row labels. */
 .pq-shell {
-  max-width: 640px;
+  display: flow-root;
+  max-width: 720px;
   margin: 0 auto;
+  background: var(--fog-dim);
+  border-radius: 20px;
+  padding: clamp(24px, 4vw, 44px);
 }
 
-/* Results need real width for a 4-column comparison table — the 640px
-   question-step width would squeeze it uncomfortably. */
+/* Results need real width for a 4-column comparison table — the question-step
+   width would squeeze it uncomfortably. */
 .pq-shell.pq-shell--wide {
   max-width: 100%;
 }
 
+/* Dots lead, label trails — the design reads the progress graphic first and
+   the count as its caption. `order` flips the painted order only; the label
+   still comes first in the DOM, so a screen reader hears "Question 3 of 10"
+   before the ten unlabelled dots, which is the right reading order anyway. */
 .pq-progress {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--space-2);
-}
-
-.pq-progress-label {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--ink-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .pq-dots {
+  order: -1;
   display: flex;
-  gap: 0.4rem;
+  gap: 8px;
 }
 
+/* Sentence case, no tracking: this is the one mono label in the design that
+   isn't a badge or a stat, and uppercasing "Question 3 of 10" would make a
+   caption shout. */
+.pq-progress-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+  margin-left: 6px;
+}
+
+/* Done and current are deliberately the same ink — the design fills the dots
+   up to where you are, like a page count, rather than marking one "here" dot.
+   The position is carried in text by .pq-progress-label, so nothing rests on
+   color alone. */
 .pq-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--line);
+  background: rgba(var(--ink-rgb), 0.2);
 }
 
-.pq-dot.is-current {
-  background: var(--bay);
-}
-
+.pq-dot.is-current,
 .pq-dot.is-done {
-  background: var(--kitchen);
+  background: var(--ink);
 }
 
 .pq-prompt {
-  font-size: 1.4rem;
-  margin-bottom: 1.1rem;
+  font-size: 1.75rem;
+  margin: 10px 0 20px;
 }
 
 .pq-question-hint {
   color: var(--ink-soft);
   font-size: 0.92rem;
-  margin: -0.7rem 0 1.1rem;
+  margin: -12px 0 20px;
 }
 
 .pq-options {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.8rem;
-  margin-bottom: 1.3rem;
+  gap: 12px;
+  margin-bottom: 28px;
 }
 
 @media (max-width: 640px) {
@@ -70,17 +89,25 @@
   }
 }
 
+/* The design's option button: a tall 14px slab with a 2px border. It stays
+   left-aligned rather than centered like the prototype's, because these
+   options carry a hint line under the label — the prototype's were bare
+   single words. --line-strong is the exact border the design gives an
+   unselected option, and it's the right token twice over: these buttons are
+   this page's real form controls, and 3:1 is what WCAG 1.4.11 wants from a
+   control boundary. */
 .pq-option {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   text-align: left;
   background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-s);
-  padding: 0.9rem 1.1rem;
+  color: var(--ink);
+  border: 2px solid var(--line-strong);
+  border-radius: 14px;
+  padding: 22px 16px;
   cursor: pointer;
-  transition: border-color 0.2s var(--ease), background 0.2s var(--ease), transform 0.2s var(--ease);
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
 .pq-option:hover {
@@ -102,10 +129,26 @@
 
 /* Selected state applies to both variants — single-select options still
    auto-advance on click, but going Back to one needs to show what was
-   already picked, or a careless re-click can silently overwrite it. */
+   already picked, or a careless re-click can silently overwrite it.
+   The design fills a chosen option solid --bay; the hint drops to --bay-tint
+   rather than a paper alpha so it stays a real token and clears AA (5:1)
+   against the teal. */
 .pq-option.is-selected {
+  background: var(--bay);
   border-color: var(--bay);
-  background: var(--bay-tint);
+}
+
+.pq-option.is-selected .pq-option-label {
+  color: var(--paper);
+}
+
+.pq-option.is-selected .pq-option-hint {
+  color: var(--bay-tint);
+}
+
+.pq-option.is-selected:hover {
+  background: var(--bay-deep);
+  border-color: var(--bay-deep);
 }
 
 /* Multi-select variant (currently just the "what would you change" question)
@@ -127,24 +170,31 @@
   width: 20px;
   height: 20px;
   border-radius: 5px;
-  border: 1.5px solid var(--line);
+  border: 2px solid var(--line-strong);
   flex: none;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
   line-height: 1;
-  color: var(--paper);
   margin-top: 0.15rem;
 }
 
+/* Inverted against the selected option's teal fill: paper box, teal tick. */
 .pq-check.is-selected {
-  border-color: var(--bay);
-  background: var(--bay);
+  border-color: var(--paper);
+  background: var(--paper);
+  color: var(--bay);
 }
 
+/* Back and Next are the design's action row: ghost outline hard left, optic
+   fill hard right. They're floated rather than flexed because the quiz
+   renders them as bare siblings of the panel with no row wrapper to flex,
+   and the markup is paddle-quiz.js's to own, not this file's. .pq-shell's
+   flow-root contains them. */
 .pq-continue {
-  margin-bottom: 1rem;
+  float: right;
+  margin-bottom: 0;
   cursor: pointer;
 }
 
@@ -153,19 +203,34 @@
   cursor: default;
 }
 
+/* The design has no underlined-text-link buttons: every action is a shape.
+   Back is the ghost — transparent, --rule-30 outline, inverting to ink on
+   hover exactly like .btn and .book-btn do. */
 .pq-back {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--ink-soft);
+  float: left;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  color: var(--ink);
   background: none;
-  border: none;
+  border: 2px solid var(--rule-30);
+  border-radius: var(--radius-s);
+  padding: 12px 20px;
+  min-height: 44px;
   cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
+  text-decoration: none;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
 }
 
 .pq-back:hover {
-  color: var(--bay);
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
 }
 
 .pq-email-hint {
@@ -228,7 +293,7 @@
 }
 
 .pq-results-head {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
 }
 
 .pq-empty {
@@ -243,11 +308,15 @@
 /* Comparison table — rows are traits, columns are the top 3 picks. A table
    is the right shape here: unlike a prose "why this paddle" list, two
    columns sharing the same dot rating on a row is informative (these two
-   are equally powerful), not a bug that reads as repeated boilerplate. */
+   are equally powerful), not a bug that reads as repeated boilerplate.
+   The frame is the design's result card — paper under a 2px ink border at
+   16px — wrapped around the table instead of repeated three times, since the
+   real page compares the picks rather than listing them. */
 .pq-compare-wrap {
   overflow-x: auto;
-  margin-bottom: 1.5rem;
-  border: 1px solid var(--line);
+  margin-bottom: 1.3rem;
+  background: var(--paper);
+  border: 2px solid var(--ink);
   border-radius: var(--radius-m);
 }
 
@@ -257,11 +326,14 @@
   background: var(--paper);
 }
 
+/* The internal grid drops to --rule-10 — the same hairline the design's card
+   uses to divide its own footer — so the 2px ink frame stays the only heavy
+   line and the rows read as one object, not nine stacked ones. */
 .pq-compare-table th,
 .pq-compare-table td {
   padding: 0.9rem 1.1rem;
   text-align: left;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--rule-10);
   vertical-align: middle;
 }
 
@@ -292,8 +364,10 @@
 }
 
 .pq-tagline {
-  font-size: 0.85rem;
-  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: 0.845rem;
+  line-height: 1.55;
+  color: var(--body-ink);
   margin-top: 0.5rem;
   font-weight: normal;
 }
@@ -322,6 +396,13 @@
   height: 1px;
 }
 
+/* The one place this page spends the optic accent. In the design every action
+   on the paddles view is an ink outline except one — the buy button on a
+   result card, which is filled optic. These three links are that button, so
+   they're promoted here rather than left as the global secondary pill. The
+   promotion is scoped to the results row on purpose: the rent directory's
+   .book-btn ("Visit site →") is genuinely secondary and keeps the shared
+   component untouched. */
 .pq-compare-links .book-btn {
   display: flex;
   width: 100%;
@@ -329,8 +410,19 @@
   justify-content: center;
   text-align: center;
   margin-top: 0;
+  background: var(--optic);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-s);
 }
 
+.pq-compare-links .book-btn:hover {
+  background: var(--ink);
+  color: var(--optic);
+}
+
+/* Same dot device as .pq-dot above, so the two systems on this page share one
+   empty value rather than drifting apart at 8px and 10px. */
 .pq-meter {
   display: inline-flex;
   gap: 0.3rem;
@@ -340,29 +432,35 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--line);
+  background: rgba(var(--ink-rgb), 0.2);
 }
 
 .pq-meter-dot.is-filled {
   background: var(--bay);
 }
 
-/* ---------- Phase 5: affiliate disclosure ---------- */
-/* Shared class (also used by the hub's buy framing) so every set of buy
-   links carries the same FTC-style disclosure treatment. */
+/* ---------- Affiliate disclosure ---------- */
+/* The design's rule is that a disclosure sits AT the link as quiet italic
+   microcopy — never boxed off, never a footnote — so v3's tinted panel is
+   gone and this sits directly under the buy row it describes.
+   It does NOT take the prototype's 10.5px --ink-faint, though: that's the
+   styling of a two-word "Affiliate link" tag beside a button, and this is a
+   three-sentence FTC/Associates disclosure that has to stay clear and
+   conspicuous. --ink-faint on --fog-dim is ~2.5:1 and would fail AA outright.
+   So: the design's voice (Manrope, italic, quiet, adjacent), at a size and an
+   --ink-soft (~4.9:1) that keep it legible. The copy itself is rendered by
+   paddle-quiz.js and is legally load-bearing — style it, don't touch it. */
 .affiliate-disclosure {
+  font-family: var(--font-body);
+  font-style: italic;
   font-size: 0.82rem;
   line-height: 1.5;
   color: var(--ink-soft);
-  background: var(--bay-tint);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-s);
-  padding: 0.7rem 0.9rem;
   margin: 0 0 1.3rem;
 }
 
 .affiliate-disclosure a {
-  color: var(--ink);
+  color: var(--bay-deep);
   text-decoration: underline;
 }
 

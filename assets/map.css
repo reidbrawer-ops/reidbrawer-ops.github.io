@@ -8,11 +8,11 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.35rem 1.25rem;
+  gap: 0.45rem 0.9rem;
   margin-bottom: 0.9rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--body-ink);
 }
 
 .legend-item {
@@ -21,26 +21,14 @@
   gap: 0.5em;
 }
 
-.legend-dot--top-pick {
-  background: var(--paper);
-  box-shadow: 0 0 0 2px var(--optic), inset 0 0 0 1px var(--line);
-}
-
+/* The panel (.finder-map-wrap) supplies the frame and the shadow; the canvas
+   itself only needs to clip the tiles to a radius one step inside the panel's. */
 .venue-map {
   width: 100%;
   height: 640px;
-  border-radius: var(--radius-m);
-  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
   overflow: hidden;
   background: var(--fog-dim);
-  box-shadow: 0 16px 32px -20px rgba(var(--ink-rgb), 0.25);
-}
-
-@media (max-width: 640px) {
-  .venue-map {
-    height: 460px;
-    border-radius: var(--radius-s);
-  }
 }
 
 .map-caveat {
@@ -78,34 +66,115 @@
   color: var(--bay-deep) !important;
 }
 
-.pba-pin {
-  display: block;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--poppy);
-  border: 2px solid var(--paper);
-  box-shadow: 0 1px 4px rgba(var(--ink-rgb), 0.35);
-}
+/* ---------- Map pins: shape carries the meaning ----------
+
+   v4 encodes court type as a SHAPE — circle / rounded square / diamond —
+   inside a 2px ink stroke. v3 leaned on hue alone, which is why "both" had to
+   be a half-and-half gradient nobody could decode at 16px; shape carries it
+   now, so each fill can just be a brand accent.
+
+   Three different elements wear the SAME .pba-pin--* modifier: the Leaflet
+   marker (.pba-pin), the legend swatch (.legend-dot) and the popup swatch
+   (.p-indoor-dot). So the modifier sets four custom properties and NOTHING
+   else — fill, radius, rotation and size are each declared exactly once, and
+   the legend physically cannot drift from the pins it claims to explain.
+   Recolour here; never at a call site. */
 
 .pba-pin--outdoor {
-  background: var(--pin-outdoor);
+  --pin-fill: var(--pin-outdoor);
+  --pin-radius: 50%;
+  --pin-spin: 0deg;
+  --pin-size: 16px;
 }
 
 .pba-pin--indoor {
-  background: var(--pin-indoor);
+  --pin-fill: var(--pin-indoor);
+  --pin-radius: 3px;
+  --pin-spin: 0deg;
+  --pin-size: 16px;
 }
 
+/* A square turned 45°, not a clip-path polygon: clip-path would shave the 2px
+   stroke clean off the diamond's own diagonals. 13px keeps the rotated
+   diagonal (13 × √2 ≈ 18px) beside the circle's 16px instead of the 22.6px a
+   full-size square would throw. */
 .pba-pin--both {
-  background: linear-gradient(90deg, var(--pin-outdoor) 50%, var(--pin-indoor) 50%);
+  --pin-fill: var(--pin-both);
+  --pin-radius: 2px;
+  --pin-spin: 45deg;
+  --pin-size: 13px;
 }
 
+/* No published indoor/outdoor answer. A hollow pin: absence of fill reads as
+   absence of data, and it stays legible against all three answered shapes. */
 .pba-pin--unknown {
-  background: var(--poppy);
+  --pin-fill: var(--paper);
+  --pin-radius: 50%;
+  --pin-spin: 0deg;
+  --pin-size: 16px;
 }
 
-.pba-pin.top-pick {
-  box-shadow: 0 0 0 2px var(--optic), 0 1px 4px rgba(var(--ink-rgb), 0.35);
+/* The marker span is only ever the 16×16 anchor box Leaflet positions (iconSize
+   [16,16] / iconAnchor [8,8] in map.js) — the shape is drawn by ::before and
+   centred inside it, so a pin can change size without dragging its own tip off
+   the coordinate it marks.
+
+   drop-shadow, not box-shadow: it traces the diamond's real silhouette, and
+   sitting on the UNROTATED parent it keeps casting downward while the child
+   spins. */
+.pba-pin {
+  position: relative;
+  display: block;
+  width: 16px;
+  height: 16px;
+  filter: drop-shadow(0 1px 2px rgba(var(--ink-rgb), 0.3));
+}
+
+.pba-pin::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--pin-size, 16px);
+  height: var(--pin-size, 16px);
+  background: var(--pin-fill, var(--poppy));
+  border: 2px solid var(--ink);
+  border-radius: var(--pin-radius, 50%);
+  transform: translate(-50%, -50%) rotate(var(--pin-spin, 0deg));
+  transition: transform 0.15s var(--ease);
+}
+
+/* Leaflet gives every marker tabIndex="0" and role="button" (Marker's
+   `keyboard` option, on by default), so pins are real keyboard controls and
+   owe the user a real ring — round, to match what it's ringing. */
+.leaflet-marker-icon:focus-visible {
+  border-radius: 50%;
+}
+
+.leaflet-marker-icon:hover .pba-pin::before,
+.leaflet-marker-icon:focus-visible .pba-pin::before {
+  transform: translate(-50%, -50%) rotate(var(--pin-spin, 0deg)) scale(1.18);
+}
+
+/* Top pick: a dashed clay ring drawn OUTSIDE the shape, so it reads the same
+   whether it's circling a circle, a square or a diamond. */
+.pba-pin.top-pick::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 1.5px dashed var(--poppy-deep);
+  border-radius: 50%;
+}
+
+/* The selected pin pulses. Unlike the prototype — where pbaPulse sat on an
+   <svg> <circle> that box-shadow can never paint, so it silently never ran —
+   Leaflet divIcons are real HTML, so this one actually animates.
+   .pba-pin has no background of its own; border-radius here exists purely to
+   round the box-shadow ring pbaPulse throws.
+   NOTE: nothing sets .is-selected yet — see the report; map.js owns that. */
+.pba-pin.is-selected {
+  border-radius: 50%;
+  animation: pbaPulse 1.6s ease-out infinite;
 }
 
 .leaflet-popup-content-wrapper {
@@ -126,9 +195,9 @@
 }
 
 .pba-popup .p-name {
-  font-family: var(--font-display);
+  font-family: var(--font-headline);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--ink);
   margin-bottom: 0.2em;
 }
@@ -151,13 +220,30 @@
   margin: 0.1em 0 0.6em;
 }
 
+/* The legend and popup swatches are the same four .pba-pin--* custom
+   properties, rendered at 3/4 scale — so a swatch is a literal miniature of
+   the pin it names, shape and all, and re-tinting a pin re-tints its legend
+   entry in the same stroke. */
 .p-indoor-dot,
 .legend-dot {
   display: inline-block;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
   flex: none;
+  width: calc(var(--pin-size, 16px) * 0.75);
+  height: calc(var(--pin-size, 16px) * 0.75);
+  background: var(--pin-fill, var(--poppy));
+  border: 1.4px solid var(--ink);
+  border-radius: var(--pin-radius, 50%);
+  transform: rotate(var(--pin-spin, 0deg));
+}
+
+/* The one legend entry with no .pba-pin--* twin: "top pick" is a state, not a
+   court type, so it borrows the dashed clay ring the pins wear rather than
+   inventing a fifth shape. Must stay AFTER .legend-dot — same specificity, so
+   source order is the only thing keeping this hollow instead of poppy-filled. */
+.legend-dot--top-pick {
+  background: none;
+  border: 1.5px dashed var(--poppy-deep);
+  box-shadow: none;
 }
 
 .pba-popup .p-link {
@@ -176,7 +262,11 @@
   display: inline-block;
   margin-top: 0.5em;
   font-size: 0.72rem;
-  color: var(--poppy);
+  /* --poppy-deep, not --poppy: this is small body text, and the contract
+     reserves bare --poppy for decorative fills. On v3's white ground --poppy
+     was 5.24:1 and cleared AA; on v4's warm paper it is 4.41:1 and doesn't.
+     --poppy-deep is 6.26:1. The rule didn't change — the ground under it did. */
+  color: var(--poppy-deep);
 }
 
 /* ---------- Phase 3: Find-courts hub (search + list + map + detail) ---------- */
@@ -251,48 +341,62 @@
   height: 640px;
 }
 
+/* Rows are paper cards, so the tray behind them drops to page fog — a paper
+   card on a paper panel would have nothing to sit on. */
 .finder-list-wrap {
   position: relative;
   height: 100%;
   border: 1px solid var(--line);
   border-radius: var(--radius-m);
   overflow: hidden;
-  background: var(--paper);
+  background: var(--fog);
 }
 
 .finder-results {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 10px;
   height: 100%;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .finder-result {
-  border-bottom: 1px solid var(--line);
+  border-bottom: none;
 }
 
+/* The design's court card, at the design's OWN compact scale (its prototype
+   switches to 14px padding / 8px gap when space is tight). The full 22px card
+   is for a browse feed of 16; this list is an index of 203 in a 640px pane, so
+   compact is the honest read of the same spec.
+   Border stays 2px in every state — the selected card differs by COLOUR, not
+   width, so selecting a row can't nudge the list by a pixel. */
 .finder-result-btn {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.2rem;
   width: 100%;
-  padding: 0.7rem 0.9rem;
-  border: none;
-  background: none;
+  padding: 12px 14px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--paper);
   text-align: left;
   font: inherit;
   color: var(--ink);
   cursor: pointer;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
 }
 
 .finder-result-btn:hover {
+  border-color: var(--rule-30);
   background: var(--fog);
 }
 
 .finder-result.is-active .finder-result-btn {
-  background: var(--bay-tint);
-  box-shadow: inset 3px 0 0 var(--bay);
+  border-color: var(--ink);
+  background: var(--kitchen-tint);
 }
 
 .fr-top {
@@ -303,19 +407,26 @@
 }
 
 .fr-name {
-  font-family: var(--font-display);
+  font-family: var(--font-headline);
   font-weight: 600;
-  font-size: 0.98rem;
+  font-size: 1.05rem;
   color: var(--ink);
 }
 
+/* Clay pill, not a text label — "top pick" is the one badge in this list that
+   has to survive a fast scroll. JS supplies the text ("★ Top pick"). */
 .fr-pick {
   flex: none;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--poppy-deep);
+  color: var(--paper);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--optic-text);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .fr-pick[hidden] {
@@ -324,7 +435,7 @@
 
 .fr-meta {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--ink-soft);
 }
 
@@ -333,26 +444,72 @@
   color: var(--ink-soft);
 }
 
+/* The design's empty state: a dashed panel, serif line, optic chip. The copy
+   is a bare text node from map.js, so the serif is set on the whole <li> and
+   the button opts back out to Manrope. */
 .finder-empty {
-  padding: 1.2rem 0.9rem;
-  font-size: 0.9rem;
-  color: var(--ink-soft);
+  padding: 32px 20px;
+  border: 1px dashed var(--rule-25);
+  border-radius: var(--radius-m);
+  background: var(--paper);
+  text-align: center;
+  font-family: var(--font-headline);
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--ink);
 }
 
+/* map.js emits this as a bare <button class="finder-empty-clear">, not a
+   .btn — so the optic chip is rebuilt here rather than inherited. */
+.finder-empty-clear {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 14px;
+  padding: 10px 20px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-s);
+  background: var(--optic);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.finder-empty-clear:hover {
+  background: var(--ink);
+  color: var(--optic);
+}
+
+/* The map sits in the design's bay-tint panel — the tint stands in for the
+   water the prototype's hand-drawn bay was painted on, and it's what stops a
+   photographic tile raster from butting straight against warm paper. */
 .finder-map-wrap {
   display: flex;
   flex-direction: column;
   min-width: 0;
   height: 100%;
+  padding: 16px;
+  background: var(--bay-tint);
+  border: 1px solid var(--rule-16);
+  border-radius: var(--radius-m);
 }
 
+/* The design reads map-then-key, but the key is more useful ANNOUNCED first,
+   so the legend stays ahead of the map in the DOM for screen readers and is
+   only moved visually. `order` beats reordering the markup. */
 .finder-map-wrap .map-legend {
-  margin-bottom: 0.6rem;
+  order: 2;
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-12);
 }
 
-/* Inside the hub the map fills the remaining column height rather than the
+/* Inside the hub the map fills the remaining panel height rather than the
    standalone fixed height it uses elsewhere. */
 .finder .venue-map {
+  order: 1;
   height: auto;
   flex: 1 1 auto;
   min-height: 0;
@@ -402,7 +559,8 @@
 
 .fd-name {
   margin: 0 0 0.2rem;
-  font-family: var(--font-display);
+  font-family: var(--font-headline);
+  font-weight: 600;
   font-size: clamp(1.35rem, 3.5vw, 1.6rem);
   line-height: 1.15;
 }
@@ -414,32 +572,42 @@
   color: var(--ink-soft);
 }
 
+/* The design's fact block: a label/value grid, not a dt—dd ledger. Label is
+   Manrope caps in the faintest ink; the VALUE is Space Mono 700 — the data
+   voice does the talking, so the eye lands on the answer, not the question.
+   auto-fit rather than a hard 1fr 1fr: these values are free text ("Indoor &
+   outdoor courts") in a ~330px pane, and a fixed two-up shreds them. */
 .fd-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px 16px;
   margin: 0 0 1rem;
 }
 
 .fd-fact {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid var(--line);
+  display: block;
+  min-width: 0;
+  padding: 0;
+  border-bottom: none;
 }
 
 .fd-fact dt {
-  flex: none;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--ink-soft);
+  color: var(--ink-faint);
 }
 
 .fd-fact dd {
-  margin: 0;
-  text-align: right;
-  font-size: 0.9rem;
+  margin: 2px 0 0;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
 }
 
 .fd-ratings {
@@ -470,15 +638,15 @@
   padding: 0.6em 1.1em;
 }
 
-/* The detail-card Directions control is a solid button, but it also carries
-   the .directions-link class as a hook for google-ratings.js to rewrite its
-   href. That shared class is the city-page *text link* style (teal text on no
-   background) — layered onto this button it wins over .btn's white text and
-   lands teal-on-teal, hiding the label until :hover flips it back to white.
-   Pin it white so the label shows in the resting state. */
-.finder-detail .btn.directions-link {
-  color: #fff;
-}
+/* v3 needed a `.finder-detail .btn.directions-link { color: #fff }` override
+   here: `.btn` was a solid teal button with white text, and the shared
+   .directions-link text-link style (teal on no background) landed teal-on-teal
+   over it. v4's `.btn` is an OPTIC ground with ink text, so that premise is
+   gone — and the override actively broke the control, painting cream on optic
+   at 1.38:1 until :hover. Removing it lets the cascade resolve correctly on its
+   own: `.directions-link` is later in style.css than `.btn`, so the label rests
+   at --bay-deep (6.56:1) and `.btn:hover` inverts it to optic-on-ink (11.58:1).
+   Don't reintroduce a color here without re-checking what `.btn` actually is. */
 
 .finder-detail .btn-ghost {
   background: var(--paper);
@@ -495,7 +663,9 @@
 .fd-approx {
   margin: 0 0 1rem;
   font-size: 0.78rem;
-  color: var(--poppy);
+  /* Text-safe clay — see .pba-popup .p-approx. This line tells the reader the
+     pin might be in the wrong place; it of all things has to be readable. */
+  color: var(--poppy-deep);
 }
 
 .fd-city-link {
@@ -524,17 +694,34 @@
   display: none;
 }
 
-/* ---- Mobile: stacked layout + bottom-sheet detail ---- */
+/* ---- Tablet + mobile: stacked layout + bottom-sheet detail ----
 
-@media (max-width: 900px) {
+   1023px, not the design's intrinsic ~904px collapse point. Two things want
+   to break near 900: this grid and the header's nav. Letting them land on
+   top of each other means a hair of viewport width decides whether you get a
+   two-pane finder under a hamburger — so the finder is moved decisively clear
+   of the nav breakpoint and collapses one step earlier, where a 300px list
+   beside a map had stopped being worth the squeeze anyway. */
+
+@media (max-width: 1023px) {
   .finder {
     display: block;
     height: auto;
   }
 
+  /* Cap the CANVAS, not the panel: the panel also carries 32px of padding and
+     a legend that wraps to two rows on a narrow screen, so a height on the
+     wrapper would quietly leave the map ~280px. A stacked map is a preview
+     above the list, not the main event — it must not eat the fold the results
+     live in. */
   .finder-map-wrap {
-    height: 460px;
+    height: auto;
     margin-bottom: 1rem;
+  }
+
+  .finder .venue-map {
+    flex: none;
+    height: 340px;
   }
 
   .finder-list-wrap {
@@ -652,8 +839,8 @@
   gap: 0.9rem;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: var(--radius-m);
-  padding: 1.3rem 1.4rem;
+  border-radius: 14px;
+  padding: 14px;
   margin-bottom: 1.2rem;
 }
 
@@ -676,38 +863,46 @@
   color: var(--ink-soft);
 }
 
+/* Pills. These stay real <select>s — map.js reads .value and rebuilds every
+   <option> on each render, so the native control is load-bearing; only its
+   skin changes. The UA arrow is left alone (the prototype leaves it too):
+   a hand-drawn chevron here would need appearance:none, which costs the
+   native picker on mobile for nothing. */
 .filter-field select {
   width: 100%;
   min-width: 0;
-  font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
   color: var(--ink);
-  background: var(--fog);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-s);
-  padding: 0.5em 0.6em;
+  background: var(--paper);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 10px 14px;
 }
 
 .filter-field-clear {
   justify-content: flex-end;
 }
 
+/* Reset is a clay text button in the design — deliberately the quietest
+   control in the bar, since it throws work away. It keeps the sitewide
+   :focus-visible ring, which is the only edge it has. */
 .clear-btn {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--bay);
-  background: var(--paper);
-  border: 1px solid var(--bay);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--poppy-deep);
+  background: none;
+  border: none;
   border-radius: 999px;
-  padding: 0.5em 1.1em;
+  padding: 10px 16px;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .clear-btn:hover {
-  background: var(--bay-tint);
-  color: var(--bay-deep);
+  background: var(--poppy-tint);
 }
 
 /* Hours range slider */
@@ -877,7 +1072,7 @@
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--paper);
   background: var(--bay);
   border: 1px solid var(--bay);
   border-radius: 999px;
@@ -946,8 +1141,8 @@
   height: 14px;
   border-radius: 50%;
   background: var(--bay);
-  border: 3px solid #fff;
-  box-shadow: 0 0 0 2px var(--bay), 0 1px 4px rgba(0, 0, 0, 0.4);
+  border: 3px solid var(--paper);
+  box-shadow: 0 0 0 2px var(--bay), 0 1px 4px rgba(var(--ink-rgb), 0.4);
 }
 
 /* Distance chip shown on each finder row while sorting nearest-first. */
@@ -982,9 +1177,9 @@
 }
 
 .finder-ooa-title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-family: var(--font-headline);
+  font-weight: 600;
+  font-size: 1.2rem;
   color: var(--bay-deep);
   margin: 0 0 0.3rem;
 }

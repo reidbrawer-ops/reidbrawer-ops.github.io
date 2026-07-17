@@ -7,7 +7,7 @@
 <meta name="description" content="Vote for your favorite Bay Area pickleball court and rate courts on beginner-friendliness, surface, wait time, and advanced play. Live rankings by city.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -37,7 +37,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span></a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -53,6 +53,9 @@
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
           <a href="/corrections">Report a correction</a>
+          <div class="nav-dropdown-rule"></div>
+          <a href="/affiliate-disclosure">Affiliate disclosure</a>
+          <a href="/privacy">Privacy</a>
         </div>
       </details>
       <a href="/about">About</a>
@@ -79,10 +82,14 @@
         <li>Atmosphere</li>
       </ul>
     </div>
-    <details class="rankings-method">
-      <summary>How community rankings work</summary>
-      <p>A court's overall rating is the average of its scores across those six factors, and a court needs a handful of votes on each before it can earn a <strong>★ Top rated</strong> badge — so one enthusiastic vote can't tag a court on day one. This is <em>community</em> voting, and it's separate from the editorial <a href="/about#how-we-rank">Top pick</a> on each city page: that's our own starting-point recommendation (rated on surface, level, weather, and wait), never a paid placement and never driven by these votes — though a city's Top pick shifts to the highest community-rated court once enough people weigh in.</p>
-    </details>
+    <div class="rankings-method">
+      <p class="rankings-method-label">How ranking works</p>
+      <p class="rankings-method-body">Where we have a venue's Google rating, we show it alongside for reference — never blended into this score. No court can pay to rank higher — there's nothing to buy. Venues with zero ratings sit outside the list until someone rates them.</p>
+      <details class="rankings-method-more">
+        <summary>Badges, and how this differs from Top pick</summary>
+        <p>A court's overall rating is the average of its scores across those six factors, and a court needs a handful of votes on each before it can earn a <strong>★ Top rated</strong> badge — so one enthusiastic vote can't tag a court on day one. This is <em>community</em> voting, and it's separate from the editorial <a href="/about#how-we-rank">Top pick</a> on each city page: that's our own starting-point recommendation (rated on surface, level, weather, and wait), never a paid placement and never driven by these votes — though a city's Top pick shifts to the highest community-rated court once enough people weigh in.</p>
+      </details>
+    </div>
     <div class="rankings-cta">
       <a class="btn" href="#top-10">See the Bay Area Top 10 →</a>
     </div>
@@ -134,6 +141,10 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span>
+        <p>An independent, ad-free directory of verified public pickleball courts.</p>
+      </div>
       <div>
         <h4>Regions</h4>
         <ul>

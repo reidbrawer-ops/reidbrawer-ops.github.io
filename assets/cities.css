@@ -1,0 +1,92 @@
+/* Cities index — scoped styles layered on top of style.css.
+   Every selector here is used on /cities/ only. The base .city-grid /
+   .city-card rules still live in style.css (they predate this file); this
+   file carries the deltas the design asks for on the directory view. */
+
+/* The quick-jump label is a second .eyebrow inside the hero, a pairing that
+   exists on this page only: .page-hero .lede carries no bottom margin because
+   it is normally the hero's last line, so the label needs its own lead-in. */
+.page-hero .lede + .eyebrow {
+  margin-top: var(--space-3);
+}
+
+/* The directory reads as one continuous list, not five 80px section bands:
+   the design puts 48px between region blocks. The <section> wrappers stay —
+   their ids are the footer's /cities/#slug targets on all 53 pages — they
+   just carry the tighter rhythm. The .section + .section hairline is kept. */
+.cities-region {
+  padding: 24px 0;
+}
+
+.cities-region:last-of-type {
+  padding-bottom: var(--space-5);
+}
+
+/* The region head here is a headline with its city count on the same
+   baseline, not the site's default headline/"see all →" split — so the count
+   rides inside .region-head's text column rather than opposite it. */
+.cities-region-head {
+  margin-bottom: 20px;
+}
+
+/* Fixed 26px, not the global h2 clamp: 42 of these are stacked down one page,
+   so the region name is a divider, not a page headline. */
+.cities-region-title {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cities-region-title h2 {
+  font-size: 26px;
+}
+
+.city-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.cities-region-head p {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+  max-width: 720px;
+}
+
+/* 220px columns, not the 260px default: at container width this turns three
+   341px cards into four 255px ones, which is what makes the page read as a
+   directory. auto-fill (not auto-fit) is load-bearing — it keeps the card
+   width stable in a three-city region like North Bay. */
+.city-grid {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+/* A city card is the smallest leaf in the system, so it sits one step inside
+   the 16px --radius-m feature-card default. */
+.city-card {
+  border-radius: 12px;
+  padding: 16px 18px;
+  gap: 4px;
+}
+
+/* The stat is the data voice: bare mono in deep teal, no chip. Deliberately
+   NOT .stat-chip — that pill is shared with the city and paddle pages, and a
+   --paper pill on a --paper card reads as a card on a card. */
+.city-stat {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--bay-deep);
+  margin-top: 6px;
+}
+
+/* Honesty state: a city with no verified venue says so in --ink-faint rather
+   than borrowing a neighbour's number. Unused today — all 42 cities have at
+   least one verified venue — and it stays here so the next city added without
+   one has somewhere honest to land. */
+.city-stat--unverified {
+  color: var(--ink-faint);
+}

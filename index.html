@@ -7,7 +7,7 @@
 <meta name="description" content="A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -56,6 +56,7 @@
 }
 </script>
 <link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/home.css">
 </head>
 <body>
 
@@ -63,7 +64,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span></a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -79,6 +80,9 @@
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
           <a href="/corrections">Report a correction</a>
+          <div class="nav-dropdown-rule"></div>
+          <a href="/affiliate-disclosure">Affiliate disclosure</a>
+          <a href="/privacy">Privacy</a>
         </div>
       </details>
       <a href="/about">About</a>
@@ -89,12 +93,12 @@
 
 <main id="main" tabindex="-1">
 
-<section class="hero">
+<section class="hero home-band home-hero">
   <div class="container">
     <div>
-      <p class="eyebrow">SF Bay Area · every region · updated July 2026</p>
-      <h1>The Bay, court by court.</h1>
-      <p class="lede">A working directory of public pickleball courts from the Presidio to Pleasanton — what's dedicated, what's shared with tennis, what it costs, and what to know before you show up.</p>
+      <p class="eyebrow eyebrow-pill">San Francisco Bay Area · Public court directory</p>
+      <h1>Every court, actually verified.</h1>
+      <p class="lede">A working directory of public pickleball courts across the San Francisco Bay Area, verified against each city's own recreation department listing.</p>
       <!-- Phase 2's global-search.js mounts the large hero search into this element.
            data-search-scope="courts" selects the courts+cities index. -->
       <div class="hero-search" data-search-scope="courts"></div>
@@ -103,110 +107,106 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section home-band home-lanes-band">
   <div class="container">
     <div class="region-head">
-      <div>
-        <h2>Start where you are</h2>
-        <p>Three ways in, depending on what you're here to do.</p>
-      </div>
+      <h2>Three ways in.</h2>
     </div>
     <div class="home-lanes">
       <div class="home-lane">
-        <p class="eyebrow">Locals &amp; visitors</p>
+        <div class="home-lane-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.6"/><line x1="10" y1="1.5" x2="10" y2="4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="10" y1="16" x2="10" y2="18.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="1.5" y1="10" x2="4" y2="10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="10" x2="18.5" y2="10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div class="eyebrow">Locals &amp; visitors</div>
         <h3>Find a court near you</h3>
-        <p>Search a city or neighborhood, see its courts on the map, and open any one for hours, surface, wait, and directions.</p>
-        <ol class="home-lane-steps">
-          <li>Search a city or venue</li>
-          <li>Scan the map &amp; list</li>
-          <li>Open a court for the details</li>
-        </ol>
-        <a class="btn" href="/map">Open the court finder →</a>
+        <p>Search a city or venue, scan the map &amp; list, open a court for the details.</p>
+        <a class="home-lane-link" href="/map">Find courts <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
       <div class="home-lane">
-        <p class="eyebrow">New to pickleball</p>
+        <div class="home-lane-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><path d="M3 5.5C3 4.7 3.7 4 4.5 4H9V16H4.5C3.7 16 3 15.3 3 14.5V5.5Z" stroke="currentColor" stroke-width="1.5"/><path d="M17 5.5C17 4.7 16.3 4 15.5 4H11V16H15.5C16.3 16 17 15.3 17 14.5V5.5Z" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+        <div class="eyebrow">New to pickleball</div>
         <h3>Never played before?</h3>
-        <p>Learn the basics in a couple of minutes, find a beginner-friendly court, and rent a paddle before you commit to buying one.</p>
-        <ol class="home-lane-steps">
-          <li><a href="/learn">Learn the basics</a></li>
-          <li><a href="/map">Find a beginner court</a></li>
-          <li><a href="/paddles#rent">Rent a paddle first</a></li>
-        </ol>
-        <a class="btn" href="/learn">Start with the basics →</a>
+        <p>Learn the basics, find a beginner-friendly court, rent a paddle before you buy.</p>
+        <a class="home-lane-link" href="/learn">Learn to play <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
       <div class="home-lane">
-        <p class="eyebrow">Ready to buy</p>
+        <div class="home-lane-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="8" rx="6" ry="7" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="15" x2="10" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="eyebrow">Ready to buy</div>
         <h3>Find your paddle</h3>
-        <p>Answer a few questions about your game and budget, get matched picks, and buy the one that fits — with an honest note on how the links work.</p>
-        <ol class="home-lane-steps">
-          <li>Take the quick quiz</li>
-          <li>See your matched picks</li>
-          <li>Buy the one that fits</li>
-        </ol>
-        <a class="btn" href="/paddles#quiz">Take the paddle quiz →</a>
+        <p>Take the quick quiz, see matched picks, buy the one that fits.</p>
+        <a class="home-lane-link" href="/paddles#quiz">Find your paddle <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section home-band home-regions">
   <div class="container">
     <div class="region-head">
-      <div>
-        <h2>Explore by region</h2>
-        <p>Organized the way you'd actually drive the loop, not alphabetically.</p>
-      </div>
+      <h2>Browse by region.</h2>
+      <a class="overview-link" href="/cities/">See all cities →</a>
     </div>
     <div class="region-grid">
       <a class="region-card" href="/cities/#san-francisco">
-        <p class="eyebrow">1 city</p>
-        <h3>San Francisco</h3>
+        <div class="region-card-head">
+          <h3>San Francisco</h3>
+          <span class="eyebrow">1 city</span>
+        </div>
         <p>Fog, wind, and a rec department racing to convert tennis courts as fast as demand grows.</p>
       </a>
       <a class="region-card" href="/cities/#peninsula">
-        <p class="eyebrow">10 cities</p>
-        <h3>Peninsula</h3>
+        <div class="region-card-head">
+          <h3>Peninsula</h3>
+          <span class="eyebrow">10 cities</span>
+        </div>
         <p>From Daly City down to San Carlos — a 15-court flagship in Palo Alto, plus neighborhood-park scenes in Menlo Park, San Mateo, Burlingame, Belmont and more.</p>
       </a>
       <a class="region-card" href="/cities/#south-bay">
-        <p class="eyebrow">10 cities</p>
-        <h3>South Bay</h3>
+        <div class="region-card-head">
+          <h3>South Bay</h3>
+          <span class="eyebrow">10 cities</span>
+        </div>
         <p>San Jose, Sunnyvale, Santa Clara, Cupertino, Mountain View, Los Gatos and beyond — the highest court count in the Bay, and its most contentious siting fight.</p>
       </a>
       <a class="region-card" href="/cities/#east-bay">
-        <p class="eyebrow">18 cities</p>
-        <h3>East Bay</h3>
+        <div class="region-card-head">
+          <h3>East Bay</h3>
+          <span class="eyebrow">18 cities</span>
+        </div>
         <p>Oakland, Berkeley, Fremont, Walnut Creek, Alameda and a dozen more — free city parks a few miles from members-only clubs.</p>
       </a>
       <a class="region-card" href="/cities/#north-bay">
-        <p class="eyebrow">3 cities</p>
-        <h3>North Bay</h3>
+        <div class="region-card-head">
+          <h3>North Bay</h3>
+          <span class="eyebrow">3 cities</span>
+        </div>
         <p>San Rafael, Novato and Vallejo — a small, indoor-heavy scene that's easy to book ahead.</p>
       </a>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section section--dark home-band home-trust">
   <div class="container">
     <div class="region-head">
-      <div>
-        <h2>What this guide does</h2>
-        <p>And, just as importantly, what it doesn't.</p>
-      </div>
+      <h2>How this stays honest.</h2>
     </div>
     <div class="trio">
       <div>
-        <h3>What we check</h3>
-        <p>Every venue listed here is cross-referenced against its city's own recreation department page or facility directory — not just pulled from a court-finder app and left unverified.</p>
+        <h3 class="eyebrow">What we check</h3>
+        <p>Every venue is cross-referenced against a real source — its city's own recreation department page or facility directory wherever one exists, and the venue's own listing for the private clubs no city directory covers. Not pulled from an app and left unverified.</p>
       </div>
       <div>
-        <h3>What we don't do</h3>
-        <p>No ads, no pay-to-list, and nothing sponsors or influences our court data — that stays independent. Some paddle &amp; gear links may be <a href="/affiliate-disclosure">affiliate links</a>, disclosed at each one. If a city's scene is thin or contested, we say so.</p>
+        <h3 class="eyebrow">What we don't do</h3>
+        <p>No ads. No pay-to-list. Nothing sponsors or influences the court data. Some paddle &amp; gear links are <a href="/affiliate-disclosure">affiliate</a> — always disclosed at the link. If a city's scene is thin or contested, we say so.</p>
       </div>
       <div>
-        <h3>How to use it</h3>
-        <p>Court counts, hours, and fees move with city budgets and construction schedules. Treat this as a starting point, then check the source link at the bottom of each city's page.</p>
+        <h3 class="eyebrow">How to use it</h3>
+        <p>Court counts, hours, and fees move with city budgets and construction. Treat this as a starting point, then check the source link on each city's page. Data verified July 2026.</p>
       </div>
     </div>
   </div>
@@ -217,6 +217,10 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span>
+        <p>An independent, ad-free directory of verified public pickleball courts.</p>
+      </div>
       <div>
         <h4>Regions</h4>
         <ul>

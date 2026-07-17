@@ -1,6 +1,6 @@
-/* Phase 5: Paddles & Gear hub (/paddles) — the Rent -> Quiz -> Buy funnel.
-   Layout-only styles for the consolidated hub; the quiz itself keeps
-   paddle-quiz.css and the affiliate disclosure lives there too. */
+/* Paddles & Gear hub (/paddles) — scoped styles layered on top of style.css.
+   The Rent -> Quiz -> Buy funnel. The quiz itself keeps paddle-quiz.css, and
+   the affiliate disclosure lives there too, at the links it discloses. */
 
 /* Two-way "Find your paddle / Rent & try" chooser in the hero — the quiz
    (primary) and renting, presented as an either/or, not a 1-2-3 sequence. */
@@ -11,6 +11,9 @@
   margin-top: var(--space-3);
 }
 
+/* 14px is the design's radius for a thing you click, as against 16px for a
+   card you read — these are choices, so they take the control radius and the
+   same lift the quiz's options do. */
 .pf-choice {
   flex: 1 1 260px;
   display: flex;
@@ -18,7 +21,7 @@
   gap: 0.3rem;
   padding: 1.1rem 1.25rem;
   border: 1px solid var(--line);
-  border-radius: var(--radius-m);
+  border-radius: 14px;
   background: var(--paper);
   text-decoration: none;
   color: var(--ink);
@@ -49,19 +52,250 @@
   color: var(--ink-soft);
 }
 
-/* Funnel-stage section header — an eyebrow with its step number so the
-   three stages read as one sequence, not three unrelated pages stitched
-   together. */
+/* Funnel-stage section header, so the stages read as one sequence rather than
+   three unrelated pages stitched together. Its eyebrow keeps the global
+   --ink-soft: the design tints an eyebrow only when the panel around it is
+   tinted too (see the rent callout below), and a teal eyebrow floating on
+   bare paper was a v3 habit the redesign drops. */
 .pf-stage-head {
   margin-bottom: var(--space-2);
 }
 
-.pf-stage-head .eyebrow {
-  color: var(--bay);
-}
-
-/* Anchor offset so a #rent/#quiz/#buy jump doesn't hide the heading under
-   the sticky site header. */
+/* Anchor offset so a #rent/#quiz jump doesn't hide the heading under the
+   sticky site header. */
 .pf-anchor {
   scroll-margin-top: 5rem;
+}
+
+/* The design's rent callout is the teal-pale one: --bay-tint at 14px with a
+   mono --bay-deep label. The global .callout is clay, which is right for the
+   North Bay "why this region is short" caveat further down this page — that
+   one is a warning — but wrong here, where the panel is the friendliest thing
+   on the page: how to try a paddle today without buying one. Scoped to #rent
+   so the caveat keeps its clay. */
+#rent .callout {
+  background: var(--bay-tint);
+  border: 1px solid rgba(var(--bay-rgb), 0.25);
+  border-radius: 14px;
+  padding: 18px 22px;
+}
+
+#rent .callout .eyebrow {
+  color: var(--bay-deep);
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Browsable catalog (#browse, assets/paddle-grid.js) ---------- */
+
+/* The grid is the quiz's opposite number: the quiz narrows 486 paddles to 3,
+   this hands over all 486 and gets out of the way. Everything below is the
+   design's paddle-grid spec; the markup is generated, so these selectors are
+   the contract with paddle-grid.js. */
+
+.pg-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pg-select {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--paper);
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Clay text on bare paper, no chrome — Reset is a way out, not a third
+   choice competing with the filters beside it. */
+.pg-reset {
+  margin-left: auto;
+  padding: 10px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  color: var(--poppy-deep);
+  background: none;
+  border: none;
+}
+
+.pg-reset:hover {
+  text-decoration: underline;
+}
+
+.pg-count {
+  font-family: var(--font-display);
+  font-size: 0.84375rem;
+  color: var(--ink-faint);
+  margin: 0 0 0.5rem;
+}
+
+.pg-rent {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  background: var(--bay-tint);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+}
+
+.pg-rent-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--bay-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pg-rent-body {
+  font-family: var(--font-display);
+  font-size: 0.84375rem;
+  color: var(--ink);
+}
+
+.pg-rent-link {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  color: var(--bay-deep);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* auto-FILL, not auto-fit: a filter that leaves two results should show two
+   240px cards, not two half-width ones. */
+.pg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pg-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 18px;
+}
+
+.pg-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.pg-brand {
+  font-family: var(--font-mono);
+  font-size: 0.65625rem;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pg-model {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.pg-price {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.pg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.pg-chip {
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  background: var(--fog-dim);
+  color: var(--ink-soft);
+}
+
+.pg-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--body-ink);
+}
+
+.pg-specs b {
+  color: var(--ink);
+}
+
+.pg-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule-08);
+}
+
+.pg-note {
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+/* .btn carries the optic ground + ink border + hover invert; only the
+   proportions differ at card scale. */
+.pg-buy.btn {
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.78125rem;
+  white-space: nowrap;
+}
+
+.pg-empty {
+  background: var(--paper);
+  border: 1px dashed var(--rule-25);
+  border-radius: var(--radius-m);
+  padding: 40px;
+  text-align: center;
+}
+
+.pg-empty p {
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+  color: var(--ink);
+  margin: 0 0 1rem;
+}
+
+/* The design's fixed 1fr 1fr spec grid never collapses; below ~380px its two
+   columns can't hold a label plus a mono value. */
+@media (max-width: 380px) {
+  .pg-specs {
+    grid-template-columns: 1fr;
+  }
 }

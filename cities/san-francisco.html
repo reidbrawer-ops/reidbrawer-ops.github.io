@@ -7,7 +7,7 @@
 <meta name="description" content="Where to play pickleball in San Francisco: 20 locations citywide, how the rec.us reservation system works, and how the top courts compare on surface, level, weather, and wait.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -36,7 +36,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span></a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -52,6 +52,9 @@
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
           <a href="/corrections">Report a correction</a>
+          <div class="nav-dropdown-rule"></div>
+          <a href="/affiliate-disclosure">Affiliate disclosure</a>
+          <a href="/privacy">Privacy</a>
         </div>
       </details>
       <a href="/about">About</a>
@@ -62,9 +65,9 @@
 
 <main id="main" tabindex="-1">
 
-<section class="page-hero">
+<section class="page-hero page-hero--city">
   <div class="container">
-    <p class="eyebrow"><a href="/cities/#san-francisco">San Francisco region</a></p>
+    <p class="eyebrow crumbs"><a href="/cities/">Cities</a> / <a href="/cities/#san-francisco">San Francisco</a> / <span aria-current="page">San Francisco</span></p>
     <h1>San Francisco</h1>
     <p class="lede">Twenty locations citywide, from brand-new dedicated complexes to a single court dual-striped onto a volleyball court. Most run through one booking system; only three have permanent nets — bring your own everywhere else.</p>
     <div class="stat-strip">
@@ -577,9 +580,18 @@
       <li>Wind is a real variable — afternoon games near the coast (Sunset, Parkside, Presidio) get gusty fast, while McLaren Park and downtown courts run noticeably calmer.</li>
     </ul>
 
-    <p class="sources">Sources: <a href="https://sfrecpark.org/1772/Where-to-Play-Pickleball" target="_blank" rel="noopener">SF Recreation &amp; Parks — Where to Play Pickleball</a> · <a href="https://sfrecpark.org/1188/How-to-Book-a-Tennis-or-Pickleball-Court" target="_blank" rel="noopener">SF Rec &amp; Park — Booking</a> · <a href="https://www.places2play.org/city/san-francisco-california" target="_blank" rel="noopener">Places2Play — San Francisco</a> · <a href="https://www.lifetimeactivities.com/san-francisco/pickleball/" target="_blank" rel="noopener">Lifetime Activities — Goldman Tennis Center</a> · <a href="https://pickleballsf.com/locations/" target="_blank" rel="noopener">San Francisco Pickleball Community</a>. Verified July 2026 — always confirm hours and reservation status before a special trip.</p>
+    <div class="source-checked">
+      <div class="stamp stamp--s" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10.5L8 14.5L16 5.5" stroke="var(--bay)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div>
+        <p class="eyebrow">Source-checked</p>
+        <p><a href="https://sfrecpark.org/1772/Where-to-Play-Pickleball" target="_blank" rel="noopener">SF Recreation &amp; Parks — Where to Play Pickleball</a> · <a href="https://sfrecpark.org/1188/How-to-Book-a-Tennis-or-Pickleball-Court" target="_blank" rel="noopener">SF Rec &amp; Park — Booking</a> · <a href="https://www.places2play.org/city/san-francisco-california" target="_blank" rel="noopener">Places2Play — San Francisco</a> · <a href="https://www.lifetimeactivities.com/san-francisco/pickleball/" target="_blank" rel="noopener">Lifetime Activities — Goldman Tennis Center</a> · <a href="https://pickleballsf.com/locations/" target="_blank" rel="noopener">San Francisco Pickleball Community</a>. Verified July 2026 — always confirm hours and reservation status before a special trip.</p>
+      </div>
+    </div>
   </div>
 </section>
+
+
+</main>
 
 <!-- lane-router:start · source: partials/lane-router.html · regenerate: node scripts/sync-lane-router.js -->
 <section class="section">
@@ -608,11 +620,13 @@
 </section>
 <!-- lane-router:end -->
 
-</main>
-
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span>
+        <p>An independent, ad-free directory of verified public pickleball courts.</p>
+      </div>
       <div>
         <h4>Regions</h4>
         <ul>

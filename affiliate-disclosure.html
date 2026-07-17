@@ -7,7 +7,7 @@
 <meta name="description" content="How affiliate links work on Pickleball Bay Area: paddle and gear links may earn a commission, court data stays independent and is never influenced by them.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -26,6 +26,53 @@
 <meta name="twitter:image" content="https://pickleball-bay-area.com/assets/logo/og-image.png">
 <link rel="canonical" href="https://pickleball-bay-area.com/affiliate-disclosure">
 <link rel="stylesheet" href="/assets/style.css">
+<style>
+  /* Legal shell — shared verbatim with /privacy. The design's legal pages are
+     deliberately quiet: a 720px column, a mono "Legal" label, a serif H1, and
+     one uninterrupted prose measure. No hero rule, no lede, no cards.
+     Duplicated in privacy.html rather than added to style.css because these
+     four pages were re-skinned in isolation; safe to promote to style.css. */
+  .legal-col { max-width: 720px; }
+
+  .legal-hero {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .legal-hero h1 { font-size: clamp(28px, 4vw, 40px); }
+
+  .legal-body { padding-top: 24px; }
+
+  .legal-prose {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--body-ink);
+  }
+
+  .legal-prose > p { margin: 0; }
+
+  /* Subheads the prototype's 4-paragraph mock doesn't have, but the real
+     policy does — long-form legal copy needs anchors and scan targets. */
+  .legal-prose h2 {
+    font-size: 20px;
+    margin: 18px 0 0;
+  }
+
+  .legal-prose h2:first-child { margin-top: 0; }
+
+  .legal-prose .know-list { font-size: 15.5px; }
+
+  /* The Associates line is required verbatim wherever affiliate links appear —
+     it gets its own weight rather than dissolving into the measure. */
+  .legal-lead {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+</style>
 </head>
 <body>
 
@@ -33,7 +80,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span></a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -49,6 +96,9 @@
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
           <a href="/corrections">Report a correction</a>
+          <div class="nav-dropdown-rule"></div>
+          <a href="/affiliate-disclosure">Affiliate disclosure</a>
+          <a href="/privacy">Privacy</a>
         </div>
       </details>
       <a href="/about">About</a>
@@ -59,60 +109,45 @@
 
 <main id="main" tabindex="-1">
 
-<section class="page-hero">
-  <div class="container">
-    <p class="eyebrow">Affiliate disclosure</p>
-    <h1>How this site makes money — and what it never touches.</h1>
-    <p class="lede">The short version: some paddle and gear links here are affiliate links. If you buy after clicking one, we may earn a small commission at no extra cost to you. Our court listings, city pages, rankings, and directory carry no affiliate links and are never influenced by them.</p>
-    <p class="lede"><strong>As an Amazon Associate I earn from qualifying purchases.</strong></p>
+<section class="page-hero legal-hero">
+  <div class="container legal-col">
+    <p class="eyebrow">Legal</p>
+    <h1>Affiliate disclosure.</h1>
   </div>
 </section>
 
-<section class="section">
-  <div class="container">
-    <div class="trio">
-      <div>
-        <h3>What's independent</h3>
-        <p>Everything about where to play. Court and city pages, the map, community rankings, and the directory are researched against each city's own recreation department pages. No venue pays to be listed, ranked higher, or featured — and no affiliate relationship changes any of it.</p>
-      </div>
-      <div>
-        <h3>What may earn a commission</h3>
-        <p>Only paddle and gear links, on the <a href="/paddles">Paddles &amp; Gear</a> page and in the paddle quiz results. When you buy a paddle or gear through one of those links, the retailer or brand may pay us a referral commission. You pay the same price either way.</p>
-      </div>
-      <div>
-        <h3>Why we do it this way</h3>
-        <p>Court research takes real time to keep current, and affiliate commissions on gear are what let it stay free and ad-free. Keeping the money strictly on the gear side is how the court data stays trustworthy.</p>
-      </div>
-    </div>
-  </div>
-</section>
+<section class="section legal-body">
+  <div class="container legal-col">
+    <div class="legal-prose">
+      <p>Court data on this site is never for sale — no venue, city, or club can pay for placement, rank, or a badge.</p>
+      <p>Some links on the <a href="/paddles">Paddles &amp; Gear</a> page and in paddle quiz results are affiliate links. If you buy through one, we may earn a small commission at no extra cost to you. The disclosure sits with the links themselves, never in a footnote.</p>
+      <p class="legal-lead"><strong>As an Amazon Associate I earn from qualifying purchases.</strong></p>
+      <p>Affiliate relationships never influence which paddles appear, how they're described, or how the quiz scores them. The quiz matches you to paddles based on your answers only.</p>
 
-<section class="section">
-  <div class="container">
-    <div class="region-head">
-      <div>
-        <h2>How affiliate links work</h2>
-        <p>Plain-English, the way the FTC asks sites to explain it.</p>
-      </div>
-    </div>
-    <ul class="know-list">
-      <li>An affiliate link carries a code that tells the retailer or brand the visit came from us. If you buy, they pay us a percentage of the sale.</li>
-      <li>It costs you nothing extra. The price is the same as going to the retailer directly, and you're free to do that instead.</li>
-      <li>Affiliate links open in a new tab and are marked <code>rel="sponsored"</code> so search engines and browsers can see them for what they are.</li>
-      <li>We label them at the point of use — you'll see a short "we may earn a commission" note next to buy links, not buried in fine print.</li>
-      <li>A recommendation is never for sale. Paddle picks come from the quiz's fit logic and specs, not from which program pays the most. If we can't honestly recommend something, it isn't listed.</li>
-    </ul>
-  </div>
-</section>
+      <h2>What's independent</h2>
+      <p>Everything about where to play. Court and city pages, the map, community rankings, and the directory are researched against each city's own recreation department pages. No venue pays to be listed, ranked higher, or featured — and no affiliate relationship changes any of it.</p>
 
-<section class="section">
-  <div class="container">
-    <div class="callout">
-      <p class="eyebrow">The firewall</p>
+      <h2>What may earn a commission</h2>
+      <p>Only paddle and gear links, on the <a href="/paddles">Paddles &amp; Gear</a> page and in the paddle quiz results. When you buy a paddle or gear through one of those links, the retailer or brand may pay us a referral commission. You pay the same price either way.</p>
+
+      <h2>How affiliate links work</h2>
+      <p>Plain-English, the way the FTC asks sites to explain it.</p>
+      <ul class="know-list">
+        <li>An affiliate link carries a code that tells the retailer or brand the visit came from us. If you buy, they pay us a percentage of the sale.</li>
+        <li>It costs you nothing extra. The price is the same as going to the retailer directly, and you're free to do that instead.</li>
+        <li>Affiliate links open in a new tab and are marked <code>rel="sponsored"</code> so search engines and browsers can see them for what they are.</li>
+        <li>We label them at the point of use — you'll see a short "we may earn a commission" note next to buy links, not buried in fine print.</li>
+        <li>A recommendation is never for sale. Paddle picks come from the quiz's fit logic and specs, not from which program pays the most. If we can't honestly recommend something, it isn't listed.</li>
+      </ul>
+
+      <h2>Why we do it this way</h2>
+      <p>Court research takes real time to keep current, and affiliate commissions on gear are what let it stay free and ad-free. Keeping the money strictly on the gear side is how the court data stays trustworthy.</p>
+
+      <h2>The firewall</h2>
       <p>No affiliate commission, retailer, or brand has any influence on which courts we list, how they're rated, or where they rank. Community rankings come from visitor votes on <a href="/rankings">/rankings</a>. If that ever changes, it will be disclosed here first.</p>
+      <p>This complements our <a href="/privacy">privacy policy</a>, which covers cookies and the data affiliate programs may set once you reach a retailer's site.</p>
+      <p class="sources">Last updated: July 2026. Questions about this disclosure can be sent through the <a href="/corrections">correction form</a>.</p>
     </div>
-    <p>This complements our <a href="/privacy">privacy policy</a>, which covers cookies and the data affiliate programs may set once you reach a retailer's site.</p>
-    <p class="sources">Last updated: July 2026. Questions about this disclosure can be sent through the <a href="/corrections">correction form</a>.</p>
   </div>
 </section>
 
@@ -121,6 +156,10 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span>
+        <p>An independent, ad-free directory of verified public pickleball courts.</p>
+      </div>
       <div>
         <h4>Regions</h4>
         <ul>

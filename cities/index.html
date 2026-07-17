@@ -7,7 +7,7 @@
 <meta name="description" content="Bay Area cities with verified public pickleball courts, organized by region: San Francisco, Peninsula, South Bay, East Bay, North Bay.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -29,6 +29,7 @@
 { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://pickleball-bay-area.com/" }, { "@type": "ListItem", "position": 2, "name": "Cities", "item": "https://pickleball-bay-area.com/cities/" } ] }
 </script>
 <link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/cities.css">
 </head>
 <body>
 
@@ -36,7 +37,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span></a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -52,6 +53,9 @@
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
           <a href="/corrections">Report a correction</a>
+          <div class="nav-dropdown-rule"></div>
+          <a href="/affiliate-disclosure">Affiliate disclosure</a>
+          <a href="/privacy">Privacy</a>
         </div>
       </details>
       <a href="/about">About</a>
@@ -72,11 +76,11 @@
   </div>
 </section>
 
-<section class="section" id="san-francisco">
+<section class="section cities-region" id="san-francisco">
   <div class="container">
-    <div class="region-head">
+    <div class="region-head cities-region-head">
       <div>
-        <h2>San Francisco</h2>
+        <div class="cities-region-title"><h2>San Francisco</h2><span class="city-count">1 city</span></div>
         <p>One city, but a rec department building faster than almost anywhere else in the Bay.</p>
       </div>
     </div>
@@ -86,17 +90,17 @@
       <a class="city-card" href="/cities/san-francisco">
         <div class="name-row"><h3>San Francisco</h3><span class="arrow">→</span></div>
         <p>New dedicated complexes in the Sunset and Portola, lined courts in Presidio Heights, and indoor play in four rec centers when the fog rolls in.</p>
-        <span class="stat-chip">Dedicated complexes + indoor rec centers</span>
+        <span class="city-stat">Dedicated complexes + indoor rec centers</span>
       </a>
     </div>
   </div>
 </section>
 
-<section class="section" id="peninsula">
+<section class="section cities-region" id="peninsula">
   <div class="container">
-    <div class="region-head">
+    <div class="region-head cities-region-head">
       <div>
-        <h2>Peninsula</h2>
+        <div class="cities-region-title"><h2>Peninsula</h2><span class="city-count">10 cities</span></div>
         <p>From a 750-member club at a 15-court flagship to smaller, two-park neighborhood scenes a short drive away.</p>
       </div>
     </div>
@@ -104,62 +108,62 @@
       <a class="city-card" id="palo-alto" href="/cities/palo-alto">
         <div class="name-row"><h3>Palo Alto</h3><span class="arrow">→</span></div>
         <p>Mitchell Park's 15 courts make it the single biggest flagship on the Peninsula — eight open 24/7, six lit for nights.</p>
-        <span class="stat-chip">Mitchell Park · 15 courts</span>
+        <span class="city-stat">Mitchell Park · 15 courts</span>
       </a>
       <a class="city-card" id="menlo-park" href="/cities/menlo-park">
         <div class="name-row"><h3>Menlo Park</h3><span class="arrow">→</span></div>
         <p>Eight courts split across two parks — Kelly Park, half reservable, and Nealon Park, drop-in only and the busier of the two.</p>
-        <span class="stat-chip">Two parks · drop-in + reservable</span>
+        <span class="city-stat">Two parks · drop-in + reservable</span>
       </a>
       <a class="city-card" id="redwood-city" href="/cities/redwood-city">
         <div class="name-row"><h3>Redwood City</h3><span class="arrow">→</span></div>
         <p>Red Morton Park's outdoor courts, its own indoor Senior Center session, and a beginner-friendly YMCA night across town.</p>
-        <span class="stat-chip">Outdoor park + indoor sessions</span>
+        <span class="city-stat">Outdoor park + indoor sessions</span>
       </a>
       <a class="city-card" id="san-mateo" href="/cities/san-mateo">
         <div class="name-row"><h3>San Mateo</h3><span class="arrow">→</span></div>
         <p>A busy downtown park with a crowding petition to its name, plus a Sunday indoor drop-in across town.</p>
-        <span class="stat-chip">Downtown park + Sunday indoor</span>
+        <span class="city-stat">Downtown park + Sunday indoor</span>
       </a>
       <a class="city-card" id="belmont" href="/cities/belmont">
         <div class="name-row"><h3>Belmont</h3><span class="arrow">→</span></div>
         <p>Two small parks, four courts total — Alexander Park and Hallmark Park, both free and city-run.</p>
-        <span class="stat-chip">Two free city parks</span>
+        <span class="city-stat">Two free city parks</span>
       </a>
       <a class="city-card" id="burlingame" href="/cities/burlingame">
         <div class="name-row"><h3>Burlingame</h3><span class="arrow">→</span></div>
         <p>Free striped park courts to a 6-court indoor club, anchored by Washington Park's 8.</p>
-        <span class="stat-chip">Park courts + indoor club</span>
+        <span class="city-stat">Park courts + indoor club</span>
       </a>
       <a class="city-card" id="daly-city" href="/cities/daly-city">
         <div class="name-row"><h3>Daly City</h3><span class="arrow">→</span></div>
         <p>A foggy community-center gym to a Bay Club outpost — thinner data than most, worth a call ahead.</p>
-        <span class="stat-chip">Community gym + Bay Club</span>
+        <span class="city-stat">Community gym + Bay Club</span>
       </a>
       <a class="city-card" id="san-bruno" href="/cities/san-bruno">
         <div class="name-row"><h3>San Bruno</h3><span class="arrow">→</span></div>
         <p>A pilot program painted onto City Park's tennis courts, plus a Wednesday indoor drop-in at the Rec and Aquatic Center.</p>
-        <span class="stat-chip">Park pilot + indoor drop-in</span>
+        <span class="city-stat">Park pilot + indoor drop-in</span>
       </a>
       <a class="city-card" id="san-carlos" href="/cities/san-carlos">
         <div class="name-row"><h3>San Carlos</h3><span class="arrow">→</span></div>
         <p>Highlands Park's 4 free courts are the anchor; the indoor Youth Center program is paused for summer.</p>
-        <span class="stat-chip">Highlands Park · free courts</span>
+        <span class="city-stat">Highlands Park · free courts</span>
       </a>
       <a class="city-card" id="south-san-francisco" href="/cities/south-san-francisco">
         <div class="name-row"><h3>South San Francisco</h3><span class="arrow">→</span></div>
         <p>From Sellick Park to a members-only indoor club — a dedicated 6-court park is still in design.</p>
-        <span class="stat-chip">Parks + members-only club</span>
+        <span class="city-stat">Parks + members-only club</span>
       </a>
     </div>
   </div>
 </section>
 
-<section class="section" id="south-bay">
+<section class="section cities-region" id="south-bay">
   <div class="container">
-    <div class="region-head">
+    <div class="region-head cities-region-head">
       <div>
-        <h2>South Bay</h2>
+        <div class="cities-region-title"><h2>South Bay</h2><span class="city-count">10 cities</span></div>
         <p>The highest court count anywhere in the Bay Area — and its most contentious siting fight.</p>
       </div>
     </div>
@@ -167,62 +171,62 @@
       <a class="city-card" id="san-jose" href="/cities/san-jose">
         <div class="name-row"><h3>San Jose</h3><span class="arrow">→</span></div>
         <p>The Bay's biggest scene by far — from a club-run park to free college courts, spread right across the city.</p>
-        <span class="stat-chip">The Bay's biggest scene</span>
+        <span class="city-stat">The Bay's biggest scene</span>
       </a>
       <a class="city-card" id="santa-clara" href="/cities/santa-clara">
         <div class="name-row"><h3>Santa Clara</h3><span class="arrow">→</span></div>
         <p>A public reservation court at Central Park and a private dedicated-line club at Bay Club — no walk-up option at either.</p>
-        <span class="stat-chip">Reservation court + private club</span>
+        <span class="city-stat">Reservation court + private club</span>
       </a>
       <a class="city-card" id="sunnyvale" href="/cities/sunnyvale">
         <div class="name-row"><h3>Sunnyvale</h3><span class="arrow">→</span></div>
         <p>The Tennis Center's dedicated courts, plus a once-a-week indoor session at the Community Center.</p>
-        <span class="stat-chip">Tennis Center + indoor session</span>
+        <span class="city-stat">Tennis Center + indoor session</span>
       </a>
       <a class="city-card" id="cupertino" href="/cities/cupertino">
         <div class="name-row"><h3>Cupertino</h3><span class="arrow">→</span></div>
         <p>Memorial Park's free courts, plus a sports center and a community college with their own scenes — still called a "pickleball desert" locally.</p>
-        <span class="stat-chip">Park + sports center + college</span>
+        <span class="city-stat">Park + sports center + college</span>
       </a>
       <a class="city-card" id="mountain-view" href="/cities/mountain-view">
         <div class="name-row"><h3>Mountain View</h3><span class="arrow">→</span></div>
         <p>3 dedicated + 6 shared courts at Rengstorff Park, plus a residents-only indoor pavilion. A Cuesta Park expansion collapsed under neighborhood opposition.</p>
-        <span class="stat-chip">Rengstorff Park · dedicated + shared</span>
+        <span class="city-stat">Rengstorff Park · dedicated + shared</span>
       </a>
       <a class="city-card" id="campbell" href="/cities/campbell">
         <div class="name-row"><h3>Campbell</h3><span class="arrow">→</span></div>
         <p>A 20-court membership club (The HUB) and a seasonal city-gym drop-in are the only two options.</p>
-        <span class="stat-chip">Membership club + city gym</span>
+        <span class="city-stat">Membership club + city gym</span>
       </a>
       <a class="city-card" id="los-altos" href="/cities/los-altos">
         <div class="name-row"><h3>Los Altos</h3><span class="arrow">→</span></div>
         <p>McKenzie Park's 6 free courts, a private country club, and a disputed school-gym claim.</p>
-        <span class="stat-chip">Free park + private clubs</span>
+        <span class="city-stat">Free park + private clubs</span>
       </a>
       <a class="city-card" id="los-gatos" href="/cities/los-gatos">
         <div class="name-row"><h3>Los Gatos</h3><span class="arrow">→</span></div>
         <p>A private club, a JCC, a contentious free park mid-renovation, and a school gym.</p>
-        <span class="stat-chip">Club, JCC, park + school gym</span>
+        <span class="city-stat">Club, JCC, park + school gym</span>
       </a>
       <a class="city-card" id="milpitas" href="/cities/milpitas">
         <div class="name-row"><h3>Milpitas</h3><span class="arrow">→</span></div>
         <p>A brand-new Picklr club and two still-informal park pilots.</p>
-        <span class="stat-chip">New Picklr club + park pilots</span>
+        <span class="city-stat">New Picklr club + park pilots</span>
       </a>
       <a class="city-card" id="saratoga" href="/cities/saratoga">
         <div class="name-row"><h3>Saratoga</h3><span class="arrow">→</span></div>
         <p>El Quito Park and West Valley College anchor it; two private clubs round out the scene.</p>
-        <span class="stat-chip">El Quito Park + West Valley College</span>
+        <span class="city-stat">El Quito Park + West Valley College</span>
       </a>
     </div>
   </div>
 </section>
 
-<section class="section" id="east-bay">
+<section class="section cities-region" id="east-bay">
   <div class="container">
-    <div class="region-head">
+    <div class="region-head cities-region-head">
       <div>
-        <h2>East Bay</h2>
+        <div class="cities-region-title"><h2>East Bay</h2><span class="city-count">18 cities</span></div>
         <p>Free city parks a few miles from members-only clubs — the range is wide here.</p>
       </div>
     </div>
@@ -230,102 +234,102 @@
       <a class="city-card" id="oakland" href="/cities/oakland">
         <div class="name-row"><h3>Oakland</h3><span class="arrow">→</span></div>
         <p>Free city parks (Bushrod, Montclair) a few miles from a private club scene (Pickle Athletics, Oakland Hills).</p>
-        <span class="stat-chip">Free parks + private clubs</span>
+        <span class="city-stat">Free parks + private clubs</span>
       </a>
       <a class="city-card" id="berkeley" href="/cities/berkeley">
         <div class="name-row"><h3>Berkeley</h3><span class="arrow">→</span></div>
         <p>Cedar Rose Park is the real flagship here — 4 bookable dedicated courts the city's own directory used to miss entirely.</p>
-        <span class="stat-chip">4 courts · bookable</span>
+        <span class="city-stat">4 courts · bookable</span>
       </a>
       <a class="city-card" id="walnut-creek" href="/cities/walnut-creek">
         <div class="name-row"><h3>Walnut Creek</h3><span class="arrow">→</span></div>
         <p>Rudgear Park's 8 free courts (the busiest spot in town) plus Heather Farm's smaller reservable option.</p>
-        <span class="stat-chip">Rudgear Park + Heather Farm</span>
+        <span class="city-stat">Rudgear Park + Heather Farm</span>
       </a>
       <a class="city-card" id="fremont" href="/cities/fremont">
         <div class="name-row"><h3>Fremont</h3><span class="arrow">→</span></div>
         <p>Free courts at the Central Park Knoll, reservable ones at the Tennis Center, plus a couple of private options.</p>
-        <span class="stat-chip">Free + reservable + private</span>
+        <span class="city-stat">Free + reservable + private</span>
       </a>
       <a class="city-card" id="pleasanton" href="/cities/pleasanton">
         <div class="name-row"><h3>Pleasanton</h3><span class="arrow">→</span></div>
         <p>Free courts at Muirwood, blended lines at the Community Park, plus a gym session and two private clubs.</p>
-        <span class="stat-chip">Free parks + gym + clubs</span>
+        <span class="city-stat">Free parks + gym + clubs</span>
       </a>
       <a class="city-card" id="alameda" href="/cities/alameda">
         <div class="name-row"><h3>Alameda</h3><span class="arrow">→</span></div>
         <p>Free city parks to a 15-court club that opened in 2024.</p>
-        <span class="stat-chip">City parks + 15-court club</span>
+        <span class="city-stat">City parks + 15-court club</span>
       </a>
       <a class="city-card" id="albany" href="/cities/albany">
         <div class="name-row"><h3>Albany</h3><span class="arrow">→</span></div>
         <p>Ocean View Park's 4 courts — long miscategorized as Berkeley's on other sites — are the city's real anchor.</p>
-        <span class="stat-chip">Ocean View Park · anchor</span>
+        <span class="city-stat">Ocean View Park · anchor</span>
       </a>
       <a class="city-card" id="concord" href="/cities/concord">
         <div class="name-row"><h3>Concord</h3><span class="arrow">→</span></div>
         <p>Willow Pass Community Park's 14 free courts dwarf the city's other two options.</p>
-        <span class="stat-chip">Willow Pass Community Park</span>
+        <span class="city-stat">Willow Pass Community Park</span>
       </a>
       <a class="city-card" id="danville" href="/cities/danville">
         <div class="name-row"><h3>Danville</h3><span class="arrow">→</span></div>
         <p>Osage Station Park's 2 free courts, a Town-run tennis-court program, and two private clubs.</p>
-        <span class="stat-chip">Osage Station Park + clubs</span>
+        <span class="city-stat">Osage Station Park + clubs</span>
       </a>
       <a class="city-card" id="dublin" href="/cities/dublin">
         <div class="name-row"><h3>Dublin</h3><span class="arrow">→</span></div>
         <p>Two parks — Wallis Ranch is the city's newest and largest, opened in 2025.</p>
-        <span class="stat-chip">Two parks · incl. Wallis Ranch</span>
+        <span class="city-stat">Two parks · incl. Wallis Ranch</span>
       </a>
       <a class="city-card" id="el-cerrito" href="/cities/el-cerrito">
         <div class="name-row"><h3>El Cerrito</h3><span class="arrow">→</span></div>
         <p>One park, Castro Park — 6 courts converted from tennis in a 2025 renovation.</p>
-        <span class="stat-chip">Castro Park · 6 courts</span>
+        <span class="city-stat">Castro Park · 6 courts</span>
       </a>
       <a class="city-card" id="emeryville" href="/cities/emeryville">
         <div class="name-row"><h3>Emeryville</h3><span class="arrow">→</span></div>
         <p>One city-run gym, Saturdays only, 18+, registration required — the whole scene.</p>
-        <span class="stat-chip">City gym · Saturdays only</span>
+        <span class="city-stat">City gym · Saturdays only</span>
       </a>
       <a class="city-card" id="hayward" href="/cities/hayward">
         <div class="name-row"><h3>Hayward</h3><span class="arrow">→</span></div>
         <p>A brand-new park to a Thursday senior-center drop-in.</p>
-        <span class="stat-chip">New park + senior drop-in</span>
+        <span class="city-stat">New park + senior drop-in</span>
       </a>
       <a class="city-card" id="livermore" href="/cities/livermore">
         <div class="name-row"><h3>Livermore</h3><span class="arrow">→</span></div>
         <p>Anchored by May Nissen Park's 8 courts and Livermore Downs' 4.</p>
-        <span class="stat-chip">May Nissen Park + Livermore Downs</span>
+        <span class="city-stat">May Nissen Park + Livermore Downs</span>
       </a>
       <a class="city-card" id="richmond" href="/cities/richmond">
         <div class="name-row"><h3>Richmond</h3><span class="arrow">→</span></div>
         <p>Four venues — and a 12-court waterfront facility everyone still cites online is actually closed.</p>
-        <span class="stat-chip">Four venues · call ahead</span>
+        <span class="city-stat">Four venues · call ahead</span>
       </a>
       <a class="city-card" id="san-leandro" href="/cities/san-leandro">
         <div class="name-row"><h3>San Leandro</h3><span class="arrow">→</span></div>
         <p>Washington Manor Park's 6 free courts and an 8-court private swim-and-tennis club.</p>
-        <span class="stat-chip">Free park + private club</span>
+        <span class="city-stat">Free park + private club</span>
       </a>
       <a class="city-card" id="san-ramon" href="/cities/san-ramon">
         <div class="name-row"><h3>San Ramon</h3><span class="arrow">→</span></div>
         <p>Central Park's 4 free courts anchor a scene that also includes a disputed-count gym.</p>
-        <span class="stat-chip">Central Park + clubs</span>
+        <span class="city-stat">Central Park + clubs</span>
       </a>
       <a class="city-card" id="union-city" href="/cities/union-city">
         <div class="name-row"><h3>Union City</h3><span class="arrow">→</span></div>
         <p>One shared gym, two courts — the thinnest scene in the East Bay, and residents say so themselves.</p>
-        <span class="stat-chip">One shared gym</span>
+        <span class="city-stat">One shared gym</span>
       </a>
     </div>
   </div>
 </section>
 
-<section class="section" id="north-bay">
+<section class="section cities-region" id="north-bay">
   <div class="container">
-    <div class="region-head">
+    <div class="region-head cities-region-head">
       <div>
-        <h2>North Bay</h2>
+        <div class="cities-region-title"><h2>North Bay</h2><span class="city-count">3 cities</span></div>
         <p>Marin's scene is small, indoor-heavy, and easy to book ahead; Vallejo, just across the water in Solano County, is grouped here too.</p>
       </div>
     </div>
@@ -333,17 +337,17 @@
       <a class="city-card" id="san-rafael" href="/cities/san-rafael">
         <div class="name-row"><h3>San Rafael</h3><span class="arrow">→</span></div>
         <p>Flyte Racquet Club (formerly Marin Indoor Pickleball) has 23 courts if you've got a membership; Pueblo Park is the county's one free dedicated court.</p>
-        <span class="stat-chip">23 courts · Flyte</span>
+        <span class="city-stat">23 courts · Flyte</span>
       </a>
       <a class="city-card" id="novato" href="/cities/novato">
         <div class="name-row"><h3>Novato</h3><span class="arrow">→</span></div>
         <p>Six lined courts at Hill Recreation plus two more at Pioneer Park, all first-come first-served from roughly 8 a.m. to 10 p.m.</p>
-        <span class="stat-chip">Hill Recreation + Pioneer Park</span>
+        <span class="city-stat">Hill Recreation + Pioneer Park</span>
       </a>
       <a class="city-card" id="vallejo" href="/cities/vallejo">
         <div class="name-row"><h3>Vallejo</h3><span class="arrow">→</span></div>
         <p>From a lakeside park to a rebranded fitness club — call ahead.</p>
-        <span class="stat-chip">Five venues · call ahead</span>
+        <span class="city-stat">Five venues · call ahead</span>
       </a>
     </div>
   </div>
@@ -354,6 +358,10 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span>
+        <p>An independent, ad-free directory of verified public pickleball courts.</p>
+      </div>
       <div>
         <h4>Regions</h4>
         <ul>

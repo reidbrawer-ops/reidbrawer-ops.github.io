@@ -1,6 +1,6 @@
 {
   "_README": [
-    "Pluggable per-vendor affiliate model consumed at runtime by assets/paddle-quiz.js (vendorLinkFor).",
+    "Pluggable per-vendor affiliate model consumed at runtime by vendorLinkFor() in assets/affiliate-links.js — the single link builder, imported by BOTH assets/paddle-quiz.js (quiz results) and assets/paddle-grid.js (the browsable catalog). It lived inside paddle-quiz.js until the grid needed the same links; it was extracted rather than copied, because a second builder would drift from this file the first time a brand was added or dropped, and the failure is invisible (a link that still works but pays nothing, or discloses wrongly). Keep it that way: one definition, two consumers.",
     "It lives here in assets/ — NOT in scripts/paddle-vendor-map.json — because Firebase Hosting ignores scripts/** (see firebase.json), so a file under scripts/ is never actually served to the browser. scripts/paddle-vendor-map.json stays the BUILD-TIME source of each brand's vendorUrl/search route; THIS file is the SERVED affiliate overlay. Editing this JSON and redeploying activates affiliate links with no paddle-data rebuild.",
     "Brand keys must match the `brand` field in assets/paddles.json exactly (e.g. \"Selkirk\", \"JOOLA\", \"Six Zero\").",
     "Per brand you may set any of:",

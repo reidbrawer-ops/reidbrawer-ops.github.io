@@ -1,77 +1,85 @@
 /* Corrections page — scoped styles layered on top of style.css */
 
+/* The form is a paper card floated on the page's warm paper: one hairline,
+   a 16px radius, 28px of air, and a flat 18px rhythm between fields. */
 .corr-form {
   display: flex;
   flex-direction: column;
-  gap: 1.3rem;
+  gap: 18px;
   max-width: 640px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 28px;
 }
 
 .corr-field {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 6px;
 }
 
+/* Form labels are the UI face, not the data voice: v4 reserves mono
+   micro-caps for stats, addresses and verification dates, so the v3 mono
+   uppercase label is gone in favour of a Manrope 700 cap. */
 .corr-field label {
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.72rem;
-  color: var(--ink-soft);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
 }
 
 .corr-field .hint {
-  font-size: 0.85rem;
+  font-size: 13px;
+  line-height: 1.5;
   color: var(--ink-soft);
-  margin-top: -0.1rem;
+  margin: 0;
 }
 
+/* Controls sit a shade *below* the card — page paper inside card paper —
+   inside the heavier --line-strong rule reserved for form boundaries. */
 .corr-field input,
 .corr-field select,
 .corr-field textarea {
   font-family: var(--font-body);
-  font-size: 0.98rem;
+  font-size: 14px;
   color: var(--ink);
-  background: var(--glass);
-  border: 1px solid var(--line-strong);
+  background: var(--fog);
+  border: 1.5px solid var(--line-strong);
   border-radius: var(--radius-s);
-  padding: 0.7em 0.9em;
+  padding: 12px 14px;
   width: 100%;
 }
 
 .corr-field textarea {
   resize: vertical;
   min-height: 7rem;
-  font-family: var(--font-body);
 }
 
+/* The chevron is inlined as a data URI, which can't read a custom property —
+   the literal is --ink-soft (#55655f). Keep the two in step by hand. */
 .corr-field select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%235b6b70' stroke-width='1.6'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2355655F' stroke-width='1.6'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 0.8em center;
-  background-size: 1em;
-  padding-right: 2.4em;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 34px;
 }
 
-.corr-field input:focus,
-.corr-field select:focus,
-.corr-field textarea:focus {
-  outline: 3px solid var(--optic);
-  outline-offset: 1px;
-  border-color: transparent;
-}
+/* Focus rings come from the sitewide :focus-visible (teal, 3px) — the v3
+   optic ring that used to live here fought the global convention and fired
+   on mouse clicks too. */
 
 .corr-field input::placeholder,
 .corr-field textarea::placeholder {
-  color: rgba(91, 107, 112, 0.55);
+  color: var(--ink-faint);
 }
 
 .corr-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.3rem;
+  gap: 18px;
 }
 
 @media (max-width: 640px) {
@@ -88,18 +96,23 @@
   overflow: hidden;
 }
 
+/* Fill and rule come from .btn — only the design's taller tap target is
+   local. The button stretches to the card's inner width (it's a flex child
+   of the column, and the design doesn't pull it back to auto). */
 .corr-submit {
-  align-self: flex-start;
-  cursor: pointer;
-  font-family: var(--font-display);
+  justify-content: center;
+  padding: 13px 24px;
 }
 
+/* Submission confirmation. The inline script adds .show when Formspree
+   bounces back to ?sent=1; the form takes .hide at the same moment. */
 .corr-thanks {
   display: none;
-  background: var(--kitchen-tint);
-  border-left: 4px solid var(--kitchen);
-  border-radius: var(--radius-s);
-  padding: 1.1rem 1.3rem;
+  max-width: 640px;
+  background: var(--bay-tint);
+  border-radius: var(--radius-m);
+  padding: 32px;
+  text-align: center;
   margin-bottom: 1.5rem;
 }
 
@@ -107,12 +120,20 @@
   display: block;
 }
 
-.corr-thanks .eyebrow {
-  color: var(--kitchen);
+.corr-thanks-tick {
+  color: var(--bay);
+  margin: 0 auto 12px;
 }
 
-.corr-thanks p:last-child {
-  margin-bottom: 0;
+.corr-thanks h2 {
+  font-size: 22px;
+  margin: 0 0 8px;
+}
+
+.corr-thanks p {
+  font-size: 14.5px;
+  color: var(--body-ink);
+  margin: 0;
 }
 
 .corr-form.hide {

@@ -7,7 +7,7 @@
 <meta name="description" content="One place for the paddle side of your game: where to rent or demo across the Bay Area, a quiz that matches you to paddles that fit your style and budget, and honest links to buy.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500;1,8..60,600&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/assets/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/logo/favicon-16.png" sizes="16x16" type="image/png">
@@ -38,7 +38,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><img src="/assets/logo/mark.svg" width="28" height="28" alt="">Pickleball Bay Area</a>
+    <a class="brand" href="/" aria-label="Pickleball Bay Area — home"><span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span></a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -54,6 +54,9 @@
         <div class="nav-dropdown-menu">
           <a href="/learn">Learn to play</a>
           <a href="/corrections">Report a correction</a>
+          <div class="nav-dropdown-rule"></div>
+          <a href="/affiliate-disclosure">Affiliate disclosure</a>
+          <a href="/privacy">Privacy</a>
         </div>
       </details>
       <a href="/about">About</a>
@@ -73,6 +76,10 @@
       <a href="#quiz" class="pf-choice pf-choice--primary">
         <span class="pf-choice-label">Find your paddle →</span>
         <span class="pf-choice-note">Take the quiz — 10 questions, your top 3 matches</span>
+      </a>
+      <a href="#browse" class="pf-choice">
+        <span class="pf-choice-label">Browse all paddles →</span>
+        <span class="pf-choice-note">The full catalog — filter by type, shape, price, skill</span>
       </a>
       <a href="#rent" class="pf-choice">
         <span class="pf-choice-label">Rent &amp; try →</span>
@@ -100,6 +107,25 @@
   <div class="container">
     <div class="pq-shell" id="paddle-quiz-app">
       <p class="pq-error">Loading the quiz…</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= BROWSE THE CATALOG ========================= -->
+<section class="section pf-anchor" id="browse">
+  <div class="container">
+    <div class="pf-stage-head">
+      <p class="eyebrow">Browse the catalog</p>
+      <h2>Or look through all of them.</h2>
+    </div>
+    <p>The whole database, unranked and unfiltered by us — the same paddles the quiz scores, laid out so you can go looking yourself. Filter by type, shape, price and skill.</p>
+    <!-- assets/paddle-grid.js renders the filters, the count line, the
+         disclosure and the cards into this element. Its buy links reuse
+         vendorLinkFor from assets/affiliate-links.js and carry the same
+         data-pq-* attributes as the quiz's, so paddle-quiz.js's delegated
+         trackVendorClicks() attributes them without a second listener. -->
+    <div class="pg-shell" id="paddle-grid-app">
+      <p class="pq-error">Loading the paddle catalog…</p>
     </div>
   </div>
 </section>
@@ -371,6 +397,10 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-eyebrow">Pickleball</span><span class="brand-word">Bay Area</span>
+        <p>An independent, ad-free directory of verified public pickleball courts.</p>
+      </div>
       <div>
         <h4>Regions</h4>
         <ul>
@@ -417,14 +447,15 @@
 <script src="/assets/global-search.js" defer></script>
 <script src="/assets/analytics.js" defer></script>
 <script type="module" src="/assets/paddle-quiz.js"></script>
+<script type="module" src="/assets/paddle-grid.js"></script>
 <script>
 // html{scroll-behavior:smooth} makes the browser's native on-load jump to a
-// #rent/#quiz hash unreliable (the animation can be interrupted before it
+// #rent/#quiz/#browse hash unreliable (the animation can be interrupted before it
 // lands). If the page loaded with a hash and nothing scrolled, do it
 // ourselves, instantly. No-op when the native scroll already worked.
 (function () {
   var id = (location.hash || "").slice(1);
-  if (!/^(rent|quiz)$/.test(id)) return;
+  if (!/^(rent|quiz|browse)$/.test(id)) return;
   function jump() {
     if (window.scrollY > 60) return; // native scroll already landed
     var el = document.getElementById(id);
