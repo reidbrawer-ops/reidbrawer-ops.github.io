@@ -52,12 +52,30 @@ main .container {
 }
 
 /* Search + city filter, stacked (search on top, city dropdown below). */
+/* A row, not a stack. Two short controls sat one above the other for ~150px of
+   the fold before the leaderboard they filter; side by side they cost half that
+   and read as one control bar. They stay in the hero rather than moving down
+   with the list because they filter BOTH the Top 10 and the city leaderboards
+   (see applyFilters in rankings.js) — a control that governs two sections has to
+   sit above both. */
 .rankings-filter {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-top: var(--space-3);
-  max-width: 26rem;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-top: var(--space-2);
+  max-width: 44rem;
+}
+
+.rankings-filter .rankings-filter-field {
+  flex: 1 1 15rem;
+  min-width: 0;
+}
+
+/* The Top 10 is the next thing after the hero, not a new topic — the global
+   80px section rhythm between them was pushing the first rank card past the
+   fold on a 900px screen. */
+#top-10 {
+  padding-top: var(--space-3);
 }
 
 .rankings-filter-field {
