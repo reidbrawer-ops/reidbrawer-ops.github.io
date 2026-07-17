@@ -86,6 +86,10 @@
 
 <section class="section finder-section">
   <div class="container">
+    <!-- Positioned wrapper: the filter panel overlays from here instead of
+         expanding inline and shoving the map down the page. See
+         .finder-controls / .finder-filters in map.css. -->
+    <div class="finder-controls">
     <div class="finder-toolbar">
       <!-- The global-search component (assets/global-search.js) mounts its large
            input here and dispatches pbsearch:select, which map.js listens for to
@@ -112,8 +116,6 @@
         </div>
       </div>
     </div>
-
-    <div id="map-status" class="map-status" role="status">Loading court data…</div>
 
     <form id="finder-filters" class="finder-filters" aria-label="Filter courts" hidden>
       <div class="filter-field">
@@ -175,6 +177,9 @@
         <button type="button" id="f-clear" class="clear-btn">Clear filters</button>
       </div>
     </form>
+    </div>
+
+    <div id="map-status" class="map-status" role="status">Loading court data…</div>
 
     <p id="finder-count" class="finder-count" aria-live="polite"></p>
 

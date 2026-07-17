@@ -358,12 +358,26 @@
   color: var(--bay-deep);
 }
 
+/* Fill the rest of the screen rather than assert a height and hope it fits.
+   A flat 640px, starting ~340px down, ran to 978 — always cut off on a 900px
+   viewport no matter how tight the chrome above got. The 21rem is that chrome
+   (header + heading + toolbar + status + count); the clamp keeps the pane
+   usable on a short laptop and stops it ballooning on a tall monitor.
+   dvh, not vh: on mobile browsers vh counts the retracting URL bar. */
 .finder {
   position: relative;
+  /* z-index, not just position: relative. Leaflet gives its own panes and
+     controls z-indexes up to 1000, and `position:relative; z-index:auto`
+     creates NO stacking context — so those 1000s escaped into the root context
+     and painted the zoom buttons and tiles straight through the filter panel
+     above them. A z-index here traps Leaflet's stack inside this element, where
+     .finder-controls' 20 can win against this 1 rather than against its 1000. */
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(300px, 360px) 1fr;
   gap: 1rem;
   height: 640px;
+  height: clamp(420px, calc(100dvh - 21.5rem), 640px);
 }
 
 /* Rows are paper cards, so the tray behind them drops to page fog — a paper
@@ -856,7 +870,23 @@
   display: none;
 }
 
+/* Anchors the filter panel. */
+.finder-controls {
+  position: relative;
+  z-index: 20;
+}
+
+/* The panel OVERLAYS the finder rather than expanding inline above it. Inline,
+   opening Filters inserted 267px+margin between the toolbar and the map and
+   shoved the map from 403px down to 690 — so the moment you did the thing this
+   page exists for, the map left the screen. Floating it means the map never
+   moves: you filter, you see the count change, you close, nothing has jumped.
+   Shadowed and opaque because it now sits ON the map. */
 .finder-filters {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 0.9rem;
@@ -864,7 +894,7 @@
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 14px;
-  margin-bottom: 1.2rem;
+  box-shadow: 0 16px 40px -12px rgba(var(--ink-rgb), 0.28);
 }
 
 .finder-filters[hidden] {
@@ -1279,4 +1309,19 @@
 
 .finder-clear-filters[hidden] {
   display: none;
+}
+
+/* Inline again below the desktop split. Overlaying is what keeps the map still
+   on desktop, but stacked the panel is ~650px of single-column selects:
+   absolutely positioned it hangs over the list and adds no scroll height to
+   reach its own bottom. Here the map is a small preview above the list rather
+   than the main event, so pushing it costs nothing.
+   Must live AFTER the base .finder-filters rule — identical specificity, so
+   source order is the only thing deciding this. */
+@media (max-width: 1023px) {
+  .finder-filters {
+    position: static;
+    margin-bottom: 1.2rem;
+    box-shadow: none;
+  }
 }
