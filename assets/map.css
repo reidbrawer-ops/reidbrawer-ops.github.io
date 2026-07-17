@@ -287,6 +287,11 @@
    was 80px of nothing between a one-line heading and the tool it names. */
 .finder-section {
   padding-top: 0;
+  /* The caveat is the map's footnote, not a section unto itself. A full 80px
+     below it stacked with the lane-router's own 80px top left ~175px of dead
+     paper between the map and "Before you head out". Let the next section own
+     the separation; the footnote just hugs its tool. */
+  padding-bottom: var(--space-2);
 }
 
 /* The search sits with the courts it searches, not up in the hero. It leads the
