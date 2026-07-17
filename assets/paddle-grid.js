@@ -18,6 +18,9 @@ import { vendorLinkFor, trackVendorClicks } from "/assets/affiliate-links.js";
 // The same four ratings the quiz uses — so "most powerful" means one thing on
 // this site. See assets/paddle-ratings.js.
 import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf } from "/assets/paddle-ratings.js";
+// The consolidated analytics view (axis explorer + value chart + stress-test),
+// driven by the compare tray's selection. Same module the quiz results use.
+import { renderPaddleCharts, seriesColorFor } from "/assets/paddle-charts.js";
 
 const esc = (s) => window.PBUtils.escapeHtml(s);
 
@@ -149,6 +152,12 @@ class PaddleGrid {
     this.affiliateMap = affiliateMap;
     this.filters = { type: "all", shape: "all", price: "all", skill: "all" };
     this.query = "";
+    // Compare tray: up to 3 paddle ids, in the order added (which fixes their
+    // series colors across the charts). Kept by id so it survives the grid
+    // re-rendering its cards on every filter/search change.
+    this.selected = [];
+    this.byIdMap = new Map(paddles.map((p) => [p.id, p]));
+    this.charts = null;
     root.addEventListener("change", (e) => this.onChange(e));
     root.addEventListener("click", (e) => this.onClick(e));
     root.addEventListener("input", (e) => this.onInput(e));
@@ -173,6 +182,21 @@ class PaddleGrid {
   }
 
   onClick(e) {
+    const cmp = e.target.closest('[data-action="compare"]');
+    if (cmp) {
+      if (!cmp.disabled) this.toggleCompare(cmp.dataset.id);
+      return;
+    }
+    const unc = e.target.closest('[data-action="uncompare"]');
+    if (unc) {
+      this.toggleCompare(unc.dataset.id);
+      return;
+    }
+    if (e.target.closest('[data-action="clear-compare"]')) {
+      this.selected = [];
+      this.syncCompareUI();
+      return;
+    }
     if (!e.target.closest('[data-action="reset-grid"]')) return;
     this.filters = { type: "all", shape: "all", price: "all", skill: "all" };
     this.query = "";
@@ -293,6 +317,13 @@ class PaddleGrid {
     // Rank only when the filters actually rank something (see fitScore).
     const rank = this.ranked ? `<span class="rank-badge${i === 0 ? " top" : ""}">#${i + 1}</span>` : "";
 
+    // Compare toggle — adds the paddle to the tray that feeds the charts above.
+    // Disabled (not removed) once three are chosen, so the cap is visible rather
+    // than a click that silently does nothing.
+    const selected = this.selected.includes(p.id);
+    const atMax = this.selected.length >= 3;
+    const compareBtn = `<button type="button" class="pg-compare-btn${selected ? " is-on" : ""}" data-action="compare" data-id="${esc(p.id)}" aria-pressed="${selected ? "true" : "false"}"${!selected && atMax ? " disabled" : ""}>${selected ? "✓ Comparing" : "+ Compare"}</button>`;
+
     return `<li class="pg-card">
       <div class="pg-head">
         <div>
@@ -303,7 +334,7 @@ class PaddleGrid {
       </div>
       ${chips ? `<div class="pg-chips">${chips}</div>` : ""}
       ${specs ? `<div class="pg-specs">${specs}</div>` : ""}
-      ${foot}
+      <div class="pg-actions">${compareBtn}${foot}</div>
     </li>`;
   }
 
@@ -317,6 +348,16 @@ class PaddleGrid {
   mount() {
     this.root.innerHTML = `
       ${this.filterHtml()}
+      <section class="pg-compare">
+        <div class="pg-compare-head">
+          <div>
+            <p class="pc-eyebrow">Compare &amp; explore</p>
+            <h2 class="pg-compare-title">Line paddles up side by side</h2>
+          </div>
+          <div class="pg-tray" data-role="pg-tray"></div>
+        </div>
+        <div class="pg-analytics" data-role="pg-analytics"></div>
+      </section>
       <p class="pg-count" role="status"></p>
       <div data-role="pg-disclosure"></div>
       <div class="pg-rent">
@@ -328,8 +369,84 @@ class PaddleGrid {
     this.countEl = this.root.querySelector(".pg-count");
     this.discEl = this.root.querySelector('[data-role="pg-disclosure"]');
     this.bodyEl = this.root.querySelector('[data-role="pg-body"]');
+    this.trayEl = this.root.querySelector('[data-role="pg-tray"]');
+    this.analyticsEl = this.root.querySelector('[data-role="pg-analytics"]');
     this.render();
+    this.renderTray();
+    this.renderAnalytics();
     return this;
+  }
+
+  byId(id) {
+    return this.byIdMap.get(id);
+  }
+
+  // Add or remove a paddle from the compare tray (cap 3). Everything the tray
+  // touches — the card toggles, the chips, and the charts — is refreshed by
+  // syncCompareUI so the three never drift out of agreement.
+  toggleCompare(id) {
+    const i = this.selected.indexOf(id);
+    if (i >= 0) this.selected.splice(i, 1);
+    else if (this.selected.length < 3) this.selected.push(id);
+    else return; // at the cap — the card toggles are already disabled
+    this.syncCompareUI();
+  }
+
+  // Push the current selection into the three surfaces that reflect it, without
+  // a full grid re-render (which would drop focus off the card just clicked).
+  syncCompareUI() {
+    const atMax = this.selected.length >= 3;
+    this.root.querySelectorAll('[data-action="compare"]').forEach((btn) => {
+      const on = this.selected.includes(btn.dataset.id);
+      btn.classList.toggle("is-on", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.disabled = !on && atMax;
+      btn.textContent = on ? "✓ Comparing" : "+ Compare";
+    });
+    this.renderTray();
+    this.renderAnalytics();
+  }
+
+  renderTray() {
+    if (!this.selected.length) {
+      this.trayEl.innerHTML = `<span class="pg-tray-hint">Add up to 3 paddles — tap a dot in the chart, or “+ Compare” on any card below.</span>`;
+      return;
+    }
+    const chips = this.selected
+      .map((id, i) => {
+        const p = this.byId(id);
+        if (!p) return "";
+        return `<span class="pg-tray-chip" style="--pick:${seriesColorFor(i)}"><span class="pg-tray-dot"></span><span class="pg-tray-name">${esc(p.brand)} ${esc(p.name)}</span><button type="button" class="pg-tray-x" data-action="uncompare" data-id="${esc(id)}" aria-label="Remove ${esc(p.name)} from comparison">✕</button></span>`;
+      })
+      .join("");
+    this.trayEl.innerHTML = `${chips}<button type="button" class="pg-tray-clear" data-action="clear-compare">Clear all</button>`;
+  }
+
+  // Rebuild the charts for the current selection. The explorer is always shown
+  // (the whole catalog is worth exploring with nothing picked yet); the value
+  // chart and strip need at least one pick, and the stress-test at least two.
+  // The previous instance's axis/preset are carried across so toggling a pick
+  // doesn't jump the view back to the defaults.
+  renderAnalytics() {
+    const featured = this.selected.map((id) => this.byId(id)).filter(Boolean);
+    const n = featured.length;
+    const components = ["explorer"];
+    if (n >= 1) {
+      components.unshift("strip");
+      components.push("value");
+    }
+    if (n >= 2) components.push("stress");
+
+    const prev = this.charts ? { xKey: this.charts.state.xKey, yKey: this.charts.state.yKey, preset: this.charts.state.preset } : null;
+    this.analyticsEl.innerHTML = "";
+    this.charts = renderPaddleCharts(this.analyticsEl, {
+      paddles: this.paddles,
+      featured,
+      mode: "browse",
+      components,
+      initialState: prev,
+      onDotClick: (paddle) => this.toggleCompare(paddle.id),
+    });
   }
 
   render() {

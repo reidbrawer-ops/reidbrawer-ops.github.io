@@ -305,154 +305,101 @@
   cursor: pointer;
 }
 
-/* Comparison table — rows are traits, columns are the top 3 picks. A table
-   is the right shape here: unlike a prose "why this paddle" list, two
-   columns sharing the same dot rating on a row is informative (these two
-   are equally powerful), not a bug that reads as repeated boilerplate.
-   The frame is the design's result card — paper under a 2px ink border at
-   16px — wrapped around the table instead of repeated three times, since the
-   real page compares the picks rather than listing them. */
-.pq-compare-wrap {
-  overflow-x: auto;
-  margin-bottom: 1.3rem;
-  background: var(--paper);
-  border: 2px solid var(--ink);
-  border-radius: var(--radius-m);
+/* Buy-first result cards — the top-of-results call to action that replaced the
+   trait comparison table (the per-trait dot meters were hidden by request, and
+   the axis explorer moved to /paddles/browse). Three equal cards; each carries
+   the paddle's series accent (var(--pick), set inline by paddle-quiz.js) so it
+   reads as the same paddle as its dot on the value and stress-test charts below.
+   The optic buy button is pinned to the card bottom so the three stay aligned
+   whatever the taglines' length. */
+.pq-picks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 1rem;
 }
 
-.pq-compare-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--paper);
-}
-
-/* The internal grid drops to --rule-10 — the same hairline the design's card
-   uses to divide its own footer — so the 2px ink frame stays the only heavy
-   line and the rows read as one object, not nine stacked ones. */
-.pq-compare-table th,
-.pq-compare-table td {
-  padding: 0.9rem 1.1rem;
-  text-align: left;
-  border-bottom: 1px solid var(--rule-10);
-  vertical-align: middle;
-}
-
-.pq-compare-table tr:last-child th,
-.pq-compare-table tr:last-child td {
-  border-bottom: none;
-}
-
-/* An equal share each, so a column's width comes from the table rather than
-   from how long its paddle's name or brand happens to be — the buy pills
-   below size off the column, and uneven columns would make them uneven too.
-   The label column takes whatever is left over. */
-.pq-compare-col {
-  width: 33.33%;
-  min-width: 200px;
-  vertical-align: top;
-}
-
-.pq-compare-col .name-row {
+.pq-pick {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.4rem;
-}
-
-.pq-compare-col .addr {
-  margin-top: 0.2rem;
-}
-
-.pq-tagline {
-  font-family: var(--font-body);
-  font-size: 0.845rem;
-  line-height: 1.55;
-  color: var(--body-ink);
-  margin-top: 0.5rem;
-  font-weight: normal;
-}
-
-.pq-compare-label {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--ink-soft);
-  white-space: nowrap;
-  position: sticky;
-  left: 0;
   background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--pick, var(--ink));
+  border-radius: var(--radius-m);
+  padding: 18px 20px 20px;
+  box-shadow: 0 1px 3px rgba(var(--ink-rgb), 0.06);
 }
 
-/* The three buy links read as one control repeated across the picks, so they
-   have to be the same size: a long brand ("Search Honolulu Pickleball") must
-   not get a bigger pill than "Search Enhance" sitting next to it. Width comes
-   from the (equal) column, and height from stretching every pill to the row,
-   whose height the tallest label sets — so the set stays uniform whatever the
-   labels say, with no worst-case height to keep in sync as brands come and go.
-   `height: 1px` is the usual idiom for giving the cell a definite height for
-   `height: 100%` to resolve against; content still wins, as a cell's height is
-   really a minimum. */
-.pq-compare-links td {
-  padding-top: 1.1rem;
-  height: 1px;
+.pq-pick-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
 }
 
-/* The one place this page spends the optic accent. In the design every action
-   on the paddles view is an ink outline except one — the buy button on a
-   result card, which is filled optic. These three links are that button, so
-   they're promoted here rather than left as the global secondary pill. The
-   promotion is scoped to the results row on purpose: the rent directory's
-   .book-btn ("Visit site →") is genuinely secondary and keeps the shared
-   component untouched. */
-.pq-compare-links .book-btn {
+.pq-pick-overall {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35em;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--pick, var(--ink));
+}
+
+.pq-pick-overall-label {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.pq-pick-name {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.pq-pick-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  margin: 0.25rem 0 0;
+}
+
+.pq-pick-tag {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--body-ink);
+  margin: 0.7rem 0 1rem;
+}
+
+/* The one place this page spends the optic accent — the buy button, filled
+   optic and inverting to ink on hover (the same promotion the old table's buy
+   row carried). Pinned to the card bottom so the three align. */
+.pq-pick-buy {
+  margin-top: auto;
   display: flex;
   width: 100%;
-  height: 100%;
   justify-content: center;
   text-align: center;
-  margin-top: 0;
   background: var(--optic);
   color: var(--ink);
   border: 2px solid var(--ink);
   border-radius: var(--radius-s);
 }
 
-.pq-compare-links .book-btn:hover {
+.pq-pick-buy:hover {
   background: var(--ink);
   color: var(--optic);
 }
 
-/* Same dot device as .pq-dot above, so the two systems on this page share one
-   empty value rather than drifting apart at 8px and 10px. */
-/* Ten dots, not three. At 10px/0.3rem the old three-dot meter's spacing would
-   run ~127px per cell across three columns; these are sized so a full row fits
-   a phone without wrapping into an unreadable second line. nowrap because a
-   meter that wraps stops reading as one scale. */
-.pq-meter {
-  display: inline-flex;
-  gap: 3px;
-  flex-wrap: nowrap;
-}
-
-.pq-meter-dot {
-  width: 7px;
-  height: 7px;
-  flex: none;
-  border-radius: 50%;
-  background: rgba(var(--ink-rgb), 0.16);
-}
-
-.pq-meter-dot.is-filled {
-  background: var(--bay);
-}
-
-@media (max-width: 560px) {
-  .pq-meter {
-    gap: 2px;
-  }
-
-  .pq-meter-dot {
-    width: 6px;
-    height: 6px;
+@media (max-width: 720px) {
+  .pq-picks {
+    grid-template-columns: 1fr;
   }
 }
 

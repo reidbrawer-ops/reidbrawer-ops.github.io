@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&amp;family=Libre+Franklin:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f2f0ea;font-family:'Libre Franklin',sans-serif;color:#23282e}
+a{color:#31699e;text-decoration:none}a:hover{color:#24537f;text-decoration:underline}
+::selection{background:#dce68a}
+</style>
+</helmet>
+<section id="t2" style="padding:38px 44px 30px;scroll-margin-top:16px;border-bottom:1px solid rgba(0,0,0,.08)" data-screen-label="Turn 2 — refined options">
+  <div style="display:flex;align-items:baseline;gap:12px;margin:0 0 8px">
+    <a href="#t2" style="font:600 10px 'Libre Franklin',sans-serif;padding:3px 8px;background:#23282e;color:#fff;border-radius:4px;letter-spacing:.08em">TURN 2</a>
+    <span style="font:600 15px 'Libre Franklin',sans-serif">Refinements from your feedback — adjustable axes, a self-explaining score, and a better drill-down</span>
+  </div>
+  <p style="margin:0 0 20px;font:400 12px/1.5 'Libre Franklin',sans-serif;color:rgba(0,0,0,.55)">Builds on <a href="#1d">1d</a> (now axis-adjustable), <a href="#1f">1f</a> (score clarified in-visual), and <a href="#1e">1e</a> (drill by what you prioritize, not skill level).</p>
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+    <div id="2a" style="flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px" data-screen-label="Option 2a — Axis explorer">
+      <div style="display:flex;align-items:baseline;gap:8px;font:400 11px 'Libre Franklin',sans-serif;color:rgba(0,0,0,.55)">
+        <a href="#2a" style="font:600 10.5px 'Libre Franklin',sans-serif;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">2a</a>
+        Catalog explorer — pick any two factors; choosing the same one swaps the axes
+      </div>
+      <div style="width:920px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:24px 26px">
+        <div style="display:flex;align-items:flex-start;gap:16px">
+          <div style="flex:1">
+            <div style="font:500 10px 'Libre Franklin',sans-serif;letter-spacing:.12em;color:#8a8477">EXPLORE ANY TRADEOFF</div>
+            <h3 style="margin:4px 0 2px;font:600 22px 'Newsreader',serif;letter-spacing:-.01em">Pick your axes</h3>
+            <p style="margin:0 0 10px;font:400 12.5px/1.5 'Libre Franklin',sans-serif;color:#5c636b">The whole catalog, on whichever tradeoff you care about. Your three matches stay highlighted.</p>
+          </div>
+          <div style="flex:none;display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="font:600 10px 'Libre Franklin',sans-serif;letter-spacing:.08em;color:#8a8477">X</span>
+              <div style="display:flex;background:#f2f0ea;border-radius:99px;padding:3px">
+                <sc-for list="{{ exXChips }}" as="c" hint-placeholder-count="6">
+                  <button onClick="{{ c.click }}" style="border:none;cursor:pointer;padding:5px 11px;border-radius:99px;font:600 11px 'Libre Franklin',sans-serif;background:{{ c.bg }};color:{{ c.fg }};transition:background .2s,color .2s">{{ c.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="font:600 10px 'Libre Franklin',sans-serif;letter-spacing:.08em;color:#8a8477">Y</span>
+              <div style="display:flex;background:#f2f0ea;border-radius:99px;padding:3px">
+                <sc-for list="{{ exYChips }}" as="c" hint-placeholder-count="6">
+                  <button onClick="{{ c.click }}" style="border:none;cursor:pointer;padding:5px 11px;border-radius:99px;font:600 11px 'Libre Franklin',sans-serif;background:{{ c.bg }};color:{{ c.fg }};transition:background .2s,color .2s">{{ c.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="position:relative">
+          <svg viewBox="0 0 860 520" style="width:100%;display:block">
+            <sc-for list="{{ exXT }}" as="t" hint-placeholder-count="7">
+              <line x1="{{ t.x }}" y1="40" x2="{{ t.x }}" y2="470" stroke="#f0ede6" stroke-width="1"></line>
+            </sc-for>
+            <sc-for list="{{ exYT }}" as="t" hint-placeholder-count="7">
+              <line x1="60" y1="{{ t.y }}" x2="800" y2="{{ t.y }}" stroke="#f0ede6" stroke-width="1"></line>
+            </sc-for>
+            <sc-for list="{{ exCloud }}" as="d" hint-placeholder-count="30">
+              <circle cx="{{ d.cx }}" cy="{{ d.cy }}" r="2.3" fill="#d9d4c8" style="transition:cx .4s,cy .4s"></circle>
+            </sc-for>
+            <sc-for list="{{ exPicks }}" as="p" hint-placeholder-count="3">
+              <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="15" fill="{{ p.fill }}" stroke="{{ p.color }}" stroke-width="2.5" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" style="cursor:pointer;transition:cx .4s,cy .4s"></circle>
+              <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="4" fill="{{ p.color }}" style="pointer-events:none;transition:cx .4s,cy .4s"></circle>
+            </sc-for>
+          </svg>
+          <sc-for list="{{ exOv }}" as="o" hint-placeholder-count="16">
+            <div style="position:absolute;left:{{ o.l }};top:{{ o.t }};transform:{{ o.tr }};font-family:'Libre Franklin',sans-serif;font-size:{{ o.fs }};font-weight:{{ o.fw }};color:{{ o.c }};pointer-events:none;white-space:nowrap;line-height:1">{{ o.text }}</div>
+          </sc-for>
+          <sc-if value="{{ exTipShow }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:{{ exTipLeft }};top:{{ exTipTop }};transform:translate(-50%,-140%);background:#23282e;color:#fff;border-radius:6px;padding:8px 12px;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.25);white-space:nowrap">
+              <div style="font:600 12px 'Libre Franklin',sans-serif">{{ exTipName }}</div>
+              <div style="font:400 11px 'Libre Franklin',sans-serif;color:#c8cdd2;margin-top:2px">{{ exTipL1 }}</div>
+            </div>
+          </sc-if>
+        </div>
+        <p style="margin:6px 0 0;font:400 11px/1.5 'Libre Franklin',sans-serif;color:#8a8477">{{ exNote }} — grey dots are the rest of the scored catalog. Works on the quiz results page and as the all-paddles browser.</p>
+      </div>
+    </div>
+
+    <div id="2b" style="flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px" data-screen-label="Option 2b — Value, clarified">
+      <div style="display:flex;align-items:baseline;gap:8px;font:400 11px 'Libre Franklin',sans-serif;color:rgba(0,0,0,.55)">
+        <a href="#2b" style="font:600 10.5px 'Libre Franklin',sans-serif;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">2b</a>
+        Value chart with the score explained in-visual — no jargon
+      </div>
+      <div style="width:900px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:24px 26px">
+        <div style="font:500 10px 'Libre Franklin',sans-serif;letter-spacing:.12em;color:#8a8477">WHAT DOES EACH DOLLAR BUY?</div>
+        <h3 style="margin:4px 0 2px;font:600 22px 'Newsreader',serif;letter-spacing:-.01em">Price against overall score</h3>
+        <p style="margin:0 0 6px;font:400 12.5px/1.5 'Libre Franklin',sans-serif;color:#5c636b">Up and left is better. The <strong>overall score</strong> is just the average of the six ratings you've seen on every chart — the cards below show how each one is built.</p>
+        <div style="position:relative">
+          <svg viewBox="0 0 860 430" style="width:100%;display:block">
+            <sc-for list="{{ vXTicks }}" as="t" hint-placeholder-count="6">
+              <line x1="{{ t.x }}" y1="40" x2="{{ t.x }}" y2="380" stroke="#f0ede6" stroke-width="1"></line>
+            </sc-for>
+            <sc-for list="{{ vYTicks }}" as="t" hint-placeholder-count="5">
+              <line x1="60" y1="{{ t.y }}" x2="800" y2="{{ t.y }}" stroke="#f0ede6" stroke-width="1"></line>
+            </sc-for>
+            <polyline points="{{ vFrontier }}" fill="none" stroke="#8a8477" stroke-width="1.5" stroke-dasharray="5 5"></polyline>
+            <sc-for list="{{ vRefs }}" as="r" hint-placeholder-count="4">
+              <circle cx="{{ r.cx }}" cy="{{ r.cy }}" r="6" fill="#cfcabd"></circle>
+            </sc-for>
+            <sc-for list="{{ vPicks }}" as="p" hint-placeholder-count="3">
+              <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="11" fill="{{ p.fill }}" stroke="{{ p.color }}" stroke-width="2.5"></circle>
+              <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="4" fill="{{ p.color }}"></circle>
+            </sc-for>
+          </svg>
+          <sc-for list="{{ vOv }}" as="o" hint-placeholder-count="14">
+            <div style="position:absolute;left:{{ o.l }};top:{{ o.t }};transform:{{ o.tr }};font-family:'Libre Franklin',sans-serif;font-size:{{ o.fs }};font-weight:{{ o.fw }};color:{{ o.c }};pointer-events:none;white-space:nowrap;line-height:1">{{ o.text }}</div>
+          </sc-for>
+          <div style="position:absolute;left:93.02%;top:98.14%;transform:translate(-100%,-50%);font:600 11.5px 'Libre Franklin',sans-serif;color:#4c5258;pointer-events:none;white-space:nowrap">Price →</div>
+          <div style="position:absolute;left:1.63%;top:6.98%;font:600 11.5px 'Libre Franklin',sans-serif;color:#4c5258;pointer-events:none;white-space:nowrap;transform:translate(0,-50%)">Overall score ↑</div>
+          <div style="position:absolute;left:67.44%;top:22.09%;transform:translate(-100%,-50%);font:italic 600 12px 'Newsreader',serif;color:#8a8477;pointer-events:none;white-space:nowrap">best score for the money</div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <sc-for list="{{ vBreak }}" as="c" hint-placeholder-count="3">
+            <div style="flex:1;border:1px solid rgba(0,0,0,.09);border-radius:7px;padding:12px 14px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <span style="width:10px;height:10px;border-radius:3px;background:{{ c.color }};display:inline-block"></span>
+                <span style="font:600 12px 'Libre Franklin',sans-serif">{{ c.name }}</span>
+                <span style="margin-left:auto;font:400 10.5px 'Libre Franklin',sans-serif;color:#8a8477">{{ c.price }}</span>
+              </div>
+              <div style="display:flex;align-items:flex-end;gap:10px">
+                <div style="display:flex;gap:7px;align-items:flex-end">
+                  <sc-for list="{{ c.bars }}" as="b" hint-placeholder-count="6">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+                      <div style="width:11px;height:30px;background:#f2f0ea;border-radius:2px;display:flex;align-items:flex-end;overflow:hidden"><div style="width:100%;height:{{ b.h }};background:{{ b.bg }};border-radius:2px"></div></div>
+                      <span style="font:500 7.5px 'Libre Franklin',sans-serif;color:#8a8477;letter-spacing:.03em">{{ b.lbl }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="font:400 13px 'Libre Franklin',sans-serif;color:#b3ada0;padding-bottom:12px">→ avg</div>
+                <div style="margin-left:auto;text-align:right;padding-bottom:4px">
+                  <div style="font:700 19px 'Newsreader',serif">{{ c.score }}</div>
+                  <div style="font:400 9.5px 'Libre Franklin',sans-serif;color:#8a8477">overall · {{ c.pp }}/pt</div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div id="2c" style="flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px" data-screen-label="Option 2c — Priority stress-test">
+      <div style="display:flex;align-items:baseline;gap:8px;font:400 11px 'Libre Franklin',sans-serif;color:rgba(0,0,0,.55)">
+        <a href="#2c" style="font:600 10.5px 'Libre Franklin',sans-serif;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">2c</a>
+        Match anatomy, re-drilled — "what if you'd prioritized differently?"
+      </div>
+      <div style="width:700px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:24px 26px">
+        <div style="font:500 10px 'Libre Franklin',sans-serif;letter-spacing:.12em;color:#8a8477">HOW SOLID IS YOUR #1?</div>
+        <h3 style="margin:4px 0 2px;font:600 22px 'Newsreader',serif;letter-spacing:-.01em">Stress-test your match</h3>
+        <div style="display:flex;background:#f2f0ea;border-radius:99px;padding:3px;margin:10px 0 6px;width:fit-content">
+          <sc-for list="{{ priChips }}" as="t" hint-placeholder-count="5">
+            <button onClick="{{ t.click }}" style="border:none;cursor:pointer;padding:6px 13px;border-radius:99px;font:600 11px 'Libre Franklin',sans-serif;background:{{ t.bg }};color:{{ t.fg }};transition:background .2s,color .2s">{{ t.label }}</button>
+          </sc-for>
+        </div>
+        <p style="margin:2px 0 14px;font:400 12.5px/1.5 'Libre Franklin',sans-serif;color:#5c636b">{{ priNote }}</p>
+        <div style="position:relative;height:198px">
+          <sc-for list="{{ matchRows2 }}" as="r" hint-placeholder-count="3">
+            <div style="position:absolute;left:0;right:0;top:{{ r.top }};height:56px;display:flex;align-items:center;gap:12px;transition:top .5s cubic-bezier(.4,0,.2,1)">
+              <div style="flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid #23282e;font:600 10.5px/18px 'Libre Franklin',sans-serif;text-align:center">{{ r.rank }}</div>
+              <div style="flex:none;width:150px">
+                <div style="font:600 12.5px 'Libre Franklin',sans-serif;color:{{ r.color }}">{{ r.name }}</div>
+                <div style="font:400 10.5px 'Libre Franklin',sans-serif;color:#8a8477">{{ r.brand }}</div>
+              </div>
+              <div style="flex:1;height:34px;background:#f2f0ea;border-radius:6px;overflow:hidden;display:flex">
+                <sc-for list="{{ r.segs }}" as="s" hint-placeholder-count="5">
+                  <div title="{{ s.title }}" style="width:{{ s.w }};background:{{ s.bg }};transition:width .5s cubic-bezier(.4,0,.2,1);border-right:1.5px solid #fff"></div>
+                </sc-for>
+              </div>
+              <div style="flex:none;width:48px;text-align:right;font:700 17px 'Newsreader',serif">{{ r.match }}%</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;border-top:1px solid rgba(0,0,0,.07);padding-top:12px">
+          <sc-for list="{{ matchLegend2 }}" as="l" hint-placeholder-count="5">
+            <span style="display:flex;align-items:center;gap:6px;font:400 11px 'Libre Franklin',sans-serif;color:#4c5258"><span style="width:10px;height:10px;border-radius:2px;background:{{ l.bg }};display:inline-block"></span>{{ l.label }}</span>
+          </sc-for>
+        </div>
+        <p style="margin:12px 0 0;font:400 11px/1.5 'Libre Franklin',sans-serif;color:#8a8477">If the podium barely moves across presets, the recommendation is robust — a reassurance moment right before the buy links.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+<section id="t1" style="padding:38px 44px 30px;scroll-margin-top:16px" data-screen-label="Turn 1 — chart options">
+  <div style="display:flex;align-items:baseline;gap:12px;margin:0 0 8px">
+    <a href="#t1" style="font:600 10px 'Libre Franklin',sans-serif;padding:3px 8px;background:#23282e;color:#fff;border-radius:4px;letter-spacing:.08em">TURN 1</a>
+    <span style="font:600 15px 'Libre Franklin',sans-serif">Comparing your top 3 — six chart directions for the quiz results page</span>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;margin:0 0 24px">
+    <div style="flex:none;width:392px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+      <div style="font:600 10px 'Libre Franklin',sans-serif;letter-spacing:.12em;color:#8a8477;margin:0 0 8px">ASSUMPTIONS &amp; CONTEXT</div>
+      <ul style="margin:0;padding:0 0 0 16px;font:400 11.5px/1.55 'Libre Franklin',sans-serif;color:#4c5258">
+        <li>Site CSS isn't publicly fetchable — visual language approximated from the live site's tone: white, editorial, plain-spoken, court-blue links.</li>
+        <li>Ratings normalized 0–100 from published lab data (Matt's Pickleball, Pickleball Effect, Pickleheads) + play-test reviews.</li>
+        <li>Match % is illustrative — re-weighted by the skill level chosen in the quiz (see <a href="#1e">1e</a>).</li>
+        <li>Series colors keyed to brands: Vapor = court blue, Coral Pro = coral, Aura Pro = green.</li>
+      </ul>
+    </div>
+    <div style="flex:1 1 560px;min-width:560px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;padding:16px 20px;box-shadow:0 1px 3px rgba(0,0,0,.05);display:flex;align-items:center;gap:20px">
+      <div style="flex:none;border-right:1px solid rgba(0,0,0,.08);padding-right:20px">
+        <div style="font:700 17px/1 'Newsreader',serif;letter-spacing:-.01em">Pickleball</div>
+        <div style="font:400 17px/1.15 'Newsreader',serif;font-style:italic;color:#5c636b">Bay Area</div>
+        <div style="font:500 9.5px 'Libre Franklin',sans-serif;letter-spacing:.1em;color:#8a8477;margin-top:6px">YOUR TOP 3</div>
+      </div>
+      <sc-for list="{{ stripCards }}" as="c" hint-placeholder-count="3">
+        <div style="flex:1;display:flex;gap:10px;align-items:center">
+          <div style="flex:none;width:22px;height:22px;border-radius:50%;background:#23282e;color:#fff;font:600 11px/22px 'Libre Franklin',sans-serif;text-align:center">{{ c.rank }}</div>
+          <div style="flex:none;width:3px;height:34px;border-radius:2px;background:{{ c.color }}"></div>
+          <div style="min-width:0">
+            <div style="font:600 12.5px 'Libre Franklin',sans-serif;white-space:nowrap">{{ c.name }}</div>
+            <div style="font:400 11px 'Libre Franklin',sans-serif;color:#8a8477;white-space:nowrap">{{ c.brand }} · {{ c.price }}</div>
+          </div>
+          <div style="margin-left:auto;font:700 16px 'Newsreader',serif;color:{{ c.color }}">{{ c.match }}%</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+    <div id="1a" style="flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px" data-screen-label="Option 1a — Radar">
+      <div style="display:flex;align-items:baseline;gap:8px;font:400 11px 'Libre Franklin',sans-serif;color:rgba(0,0,0,.55)">
+        <a href="#1a" style="font:600 10.5px 'Libre Franklin',sans-serif;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1a</a>
+        Radar overlay — hover a chip to isolate, click to hide
+      </div>
+      <div style="width:588px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:24px 26px">
+        <div style="font:500 10px 'Libre Franklin',sans-serif;letter-spacing:.12em;color:#8a8477">WHAT'S EACH PADDLE'S CHARACTER?</div>
+        <h3 style="margin:4px 0 2px;font:600 22px 'Newsreader',serif;letter-spacing:-.01em">The shape of the game</h3>
+        <p style="margin:0 0 6px;font:400 12.5px/1.5 'Libre Franklin',sans-serif;color:#5c636b">Six axes, three overlays. Dashed ring = average of all paddles scored.</p>
+        <div style="position:relative"><svg viewBox="0 0 500 500" style="width:100%;display:block">
+          <sc-for list="{{ radarGrid }}" as="g" hint-placeholder-count="5">
+            <polygon points="{{ g }}" fill="none" stroke="#e7e3da" stroke-width="1"></polygon>
+          </sc-for>
+          <sc-for list="{{ radarSpokes }}" as="s" hint-placeholder-count="6">
+            <line x1="250" y1="248" x2="{{ s.x2 }}" y2="{{ s.y2 }}" stroke="#e7e3da" stroke-width="1"></line>
+          </sc-for>
+          <polygon points="{{ radarAvg }}" fill="none" stroke="#b3ada0" stroke-width="1.5" stroke-dasharray="4 4"></polygon>
+          <sc-for list="{{ radarSeries }}" as="s" hint-placeholder-count="3">
+            <polygon points="{{ s.pts }}" fill="{{ s.fill }}" stroke="{{ s.color }}" stroke-width="2.5" stroke-linejoin="round" style="opacity:{{ s.op }};transition:opacity .25s"></polygon>
+          </sc-for>
+        </svg>
+          <sc-for list="{{ radarOv }}" as="o" hint-placeholder-count="6">
+            <div style="position:absolute;left:{{ o.l }};top:{{ o.t }};transform:{{ o.tr }};font-family:'Libre Franklin',sans-serif;font-size:{{ o.fs }};font-weight:{{ o.fw }};color:{{ o.c }};pointer-events:none;white-space:nowrap;line-height:1">{{ o.text }}</div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <sc-for list="{{ radarChips }}" as="c" hint-placeholder-count="3">
+            <button onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" onClick="{{ c.click }}" style="display:flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid rgba(0,0,0,.12);border-radius:99px;background:#fff;cursor:pointer;font:500 12px 'Libre Franklin',sans-serif;color:#23282e;opacity:{{ c.dim }};transition:opacity .2s" style-hover="border-color:rgba(0,0,0,.3)">
+              <span style="width:10px;height:10px;border-radius:3px;background:{{ c.color }};display:inline-block"></span>{{ c.name }}
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div id="1e" style="flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px" data-screen-label="Option 1e — Match anatomy">
+      <div style="display:flex;align-items:baseline;gap:8px;font:400 11px 'Libre Franklin',sans-serif;color:rgba(0,0,0,.55)">
+        <a href="#1e" style="font:600 10.5px 'Libre Franklin',sans-serif;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1e</a>
+        Match-% anatomy — switch skill level, ranks re-sort live
+      </div>
+      <div style="width:700px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:24px 26px">
+        <div style="display:flex;align-items:flex-start;gap:16px">
+          <div style="flex:1">
+            <div style="font:500 10px 'Libre Franklin',sans-serif;letter-spacing:.12em;color:#8a8477">WHAT DID THE QUIZ ACTUALLY REWARD?</div>
+            <h3 style="margin:4px 0 2px;font:600 22px 'Newsreader',serif;letter-spacing:-.01em">Anatomy of your match %</h3>
+          </div>
+          <div style="flex:none;display:flex;background:#f2f0ea;border-radius:99px;padding:3px">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+              <button onClick="{{ t.click }}" style="border:none;cursor:pointer;padding:6px 14px;border-radius:99px;font:600 11.5px 'Libre Franklin',sans-serif;background:{{ t.bg }};color:{{ t.fg }};transition:background .2s,color .2s">{{ t.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <p style="margin:2px 0 14px;font:400 12.5px/1.5 'Libre Franklin',sans-serif;color:#5c636b">{{ levelNote }}</p>
+        <div style="position:relative;height:198px">
+          <sc-for list="{{ matchRows }}" as="r" hint-placeholder-count="3">
+            <div style="position:absolute;left:0;right:0;top:{{ r.top }};height:56px;display:flex;align-items:center;gap:12px;transition:top .5s cubic-bezier(.4,0,.2,1)">
+              <div style="flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid #23282e;font:600 10.5px/18px 'Libre Franklin',sans-serif;text-align:center">{{ r.rank }}</div>
+              <div style="flex:none;width:150px">
+                <div style="font:600 12.5px 'Libre Franklin',sans-serif;color:{{ r.color }}">{{ r.name }}</div>
+                <div style="font:400 10.5px 'Libre Franklin',sans-serif;color:#8a8477">{{ r.brand }}</div>
+              </div>
+              <div style="flex:1;height:34px;background:#f2f0ea;border-radius:6px;overflow:hidden;display:flex">
+                <sc-for list="{{ r.segs }}" as="s" hint-placeholder-count="5">
+                  <div title="{{ s.title }}" style="width:{{ s.w }};background:{{ s.bg }};transition:width .5s cubic-bezier(.4,0,.2,1);border-right:1.5px solid #fff"></div>
+                </sc-for>
+              </div>
+              <div style="flex:none;width:48px;text-align:right;font:700 17px 'Newsreader',serif">{{ r.match }}%</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;border-top:1px solid rgba(0,0,0,.07);padding-top:12px">
+          <sc-for list="{{ matchLegend }}" as="l" hint-placeholder-count="5">
+            <span style="display:flex;align-items:center;gap:6px;font:400 11px 'Libre Franklin',sans-serif;color:#4c5258"><span style="width:10px;height:10px;border-radius:2px;background:{{ l.bg }};display:inline-block"></span>{{ l.label }}</span>
+          </sc-for>
+        </div>
+        <p style="margin:12px 0 0;font:400 11px/1.5 'Libre Franklin',sans-serif;color:#8a8477">Segments = points each factor contributed to the 100-point match score. Hover a segment for its exact value.</p>
+      </div>
+    </div>
+
+    <div id="1b" style="flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px" data-screen-label="Option 1b — Parallel coordinates">
+      <div style="display:flex;align-items:baseline;gap:8px;font:400 11px 'Libre Franklin',sans-serif;color:rgba(0,0,0,.55)">
+        <a href="#1b" style="font:600 10.5px 'Libre Franklin',sans-serif;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1b</a>
+        Parallel coordinates — hover a legend chip to trace one paddle
+      </div>
+      <div style="width:900px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:24px 26px">
+        <div style="display:flex;align-items:flex-end;gap:16px">
+          <div style="flex:1">
+            <div style="font:500 10px 'Libre Franklin',sans-serif;letter-spacing:.12em;color:#8a8477">WHICH PADDLE WINS EACH METRIC?</div>
+            <h3 style="margin:4px 0 2px;font:600 22px 'Newsreader',serif;letter-spacing:-.01em">Where the lines cross</h3>
+          </div>
+          <div style="display:flex;gap:8px;padding-bottom:4px">
+            <sc-for list="{{ pcChips }}" as="c" hint-placeholder-count="3">
+              <span onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:99px;background:{{ c.bg }};cursor:default;font:500 11.5px 'Libre Franklin',sans-serif;transition:background .2s"><span style="width:14px;height:3px;border-radius:2px;background:{{ c.color }};display:inline-block"></span>{{ c.name }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="position:relative;margin-top:8px"><svg viewBox="0 0 840 372" style="width:100%;display:block">
+          <sc-for list="{{ pcAxes }}" as="a" hint-placeholder-count="6">
+            <line x1="{{ a.x }}" y1="40" x2="{{ a.x }}" y2="320" stroke="#e7e3da" stroke-width="1.5"></line>
+            <circle cx="{{ a.x }}" cy="{{ a.avgY }}" r="3" fill="#b3ada0"></circle>
+            <text x="{{ a.x }}" y="358" text-anchor="middle" style="font:400 9.5px 'Libre Franklin',sans-serif;fill:#b3ada0">best</text>
+          </sc-for>
+          <polyline points="{{ pcAvgPts }}" fill="none" stroke="#b3ada0" stroke-width="1.5" stroke-dasharray="4 4"></polyline>
+          <sc-for list="{{ pcSeries }}" as="s" hint-placeholder-count="3">
+            <polyline points="{{ s.pts }}" fill="none" stroke="{{ s.color }}" stroke-width="{{ s.w }}" stroke-linejoin="round" style="opacity:{{ s.op }};transition:opacity .2s"></polyline>
+            <sc-for list="{{ s.dots }}" as="d" hint-placeholder-count="6">
+              <circle cx="{{ d.x }}" cy="{{ d.y }}" r="4.5" fill="{{ s.color }}" stroke="#fff" stroke-width="1.5" style="opacity:{{ s.op }};transition:opacity .2s"></circle>
+            </sc-for>
+          </sc-for>
+        </svg>
+          <sc-for list="{{ pcOv }}" as="o" hint-placeholder-count="12">
+            <div style="position:absolute;left:{{ o.l }};top:{{ o.t }};transform:{{ o.tr }};font-family:'Libre Franklin',sans-serif;font-size:{{ o.fs }};font-weight:{{ o.fw }};color:{{ o.c }};pointer-events:none;white-space:nowrap;line-height:1">{{ o.text }}</div>
+          </sc-for>
+        </div>
+        <p style="margin:8px 0 0;font:400 11px/1.5 'Libre Franklin',sans-serif;color:#8a8477">Scale 66–100 per axis. Grey dot + dashed line = catalog average. The Vapor takes four of six axes; the Coral Pro owns control, the Aura Pro forgiveness — that's the real tradeoff the quiz is weighing.</p>
+      </div>
+    </div>
+
+    <div id="1c" style="flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px" data-screen-label="Option 1c — Fingerprints">
+      <div style="display:flex;align-items:baseline;gap:8px;font:400 11px 'Libre Franklin',sans-serif;color:rgba(0,0,0,.55)">
+        <a href="#1c" style="font:600 10.5px 'Libre Franklin',sans-serif;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1c</a>
+        Deviation fingerprints — each paddle vs. the 486-paddle field
+      </div>
+      <div style="width:940px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:24px 26px">
+        <div style="font:500 10px 'Libre Franklin',sans-serif;letter-spacing:.12em;color:#8a8477">HOW UNUSUAL IS EACH PADDLE?</div>
+        <h3 style="margin:4px 0 2px;font:600 22px 'Newsreader',serif;letter-spacing:-.01em">Fingerprints vs. the field</h3>
+        <p style="margin:0 0 16px;font:400 12.5px/1.5 'Libre Franklin',sans-serif;color:#5c636b">Bars run from the catalog average (center line) — right is above average. Chips show the percentile across all 486 paddles.</p>
+        <div style="display:flex;gap:24px">
+          <sc-for list="{{ fpCols }}" as="col" hint-placeholder-count="3">
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                <span style="width:10px;height:10px;border-radius:3px;background:{{ col.color }};display:inline-block"></span>
+                <span style="font:600 13.5px 'Libre Franklin',sans-serif">{{ col.name }}</span>
+              </div>
+              <div style="font:400 11px/1.4 'Libre Franklin',sans-serif;color:#8a8477;margin-bottom:12px;font-style:italic">{{ col.note }}</div>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <sc-for list="{{ col.rows }}" as="r" hint-placeholder-count="6">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div style="flex:none;width:78px;font:500 11px 'Libre Franklin',sans-serif;color:#4c5258;text-align:right">{{ r.label }}</div>
+                    <div style="flex:1;position:relative;height:14px;background:#f5f3ee;border-radius:3px">
+                      <div style="position:absolute;left:50%;top:-2px;bottom:-2px;width:1.5px;background:#cfcabd"></div>
+                      <div style="position:absolute;top:2px;bottom:2px;left:{{ r.off }};width:{{ r.w }};background:{{ r.bg }};border-radius:2px"></div>
+                    </div>
+                    <div style="flex:none;width:52px;font:600 10.5px 'Libre Franklin',sans-serif;color:#4c5258">{{ r.v }} <span style="color:#b3ada0;font-weight:400">{{ r.pct }}</span></div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <p style="margin:16px 0 0;font:400 11px/1.5 'Libre Franklin',sans-serif;color:#8a8477">Read: the Vapor is a spec outlier (three metrics in the top 5% of the catalog, control below average); the Coral Pro and Aura Pro trade peaks for balance.</p>
+      </div>
+    </div>
+
+    <div id="1d" style="flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px" data-screen-label="Option 1d — Catalog scatter">
+      <div style="display:flex;align-items:baseline;gap:8px;font:400 11px 'Libre Franklin',sans-serif;color:rgba(0,0,0,.55)">
+        <a href="#1d" style="font:600 10.5px 'Libre Franklin',sans-serif;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1d</a>
+        Catalog scatter — your three in the whole 486-paddle field, hover the marked dots
+      </div>
+      <div style="width:920px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:24px 26px">
+        <div style="font:500 10px 'Libre Franklin',sans-serif;letter-spacing:.12em;color:#8a8477">WHY THESE THREE?</div>
+        <h3 style="margin:4px 0 2px;font:600 22px 'Newsreader',serif;letter-spacing:-.01em">The whole catalog at once</h3>
+        <p style="margin:0 0 6px;font:400 12.5px/1.5 'Libre Franklin',sans-serif;color:#5c636b">Every dot is a scored paddle. The power–control tradeoff runs downhill; your matches sit on its upper edge. Ring size = spin (RPM).</p>
+        <div style="position:relative">
+          <svg viewBox="0 0 860 520" style="width:100%;display:block">
+            <sc-for list="{{ scXTicks }}" as="t" hint-placeholder-count="7">
+              <line x1="{{ t.x }}" y1="40" x2="{{ t.x }}" y2="470" stroke="#f0ede6" stroke-width="1"></line>
+            </sc-for>
+            <sc-for list="{{ scYTicks }}" as="t" hint-placeholder-count="7">
+              <line x1="60" y1="{{ t.y }}" x2="800" y2="{{ t.y }}" stroke="#f0ede6" stroke-width="1"></line>
+            </sc-for>
+            <text x="800" y="512" text-anchor="end" style="font:600 11.5px 'Libre Franklin',sans-serif;fill:#4c5258">Power →</text>
+            <text x="14" y="34" style="font:600 11.5px 'Libre Franklin',sans-serif;fill:#4c5258">Control ↑</text>
+            <text x="790" y="62" text-anchor="end" style="font:italic 600 12px 'Newsreader',serif;fill:#b3ada0">rare air: power + control</text>
+            <sc-for list="{{ scCloud }}" as="d" hint-placeholder-count="30">
+              <circle cx="{{ d.cx }}" cy="{{ d.cy }}" r="2.3" fill="#d9d4c8"></circle>
+            </sc-for>
+            <sc-for list="{{ scPicks }}" as="p" hint-placeholder-count="3">
+              <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="{{ p.r }}" fill="{{ p.fill }}" stroke="{{ p.color }}" stroke-width="2.5" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" style="cursor:pointer"></circle>
+              <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="4" fill="{{ p.color }}" style="pointer-events:none"></circle>
+            </sc-for>
+          </svg>
+          <sc-for list="{{ scOv }}" as="o" hint-placeholder-count="14">
+            <div style="position:absolute;left:{{ o.l }};top:{{ o.t }};transform:{{ o.tr }};font-family:'Libre Franklin',sans-serif;font-size:{{ o.fs }};font-weight:{{ o.fw }};color:{{ o.c }};pointer-events:none;white-space:nowrap;line-height:1">{{ o.text }}</div>
+          </sc-for>
+          <sc-if value="{{ scTipShow }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:{{ scTipLeft }};top:{{ scTipTop }};transform:translate(-50%,-135%);background:#23282e;color:#fff;border-radius:6px;padding:8px 12px;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.25);white-space:nowrap">
+              <div style="font:600 12px 'Libre Franklin',sans-serif">{{ scTipName }}</div>
+              <div style="font:400 11px 'Libre Franklin',sans-serif;color:#c8cdd2;margin-top:2px">{{ scTipL1 }}</div>
+              <div style="font:400 11px 'Libre Franklin',sans-serif;color:#c8cdd2">{{ scTipL2 }}</div>
+            </div>
+          </sc-if>
+        </div>
+        <p style="margin:6px 0 0;font:400 11px/1.5 'Libre Franklin',sans-serif;color:#8a8477">Field positions simulated from catalog score distributions; the three highlighted paddles use their real normalized scores.</p>
+      </div>
+    </div>
+
+    <div id="1f" style="flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px" data-screen-label="Option 1f — Value frontier">
+      <div style="display:flex;align-items:baseline;gap:8px;font:400 11px 'Libre Franklin',sans-serif;color:rgba(0,0,0,.55)">
+        <a href="#1f" style="font:600 10.5px 'Libre Franklin',sans-serif;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1f</a>
+        Value frontier — price vs. overall performance, with market reference points
+      </div>
+      <div style="width:900px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:24px 26px">
+        <div style="font:500 10px 'Libre Franklin',sans-serif;letter-spacing:.12em;color:#8a8477">WHAT DOES EACH DOLLAR BUY?</div>
+        <h3 style="margin:4px 0 2px;font:600 22px 'Newsreader',serif;letter-spacing:-.01em">Price against performance</h3>
+        <p style="margin:0 0 6px;font:400 12.5px/1.5 'Libre Franklin',sans-serif;color:#5c636b">Up and left is better. The dashed line is the value frontier — nothing on the market beats a point on it for both price and performance.</p>
+        <div style="position:relative"><svg viewBox="0 0 860 430" style="width:100%;display:block">
+          <sc-for list="{{ vXTicks }}" as="t" hint-placeholder-count="6">
+            <line x1="{{ t.x }}" y1="40" x2="{{ t.x }}" y2="380" stroke="#f0ede6" stroke-width="1"></line>
+          </sc-for>
+          <sc-for list="{{ vYTicks }}" as="t" hint-placeholder-count="5">
+            <line x1="60" y1="{{ t.y }}" x2="800" y2="{{ t.y }}" stroke="#f0ede6" stroke-width="1"></line>
+          </sc-for>
+          <text x="800" y="422" text-anchor="end" style="font:600 11.5px 'Libre Franklin',sans-serif;fill:#4c5258">Price →</text>
+          <text x="14" y="30" style="font:600 11.5px 'Libre Franklin',sans-serif;fill:#4c5258">Performance index ↑</text>
+          <polyline points="{{ vFrontier }}" fill="none" stroke="#8a8477" stroke-width="1.5" stroke-dasharray="5 5"></polyline>
+          <text x="580" y="95" text-anchor="end" style="font:italic 600 12px 'Newsreader',serif;fill:#8a8477">value frontier</text>
+          <sc-for list="{{ vRefs }}" as="r" hint-placeholder-count="4">
+            <circle cx="{{ r.cx }}" cy="{{ r.cy }}" r="6" fill="#cfcabd"></circle>
+          </sc-for>
+          <sc-for list="{{ vPicks }}" as="p" hint-placeholder-count="3">
+            <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="11" fill="{{ p.fill }}" stroke="{{ p.color }}" stroke-width="2.5"></circle>
+            <circle cx="{{ p.cx }}" cy="{{ p.cy }}" r="4" fill="{{ p.color }}"></circle>
+          </sc-for>
+        </svg>
+          <sc-for list="{{ vOv }}" as="o" hint-placeholder-count="14">
+            <div style="position:absolute;left:{{ o.l }};top:{{ o.t }};transform:{{ o.tr }};font-family:'Libre Franklin',sans-serif;font-size:{{ o.fs }};font-weight:{{ o.fw }};color:{{ o.c }};pointer-events:none;white-space:nowrap;line-height:1">{{ o.text }}</div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <sc-for list="{{ vChips }}" as="c" hint-placeholder-count="3">
+            <div style="flex:1;border:1px solid rgba(0,0,0,.09);border-radius:7px;padding:10px 14px;display:flex;align-items:center;gap:10px">
+              <span style="width:10px;height:10px;border-radius:3px;background:{{ c.color }};display:inline-block"></span>
+              <div>
+                <div style="font:600 12px 'Libre Franklin',sans-serif">{{ c.name }}</div>
+                <div style="font:400 10.5px 'Libre Franklin',sans-serif;color:#8a8477">{{ c.legal }}</div>
+              </div>
+              <div style="margin-left:auto;text-align:right">
+                <div style="font:700 15px 'Newsreader',serif">{{ c.pp }}</div>
+                <div style="font:400 10px 'Libre Franklin',sans-serif;color:#8a8477">per perf. point</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <p style="margin:24px 0 0;font:400 12px/1.5 'Libre Franklin',sans-serif;color:rgba(0,0,0,.5)">Try next: "wire <a href="#1e">1e</a>'s level toggle to all six charts" · "combine <a href="#1a">1a</a> + <a href="#1e">1e</a> into one results module" · "more like <a href="#1d">1d</a> but plotting spin vs. price"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultLevel&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;intermediate&quot;,&quot;options&quot;:[&quot;beginner&quot;,&quot;intermediate&quot;,&quot;advanced&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Quiz context&quot;},&quot;catalogCloud&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Charts&quot;}}">
+class Component extends DCLogic {
+  state = { level: null, iso: null, off: {}, hovPC: null, hovSc: null };
+  M = [
+    {key:'power',label:'Power',avg:72},
+    {key:'pop',label:'Pop',avg:70},
+    {key:'spin',label:'Spin',avg:74},
+    {key:'control',label:'Control',avg:78},
+    {key:'forgive',label:'Forgiveness',avg:75},
+    {key:'hands',label:'Hand speed',avg:78}
+  ];
+  P = [
+    {id:'vapor',name:'Vapor Power 2',brand:'11SIX24',color:'#31699e',price:'$209.99',priceN:209.99,spin:2335,legal:'UPA-A only',idx:87.8,pp:'$2.39',vals:[88,92,96,76,80,95],pct:[91,96,96,42,62,97],note:'Fast-hands power hybrid; elite spin that keeps its grit.'},
+    {id:'coral',name:'Coral Pro Hybrid',brand:'Six Zero',color:'#d55b41',price:'$219.99',priceN:219.99,spin:2320,legal:'UPA-A only',idx:85.7,pp:'$2.57',vals:[80,78,92,91,87,86],pct:[78,71,90,88,84,82],note:'Balanced all-court; plush control with elite spin.'},
+    {id:'aura',name:'Aura Pro Hybrid',brand:'Friday',color:'#5e8c3f',price:'$159',priceN:159,spin:2295,legal:'USAP + UPA-A',idx:85.0,pp:'$1.87',vals:[85,84,87,84,90,80],pct:[86,82,81,74,89,66],note:'Does everything well; the value pick at $159.'}
+  ];
+  LV = {
+    beg:{label:'Beginner',note:'Beginner weighting favors forgiveness and budget — the Aura Pro takes the top slot.',segs:{vapor:[18,14,20,13,13],coral:[21,24,16,14,15],aura:[20,26,14,20,14]}},
+    int:{label:'Intermediate',note:'Intermediate weighting balances spin, feel and price — all three finish within 3 points.',segs:{vapor:[26,16,22,13,15],coral:[24,19,20,12,16],aura:[22,20,17,18,12]}},
+    adv:{label:'Advanced',note:'Advanced weighting rewards spin ceiling and hand speed — the Vapor Power 2 pulls away.',segs:{vapor:[30,15,24,12,15],coral:[25,17,21,11,15],aura:[22,16,17,16,12]}}
+  };
+  renderVals() {
+    const S=this.state, M=this.M, P=this.P;
+    const level = S.level ?? ({beginner:'beg',advanced:'adv'}[this.props.defaultLevel]||'int');
+    // context strip (intermediate defaults)
+    const intTotals = P.map(p=>({p,t:this.LV.int.segs[p.id].reduce((a,b)=>a+b,0)})).sort((a,b)=>b.t-a.t);
+    const stripCards = intTotals.map((e,i)=>({rank:i+1,name:e.p.name,brand:e.p.brand,price:e.p.price,color:e.p.color,match:e.t}));
+    // 1a radar
+    const cx=250, cy=248, R=168;
+    const ang=i=>(-90+i*60)*Math.PI/180;
+    const pt=(i,v)=>(cx+Math.cos(ang(i))*R*v/100).toFixed(1)+','+(cy+Math.sin(ang(i))*R*v/100).toFixed(1);
+    const radarGrid=[20,40,60,80,100].map(v=>M.map((m,i)=>pt(i,v)).join(' '));
+    const radarSpokes=M.map((m,i)=>{
+      const e=pt(i,100).split(',');
+      let lx=cx+Math.cos(ang(i))*(R+30), ly=cy+Math.sin(ang(i))*(R+30);
+      ly += i===0?-4:(i===3?12:5);
+      return {x2:e[0],y2:e[1],lx:lx.toFixed(1),ly:ly.toFixed(1),anchor:(i===0||i===3)?'middle':(i<3?'start':'end'),label:m.label};
+    });
+    const radarAvg=M.map((m,i)=>pt(i,m.avg)).join(' ');
+    const radarSeries=P.map(p=>{
+      const on=S.off[p.id]!==true;
+      return {pts:p.vals.map((v,i)=>pt(i,v)).join(' '),color:p.color,fill:p.color+'3d',name:p.name,
+        op: !on?0.05 : (S.iso ? (S.iso===p.id?1:0.1) : 1)};
+    });
+    const radarChips=P.map(p=>({name:p.name,color:p.color,dim:S.off[p.id]?0.35:1,
+      enter:()=>this.setState({iso:p.id}),leave:()=>this.setState({iso:null}),
+      click:()=>this.setState(s=>({off:{...s.off,[p.id]:!s.off[p.id]}}))}));
+    // 1b parallel coordinates
+    const pcX=i=>70+i*140, pcY=v=>40+(100-v)/34*280;
+    const pcAxes=M.map((m,i)=>{
+      let best=P[0]; P.forEach(p=>{if(p.vals[i]>best.vals[i])best=p;});
+      return {x:pcX(i),label:m.label,avgY:pcY(m.avg).toFixed(1),winner:best.name.split(' ')[0],winColor:best.color};
+    });
+    const pcAvgPts=M.map((m,i)=>pcX(i)+','+pcY(m.avg).toFixed(1)).join(' ');
+    const pcSeries=P.map(p=>{
+      const hot=S.hovPC===p.id;
+      return {color:p.color,w:hot?3.5:2.5,op:S.hovPC?(hot?1:0.15):0.9,
+        pts:p.vals.map((v,i)=>pcX(i)+','+pcY(v).toFixed(1)).join(' '),
+        dots:p.vals.map((v,i)=>({x:pcX(i),y:pcY(v).toFixed(1)}))};
+    });
+    const pcChips=P.map(p=>({name:p.name,color:p.color,bg:S.hovPC===p.id?'#f2f0ea':'transparent',
+      enter:()=>this.setState({hovPC:p.id}),leave:()=>this.setState({hovPC:null})}));
+    // 1c fingerprints
+    const fpCols=P.map(p=>({name:p.brand+' '+p.name,color:p.color,note:p.note,
+      rows:M.map((m,i)=>{
+        const v=p.vals[i], d=v-m.avg, w=Math.min(38,Math.abs(d)*1.7);
+        return {label:m.label,v,pct:'p'+p.pct[i],w:w.toFixed(1)+'%',off:d>=0?'50%':(50-w).toFixed(1)+'%',bg:d>=0?p.color:'#b05a4e'};
+      })}));
+    // 1d scatter
+    let seed=11; const rnd=()=>{seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;};
+    const g=()=>rnd()+rnd()+rnd()-1.5;
+    const sx=p=>60+(p-40)/60*740, sy=c=>470-(c-40)/60*430;
+    const showCloud=this.props.catalogCloud??true;
+    const scCloud=[];
+    for(let k=0;k<(showCloud?483:0);k++){
+      let pw=72+g()*13, cn=78+(72-pw)*0.5+g()*9;
+      pw=Math.max(42,Math.min(99,pw)); cn=Math.max(42,Math.min(99,cn));
+      scCloud.push({cx:sx(pw).toFixed(1),cy:sy(cn).toFixed(1)});
+    }
+    const rs={vapor:18,coral:17,aura:15};
+    const scPicks=P.map(p=>{
+      const X=sx(p.vals[0]), Y=sy(p.vals[3]);
+      return {cx:X.toFixed(1),cy:Y.toFixed(1),r:rs[p.id],color:p.color,fill:p.color+'2e',name:p.name,
+        lx:(p.id==='vapor'?X+26:X-24).toFixed(1),
+        ly:(p.id==='vapor'?Y+4:(p.id==='aura'?Y+32:Y-22)).toFixed(1),
+        anchor:p.id==='vapor'?'start':'end',
+        enter:()=>this.setState({hovSc:p.id}),leave:()=>this.setState({hovSc:null})};
+    });
+    const scXTicks=[40,50,60,70,80,90,100].map(v=>({x:sx(v).toFixed(1),label:v}));
+    const scYTicks=[40,50,60,70,80,90,100].map(v=>({y:sy(v).toFixed(1),yl:(sy(v)+3.5).toFixed(1),label:v}));
+    const hp=P.find(p=>p.id===S.hovSc);
+    // 1e match anatomy
+    const shades=['rgba(35,45,52,.92)','rgba(35,45,52,.72)','rgba(35,45,52,.54)','rgba(35,45,52,.38)','rgba(35,45,52,.24)'];
+    const segLabels=['Play style fit','Forgiveness & sweet spot','Spin & shaping','Budget fit','Longevity'];
+    const lv=this.LV[level];
+    const sorted=P.map(p=>({id:p.id,t:lv.segs[p.id].reduce((a,b)=>a+b,0)})).sort((a,b)=>b.t-a.t);
+    const matchRows=P.map(p=>{
+      const segs=lv.segs[p.id], total=segs.reduce((a,b)=>a+b,0);
+      const rank=sorted.findIndex(e=>e.id===p.id)+1;
+      return {name:p.name,brand:p.brand,color:p.color,match:total,rank,top:((rank-1)*70)+'px',
+        segs:segs.map((v,i)=>({w:v+'%',bg:shades[i],title:segLabels[i]+': '+v+' pts'}))};
+    });
+    const tabs=[['beg','Beginner'],['int','Intermediate'],['adv','Advanced']].map(e=>({label:e[1],
+      click:()=>this.setState({level:e[0]}),bg:level===e[0]?'#26323a':'transparent',fg:level===e[0]?'#fff':'#26323a'}));
+    const matchLegend=segLabels.map((l,i)=>({label:l,bg:shades[i]}));
+    // 1f value
+    const vx=p=>60+(p-80)/280*710, vy=v=>40+(92-v)/18*330;
+    const vRefs=[{n:'Neon $99',p:99,i:78},{n:'Loco $199',p:199,i:84},{n:'Perseus IV $280',p:280,i:87,b:1},{n:'Boomstik $333',p:333,i:88,b:1}]
+      .map(r=>({cx:vx(r.p).toFixed(1),cy:vy(r.i).toFixed(1),ly:(vy(r.i)+(r.b?19:-14)).toFixed(1),name:r.n}));
+    const vFrontier=[[99,78],[159,85],[209.99,87.8],[333,88]].map(e=>vx(e[0]).toFixed(1)+','+vy(e[1]).toFixed(1)).join(' ');
+    const vPicks=P.map(p=>{
+      const X=vx(p.priceN), Y=vy(p.idx);
+      return {cx:X.toFixed(1),cy:Y.toFixed(1),color:p.color,fill:p.color+'2e',name:p.name,
+        lx:(p.id==='coral'?X+18:(p.id==='vapor'?X:X-18)).toFixed(1),
+        ly:(p.id==='coral'?Y+5:(p.id==='vapor'?Y-20:Y+5)).toFixed(1),
+        anchor:p.id==='coral'?'start':(p.id==='vapor'?'middle':'end')};
+    });
+    const vXTicks=[100,150,200,250,300,350].map(v=>({x:vx(v).toFixed(1),label:'$'+v}));
+    const vYTicks=[76,80,84,88,92].map(v=>({y:vy(v).toFixed(1),yl:(vy(v)+3.5).toFixed(1),label:v}));
+    const vChips=P.map(p=>({name:p.brand+' '+p.name,color:p.color,legal:p.legal+' · '+p.price,pp:p.pp}));
+    const ovIt=(x,y,W,H,anchor,text,c,fs,fw)=>({l:(x/W*100).toFixed(2)+'%',t:(y/H*100).toFixed(2)+'%',tr:anchor==='middle'?'translate(-50%,-50%)':(anchor==='start'?'translate(0,-50%)':'translate(-100%,-50%)'),text:String(text),c:c||'#4c5258',fs:(fs||12)+'px',fw:fw||600});
+    const radarOv=M.map((m,i)=>{const lx=cx+Math.cos(ang(i))*(R+30), ly=cy+Math.sin(ang(i))*(R+30)+(i===0?-4:(i===3?12:5));return ovIt(lx,ly-4,500,500,(i===0||i===3)?'middle':(i<3?'start':'end'),m.label,'#4c5258',12,600);});
+    const pcOv=[];
+    pcAxes.forEach(a=>{pcOv.push(ovIt(a.x,20,840,372,'middle',a.label,'#23282e',12.5,600));pcOv.push(ovIt(a.x,338,840,372,'middle',a.winner,a.winColor,11,600));});
+    const scOv=[];
+    scXTicks.forEach(t=>scOv.push(ovIt(parseFloat(t.x),487,860,520,'middle',t.label,'#b3ada0',10.5,400)));
+    scYTicks.forEach(t=>scOv.push(ovIt(48,parseFloat(t.y),860,520,'end',t.label,'#b3ada0',10.5,400)));
+    scPicks.forEach(p=>scOv.push(ovIt(parseFloat(p.lx),parseFloat(p.ly)-4,860,520,p.anchor,p.name,p.color,12,600)));
+    const vOv=[];
+    vXTicks.forEach(t=>vOv.push(ovIt(parseFloat(t.x),397,860,430,'middle',t.label,'#b3ada0',10.5,400)));
+    vYTicks.forEach(t=>vOv.push(ovIt(48,parseFloat(t.y),860,430,'end',t.label,'#b3ada0',10.5,400)));
+    vRefs.forEach(r=>vOv.push(ovIt(parseFloat(r.cx),parseFloat(r.ly)-3,860,430,'middle',r.name,'#8a8477',10.5,400)));
+    vPicks.forEach(p=>vOv.push(ovIt(parseFloat(p.lx),parseFloat(p.ly)-4,860,430,p.anchor,p.name,p.color,12,600)));
+    // Turn 2 — 2a axis explorer
+    const EX=[{k:'power',label:'Power',i:0},{k:'spin',label:'Spin',i:2},{k:'control',label:'Control',i:3},{k:'forgive',label:'Forgiveness',i:4},{k:'hands',label:'Hand speed',i:5},{k:'price',label:'Price',i:-1}];
+    if(!this._cloud){let s2=7;const r2=()=>{s2=(s2*1103515245+12345)%2147483648;return s2/2147483648;};const g2=()=>r2()+r2()+r2()-1.5;this._cloud=[];const cl=v=>Math.max(42,Math.min(99,v));
+      for(let k=0;k<460;k++){let pw=70+g2()*13,cn=76+(72-pw)*0.55+g2()*8,sp=73+g2()*11,fg=74+(cn-76)*0.45+g2()*8,pp2=pw*0.65+24.5+g2()*6,hd=78+(76-pw)*0.35+g2()*7;
+        pw=cl(pw);cn=cl(cn);sp=cl(sp);fg=cl(fg);pp2=cl(pp2);hd=cl(hd);
+        let pr=40+Math.max(0,pw+cn+sp-200)*2.2+r2()*130;pr=Math.max(40,Math.min(340,pr));
+        this._cloud.push({vals:[pw,pp2,sp,cn,fg,hd],price:pr});}}
+    const xm=S.xm??'power', ym=S.ym??'control';
+    const exm=k=>EX.find(e=>e.k===k);
+    const exVal=(o,k)=>{const e=exm(k);return e.k==='price'?o.price:o.vals[e.i];};
+    const exScale=k=>k==='price'?{min:40,max:340,ticks:[50,100,150,200,250,300],fmt:v=>'$'+v}:{min:40,max:100,ticks:[40,50,60,70,80,90,100],fmt:v=>''+v};
+    const sx2=exScale(xm), sy2=exScale(ym);
+    const exX=v=>60+(v-sx2.min)/(sx2.max-sx2.min)*740, exY=v=>470-(v-sy2.min)/(sy2.max-sy2.min)*430;
+    const exCloud=this._cloud.map(o=>({cx:exX(exVal(o,xm)).toFixed(1),cy:exY(exVal(o,ym)).toFixed(1)}));
+    const exXT=sx2.ticks.map(v=>({x:exX(v).toFixed(1)}));
+    const exYT=sy2.ticks.map(v=>({y:exY(v).toFixed(1)}));
+    const exOv=[];
+    sx2.ticks.forEach(v=>exOv.push(ovIt(exX(v),487,860,520,'middle',sx2.fmt(v),'#b3ada0',10.5,400)));
+    sy2.ticks.forEach(v=>exOv.push(ovIt(48,exY(v),860,520,'end',sy2.fmt(v),'#b3ada0',10.5,400)));
+    exOv.push(ovIt(800,500,860,520,'end',exm(xm).label+' →','#4c5258',11.5,600));
+    exOv.push(ovIt(14,26,860,520,'start',exm(ym).label+' ↑','#4c5258',11.5,600));
+    const off2={vapor:[24,4,'start'],coral:[-24,-10,'end'],aura:[-24,18,'end']};
+    const exPicks=P.map(p=>{
+      const po={vals:p.vals,price:p.priceN};
+      const X=exX(exVal(po,xm)), Y=exY(exVal(po,ym)), o=off2[p.id];
+      exOv.push(ovIt(X+o[0],Y+o[1],860,520,o[2],p.name,p.color,12,600));
+      return {cx:X.toFixed(1),cy:Y.toFixed(1),color:p.color,fill:p.color+'2e',
+        enter:()=>this.setState({hovEx:p.id}),leave:()=>this.setState({hovEx:null})};
+    });
+    const setAxis=(axis,k)=>this.setState(s=>{const cx2=s.xm??'power',cy2=s.ym??'control';
+      if(axis==='x')return k===cy2?{xm:k,ym:cx2}:{xm:k};
+      return k===cx2?{ym:k,xm:cy2}:{ym:k};});
+    const chipRow=axis=>EX.map(e=>({label:e.label,click:()=>setAxis(axis,e.k),
+      bg:(axis==='x'?xm:ym)===e.k?'#26323a':'transparent',fg:(axis==='x'?xm:ym)===e.k?'#fff':'#26323a'}));
+    const exXChips=chipRow('x'), exYChips=chipRow('y');
+    const bestOf=k=>{const e=exm(k);if(k==='price'){let b=P[0];P.forEach(p=>{if(p.priceN<b.priceN)b=p;});return 'Lowest price: '+b.name;}let b=P[0];P.forEach(p=>{if(p.vals[e.i]>b.vals[e.i])b=p;});return 'Best '+e.label.toLowerCase()+': '+b.name;};
+    const exNote=bestOf(xm)+' · '+bestOf(ym);
+    const hx=P.find(p=>p.id===S.hovEx);
+    const exFmt=(p,k)=>k==='price'?'$'+p.priceN:exm(k).label+' '+p.vals[exm(k).i];
+    // 2b score breakdown chips
+    const barL=['PWR','POP','SPN','CTL','FGV','HND'];
+    const vBreak=P.map(p=>({name:p.name,color:p.color,score:p.idx.toFixed(1),pp:p.pp,price:p.price,
+      bars:p.vals.map((v,i)=>({lbl:barL[i],h:((v-40)/60*30).toFixed(1)+'px',bg:p.color}))}));
+    // 2c priority stress-test
+    const PR2={
+      ans:{label:'As answered',note:'Weighted exactly how you answered — spin and power heaviest. Your podium holds.',segs:{vapor:[32,12,24,6,12],coral:[30,13,23,6,13],aura:[27,14,22,9,12]}},
+      spin:{label:'Spin first',note:'If spin were everything, the Vapor\u2019s RPM edge stretches the lead.',segs:{vapor:[14,12,43,6,12],coral:[13,13,42,6,12],aura:[12,14,39,9,11]}},
+      ctrl:{label:'Control & feel',note:'Prioritize touch and sweet spot and the podium flips — Aura Pro and Coral Pro jump ahead.',segs:{vapor:[14,31,14,6,16],coral:[13,35,14,6,17],aura:[12,37,13,9,16]}},
+      pow:{label:'Power first',note:'All-out power keeps the Vapor clear of the field.',segs:{vapor:[41,12,14,6,12],coral:[38,13,14,6,12],aura:[35,14,13,9,11]}},
+      bud:{label:'Budget first',note:'Dollars first: the $159 Aura Pro runs away with it.',segs:{vapor:[14,12,14,28,8],coral:[13,13,14,26,9],aura:[12,14,13,40,8]}}};
+    const pri=S.pri??'ans', pz=PR2[pri];
+    const segLabels2=['Power & drive','Forgiveness & feel','Spin & shaping','Budget fit','Durability'];
+    const sorted2=P.map(p=>({id:p.id,t:pz.segs[p.id].reduce((a,b)=>a+b,0)})).sort((a,b)=>b.t-a.t);
+    const matchRows2=P.map(p=>{
+      const segs=pz.segs[p.id], total=segs.reduce((a,b)=>a+b,0);
+      const rank=sorted2.findIndex(e=>e.id===p.id)+1;
+      return {name:p.name,brand:p.brand,color:p.color,match:total,rank,top:((rank-1)*70)+'px',
+        segs:segs.map((v,i)=>({w:v+'%',bg:shades[i],title:segLabels2[i]+': '+v+' pts'}))};
+    });
+    const priChips=Object.keys(PR2).map(k=>({label:PR2[k].label,click:()=>this.setState({pri:k}),
+      bg:pri===k?'#26323a':'transparent',fg:pri===k?'#fff':'#26323a'}));
+    const matchLegend2=segLabels2.map((l,i)=>({label:l,bg:shades[i]}));
+    return {
+      exCloud, exXT, exYT, exOv, exPicks, exXChips, exYChips, exNote,
+      exTipShow:!!hx,
+      exTipLeft:hx?(exX(exVal({vals:hx.vals,price:hx.priceN},xm))/860*100).toFixed(1)+'%':'0%',
+      exTipTop:hx?(exY(exVal({vals:hx.vals,price:hx.priceN},ym))/520*100).toFixed(1)+'%':'0%',
+      exTipName:hx?hx.brand+' '+hx.name:'',
+      exTipL1:hx?exFmt(hx,xm)+' · '+exFmt(hx,ym):'',
+      vBreak, priChips, priNote:pz.note, matchRows2, matchLegend2,
+      stripCards, radarGrid, radarOv, pcOv, scOv, vOv, radarSpokes, radarAvg, radarSeries, radarChips,
+      pcAxes, pcAvgPts, pcSeries, pcChips, fpCols,
+      scCloud, scPicks, scXTicks, scYTicks,
+      scTipShow:!!hp,
+      scTipLeft:hp?(sx(hp.vals[0])/860*100).toFixed(1)+'%':'0%',
+      scTipTop:hp?(sy(hp.vals[3])/520*100).toFixed(1)+'%':'0%',
+      scTipName:hp?hp.brand+' '+hp.name:'',
+      scTipL1:hp?'Power '+hp.vals[0]+' · Control '+hp.vals[3]:'',
+      scTipL2:hp?hp.spin+' RPM spin · '+hp.price:'',
+      tabs, levelNote:lv.note, matchRows, matchLegend,
+      vXTicks, vYTicks, vFrontier, vRefs, vPicks, vChips
+    };
+  }
+}
+</script>
+</body>
+</html>

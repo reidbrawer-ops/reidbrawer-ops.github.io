@@ -1,0 +1,542 @@
+/* Paddle comparison charts — the "Your top 3" strip + 2a/2b/2c visualizations
+   (see assets/paddle-charts.js). Its own stylesheet, not paddle-quiz.css,
+   because it is a reusable component meant for both the quiz results and (once
+   it has a selection model) the browse view — the same reason its JS is a
+   shared module.
+
+   The prototype's palette (warm off-white, court-blue links, coral/green
+   series) is mapped onto this site's real v4 tokens per DESIGN.md: page paper
+   is --fog, card surface --paper, ink --ink, and the three series accents are
+   the site's teal/clay/olive (assigned in JS). Chart geometry, type scale and
+   interaction timing follow the handoff precisely. */
+
+.pc-root {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin: 0 0 1.6rem;
+  text-align: left;
+}
+
+/* Shared card frame. The prototype used a 1px hairline + soft shadow at 8px;
+   mapped to the site's card language — --paper surface, --line hairline,
+   --radius-m — with the warm paper shadow the design bans true-black ones. */
+.pc-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  box-shadow: 0 1px 3px rgba(var(--ink-rgb), 0.06);
+  padding: 24px 26px;
+}
+
+/* ---------- shared type ---------- */
+.pc-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.pc-title {
+  margin: 4px 0 2px;
+  font-family: var(--font-headline);
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.pc-explain {
+  margin: 0 0 10px;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.pc-explain strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+.pc-note {
+  margin: 8px 0 0;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--ink-faint);
+}
+
+/* ---------- segmented pill group ---------- */
+.pc-pillgroup {
+  display: inline-flex;
+  background: var(--fog-dim);
+  border-radius: 999px;
+  padding: 3px;
+}
+.pc-pill {
+  border: none;
+  cursor: pointer;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  color: var(--ink);
+  background: transparent;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+.pc-pill:hover {
+  color: var(--bay);
+}
+/* Active pill: the prototype's dark control fill, mapped to --ink. */
+.pc-pill.is-active,
+.pc-pill.is-active:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---------- Top 3 strip ---------- */
+.pc-strip {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.pc-strip-lead {
+  flex: none;
+  border-right: 1px solid var(--rule-08);
+  padding-right: 20px;
+}
+.pc-strip-leadtitle {
+  display: block;
+  font-family: var(--font-headline);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 2px;
+}
+.pc-strip-item {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+}
+.pc-roundel {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.6875rem;
+  line-height: 22px;
+  text-align: center;
+}
+.pc-strip-bar {
+  flex: none;
+  width: 3px;
+  height: 34px;
+  border-radius: 2px;
+}
+.pc-strip-meta {
+  min-width: 0;
+}
+.pc-strip-name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pc-strip-sub {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.pc-strip-score {
+  margin-left: auto;
+  text-align: right;
+  flex: none;
+}
+.pc-strip-num {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.pc-strip-scorelabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ---------- explorer header ---------- */
+.pc-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.pc-titles {
+  flex: 1;
+}
+.pc-axis-pickers {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+.pc-axis-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pc-axis-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+
+/* ---------- SVG plot + overlay ---------- */
+.pc-plot {
+  position: relative;
+}
+.pc-svg {
+  width: 100%;
+  display: block;
+}
+.pc-grid-line {
+  stroke: var(--rule-06);
+  stroke-width: 1;
+}
+.pc-dot {
+  fill: rgba(var(--ink-rgb), 0.18);
+  transition: cx 0.4s var(--ease), cy 0.4s var(--ease);
+}
+.pc-pick-ring {
+  cursor: pointer;
+  transition: cx 0.4s var(--ease), cy 0.4s var(--ease);
+}
+.pc-pick-dot {
+  pointer-events: none;
+  transition: cx 0.4s var(--ease), cy 0.4s var(--ease);
+}
+.pc-frontier {
+  fill: none;
+  stroke: var(--ink-faint);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+}
+
+/* Overlay: percent-positioned text over the SVG, non-interactive. */
+.pc-ov {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.pc-ov-label {
+  position: absolute;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  line-height: 1;
+}
+.pc-tick {
+  font-size: 0.656rem;
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+.pc-axis-title {
+  font-weight: 600;
+  font-size: 0.719rem;
+  color: var(--ink-soft);
+}
+.pc-pick-label {
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+.pc-frontier-note {
+  font-family: var(--font-headline);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+}
+
+/* Featured-dot tooltip (2a). */
+.pc-tip {
+  position: absolute;
+  transform: translate(-50%, -140%);
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 6px;
+  padding: 8px 12px;
+  pointer-events: none;
+  box-shadow: 0 4px 14px rgba(var(--ink-rgb), 0.25);
+  white-space: nowrap;
+  z-index: 2;
+}
+.pc-tip-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+.pc-tip-sub {
+  margin-top: 2px;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  color: var(--footer-body);
+}
+
+/* ---------- 2b breakdown cards ---------- */
+.pc-break-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+.pc-break-card {
+  flex: 1;
+  border: 1px solid var(--rule-10);
+  border-radius: 7px;
+  padding: 12px 14px;
+  min-width: 0;
+}
+.pc-break-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.pc-break-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+}
+.pc-break-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pc-break-price {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+  flex: none;
+}
+.pc-break-body {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+.pc-gauges {
+  display: flex;
+  gap: 7px;
+  align-items: flex-end;
+}
+.pc-gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.pc-gauge-track {
+  width: 11px;
+  height: 30px;
+  background: var(--fog-dim);
+  border-radius: 2px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.pc-gauge-fill {
+  width: 100%;
+  border-radius: 2px;
+}
+.pc-gauge-label {
+  font-family: var(--font-mono);
+  font-size: 0.469rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-faint);
+}
+.pc-break-avg {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--ink-faint);
+  padding-bottom: 12px;
+}
+.pc-break-total {
+  margin-left: auto;
+  text-align: right;
+  padding-bottom: 4px;
+}
+.pc-break-score {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 1.1875rem;
+  color: var(--ink);
+}
+.pc-break-pp {
+  font-family: var(--font-mono);
+  font-size: 0.594rem;
+  color: var(--ink-faint);
+}
+
+/* ---------- 2c stress-test ---------- */
+.pc-preset-group {
+  margin: 10px 0 6px;
+  flex-wrap: wrap;
+}
+.pc-preset-note {
+  margin: 2px 0 14px;
+}
+.pc-rows {
+  position: relative;
+}
+.pc-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pc-roundel--sm {
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+}
+.pc-row-meta {
+  flex: none;
+  width: 150px;
+  min-width: 0;
+}
+.pc-row-name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pc-row-brand {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.656rem;
+  color: var(--ink-faint);
+}
+.pc-row-track {
+  flex: 1;
+  height: 34px;
+  background: var(--fog-dim);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+}
+.pc-seg {
+  height: 100%;
+  border-right: 1.5px solid var(--paper);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pc-row-total {
+  flex: none;
+  width: 48px;
+  text-align: right;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--ink);
+}
+.pc-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--rule-08);
+  padding-top: 12px;
+  margin-top: 6px;
+}
+.pc-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+}
+.pc-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex: none;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 720px) {
+  .pc-card {
+    padding: 20px 18px;
+  }
+  .pc-head {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .pc-axis-pickers {
+    align-items: flex-start;
+    width: 100%;
+  }
+  .pc-pillgroup {
+    flex-wrap: wrap;
+  }
+  .pc-break-row {
+    flex-direction: column;
+  }
+  .pc-strip {
+    flex-wrap: wrap;
+  }
+  .pc-strip-lead {
+    border-right: none;
+    border-bottom: 1px solid var(--rule-08);
+    padding-right: 0;
+    padding-bottom: 10px;
+    width: 100%;
+  }
+  .pc-strip-item {
+    flex: 1 1 100%;
+  }
+  .pc-row-meta {
+    width: 108px;
+  }
+}
+
+/* Kill the delight-moment transitions when the visitor asked for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .pc-dot,
+  .pc-pick-ring,
+  .pc-pick-dot,
+  .pc-row,
+  .pc-seg {
+    transition: none;
+  }
+}

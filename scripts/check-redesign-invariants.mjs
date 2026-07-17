@@ -257,6 +257,14 @@ group('CSS selector coverage vs v3 baseline');
     // ever emitted it.
     '.city-quick-jump', '.city-tag', '.city-tag-group', '.city-tag-region',
     '.city-jump-tag', '.city-jump-group',
+    // The quiz results' 3-dot comparison TABLE was replaced by the paddle-charts
+    // component (assets/paddle-charts.js): a "top 3" strip + inline-SVG value and
+    // stress-test charts. paddle-quiz.js no longer emits any of these classes
+    // (grep confirms 0 refs), so their CSS is correctly-deleted dead code, not a
+    // regression. The buy links / disclosure / tracking below the charts are
+    // unchanged — asserted intact elsewhere in this file.
+    '.pq-compare-table', '.pq-compare-wrap', '.pq-compare-col', '.pq-compare-label',
+    '.pq-compare-links', '.pq-meter', '.pq-meter-dot', '.pq-tagline', '.is-filled',
   ]);
 
   // A page stylesheet legitimately DROPS a selector when it was only a

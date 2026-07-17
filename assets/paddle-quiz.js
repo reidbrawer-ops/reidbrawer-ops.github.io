@@ -16,6 +16,12 @@ import { vendorLinkFor, trackVendorClicks } from "/assets/affiliate-links.js";
 // one opinion about how powerful a paddle is — see assets/paddle-ratings.js.
 import { clamp01, isSoftImpact, powerRating, controlRating, spinRatingOf, forgivenessRatingOf } from "/assets/paddle-ratings.js";
 
+// The results-page comparison visualizations (Top 3 strip + axis explorer +
+// value chart + priority stress-test). Its own module so the same components
+// can serve the browse view once it has a selection model — see
+// assets/paddle-charts.js and design_handoff_paddle_comparison/README.md.
+import { renderPaddleCharts, seriesColorFor } from "/assets/paddle-charts.js";
+
 // dom-utils.js (a plain script, loaded before this module on every page that
 // mounts the quiz — see its header) owns the single escapeHtml definition.
 // Reuse it rather than adding the N+1th copy this codebase already audited away.
@@ -467,9 +473,11 @@ export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function meterHtml(dots, label, max = 10) {
-  const cells = Array.from({ length: max }, (_, i) => `<span class="pq-meter-dot ${i < dots ? "is-filled" : ""}"></span>`).join("");
-  return `<span class="pq-meter" role="img" aria-label="${label}: ${dots} of ${max}">${cells}</span>`;
+// The transparent overall score the value chart (assets/paddle-charts.js) uses:
+// the mean of the four trait ratings on 0–100. Shown on each results pick card
+// so the headline figure there matches the same paddle's dot on 2b below.
+function overallScoreOf(paddle) {
+  return ((powerRating(paddle) + controlRating(paddle) + spinRatingOf(paddle) + forgivenessRatingOf(paddle)) / 4) * 100;
 }
 
 class PaddleQuizApp {
@@ -496,8 +504,34 @@ class PaddleQuizApp {
     this.root.classList.toggle("pq-shell--wide", isResults);
     if (this.step < QUESTIONS.length) this.root.innerHTML = this.renderQuestion(QUESTIONS[this.step]);
     else if (this.step === QUESTIONS.length) this.root.innerHTML = this.renderEmailStep();
-    else this.root.innerHTML = this.renderResults();
+    else {
+      this.root.innerHTML = this.renderResults();
+      this.mountCharts();
+    }
     if (opts && opts.focus) this.focusHeading();
+  }
+
+  // Mount the comparison charts into the results view. Wrapped so a chart
+  // failure can never take down the results table below it — the buy links,
+  // affiliate disclosure and outbound-click tracking are revenue-critical and
+  // must render regardless of whether the (decorative) charts do.
+  mountCharts() {
+    const el = this.root.querySelector("#pq-charts");
+    if (!el || !this.matches || !this.matches.top || !this.matches.top.length) return;
+    try {
+      renderPaddleCharts(el, {
+        paddles: this.paddles,
+        featured: this.matches.top.map((m) => m.paddle),
+        mode: "quiz",
+        answers: this.matches.fullAnswers,
+        // The axis explorer (2a) now lives only on /paddles/browse; the results
+        // page keeps the value chart and the stress-test.
+        components: ["value", "stress"],
+      });
+    } catch (err) {
+      console.error("[PaddleQuiz] Comparison charts failed to render.", err);
+      el.remove();
+    }
   }
 
   focusHeading() {
@@ -590,106 +624,61 @@ class PaddleQuizApp {
       `;
     }
 
-    // The "list" suffix on the price is load-bearing. paddles.json's price is
-    // the manufacturer's list price (PADDLE_DATA_SETUP.md treats it as a raw
-    // manufacturer fact), and retailers routinely sell under it — Adidas, SLK
-    // and Paddletek all ran 20-48% below list on Amazon when this was written.
-    // Amazon's real price can't be shown instead: the Operating Agreement only
-    // permits displaying prices taken from the Product Advertising API and
-    // refreshed within 24h, and this site has no API access. So label whose
-    // price it is rather than imply it's what the visitor will pay.
-    const cols = top
-      .map(
-        ({ paddle, dims }, i) => `
-      <th class="pq-compare-col" scope="col">
-        <div class="name-row">
-          <h3>${paddle.name}</h3>
-          ${i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`}
-        </div>
-        <span class="addr">${paddle.brand}${paddle.price != null ? ` · $${paddle.price} list` : ""}</span>
-        <p class="pq-tagline">${taglineFor(dims)}</p>
-      </th>`
-      )
-      .join("");
-
-    // Four rows, not seven. These are the traits of the PADDLE, so they're what
-    // actually separates the three picks; the weight/twist-weight/budget "fit"
-    // rows measured the visitor's own answers, and every pick here was chosen
-    // to fit those answers, so they rendered near-identical rows that added
-    // length without adding a decision. The scorer still uses them.
-    const dimRow = (label, key) => {
-      if (top.every(({ dims }) => dims.display[key] == null)) return "";
-      return `
-      <tr>
-        <th class="pq-compare-label" scope="row">${label}</th>
-        ${top.map(({ dims }) => `<td>${meterHtml(dims.display[key], label)}</td>`).join("")}
-      </tr>`;
-    };
-
-    const weightRow = `
-      <tr>
-        <th class="pq-compare-label" scope="row">Weight</th>
-        ${top.map(({ paddle }) => `<td>${paddle.weightOz != null ? `${paddle.weightOz}oz` : "—"}</td>`).join("")}
-      </tr>`;
-
-    // Reuses the site's existing level-badge component (already used for
-    // court skill levels) so paddles and courts share the same color
-    // language: beginner = kitchen green, advanced = poppy, intermediate =
-    // bay blue ("mixed" modifier).
-    const SKILL_BADGE_CLASS = { Beginner: "beginner", Advanced: "competitive", Intermediate: "mixed" };
-    const skillRow = `
-      <tr>
-        <th class="pq-compare-label" scope="row">Best for</th>
-        ${top
-          .map(
-            ({ dims }) =>
-              `<td><span class="level-badge ${SKILL_BADGE_CLASS[dims.skillLevel]}">${dims.skillLevel}</span></td>`
-          )
-          .join("")}
-      </tr>`;
-
     const links = top.map(({ paddle }) => vendorLinkFor(paddle, this.affiliateMap));
     const anyAffiliate = links.some((l) => l && l.isAffiliate);
     const anyAmazon = links.some((l) => l && l.isAmazon);
 
-    // The data-pq-* attributes feed the outbound-click event in trackVendorClicks
-    // below. They exist because Amazon's Associates reporting stopped exposing
-    // order-level data in March 2026 — it will not tell us which paddle or which
-    // link type earned a click, so we measure that ourselves.
-    const linkRow = `
-      <tr class="pq-compare-links">
-        <th class="pq-compare-label" scope="row"></th>
-        ${links
-          .map((link, i) => {
-            if (!link) return "<td></td>";
-            // Affiliate links get rel="sponsored" per FTC guidance (and the
-            // site's affiliate stance); plain vendor links stay nofollow but
-            // are not marked sponsored, because they aren't.
-            const rel = link.isAffiliate ? "sponsored nofollow noopener" : "nofollow noopener";
-            const p = top[i].paddle;
-            const data = [
-              `data-pq-paddle="${escapeAttr(p.id)}"`,
-              `data-pq-brand="${escapeAttr(p.brand)}"`,
-              `data-pq-link-type="${escapeAttr(link.linkType || "unknown")}"`,
-              `data-pq-affiliate="${link.isAffiliate ? "1" : "0"}"`,
-              // Positions here are 1..3 of a scored shortlist; the browse grid's
-              // are 1..N of a filtered catalog. Same GA4 dimension, so each
-              // click has to say which surface it came from or any average over
-              // `position` silently mixes the two scales.
-              `data-pq-surface="quiz"`,
-              `data-pq-position="${i + 1}"`,
-            ].join(" ");
-            return `<td><a class="book-btn" href="${link.href}" target="_blank" rel="${rel}" ${data}>${link.label} →<span class="visually-hidden"> (opens in new tab)</span></a></td>`;
-          })
-          .join("")}
-      </tr>`;
+    // Buy-first result cards — the call to action at the very TOP of the
+    // results (the trait comparison table these replaced is gone). Each card's
+    // accent is the paddle's series color, so it matches the same paddle's dot
+    // on the value and stress-test charts below. Everything revenue- and
+    // compliance-critical is carried over verbatim from the old table: the
+    // data-pq-* click-attribution attributes (Amazon stopped exposing
+    // order-level data in March 2026, so we measure clicks ourselves), the
+    // conditional rel="sponsored", and the disclosure branches.
+    //
+    // The "list" suffix on the price is load-bearing. paddles.json's price is
+    // the manufacturer's list price (PADDLE_DATA_SETUP.md treats it as a raw
+    // manufacturer fact), and retailers routinely sell under it. Amazon's real
+    // price can't be shown instead (the Operating Agreement only permits prices
+    // from the Product Advertising API, which this site has no access to), so
+    // label whose price it is rather than imply it's what the visitor will pay.
+    const cards = top
+      .map(({ paddle, dims }, i) => {
+        const link = links[i];
+        const rankBadge = i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`;
+        let buy = "";
+        if (link) {
+          const rel = link.isAffiliate ? "sponsored nofollow noopener" : "nofollow noopener";
+          const data = [
+            `data-pq-paddle="${escapeAttr(paddle.id)}"`,
+            `data-pq-brand="${escapeAttr(paddle.brand)}"`,
+            `data-pq-link-type="${escapeAttr(link.linkType || "unknown")}"`,
+            `data-pq-affiliate="${link.isAffiliate ? "1" : "0"}"`,
+            `data-pq-surface="quiz"`,
+            `data-pq-position="${i + 1}"`,
+          ].join(" ");
+          buy = `<a class="book-btn pq-pick-buy" href="${link.href}" target="_blank" rel="${rel}" ${data}>${link.label} →<span class="visually-hidden"> — ${escapeAttr(paddle.brand)} ${escapeAttr(paddle.name)} (opens in new tab)</span></a>`;
+        }
+        return `
+        <div class="pq-pick" style="--pick:${seriesColorFor(i)}">
+          <div class="pq-pick-top">
+            ${rankBadge}
+            <span class="pq-pick-overall">${overallScoreOf(paddle).toFixed(1)}<span class="pq-pick-overall-label">overall</span></span>
+          </div>
+          <h3 class="pq-pick-name">${paddle.name}</h3>
+          <p class="pq-pick-sub">${paddle.brand}${paddle.price != null ? ` · $${paddle.price} list` : ""}</p>
+          <p class="pq-pick-tag">${taglineFor(dims)}</p>
+          ${buy}
+        </div>`;
+      })
+      .join("");
 
     // Disclosure sits with the buy links and tells the truth for the current
     // state: only claim a commission when at least one pick actually links
-    // through an affiliate program.
-    // Amazon's Operating Agreement requires this statement verbatim wherever
-    // Associates links appear. Gated on anyAmazon rather than anyAffiliate so
-    // an all-brand-DTC result set doesn't claim an Amazon tie it doesn't have.
+    // through an affiliate program. Amazon's Operating Agreement requires the
+    // Associates sentence verbatim wherever its links appear; gated on anyAmazon
+    // so an all-brand-DTC result set doesn't claim an Amazon tie it doesn't have.
     const amazonNotice = anyAmazon ? " As an Amazon Associate I earn from qualifying purchases." : "";
     const disclosure = anyAffiliate
       ? `<p class="affiliate-disclosure" id="buy">Some paddle links above are affiliate links — we may earn a commission if you buy, at no extra cost to you. It never changes which paddles we recommend or our court data.${amazonNotice} <a href="/affiliate-disclosure">How this works</a>.</p>`
@@ -700,21 +689,9 @@ class PaddleQuizApp {
         <p class="eyebrow">Your matches</p>
         <h3 class="pq-prompt">Your top 3 picks</h3>
       </div>
-      <div class="pq-compare-wrap">
-        <table class="pq-compare-table">
-          <thead><tr><th></th>${cols}</tr></thead>
-          <tbody>
-            ${skillRow}
-            ${dimRow("Put-away power", "power")}
-            ${dimRow("Resets &amp; touch", "control")}
-            ${dimRow("Spin", "spin")}
-            ${dimRow("Forgiveness", "forgiveness")}
-            ${weightRow}
-            ${linkRow}
-          </tbody>
-        </table>
-      </div>
+      <div class="pq-picks">${cards}</div>
       ${disclosure}
+      <div id="pq-charts"></div>
       <button type="button" class="clear-btn pq-retake" data-action="retake">Retake the quiz</button>
     `;
   }

@@ -203,6 +203,32 @@ inherit via `currentColor` — never hardcode a color in the sprite.
 diagonals. `.map-legend`'s `.legend-dot` **reuses the same `.pba-pin--*`
 classes** — recolor in one place or legend and pins desync.
 
+**Paddle comparison charts** — the `pc-` component (`assets/paddle-charts.js` +
+`assets/paddle-charts.css`): a "Your top 3" strip (`.pc-strip`) plus three
+inline-SVG charts — an axis-adjustable catalog scatter (`.pc-plot`), a
+price-vs-overall-score value chart with a pareto `.pc-frontier`, and a
+preset-reweighted stress-test whose `.pc-row`s re-sort. One module, two
+surfaces, chosen with a `components:[…]` option: the **quiz results**
+(`paddle-quiz.js`) render `["value","stress"]` under the buy-first pick cards
+(`.pq-picks`, which replaced the old trait comparison table); **browse**
+(`paddle-grid.js`) renders the full set — `strip`+`explorer`+`value`(+`stress`
+at ≥2 picks) — as its consolidated analytics view, driven by a compare tray
+(`.pg-compare`/`.pg-tray`, cap 3) fed by per-card `.pg-compare-btn` toggles and
+by clicking dots in the scatter (`mode:"browse"` makes cloud dots
+hover-inspectable and click-to-add; `onDotClick`). The featured paddles get the
+site's three real accents by rank — teal `--bay`, clay `--poppy-deep`, olive
+`--kitchen` — via `seriesColorFor()` (shared with the pick cards so a card
+matches its dot). The charts read the four real ratings from
+`paddle-ratings.js`: there is deliberately **no fabricated "match %"** (the quiz
+score is an integer dot-sum) — every headline figure is the transparent
+`overallScore`. The scatter looks tiered because `power/spin/control/
+forgiveness` derive from percentiles `rebuild_paddle_data.py` coarsens to four
+quartile bands (a PickleballEffect licensing firewall — never un-coarsen);
+`dodgeCloud()` spreads coincident dots a few px for legibility without changing
+any value. The 2c preset syncs to a `?preset=` param (`replaceState`). Its
+segmented pill group (`.pc-pillgroup`/`.pc-pill`) matches the quiz options'
+control, active pill on `--ink`.
+
 ## Conventions
 
 - **File layout**: `assets/style.css` is the global system (anything on 2+

@@ -210,6 +210,109 @@
   white-space: nowrap;
 }
 
+/* ---------- Compare & explore panel (tray + consolidated analytics) ---------- */
+
+/* The browse page leads with this: the axis explorer over the whole catalog,
+   plus the value chart and stress-test once paddles are picked into the tray.
+   The charts themselves are the pc-* component (paddle-charts.css); this panel
+   only frames them and holds the tray. */
+.pg-compare {
+  margin-bottom: 28px;
+}
+
+.pg-compare-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.pg-compare-title {
+  font-size: 1.375rem;
+  margin: 2px 0 0;
+}
+
+.pg-tray {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pg-tray-hint {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  color: var(--ink-faint);
+  max-width: 44ch;
+}
+
+.pg-tray-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 8px 6px 11px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.78125rem;
+  color: var(--ink);
+  max-width: 240px;
+}
+
+.pg-tray-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--pick, var(--ink));
+}
+
+.pg-tray-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pg-tray-x {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: var(--fog-dim);
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pg-tray-x:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pg-tray-clear {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.78125rem;
+  color: var(--poppy-deep);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+.pg-tray-clear:hover {
+  text-decoration: underline;
+}
+
 /* auto-FILL, not auto-fit: a filter that leaves two results should show two
    240px cards, not two half-width ones. */
 .pg-grid {
@@ -300,14 +403,55 @@
   color: var(--ink);
 }
 
+/* The card's bottom action stack: the compare toggle over the note+buy row.
+   It owns the margin-top:auto that pins actions to the card foot, so the three
+   stay aligned across a row whatever the specs above them run to. */
+.pg-actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .pg-foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-top: auto;
   padding-top: 10px;
   border-top: 1px solid var(--rule-08);
+}
+
+/* Compare toggle — an outlined pill that fills teal once the paddle is in the
+   tray, and dims to disabled when three are already chosen. */
+.pg-compare-btn {
+  width: 100%;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.78125rem;
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.pg-compare-btn:hover:not(:disabled) {
+  border-color: var(--bay);
+  color: var(--bay-deep);
+}
+
+.pg-compare-btn.is-on {
+  background: var(--bay);
+  border-color: var(--bay);
+  color: var(--paper);
+}
+
+.pg-compare-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
 }
 
 .pg-note {
