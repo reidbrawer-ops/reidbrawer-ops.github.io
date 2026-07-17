@@ -190,5 +190,10 @@ No photos or raster images anywhere. Every icon, map, pin, and stamp is hand-dra
 
 - **`README.md`** — this document. Self-sufficient; you shouldn't need the other files to implement the design, but they're useful for double-checking exact values.
 - **`Pickleball Bay Area - design reference.html`** — a self-contained, click-through version of the full design. Open it directly in any browser to explore all 12 pages, the working filters, the map, and the paddle quiz.
+  **Not tracked in git** (see `.gitignore`): this repo is public and also serves
+  itself via GitHub Pages, and the file is 1.6MB of base64 font blobs whose
+  content is identical to the prototype source below — that's the one the
+  implementation actually cites. Ask for the bundle again if you need to click
+  through it.
 - **`data.json`** — the full sample content pack (regions/cities, 16 venues, 24 paddles) in plain JSON, extracted from the prototype's source data.
 - **`Pickleball Bay Area (prototype source).dc.html`** — the original prototype source. It uses a proprietary template syntax and runtime (`{{ }}` bindings, `<sc-if>`/`<sc-for>` control flow, `<x-dc>`) specific to the design tool it was built in. **It will not render outside that tool and should not be ported literally** — there's no equivalent of `sc-for`/`{{ }}` in a real framework. Only open it to cross-reference an exact string, color, or structural detail if the rendered reference file is ambiguous.

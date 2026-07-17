@@ -6,3 +6,10 @@ node_modules/
 .firebase/
 firebase-debug.log
 scripts/serviceAccountKey.json
+
+# The handoff's rendered click-through reference (1.6MB of base64 font blobs).
+# Deliberately untracked: origin is a PUBLIC GitHub Pages repo, so anything
+# committed is both published and served. It's content-identical to the
+# prototype source next to it, which IS tracked and is what DESIGN.md and the
+# code comments cite by line number. Keep your local copy to click through.
+design_handoff_pickleball_redesign/Pickleball Bay Area - design reference.html
