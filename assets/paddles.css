@@ -349,6 +349,14 @@
   }
 }
 
+/* The #rent section opens with the thin .rent-note. Its full 80px section-top
+   padding stacked under the hero left a band of empty paper above one grey
+   line; the note is a continuation of the hero, not a new section, so pull it
+   up. The regions below own the page's rhythm from here. */
+#rent {
+  padding-top: var(--space-2);
+}
+
 /* The sourcing promise under the rent hero — the one thing the hero doesn't
    say, kept as a plain line rather than a second stage-head. */
 .rent-note {
@@ -357,4 +365,17 @@
   color: var(--ink-soft);
   margin: 0 0 var(--space-2);
   max-width: 70ch;
+}
+
+/* Rent directory: the five region sections are the same stacked-directory
+   pattern the cities index tightens (.cities-region). On the global 80px
+   .section rhythm they sat ~177px apart — a lot of empty paper between short
+   shop lists. 24px/side matches the cities index; the last region keeps a full
+   --space-5 below so it doesn't crowd the "Before you head out" block. */
+.rent-region {
+  padding: 24px 0;
+}
+
+.rent-region:last-of-type {
+  padding-bottom: var(--space-5);
 }

@@ -54,6 +54,14 @@
   /* The stamp signs off the page — the design's one recurring signature
      device, not a decoration. Component lives in style.css. */
   .about-signoff { margin-top: 40px; }
+
+  /* This section ends in a one-line "last full pass" footnote. Its 80px bottom
+     padding stacked with the next section's 80px top left ~175px of empty paper
+     hanging off a 26px line — the same void the map caveat had. Let the closing
+     "Also on this site" section own the separation; the footnote just hugs the
+     advice it follows. */
+  .about-notes { padding-bottom: var(--space-2); }
+  .about-notes > .container > p:last-child { margin: 0.75rem 0 0; }
 </style>
 </head>
 <body>
@@ -155,7 +163,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section about-notes">
   <div class="container about-col">
     <div class="callout">
       <p class="eyebrow">Before you drive out</p>
