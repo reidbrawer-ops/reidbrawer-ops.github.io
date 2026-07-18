@@ -57,7 +57,12 @@ REQUIRED_COLUMNS = [
     # Raw manufacturer specs, safe to store and display (see PADDLE_DATA_SETUP.md
     # "Data licensing" — these are facts about the product, not PickleballEffect's
     # lab work product).
-    "Grip Length (in)", "Grip Size (in)", "Year Released", "Grit Type", "Build Type",
+    #
+    # Only the three that something on the site actually reads. "Grit Type" and
+    # "Build Type" were carried briefly and dropped: nothing consumed them and
+    # they cost ~26KB in a file fetched on every quiz and browse page load. Add
+    # them back when there's a filter or chip that needs them, not before.
+    "Grip Length (in)", "Grip Size (in)", "Year Released",
 ]
 
 
@@ -410,8 +415,6 @@ def main():
             "gripLengthIn": num(row.get("Grip Length (in)"), 2),
             "gripSizeIn": num(row.get("Grip Size (in)"), 2),
             "yearReleased": whole(row.get("Year Released")),
-            "gritType": row.get("Grit Type") or None,
-            "buildType": row.get("Build Type") or None,
         }
         # Drop keys with no value rather than shipping nulls — the file is
         # fetched on every quiz page load, and the site's rule is to say nothing

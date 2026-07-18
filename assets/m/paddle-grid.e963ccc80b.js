@@ -38,15 +38,14 @@ const track = (name, params) => {
 // validate.mjs fails if a value is not a legal band midpoint. So the number is
 // a BAND MIDPOINT, not a measurement: rendering "88th pct" would invent a
 // precision the data doesn't carry and re-expose the licensed percentile the
-// coarsening exists to withhold. paddle-quiz.js makes the same call for the
-// comparison table ("deliberately paraphrased into a dot rating rather than
-// citing the exact proprietary lab-tested percentiles"). Words, not numbers.
-// Words, not numbers — for the same reason as before. What changed on
-// 2026-07-18 is the resolution: the percentiles are now banded into 20 steps
-// rather than 4 quartile tiers, so an exact-match lookup on the four old
-// midpoints (0.13 / 0.38 / 0.63 / 0.88) matches nothing and every Power chip
-// silently vanishes from the cards. Bucket by RANGE instead, which is
-// resolution-independent and keeps the same four words a reader already knows.
+// banding exists to withhold. paddle-quiz.js makes the same call. Words, not
+// numbers.
+//
+// This buckets by RANGE rather than matching exact midpoints. It used to be a
+// lookup table keyed on the four quartile values (0.13 / 0.38 / 0.63 / 0.88);
+// when the data widened to 20 bands that table matched nothing and every Power
+// chip silently vanished from the cards. A range test is resolution-independent
+// and keeps the same four words a reader already knows.
 const tierWord = (v) => {
   if (typeof v !== "number") return null;
   if (v < 0.25) return "Low";
@@ -71,22 +70,60 @@ const approvalNote = (p) => {
 // Value domains come from the real catalog, not the design mock's 24-paddle
 // sample — the mock has no "Extra-elongated", which would strand 6 real paddles
 // behind a filter that can't reach them.
+//
+// Two kinds of filter, distinguished by whether the entry carries `tests`:
+//   - exact-match on a field (`field`), for the categorical specs;
+//   - a range/bucket predicate per option (`tests`), for the numeric ones.
+// Price was the only bucketed filter and used to be special-cased inside
+// filtered(); it moved into this shape when grip size, grip length and year
+// arrived, so the loop has one rule instead of four exceptions.
+//
+// Bucket edges are read off the real distribution, not invented: grip size
+// clusters hard at 4.13" (187 paddles) and 4.25" (239), and grip length at
+// 5.5" (240) — which is also the point where a grip is long enough for a
+// two-handed backhand, the reason anyone filters on it.
 const FILTERS = [
   { key: "type", field: "paddleType", label: "Filter by paddle type", all: "All types",
     options: ["Power", "All-Court", "Control"] },
   { key: "shape", field: "shape", label: "Filter by shape", all: "All shapes",
     options: ["Elongated", "Widebody", "Hybrid", "Extra-elongated"] },
-  { key: "price", field: null, label: "Filter by price", all: "All prices",
-    options: [["under120", "Under $120"], ["120to200", "$120–$200"], ["over200", "$200+"]] },
+  { key: "price", label: "Filter by price", all: "All prices",
+    options: [["under120", "Under $120"], ["120to200", "$120–$200"], ["over200", "$200+"]],
+    tests: {
+      under120: (p) => p.price < 120,
+      "120to200": (p) => p.price >= 120 && p.price <= 200,
+      over200: (p) => p.price > 200,
+    } },
   { key: "skill", field: "skillLevel", label: "Filter by skill level", all: "All skill levels",
     options: ["Beginner", "Intermediate", "Advanced"] },
+  { key: "gripLength", label: "Filter by grip length", all: "Any grip length",
+    options: [["long", "Long grip — fits two hands (5.5″+)"], ["standard", "Standard grip (5.25–5.4″)"], ["short", "Short grip (under 5.25″)"]],
+    tests: {
+      long: (p) => p.gripLengthIn >= 5.5,
+      standard: (p) => p.gripLengthIn >= 5.25 && p.gripLengthIn < 5.5,
+      short: (p) => p.gripLengthIn < 5.25,
+    } },
+  { key: "gripSize", label: "Filter by grip size", all: "Any grip size",
+    options: [["slim", "Slim grip (4.13″ or less)"], ["standard", "Standard grip (4.15–4.3″)"], ["thick", "Thick grip (4.5″+)"]],
+    tests: {
+      slim: (p) => p.gripSizeIn <= 4.13,
+      standard: (p) => p.gripSizeIn > 4.13 && p.gripSizeIn <= 4.3,
+      thick: (p) => p.gripSizeIn > 4.3,
+    } },
+  { key: "year", label: "Filter by release year", all: "Any year",
+    options: [["2026", "Released 2026"], ["2025", "Released 2025"], ["2024", "Released 2024"], ["older", "2023 & earlier"]],
+    tests: {
+      2026: (p) => p.yearReleased === 2026,
+      2025: (p) => p.yearReleased === 2025,
+      2024: (p) => p.yearReleased === 2024,
+      older: (p) => p.yearReleased <= 2023,
+    } },
 ];
 
-const PRICE_TEST = {
-  under120: (p) => p.price < 120,
-  "120to200": (p) => p.price >= 120 && p.price <= 200,
-  over200: (p) => p.price > 200,
-};
+// Derived from FILTERS so a new filter can't be added without its "all" default
+// — the old literal listed four keys and would have silently left any fifth
+// undefined, which reads as "not all" and would filter everything out on load.
+const ALL_FILTERS_OFF = () => Object.fromEntries(FILTERS.map((f) => [f.key, "all"]));
 
 // ---------- Ranking ----------
 //
@@ -159,7 +196,7 @@ class PaddleGrid {
     this.paddles = paddles;
     this.total = paddles.length;
     this.affiliateMap = affiliateMap;
-    this.filters = { type: "all", shape: "all", price: "all", skill: "all" };
+    this.filters = ALL_FILTERS_OFF();
     this.query = "";
     // Compare tray: up to 3 paddle ids, in the order added (which fixes their
     // series colors across the charts). Kept by id so it survives the grid
@@ -217,7 +254,7 @@ class PaddleGrid {
       return;
     }
     if (!e.target.closest('[data-action="reset-grid"]')) return;
-    this.filters = { type: "all", shape: "all", price: "all", skill: "all" };
+    this.filters = ALL_FILTERS_OFF();
     this.query = "";
     // The controls outlive a render now, so state has to be pushed back into
     // them rather than re-emitted as markup with `selected` on the right option.
@@ -238,8 +275,12 @@ class PaddleGrid {
       for (const f of FILTERS) {
         const v = this.filters[f.key];
         if (v === "all") continue;
-        if (f.key === "price") {
-          if (typeof p.price !== "number" || !PRICE_TEST[v](p)) return false;
+        if (f.tests) {
+          const test = f.tests[v];
+          // A paddle missing the spec fails a bucket filter rather than
+          // slipping through: 3 paddles have no grip length, and "unknown" is
+          // not the same as "matches what you asked for".
+          if (!test || !test(p)) return false;
         } else if (p[f.field] !== v) return false;
       }
       return true;
@@ -290,6 +331,16 @@ class PaddleGrid {
       ["Core", typeof p.coreThicknessMm === "number" ? `${p.coreThicknessMm}mm` : null],
       ["Spin", p.spinRating],
       ["Power", tierWord(p.powerPercentile)],
+      // Grip length is the spec people scan a card for — it decides whether a
+      // two-handed backhand fits. Grip size isn't here on purpose: 87% of the
+      // catalog is one of two near-identical values (4.13" / 4.25"), so it
+      // discriminates almost nothing at a glance and is better served by the
+      // filter, where it narrows.
+      // "Handle", not "Grip": the card would otherwise show "Grip 5.75in" while
+      // a "grip size" filter sits above it meaning circumference, and 5.75in of
+      // circumference is a different (implausible) claim about the same paddle.
+      ["Handle", typeof p.gripLengthIn === "number" ? `${p.gripLengthIn}in` : null],
+      ["Released", p.yearReleased],
     ]
       .filter(([, v]) => v)
       .map(([k, v]) => `<div>${k} <b>${esc(String(v))}</b></div>`)
