@@ -48,6 +48,16 @@ REQUIRED_COLUMNS = [
     "Impact Feel", "Core Thickness (mm)", "Weight (oz)",
     "Twist Weight Percentile", "Balance Point (mm)", "Spin Rating",
     "Power Percentile",
+    # Added with the July 18 2026 export, which widened from 13 columns to 30.
+    # "Spin (RPM)" is what finally gives spin real resolution: the "Spin Rating"
+    # word column has only four values, so 349 paddles shared four spin scores.
+    # "Swing Weight Percentile" replaces an approximation the quiz used to make
+    # from balance point and static weight — the real measurement now exists.
+    "Spin (RPM)", "Swing Weight Percentile",
+    # Raw manufacturer specs, safe to store and display (see PADDLE_DATA_SETUP.md
+    # "Data licensing" — these are facts about the product, not PickleballEffect's
+    # lab work product).
+    "Grip Length (in)", "Grip Size (in)", "Year Released", "Grit Type", "Build Type",
 ]
 
 
@@ -162,32 +172,83 @@ def num(value, decimals=None):
     return round(float(value), decimals) if decimals is not None else value
 
 
+def whole(value):
+    """Integer-valued fields (a year). Numbers stores everything as a float, so
+    without this "Year Released" ships as 2024.0."""
+    v = num(value)
+    return None if v is None else int(float(v))
+
+
 # ---------------------------------------------------------------------------
 # Percentile coarsening — see PADDLE_DATA_SETUP.md "Data licensing".
 #
 # PickleballEffect's exact lab-tested percentiles are proprietary. The quiz
-# only ever uses them to compute coarse dot ratings / preference scores (it
-# never displays the raw number), so we don't need — and shouldn't ship — the
-# precise value in the public, fetchable assets/paddles.json. We store the
-# QUARTILE-BAND MIDPOINT instead: a value that is one of four fixed tiers, not
-# their measurement, while staying accurate enough for the dot ratings and
-# preference trapezoids in assets/paddle-quiz.js.
+# only ever uses them to compute ratings / preference scores (it never displays
+# the raw number), so we don't need — and shouldn't ship — the precise value in
+# the public, fetchable assets/paddles.json. We store a BAND MIDPOINT instead:
+# a value that is one of PERCENTILE_BANDS fixed steps, not their measurement.
+#
+# Widened from 4 bands to 20 on 2026-07-18. Four quartile tiers left the whole
+# 486-paddle catalog occupying twenty distinct positions on a two-axis scatter,
+# so the charts drew dense stacks of "identical" paddles and the quiz produced
+# podiums that were routinely tied on every term. Twenty bands recovers 253 of
+# the 403 positions the raw numbers would give — most of the benefit — while
+# keeping the firewall the same in kind: what ships is still a band, never the
+# measurement. Going all the way to raw would publish their exact lab-derived
+# percentiles from a commercial site, which the licensing section rules out.
+#
+# Keep in sync with:
+#   - scripts/validate.mjs, which fails the build on any value that is not a
+#     legal band midpoint (this is the guard that stops a raw percentile
+#     reaching the public file by accident).
+#   - assets/paddle-grid.js tierWord(), which turns a band back into a word for
+#     the spec chips.
 #
 # IMPORTANT: skill_level() must be called on the RAW percentile (before this
-# coarsening), since its 0.35 / 0.6 cut points are finer than these bands.
+# banding), since its 0.35 / 0.6 cut points don't align to band edges.
 # ---------------------------------------------------------------------------
 
+PERCENTILE_BANDS = 20
 
-def coarsen_percentile(p):
+
+def coarsen_percentile(p, bands=PERCENTILE_BANDS):
+    """Midpoint of the band `p` falls in. 20 bands -> 0.025, 0.075 ... 0.975."""
     if p is None:
         return None
-    if p < 0.25:
-        return 0.13
-    if p < 0.5:
-        return 0.38
-    if p < 0.75:
-        return 0.63
-    return 0.88
+    p = min(max(float(p), 0.0), 1.0)
+    # min() guards p == 1.0, which would otherwise index one band past the end.
+    i = min(int(p * bands), bands - 1)
+    return round((i + 0.5) / bands, 4)
+
+
+def band_midpoints(bands=PERCENTILE_BANDS):
+    """Every legal output of coarsen_percentile — used to generate the allow-list
+    validate.mjs checks against, so the two can never drift."""
+    return [round((i + 0.5) / bands, 4) for i in range(bands)]
+
+
+def rank_percentile(values):
+    """Map raw measurements to 0-1 percentiles by rank within this catalog.
+
+    Used for Spin (RPM), which the export gives as a raw number with no
+    percentile column of its own. Ties share a percentile (average rank), so two
+    paddles measured at the same RPM always score the same. Returns a dict keyed
+    by the raw value.
+    """
+    present = sorted(v for v in values if v is not None)
+    if not present:
+        return {}
+    n = len(present)
+    out = {}
+    i = 0
+    while i < n:
+        j = i
+        while j + 1 < n and present[j + 1] == present[i]:
+            j += 1
+        # Average rank of the tied run, expressed 0-1.
+        out[present[i]] = ((i + j) / 2) / (n - 1) if n > 1 else 0.5
+        i = j + 1
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -300,6 +361,12 @@ def main():
     paddles = []
     unmapped_brands = set()
 
+    # Spin arrives as a raw RPM measurement with no percentile column, so rank
+    # it within the catalog first and band the result. This is the single
+    # biggest granularity win in the refresh: the "Spin Rating" word column has
+    # four values, so 349 paddles previously shared four spin scores.
+    spin_rank = rank_percentile([num(r.get("Spin (RPM)")) for r in raw_rows])
+
     for row in raw_rows:
         brand = clean_brand(row["Brand"])
         name = clean_name(row["Paddle Name"]) or "Unnamed paddle"
@@ -309,7 +376,10 @@ def main():
         core_thickness = num(row["Core Thickness (mm)"], 1)
         twist_weight_pct = num(row["Twist Weight Percentile"], 2)
         power_pct = num(row["Power Percentile"], 2)
+        swing_weight_pct = num(row["Swing Weight Percentile"], 2)
         paddle_type = row["Paddle Type"] or None
+        spin_rpm = num(row.get("Spin (RPM)"))
+        spin_pct = spin_rank.get(spin_rpm) if spin_rpm is not None else None
 
         paddle = {
             "id": paddle_id,
@@ -322,14 +392,31 @@ def main():
             "impactFeel": row["Impact Feel"] or None,
             "coreThicknessMm": core_thickness,
             "weightOz": num(row["Weight (oz)"], 2),
-            # Coarsened to a quartile tier before storage — skill_level below
-            # still reads the raw twist_weight_pct (see coarsen_percentile).
+            # Banded before storage — skill_level below still reads the raw
+            # twist_weight_pct (see coarsen_percentile).
             "twistWeightPercentile": coarsen_percentile(twist_weight_pct),
             "balancePointMm": num(row["Balance Point (mm)"], 0),
             "spinRating": row["Spin Rating"] or None,
+            # Banded rank of the raw RPM measurement. spinRating (the four-word
+            # column) is kept alongside it because the grid's spec chip shows a
+            # word, and because a paddle can carry the word with no RPM reading.
+            "spinPercentile": coarsen_percentile(spin_pct),
             "powerPercentile": coarsen_percentile(power_pct),
+            # The real measurement, replacing the balance-point-plus-static-weight
+            # approximation assets/paddle-quiz.js used to compute at runtime.
+            "swingWeightPercentile": coarsen_percentile(swing_weight_pct),
             "skillLevel": skill_level(twist_weight_pct, core_thickness, paddle_type),
+            # Raw manufacturer specs — safe to store and show.
+            "gripLengthIn": num(row.get("Grip Length (in)"), 2),
+            "gripSizeIn": num(row.get("Grip Size (in)"), 2),
+            "yearReleased": whole(row.get("Year Released")),
+            "gritType": row.get("Grit Type") or None,
+            "buildType": row.get("Build Type") or None,
         }
+        # Drop keys with no value rather than shipping nulls — the file is
+        # fetched on every quiz page load, and the site's rule is to say nothing
+        # rather than render an empty spec (see assets/paddle-grid.js cardHtml).
+        paddle = {k: v for k, v in paddle.items() if v is not None}
 
         vendor_url, search_base = vendor_fields(brand, vendor_map)
         if vendor_url is None:

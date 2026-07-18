@@ -215,17 +215,54 @@ built, is:
 - No page anywhere credits, links to, or names PickleballEffect.
 - The dataset itself (`assets/paddles.json`) is still a public, fetchable
   static file. To avoid republishing PickleballEffect's *exact* lab
-  numbers, the two percentile fields it carries (`twistWeightPercentile`,
-  `powerPercentile`) are **coarsened to a quartile-band midpoint**
-  (0.13 / 0.38 / 0.63 / 0.88) by `coarsen_percentile()` before they're
-  written — so the file exposes a four-tier bucket, not their measurement,
-  while staying accurate enough for the quiz's dot ratings and preference
-  trapezoids. The only way to fully firewall even the tier is to move
-  scoring server-side (a Cloud Function), which hasn't been built.
-- Basic specs (name, brand, price, weight, shape, core thickness) are
-  treated as safe to keep, since those are just manufacturer facts that
-  exist independent of PickleballEffect's own analysis — not their
-  proprietary work product.
+  numbers, every percentile field it carries (`twistWeightPercentile`,
+  `powerPercentile`, `spinPercentile`, `swingWeightPercentile`) is
+  **banded to a band midpoint** by `coarsen_percentile()` before it's
+  written — so the file exposes a bucket, not their measurement.
+  `scripts/validate.mjs` fails the build on any value that isn't a legal
+  band midpoint; that guard is what stops a raw percentile reaching the
+  public file by accident, so keep the two in sync. The only way to fully
+  firewall even the band is to move scoring server-side (a Cloud
+  Function), which hasn't been built.
+
+  **Resolution changed on 2026-07-18: 4 quartile tiers → 20 bands**
+  (`PERCENTILE_BANDS`). Four tiers put the entire 486-paddle catalog on
+  twenty distinct positions on a two-axis chart, so the scatter drew
+  stacks of "identical" paddles and quiz podiums tied on every term about
+  39% of the time. Twenty bands recovers 253 of the 403 positions the raw
+  numbers would give. The firewall is unchanged **in kind** — what ships
+  is still a band midpoint and never the measurement — only the
+  resolution moved. Going all the way to raw was considered and rejected:
+  it would publish their exact lab-derived percentiles from a commercial
+  site, which is precisely what this section exists to prevent.
+
+- `spinPercentile` is **derived by this pipeline**, not copied: the export
+  gives a raw `Spin (RPM)` measurement with no percentile column, so
+  `rank_percentile()` ranks it within the catalog and the result is banded
+  like the rest. The four-word `Spin Rating` column is kept alongside it
+  for the grid's spec chip, but it only has four values — which is why it
+  can't carry the charts on its own.
+- Basic specs (name, brand, price, weight, shape, core thickness, and —
+  added 2026-07-18 — grip length, grip size, year released, grit type,
+  build type) are treated as safe to keep, since those are just
+  manufacturer facts that exist independent of PickleballEffect's own
+  analysis — not their proprietary work product.
+
+- **The `Discount Code` column is deliberately NOT imported.** The
+  2026-07-18 export added it, and it is not yours: 377 rows carry
+  `PBEFFECT` (PickleballEffect's own code) and 40 carry `INF-BRAYDONU`
+  (an influencer's). Shipping them would route your traffic through
+  someone else's affiliate relationship, earn you nothing, and name
+  PickleballEffect on the site — which the second bullet above forbids.
+  This is the same rule already applied to their "Link to Paddle" column
+  (see step 6). Your own links live in `scripts/paddle-vendor-map.json`
+  (brand → official site, baked into paddles.json at build time) and
+  `assets/affiliate-map.json` (the served affiliate overlay, including the
+  Amazon Associates tag and 26 verified per-paddle ASIN deep-links).
+  **`affiliate-map.json`'s `asins` map is keyed by paddle id**, so after
+  any rebuild that changes ids — name cleaning and brand-typo fixes both
+  can — re-check that every ASIN key still resolves, or those paddles
+  silently drop from a deep-link to a search link.
 
 **If you add a new field to `assets/paddles.json` from a future export,
 ask first: is this a raw manufacturer spec (safe), or one of

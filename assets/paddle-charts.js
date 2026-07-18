@@ -15,13 +15,19 @@
 // (pop, hand speed) are dropped rather than invented, and the headline figure
 // is the transparent overall score, never a fabricated "match %".
 //
-// IMPORTANT — the scatter looks tiered on purpose. power/spin/control/
-// forgiveness derive from percentiles that scripts/rebuild_paddle_data.py
-// coarsens to four quartile bands (a data-licensing firewall — PickleballEffect's
-// exact percentiles are proprietary; see PADDLE_DATA_SETUP.md). So many paddles
-// share the same coordinates. dodgeCloud() spreads those exact overlaps a few
-// pixels for legibility — it never changes a value, only nudges coincident dots
-// apart so a cluster reads as a cluster instead of one dot.
+// IMPORTANT — the scatter is banded on purpose. power/spin/control/forgiveness
+// derive from percentiles that scripts/rebuild_paddle_data.py bands into 20
+// steps before they reach this public file (a data-licensing firewall —
+// PickleballEffect's exact percentiles are proprietary; see
+// PADDLE_DATA_SETUP.md). Paddles can therefore still share coordinates, and
+// dodgeCloud() spreads those exact overlaps a few pixels for legibility — it
+// never changes a value, only nudges coincident dots apart so a cluster reads
+// as a cluster instead of one dot.
+//
+// It used to be four quartile bands, which put the entire 486-paddle catalog on
+// twenty distinct positions; the 2026-07-18 refresh widened it to twenty bands
+// and 253 positions, so the clusters are real overlap now rather than an
+// artifact of the storage format.
 //
 // No framework — the chart DOM is built once and then MUTATED in place on
 // axis/preset changes (never re-serialized), because the CSS transitions on
@@ -126,8 +132,8 @@ function niceStep(range, target = 6) {
 }
 
 // Spread coincident points a few pixels apart (overplotting "dodge"). Because
-// the ratings are coarsened to quartile tiers, dozens of paddles can land on
-// one exact coordinate; without this a cluster of 40 reads as a single dot.
+// the ratings are banded, several paddles can still land on one exact
+// coordinate; without this a cluster reads as a single dot.
 // Points are grouped by a coarse cell, then those in a shared cell are laid out
 // on a golden-angle spiral around their shared centre — deterministic, so the
 // same catalog always dodges the same way. It moves DISPLAY positions only; the
@@ -381,12 +387,13 @@ class PaddleCharts {
   //
   // The scatter can show you WHERE a paddle sits; it can't tell you whether
   // that's good. These do, and they have to be honest about ties to be worth
-  // anything: the ratings are coarsened to four quartile tiers (the licensing
-  // firewall — see the header), so 192 paddles share the top spin value. "Best
-  // for spin" is therefore true of all 192, and a bare "1st of 348" would imply
-  // a uniqueness the data does not support. Saying "tied with 191 others" turns
-  // a flattering non-fact into the useful one: on this axis you cannot
-  // differentiate, so decide on something else.
+  // anything: the ratings are banded (the licensing firewall — see the header),
+  // so paddles still share values and a bare "1st of 348" can imply a
+  // uniqueness the data does not support. Saying "tied with N others" turns a
+  // flattering non-fact into the useful one: where the tie is wide you cannot
+  // differentiate on this axis, so decide on something else. Ties are far
+  // narrower since the 2026-07-18 refresh widened four tiers to twenty bands,
+  // which is exactly why the count is worth printing rather than assuming.
 
   // Is a better than b on `key`? Cheaper wins on price; higher wins on ratings.
   betterOn(a, b, key) {

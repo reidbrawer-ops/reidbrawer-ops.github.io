@@ -180,6 +180,12 @@ const BALANCE_MM_RANGE = [203, 256];
 const WEIGHT_OZ_RANGE = [7.25, 8.9];
 
 function swingWeightIndex(paddle) {
+  // The July 18 2026 export carries a real Swing Weight measurement, banded to
+  // swingWeightPercentile. Prefer it: everything below is an APPROXIMATION of
+  // exactly this number, built when the column didn't exist, and it guessed —
+  // a light paddle can still swing heavy, which balance point alone only
+  // partly captures. Kept as the fallback for any paddle without the field.
+  if (typeof paddle.swingWeightPercentile === "number") return paddle.swingWeightPercentile;
   if (paddle.balancePointMm == null) return 0.5;
   const balNorm = clamp01((paddle.balancePointMm - BALANCE_MM_RANGE[0]) / (BALANCE_MM_RANGE[1] - BALANCE_MM_RANGE[0]));
   const wtNorm = clamp01((paddle.weightOz - WEIGHT_OZ_RANGE[0]) / (WEIGHT_OZ_RANGE[1] - WEIGHT_OZ_RANGE[0]));
@@ -234,11 +240,29 @@ function isTournamentLegal(paddle) {
 
 
 
+// Every scored term, on a 10–30 scale.
+//
+// This WAS a 1/2/3 bucket, and it was the ceiling on how distinct the quiz
+// could ever be: three values per dimension meant the whole 486-paddle catalog
+// produced about 17 distinct total scores, so podiums tied constantly and the
+// tiebreak — not the visitor's answers — decided most results. Widening the
+// underlying data to 20 bands (see rebuild_paddle_data.py) changed nothing on
+// its own, because the ratings were still being funnelled through three values.
+//
+// The old comment here warned that widening this would "silently multiply every
+// dimension's weight against those constants and re-rank the whole quiz". That
+// was correct, and it is why every hand-tuned bonus in scoreTerms was scaled by
+// the same factor of 10 in the same change: 3 points for a shape match became
+// 30, the skill match 40, the ±1 arm-feel nudges ±10. Relative weighting is
+// therefore identical to the tuned model — one "dot" is still 10 — while the
+// traits themselves now vary continuously instead of snapping to three steps.
+//
+// 10–30 rather than 0–30 keeps the old floor: the weakest paddle on a dimension
+// still contributes something, so a dimension can never zero out a paddle that
+// was merely rated low on it.
 function toDots(score) {
   if (score == null) return null; // A dimension the visitor's answers took out of play.
-  if (score >= 0.7) return 3;
-  if (score >= 0.4) return 2;
-  return 1;
+  return Math.round(10 + clamp01(score) * 20);
 }
 
 // DISPLAY ONLY. totalScore() adds the 1-3 toDots values straight into a sum
@@ -341,8 +365,11 @@ const SKILL_LEVELS = ["Beginner", "Intermediate", "Advanced"];
 function skillMatchScore(paddleSkillLevel, experience) {
   const userLevel = experience === "beginner" ? "Beginner" : experience === "intermediate" ? "Intermediate" : "Advanced";
   const distance = Math.abs(SKILL_LEVELS.indexOf(paddleSkillLevel) - SKILL_LEVELS.indexOf(userLevel));
-  if (distance === 0) return 4;
-  if (distance === 1) return 1;
+  // x10 with the rest of the model — see toDots. 40 = four "dots", the margin
+  // this needs to actually surface Advanced-tagged paddles for advanced players
+  // (the reason it was 4 and not 2 in the original tuning).
+  if (distance === 0) return 40;
+  if (distance === 1) return 10;
   return 0;
 }
 
@@ -420,29 +447,29 @@ export function scoreTerms(dims, a) {
 
   if (a.shape && a.shape !== "notsure") {
     const want = SHAPE_MAP[a.shape];
-    if (dims.shape === want) push("shape", "The shape you asked for", 3, `You asked for ${want.toLowerCase()} and this is one.`);
+    if (dims.shape === want) push("shape", "The shape you asked for", 30, `You asked for ${want.toLowerCase()} and this is one.`);
     // A Hybrid paddle is a reasonable middle-ground fallback when the
     // visitor wanted one of the two extremes (widebody/elongated) — but if
     // they asked for Hybrid specifically, a non-Hybrid paddle isn't a
     // meaningful "close enough," so this bonus shouldn't apply in that
     // direction (that would flatten every other shape to the same score).
-    else if (dims.shape === "Hybrid" && want !== "Hybrid") push("shape", "Close on shape", 1, `You asked for ${want.toLowerCase()}; a hybrid splits the difference.`);
-    else if (a.shape === "elongated" && dims.shape === "Extra-elongated") push("shape", "Close on shape", 2, "You asked for elongated; this one goes further still.");
+    else if (dims.shape === "Hybrid" && want !== "Hybrid") push("shape", "Close on shape", 10, `You asked for ${want.toLowerCase()}; a hybrid splits the difference.`);
+    else if (a.shape === "elongated" && dims.shape === "Extra-elongated") push("shape", "Close on shape", 20, "You asked for elongated; this one goes further still.");
   }
 
   if (a.sensitivity === "sensitive") {
     push("arm_forgive", "Ongoing arm issues", dims.forgiveness, "You told us about ongoing elbow, wrist or shoulder trouble, so forgiveness counts again.");
-    push("arm_feel", dims.softImpact ? "A soft, arm-friendly face" : "A firm face", dims.softImpact ? 2 : -1,
+    push("arm_feel", dims.softImpact ? "A soft, arm-friendly face" : "A firm face", dims.softImpact ? 20 : -10,
       dims.softImpact
         ? "A soft face cushions contact, which is what a sore arm wants."
         : "Marked down: with ongoing arm trouble, a firm face is the wrong direction.");
-    if (dims.weightOz != null && dims.weightOz <= 7.6) push("arm_light", "Light enough to spare your arm", 1, `${dims.weightOz}oz — under the 7.6oz line we treat as arm-friendly.`);
+    if (dims.weightOz != null && dims.weightOz <= 7.6) push("arm_light", "Light enough to spare your arm", 10, `${dims.weightOz}oz — under the 7.6oz line we treat as arm-friendly.`);
   } else if (a.sensitivity === "mild") {
-    push("arm_feel", "A soft, arm-friendly face", dims.softImpact ? 1 : 0, "You mentioned occasional soreness; a soft face is gentler on contact.");
+    push("arm_feel", "A soft, arm-friendly face", dims.softImpact ? 10 : 0, "You mentioned occasional soreness; a soft face is gentler on contact.");
   }
 
   if ((a.frequency === "daily" || a.frequency === "frequent") && dims.skillLevel === "Advanced") {
-    push("frequency", "You're on court a lot", 1, "Built for advanced play, which rewards the hours you're putting in.");
+    push("frequency", "You're on court a lot", 10, "Built for advanced play, which rewards the hours you're putting in.");
   }
   if (a.frequency === "rarely") push("frequency", "You play occasionally", dims.forgiveness, "Playing a few times a year, a forgiving paddle matters more than a specialised one.");
 
@@ -877,8 +904,15 @@ class PaddleQuizApp {
     const behind = diffs.find((d) => d.delta < 0);
     const phrase = (d) => PaddleQuizApp.TERM_PHRASE[d.key] || "its other scores";
 
-    const words = { 1: "one", 2: "two", 3: "three" };
-    let s = `${other.paddle.name} finished ${words[gap] || gap} point${gap === 1 ? "" : "s"} back`;
+    // Quoted in FIT points, not raw score points. The raw scale is internal and
+    // arbitrary (it was multiplied by 10 when the traits went continuous — see
+    // toDots), so "finished 10 points back" would be a number the visitor can't
+    // reconcile with anything on the page. Fit is the 0–100 the cards show.
+    const scale = this.matches && this.matches.fitScale;
+    const gapFit = Math.round(fitOutOf100(lead.score, scale) - fitOutOf100(other.score, scale));
+    let s = gapFit <= 0
+      ? `${other.paddle.name} came in just behind`
+      : `${other.paddle.name} finished ${gapFit} fit ${gapFit === 1 ? "point" : "points"} back`;
     if (ahead) s += `, ahead on ${phrase(ahead)}`;
     if (behind) {
       // Skill is usually the decisive term and has a far more concrete phrasing
@@ -892,12 +926,15 @@ class PaddleQuizApp {
 
   // Says what the number on the cards means, and — when the picks tie — says so
   // out loud. Ties are the norm here rather than an edge case, because the
-  // ratings are coarsened to four quartile tiers: across sample answer sets it
-  // is common for all three picks to land on the identical raw score, ordered
-  // only by the spin-then-forgiveness tiebreak. Three cards reading 100 / 100 /
-  // 100 under ranks #1 / #2 / #3 looks broken unless the page admits that the
-  // ranking between them is arbitrary — and admitting it is the useful part:
-  // it tells the visitor to stop optimising and choose on feel or price.
+  // ratings were bucketed into three values, so all three picks landed on an
+  // identical raw score in about 39% of sampled answer sets, ordered only by
+  // the tiebreak. Three cards reading 100 / 100 / 100 under ranks #1 / #2 / #3
+  // looks broken unless the page admits the ranking between them is arbitrary.
+  //
+  // The 2026-07-18 refresh (20-band data plus a continuous scorer) cut that to
+  // about 1%, so this is now genuinely the edge case its name suggests — but it
+  // still fires, and it is still the useful thing to say when it does: stop
+  // optimising and choose on feel or price.
   fitScaleNote(top) {
     const scaleSentence =
       "<strong>Fit</strong> is out of 100, where 100 is the best-fitting paddle in the catalog for your answers and 0 the worst.";

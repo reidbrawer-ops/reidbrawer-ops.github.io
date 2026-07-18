@@ -40,7 +40,19 @@ const paddles = load("assets/paddles.json");
 
 const INDOOR_OUTDOOR = new Set(["Indoor", "Outdoor", "Both"]);
 const VENUE_INDOOR = new Set(["indoor", "outdoor", "both"]);
-const PADDLE_TIERS = new Set([null, 0.13, 0.38, 0.63, 0.88]);
+// Legal outputs of coarsen_percentile() in scripts/rebuild_paddle_data.py: the
+// midpoint of each of 20 equal bands (0.025, 0.075 … 0.975). This is the guard
+// that stops a RAW PickleballEffect percentile reaching the public file by
+// accident — see PADDLE_DATA_SETUP.md "Data licensing". Widened from 4 quartile
+// tiers to 20 bands on 2026-07-18 for chart granularity; the firewall is
+// unchanged in kind, since what ships is still a band midpoint and never the
+// measurement. `undefined` is legal because the rebuild omits absent fields.
+const PERCENTILE_BANDS = 20;
+const PADDLE_TIERS = new Set([
+  null,
+  undefined,
+  ...Array.from({ length: PERCENTILE_BANDS }, (_, i) => Number(((i + 0.5) / PERCENTILE_BANDS).toFixed(4))),
+]);
 
 // ---- courts-data.json ----
 const courtsById = new Map();
@@ -154,10 +166,13 @@ if (Array.isArray(paddles)) {
     if (!p || typeof p.id !== "string" || !p.id) return fail(`paddles[${i}]: missing string id`);
     if (seen.has(p.id)) fail(`paddles: duplicate id "${p.id}"`);
     seen.add(p.id);
-    if (!PADDLE_TIERS.has(p.twistWeightPercentile))
-      fail(`paddles ${where}: twistWeightPercentile ${p.twistWeightPercentile} is not a coarsened tier (see PADDLE_DATA_SETUP.md licensing)`);
-    if (!PADDLE_TIERS.has(p.powerPercentile))
-      fail(`paddles ${where}: powerPercentile ${p.powerPercentile} is not a coarsened tier`);
+    // Every percentile-shaped field, not just the two the 13-column export
+    // carried: spin and swing weight are banded from the same proprietary
+    // source and need the same guard, or the firewall only covers half the file.
+    for (const field of ["twistWeightPercentile", "powerPercentile", "spinPercentile", "swingWeightPercentile"]) {
+      if (!PADDLE_TIERS.has(p[field]))
+        fail(`paddles ${where}: ${field} ${p[field]} is not a legal band midpoint (see PADDLE_DATA_SETUP.md licensing)`);
+    }
   });
 } else {
   fail("paddles.json is not an array");

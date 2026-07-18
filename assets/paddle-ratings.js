@@ -44,7 +44,13 @@ export function controlRating(paddle) {
   return base;
 }
 
+// spinPercentile is the banded rank of the paddle's measured spin RPM and is
+// the better signal by a distance: the four-word spinRating column gives the
+// whole catalog four spin values, so 349 paddles shared four scores and the
+// charts stacked them on four lines. Prefer it, fall back to the word for the
+// paddles that carry a rating but no RPM reading.
 export function spinRatingOf(paddle) {
+  if (typeof paddle.spinPercentile === "number") return paddle.spinPercentile;
   return { "Very High": 1, High: 0.75, Medium: 0.45, Low: 0.15 }[paddle.spinRating] ?? 0.5;
 }
 
@@ -69,7 +75,7 @@ export function forgivenessRatingOf(paddle) {
 // they count as known whenever the label exists. Spin has no such fallback: with
 // no spinRating there is no signal, only the 0.5.
 export function ratingKnown(paddle, key) {
-  if (key === "spin") return paddle.spinRating != null;
+  if (key === "spin") return paddle.spinPercentile != null || paddle.spinRating != null;
   if (key === "forgiveness") return paddle.twistWeightPercentile != null;
   if (key === "power") return paddle.paddleType != null || paddle.powerPercentile != null;
   if (key === "control") return paddle.paddleType != null;
@@ -79,7 +85,7 @@ export function ratingKnown(paddle, key) {
 // Tie-break comparator, shared by the quiz's ranking (paddle-quiz.js) and the
 // browse grid's (paddle-grid.js) so both surfaces order equal-scoring paddles
 // the same way. Ties are the NORM, not an edge case: the percentiles are
-// coarsened to four quartile tiers (a data-licensing firewall — see
+// banded to twenty steps (a data-licensing firewall — see
 // rebuild_paddle_data.py), so dozens of paddles routinely share one score.
 // Without this, a tie falls to the array's original order — alphabetical by
 // brand — so a late-alphabet brand like "Six Zero" loses the last podium slot

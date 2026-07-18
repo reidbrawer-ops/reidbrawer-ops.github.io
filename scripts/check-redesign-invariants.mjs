@@ -124,13 +124,19 @@ group('Paddles — revenue + legal');
       `${f}: trackVendorClicks() must bind BEFORE the mount guard, or buy clicks go unattributed`);
   }
 
-  // The data-licensing firewall: percentiles are coarsened to quartile tiers on
-  // the way out (RUNBOOK), and the site paraphrases rather than citing them.
-  // Strip comments first — the file *discusses* "88th pct" in the comment
-  // explaining why it must never render one.
+  // The data-licensing firewall: percentiles are banded on the way out
+  // (RUNBOOK), and the site paraphrases rather than citing them. Strip comments
+  // first — the file *discusses* "88th pct" in the comment explaining why it
+  // must never render one.
   const gridCode = grid.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
   check(!/th pct|thpct/.test(gridCode), 'paddle-grid.js: renders a raw percentile — violates the data-licensing firewall');
-  check(/TIER_WORD/.test(grid), 'paddle-grid.js: tier-word mapping for powerPercentile gone');
+  // Asserts the PARAPHRASING FUNCTION, not the lookup table it used to be. The
+  // old form keyed on the four quartile midpoints; when the data widened to 20
+  // bands that table would have matched nothing and every Power chip would have
+  // silently vanished, so it became a range test. Pinning the old constant name
+  // here would have blocked exactly the fix the widening required.
+  check(/function tierWord|tierWord\s*=/.test(gridCode), 'paddle-grid.js: tierWord() paraphrasing for powerPercentile gone');
+  check(/Very high|Medium/.test(gridCode), 'paddle-grid.js: tier words gone — percentiles would render as bare numbers');
 
   // Content-hashed module graph. Any page loading a module entry must pin the
   // whole graph with an import map, and must not reference a module by its

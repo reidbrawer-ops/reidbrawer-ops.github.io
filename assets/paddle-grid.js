@@ -33,16 +33,27 @@ const track = (name, params) => {
   if (typeof window.pbaTrack === "function") window.pbaTrack(name, params);
 };
 
-// paddles.json's percentiles are coarsened to quartile tiers on the way out of
+// paddles.json's percentiles are banded into 20 steps on the way out of
 // scripts/rebuild_paddle_data.py — a data-licensing firewall (see RUNBOOK), and
-// validate.mjs fails if the values are anything but these four. So the number is
-// a TIER MIDPOINT, not a measurement: rendering "88th pct" would invent a
+// validate.mjs fails if a value is not a legal band midpoint. So the number is
+// a BAND MIDPOINT, not a measurement: rendering "88th pct" would invent a
 // precision the data doesn't carry and re-expose the licensed percentile the
 // coarsening exists to withhold. paddle-quiz.js makes the same call for the
 // comparison table ("deliberately paraphrased into a dot rating rather than
 // citing the exact proprietary lab-tested percentiles"). Words, not numbers.
-const TIER_WORD = { 0.13: "Low", 0.38: "Medium", 0.63: "High", 0.88: "Very high" };
-const tierWord = (v) => (typeof v === "number" ? TIER_WORD[v] || null : null);
+// Words, not numbers — for the same reason as before. What changed on
+// 2026-07-18 is the resolution: the percentiles are now banded into 20 steps
+// rather than 4 quartile tiers, so an exact-match lookup on the four old
+// midpoints (0.13 / 0.38 / 0.63 / 0.88) matches nothing and every Power chip
+// silently vanishes from the cards. Bucket by RANGE instead, which is
+// resolution-independent and keeps the same four words a reader already knows.
+const tierWord = (v) => {
+  if (typeof v !== "number") return null;
+  if (v < 0.25) return "Low";
+  if (v < 0.5) return "Medium";
+  if (v < 0.75) return "High";
+  return "Very high";
+};
 
 // "Unapproved" is a VALUE of approvalBody, not the name of a body — so the
 // obvious `${p.approvalBody} approved` renders "Unapproved approved" and
@@ -123,10 +134,11 @@ const rankable = (filters) => Boolean(TYPE_FIT[filters.type] || SKILL_FIT[filter
 
 // tiebreak() (spin → forgiveness → name) is shared with the quiz — it lives in
 // paddle-ratings.js now so both surfaces order equal-scoring paddles the same
-// way. Ties are the norm here, not an edge case: powerPercentile is coarsened to
-// four quartile tiers (the licensing firewall — see TIER_WORD), so filtering to
-// Power leaves ~187 paddles sharing about five distinct fit scores, ~37 tied at
-// each. Without the tiebreak the order inside a tier would be catalog order —
+// way. Ties still happen here: powerPercentile is banded (the licensing
+// firewall — see tierWord), so filtering to Power leaves paddles sharing fit
+// scores — far fewer since the 2026-07-18 refresh took four tiers to twenty
+// bands, but enough that the order matters. Without the tiebreak the order
+// inside a tie would be catalog order —
 // alphabetical by brand — so "#1 most powerful" would mean "first paddle whose
 // brand starts with a digit". The rank number would be an accident in a
 // precision costume.
