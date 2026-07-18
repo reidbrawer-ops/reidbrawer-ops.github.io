@@ -71,6 +71,24 @@
             "value": "public, max-age=604800"
           }
         ]
+      },
+      {
+        "source": "/@(favicon.ico|favicon.svg|apple-touch-icon.png|site.webmanifest)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=0, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "/assets/logo/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=0, must-revalidate"
+          }
+        ]
       }
     ],
     "ignore": [
