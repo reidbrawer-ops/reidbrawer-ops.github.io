@@ -484,6 +484,26 @@ function totalScore(dims, a) {
   return scoreTerms(dims, a).reduce((sum, t) => sum + t.points, 0);
 }
 
+// Score one paddle against one set of answers, using the real ranking model.
+//
+// Exported so the stress-test can ask "what would this paddle score if you had
+// answered differently?" instead of re-scoring it on a parallel five-factor
+// trait model. That parallel model is why the card could rank the quiz's own #1
+// last in 21% of answer sets — and never first under any lens in 28% — even on
+// the preset that should flatter it. Two of its five factors actively
+// contradicted the visitor: it treated forgiveness as a universal good when
+// they may have asked for a precise, low-twist paddle, and cheapness as a
+// universal good when they may have said price was no object. A $280 pick that
+// won on fit had no way to win a contest scored on cheapness.
+//
+// Charts can't import this module (paddle-quiz.js imports paddle-charts.js, so
+// it would be circular) — it's handed over as a function on the render options.
+export function scorePaddle(paddle, answers) {
+  const dims = dimensionsFor(paddle, answers);
+  const terms = scoreTerms(dims, answers);
+  return { score: terms.reduce((sum, t) => sum + t.points, 0), terms };
+}
+
 export function computeMatches(paddles, answers) {
   const fullAnswers = { ...answers };
   const pool = (answers.tournament === "yes" ? paddles.filter(isTournamentLegal) : paddles).filter((p) => p.price != null);
@@ -668,6 +688,9 @@ class PaddleQuizApp {
         // same 0–100 scale as the pick cards above.
         fitScores: this.matches.fitScores,
         fitScale: this.matches.fitScale,
+        // The real ranking model, so the stress-test can re-score these three
+        // under altered answers rather than on a parallel trait model.
+        scoreWith: scorePaddle,
         // Ordered as the questions get asked: what they cost, then how much of
         // that survives a change of priorities. The "why" is a single sentence
         // under the pick cards (fitScaleNote) rather than a component — the

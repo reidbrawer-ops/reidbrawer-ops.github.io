@@ -214,6 +214,45 @@ const plural = (n, one, many) => (n === 1 ? one : many);
 // than fabricate a durability number. Each preset is a weight vector summing
 // to 1; a paddle's total is Σ weightᵢ·scoreᵢ on 0–100, and the segments show
 // exactly that decomposition.
+// ---------- Quiz stress-test: "what if you'd answered differently?" ----------
+//
+// Each preset patches the visitor's real answers and re-scores the three picks
+// with the QUIZ'S OWN model (opts.scoreWith → paddle-quiz.js scorePaddle), so:
+//   - the baseline is their actual answers and therefore reproduces the podium
+//     above it exactly, by construction rather than by coincidence;
+//   - every other pill is a real, answerable counterfactual — "if you'd said
+//     you were a power player" — rather than an abstract reweighting of traits.
+//
+// This replaced a parallel five-factor trait model whose scores could contradict
+// the visitor outright: it counted forgiveness and cheapness as universal goods,
+// so a precise low-twist paddle bought by someone who asked for precision, or a
+// $280 paddle bought by someone who said price was no object, could not win.
+// Measured over 1,500 answer sets, that model put the quiz's own #1 last 21% of
+// the time and never-first 28% of the time, directly above the buy links.
+const ANSWER_PRESETS = [
+  { key: "answered", label: "As you answered", patch: null,
+    note: "Your actual answers — the ranking you already have." },
+  { key: "power", label: "Power first", patch: { style: "power", current: ["more_power"] },
+    note: "As if pace were the whole game and nothing else counted." },
+  { key: "spin", label: "Spin first", patch: { style: "spin", current: ["more_spin"] },
+    note: "As if you only cared about how much the ball bites." },
+  { key: "control", label: "Control & feel", patch: { style: "soft", current: ["more_forgiveness"] },
+    note: "As if you lived at the kitchen line and wanted the biggest sweet spot." },
+  { key: "value", label: "Budget first", patch: { budget: "under100" },
+    note: "As if you'd capped yourself at $100 and let that decide." },
+];
+
+// The score's named terms, grouped into five stable buckets so the stacked bar
+// keeps one legend across presets — the raw term list changes shape with the
+// answers, which would otherwise re-label the legend on every pill.
+const TERM_GROUPS = [
+  { label: "What the paddle is", keys: ["traits"] },
+  { label: "Your style", keys: ["style", "want_power", "want_spin", "want_sweet", "want_light", "want_arm"] },
+  { label: "Fit & feel", keys: ["feel", "shape", "arm_forgive", "arm_feel", "arm_light"] },
+  { label: "Your level", keys: ["skill", "frequency"] },
+  { label: "Budget", keys: ["budget"] },
+];
+
 const C_FACTORS = [
   { key: "power", label: "Power & drive" },
   { key: "control", label: "Control & touch" },
@@ -326,7 +365,13 @@ class PaddleCharts {
     const span = this.priceMax - this.priceMin || 1;
     for (const d of [...this.catalog, ...this.featured]) d.r.value = clamp01((this.priceMax - d.price) / span);
 
-    this.presets = buildPresets();
+    // Two stress-tests, because the two surfaces have different truths to tell.
+    // The quiz has real answers, so it re-scores under altered answers with the
+    // real model. Browse has none — there is no ranking to contradict there —
+    // so it keeps the trait-weight lens, which is honest in that context.
+    this.scoreWith = opts.scoreWith || null;
+    this.answerStress = Boolean(this.scoreWith && this.answers);
+    this.presets = this.answerStress ? ANSWER_PRESETS : buildPresets();
     // Initial view state — an explicit initialState (browse passes the previous
     // instance's, so rebuilding on a selection change doesn't reset the axes)
     // wins, then a valid ?preset=, then the defaults.
@@ -1063,7 +1108,9 @@ class PaddleCharts {
     card.appendChild(h("p", "pc-eyebrow", this.mode === "quiz" ? "How solid is your #1?" : "How solid is the ranking?"));
     card.appendChild(h("h3", "pc-title", this.mode === "quiz" ? "Stress-test your match" : "Stress-test the ranking"));
     card.appendChild(
-      h("p", "pc-explain", "Each pill is a what-if, not your result. The discs keep your ranking, so watch the rows move.")
+      h("p", "pc-explain", this.answerStress
+        ? "Each pill re-runs the quiz as if you'd answered differently. The discs keep your ranking, so watch the rows move."
+        : "Each pill is a what-if, not your result. The discs keep your ranking, so watch the rows move.")
     );
 
     const pills = h("div", "pc-pillgroup pc-preset-group");
@@ -1098,7 +1145,7 @@ class PaddleCharts {
       meta.appendChild(name);
       meta.appendChild(h("span", "pc-row-brand", f.brand));
       const track = h("div", "pc-row-track");
-      const segs = C_FACTORS.map((_, i) => {
+      const segs = this.stressFactors().map((_, i) => {
         const seg = h("div", "pc-seg");
         seg.style.background = SEG_SHADES[i];
         track.appendChild(seg);
@@ -1112,7 +1159,7 @@ class PaddleCharts {
     card.appendChild(rows);
 
     const legend = h("div", "pc-legend");
-    C_FACTORS.forEach((factor, i) => {
+    this.stressFactors().forEach((factor, i) => {
       const item = h("span", "pc-legend-item");
       const sw = h("span", "pc-legend-swatch");
       sw.style.background = SEG_SHADES[i];
@@ -1157,24 +1204,90 @@ class PaddleCharts {
     }
   }
 
+  // Which five buckets the bar segments and legend represent — the quiz's own
+  // score-term groups when we have answers, the trait factors otherwise.
+  stressFactors() {
+    return this.answerStress ? TERM_GROUPS : C_FACTORS;
+  }
+
+  // Re-run the REAL scorer with the visitor's answers patched by this preset.
+  scoreByAnswers(preset) {
+    const answers = preset.patch ? { ...this.answers, ...preset.patch } : this.answers;
+    return this.stressRows.map((r) => {
+      const { score, terms } = this.scoreWith(r.f.src, answers);
+      const byKey = new Map(terms.map((t) => [t.key, t.points]));
+      const contribs = TERM_GROUPS.map((g) => g.keys.reduce((sum, k) => sum + (byKey.get(k) || 0), 0));
+      return { r, contribs, total: score };
+    });
+  }
+
+  // The 0–100 scale for a preset, anchored on the best and worst scores any
+  // paddle in the catalog gets under those answers.
+  //
+  // Without this the three bars read 100% / 99% / 98%: raw scores share a large
+  // base (traits, skill match, feel) so three good picks differ by a couple of
+  // points out of ~250, and dividing by the leader compresses them into a band
+  // no eye can separate. Anchoring on the catalog spread is also what the pick
+  // cards already do, so the "As you answered" column matches the fit numbers
+  // above it rather than being a fourth scale on the page.
+  stressScale(preset) {
+    if (!preset.patch && this.fitScale) return this.fitScale; // cards' own scale
+    this._stressScales = this._stressScales || {};
+    if (this._stressScales[preset.key]) return this._stressScales[preset.key];
+    const answers = { ...this.answers, ...preset.patch };
+    let min = Infinity;
+    let max = -Infinity;
+    for (const d of this.catalog) {
+      const s = this.scoreWith(d.src, answers).score;
+      if (s < min) min = s;
+      if (s > max) max = s;
+    }
+    // Computed once per preset and cached — 450-odd scorePaddle calls is fine
+    // on a click, wasteful on every re-render.
+    return (this._stressScales[preset.key] = { min, max });
+  }
+
+  // Browse's lens: no answers exist, so weight the four traits plus value.
+  scoreByTraits(preset) {
+    return this.stressRows.map((r) => {
+      const contribs = C_FACTORS.map((factor, i) => preset.weights[i] * r.f.r[factor.key] * 100);
+      return { r, contribs, total: contribs.reduce((a, b) => a + b, 0) };
+    });
+  }
+
   updateStress() {
     if (!this.stressRows.length) return;
     const preset = this.presets.find((p) => p.key === this.state.preset);
     for (const p of this.presets) this.presetPills[p.key].classList.toggle("is-active", p.key === preset.key);
     this.presetNote.textContent = preset.note;
 
-    const scored = this.stressRows.map((r) => {
-      const contribs = C_FACTORS.map((factor, i) => preset.weights[i] * r.f.r[factor.key] * 100);
-      const total = contribs.reduce((a, b) => a + b, 0);
-      return { r, contribs, total };
-    });
+    const scored = this.answerStress ? this.scoreByAnswers(preset) : this.scoreByTraits(preset);
     const order = [...scored].sort((a, b) => b.total - a.total);
+    // Percentages are relative to the best of the three under this lens, so the
+    // leader always reads 100%. The raw quiz score has no meaningful ceiling to
+    // divide by — it moves with how many terms the answers put in play — and an
+    // absolute number here would be one more scale the visitor can't reconcile
+    // with the fit score on the cards.
+    if (this.answerStress) {
+      const scale = this.stressScale(preset);
+      const span = scale.max - scale.min;
+      for (const s of scored) s.pct = span > 0 ? clamp01((s.total - scale.min) / span) * 100 : 100;
+    } else {
+      // Trait lens (browse): scores are already 0–100-ish, relative to the best.
+      const best = order.length ? order[0].total : 1;
+      for (const s of scored) s.pct = best > 0 ? (s.total / best) * 100 : 0;
+    }
+    const factors = this.stressFactors();
     order.forEach((s, idx) => {
       s.r.row.style.top = idx * 70 + "px";
-      s.r.total.textContent = Math.round(s.total) + "%";
+      s.r.total.textContent = Math.round(s.pct) + "%";
+      // Segment widths are shares of THIS row's own total, scaled by how the row
+      // compares to the leader — so a shorter bar means a lower score and the
+      // segments still read as a breakdown of it.
+      const sum = s.contribs.reduce((a, b) => a + Math.max(0, b), 0) || 1;
       s.contribs.forEach((c, i) => {
-        s.r.segs[i].style.width = c.toFixed(1) + "%";
-        s.r.segs[i].title = `${C_FACTORS[i].label}: ${Math.round(c)} pts`;
+        s.r.segs[i].style.width = ((Math.max(0, c) / sum) * s.pct).toFixed(2) + "%";
+        s.r.segs[i].title = `${factors[i].label}: ${Math.round(c)} pts`;
       });
     });
 
