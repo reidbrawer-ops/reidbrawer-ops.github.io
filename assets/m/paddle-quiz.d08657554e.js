@@ -478,12 +478,6 @@ export function computeMatches(paddles, answers) {
   // so "why" and "which" can never disagree — see scoreTerms.
   const top = scored.slice(0, 3).map(({ paddle, dims, score }) => ({ paddle, dims, score, terms: scoreTerms(dims, fullAnswers) }));
 
-  // runnerUp is what #3 had to beat. The gap between #3 and #4 is the honest
-  // answer to "how settled is this list?" — a one-point gap over a near-identical
-  // paddle means something very different from a ten-point one, and the visitor
-  // can't see #4 to judge for themselves.
-  const runnerUp = scored[3] ? { paddle: scored[3].paddle, score: scored[3].score } : null;
-
   // Every scored paddle's fit, keyed by id. The value chart plots price against
   // THIS rather than the catalog-wide trait average: "best performance for my
   // money" is a question about the visitor's own definition of performance, and
@@ -509,7 +503,7 @@ export function computeMatches(paddles, answers) {
   const allScores = scored.map((s) => s.score);
   const fitScale = { min: Math.min(...allScores), max: Math.max(...allScores) };
 
-  return { fullAnswers, top, runnerUp, fitScores, fitScale, poolSize: pool.length };
+  return { fullAnswers, top, fitScores, fitScale, poolSize: pool.length };
 }
 
 // ---------- Lead capture (Firestore, write-only) ----------
@@ -643,25 +637,17 @@ class PaddleQuizApp {
         mode: "quiz",
         answers: this.matches.fullAnswers,
         // The real scorer's output, handed over rather than re-derived: the
-        // per-paddle fit scores the value chart plots against price, the named
-        // terms "Why these three" renders, and the paddle that just missed.
+        // per-paddle fit scores the value chart plots against price, on the
+        // same 0–100 scale as the pick cards above.
         fitScores: this.matches.fitScores,
-        // The scale the pick cards above are already using, so the chart's
-        // y-axis, the cards and "Why these three" all quote one number.
         fitScale: this.matches.fitScale,
-        featuredMeta: this.matches.top.map((m) => ({
-          score: m.score,
-          fit: fitOutOf100(m.score, this.matches.fitScale),
-          terms: m.terms,
-        })),
-        runnerUp: this.matches.runnerUp,
-        // Ordered as the questions get asked: why these three, then what they
-        // cost, then how they sit against the whole catalog, then how much of
-        // that survives a change of priorities. The explorer is back on the
-        // results page — "is my match actually the best for spin AND power" is
-        // a results-page question, and sending people to /paddles/browse to
-        // answer it lost them.
-        components: ["why", "value", "explorer", "stress"],
+        // Ordered as the questions get asked: what they cost, then how they sit
+        // against the whole catalog, then how much of that survives a change of
+        // priorities. The "why" is a single sentence under the pick cards
+        // (fitScaleNote) rather than a component — the full per-term ledger it
+        // used to render repeated the same notes for every pick and buried the
+        // two rows that separated them.
+        components: ["value", "explorer", "stress"],
       });
     } catch (err) {
       console.error("[PaddleQuiz] Comparison charts failed to render.", err);
@@ -833,6 +819,71 @@ class PaddleQuizApp {
     `;
   }
 
+  // Plain-language names for the score terms, for the one-line explanation
+  // below. The term labels themselves read fine as headings but not mid-
+  // sentence ("ahead on what the paddle is").
+  static TERM_PHRASE = {
+    traits: "all-round traits",
+    feel: "the feel you asked for",
+    budget: "your budget",
+    style: "your style of play",
+    want_power: "the power you wanted",
+    want_spin: "the spin you wanted",
+    want_sweet: "sweet-spot size",
+    want_light: "swing weight",
+    want_arm: "arm-friendliness",
+    shape: "the shape you asked for",
+    arm_forgive: "forgiveness",
+    arm_feel: "how soft the face is",
+    arm_light: "being light enough to spare your arm",
+    frequency: "how often you play",
+    skill: "your level",
+  };
+
+  // One sentence naming what actually decided the order, derived from the same
+  // scoreTerms the ranking summed.
+  //
+  // This replaced a full per-pick ledger — every term, with an explanatory note,
+  // for all three picks. It was unusable: the notes for shared terms are
+  // identical by construction, so on a typical result four fifths of the card
+  // was the same three paragraphs printed three times, and picks tied on score
+  // rendered as two byte-identical breakdowns. Showing the whole calculation
+  // buried the two or three rows that actually separated anything.
+  differenceSentence(top) {
+    const lead = top[0];
+    // The first pick that did NOT tie the leader — comparing against a tied
+    // pick would produce a sentence about a difference of zero.
+    const other = top.find((t) => t.score !== lead.score);
+    if (!other) return "";
+    const gap = lead.score - other.score;
+    const mapOf = (t) => new Map(t.terms.map((x) => [x.key, x]));
+    const a = mapOf(lead);
+    const b = mapOf(other);
+    const diffs = [];
+    for (const key of new Set([...a.keys(), ...b.keys()])) {
+      const pa = a.get(key) ? a.get(key).points : 0;
+      const pb = b.get(key) ? b.get(key).points : 0;
+      if (pa !== pb) diffs.push({ key, delta: pb - pa }); // from the runner-up's side
+    }
+    if (!diffs.length) return "";
+    diffs.sort((x, y) => Math.abs(y.delta) - Math.abs(x.delta));
+    const ahead = diffs.find((d) => d.delta > 0);
+    const behind = diffs.find((d) => d.delta < 0);
+    const phrase = (d) => PaddleQuizApp.TERM_PHRASE[d.key] || "its other scores";
+
+    const words = { 1: "one", 2: "two", 3: "three" };
+    let s = `${other.paddle.name} finished ${words[gap] || gap} point${gap === 1 ? "" : "s"} back`;
+    if (ahead) s += `, ahead on ${phrase(ahead)}`;
+    if (behind) {
+      // Skill is usually the decisive term and has a far more concrete phrasing
+      // available than "behind on your level" — name both tags.
+      s += behind.key === "skill" && other.dims.skillLevel !== lead.dims.skillLevel
+        ? ` but tagged ${String(other.dims.skillLevel).toLowerCase()} rather than ${String(lead.dims.skillLevel).toLowerCase()}`
+        : `${ahead ? " but" : ","} behind on ${phrase(behind)}`;
+    }
+    return s + ".";
+  }
+
   // Says what the number on the cards means, and — when the picks tie — says so
   // out loud. Ties are the norm here rather than an edge case, because the
   // ratings are coarsened to four quartile tiers: across sample answer sets it
@@ -843,16 +894,23 @@ class PaddleQuizApp {
   // it tells the visitor to stop optimising and choose on feel or price.
   fitScaleNote(top) {
     const scaleSentence =
-      "<strong>Fit</strong> is out of 100, where 100 is the best-fitting paddle in the catalog for your answers and 0 the worst. The breakdown below shows how each one earned it.";
+      "<strong>Fit</strong> is out of 100, where 100 is the best-fitting paddle in the catalog for your answers and 0 the worst.";
     // Count the LEADING tie group, not just an all-three tie. Two picks sharing
     // the top score is the case that most changes what the visitor should do —
     // it means the "best match" badge was awarded by tiebreak — and it happens
     // far more often than a clean sweep.
     let tied = 1;
     while (tied < top.length && top[tied].score === top[0].score) tied++;
-    if (tied === 1) return `<p class="pq-fit-note">${scaleSentence}</p>`;
-    const which = tied === top.length ? `All ${top.length}` : `The top ${tied}`;
-    return `<p class="pq-fit-note">${which} scored <strong>identically</strong> against your answers — the order between them is only a tiebreak, so treat them as equals and choose on feel, price or looks. ${scaleSentence}</p>`;
+    const parts = [];
+    if (tied > 1) {
+      const words = { 2: "two", 3: "three" };
+      const which = tied === top.length ? `All ${words[top.length] || top.length}` : `The top ${words[tied] || tied}`;
+      parts.push(`${which} scored <strong>identically</strong> against your answers — the order between them is only a tiebreak, so treat them as equals and choose on feel, price or looks.`);
+    }
+    const diff = this.differenceSentence(top);
+    if (diff) parts.push(escapeAttr(diff));
+    parts.push(scaleSentence);
+    return `<p class="pq-fit-note">${parts.join(" ")}</p>`;
   }
 
   toggleMulti(key, value) {

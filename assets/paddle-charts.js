@@ -217,13 +217,6 @@ const C_FACTORS = [
   { key: "value", label: "Value" },
 ];
 const SEG_SHADES = ["rgba(22,33,31,.92)", "rgba(22,33,31,.72)", "rgba(22,33,31,.54)", "rgba(22,33,31,.38)", "rgba(22,33,31,.24)"];
-// The same ink ramp, for a run of segments whose length isn't known up front —
-// "Why these three" has as many segments as the visitor's answers earned terms.
-function segShade(i, n) {
-  if (i < 0) return "transparent";
-  const t = n <= 1 ? 0 : i / (n - 1);
-  return `rgba(22,33,31,${(0.92 - t * 0.68).toFixed(3)})`;
-}
 
 function normalize(w) {
   const s = w.reduce((a, b) => a + b, 0) || 1;
@@ -239,8 +232,9 @@ function normalize(w) {
 // #1 pick 57% of the time, immediately above the buy links.
 //
 // The fix is not a better approximation. The real answer-weighted ranking is
-// now shown by "Why these three" (buildWhy), straight from the scorer's own
-// terms, so this component no longer has to imitate it and doesn't try. Its job
+// stated in one sentence under the pick cards (paddle-quiz.js fitScaleNote),
+// straight from the scorer's own terms, so this component no longer has to
+// imitate it and doesn't try. Its job
 // is the honest one it was always good at: if you cared about something ELSE,
 // would the podium hold? The baseline is therefore an even weighting, described
 // as exactly that, and no preset here claims to be the quiz.
@@ -304,8 +298,6 @@ class PaddleCharts {
       this.fitCatalog = this.catalog.filter((d) => typeof d.fit === "number");
     }
     // Per-pick score terms from the real quiz scorer, aligned to `featured`.
-    this.featuredMeta = opts.featuredMeta || null;
-    this.runnerUp = opts.runnerUp || null;
 
     const prices = this.catalog.map((d) => d.price);
     this.priceMin = Math.min(...prices);
@@ -352,7 +344,6 @@ class PaddleCharts {
     this.root.classList.add("pc-root");
     const builders = {
       strip: () => this.buildStrip(),
-      why: () => this.buildWhy(),
       explorer: () => this.buildExplorer(),
       value: () => this.buildValue(),
       stress: () => this.buildStressTest(),
@@ -1065,126 +1056,6 @@ class PaddleCharts {
     body.appendChild(total);
     card.appendChild(body);
     return card;
-  }
-
-  // ===================== Why these three =====================
-  //
-  // The results page used to assert a ranking and show a tagline. The reasoning
-  // lived only in paddle-quiz.js's scorer, where no visitor could see it, and
-  // the one component that claimed to show it was reconstructing the answers
-  // from a different model (see scoreTerms). This renders the actual terms the
-  // actual scorer actually summed — nothing here is recomputed, so it cannot
-  // disagree with the podium above it.
-  buildWhy() {
-    const card = h("section", "pc-card pc-why");
-    card.appendChild(h("p", "pc-eyebrow", "Why these three"));
-    card.appendChild(h("h3", "pc-title", "What each pick earned"));
-    card.appendChild(
-      h("p", "pc-explain", "Your answers scored every paddle in the catalog on the same terms. These are the points each pick collected — the whole calculation, not a summary of it. The points are what the fit score on the cards above is built from: they're placed on 0–100 against the best and worst scores any paddle managed for you.")
-    );
-
-    const rows = h("div", "pc-why-rows");
-    this.featured.forEach((f, i) => {
-      const meta = this.featuredMeta[i];
-      if (!meta) return;
-      // Positive terms make up the bar; a deduction can't be drawn as width.
-      const pos = meta.terms.filter((t) => t.points > 0);
-      const neg = meta.terms.filter((t) => t.points < 0);
-      const posTotal = pos.reduce((s, t) => s + t.points, 0) || 1;
-
-      const row = h("div", "pc-why-row");
-      const head = h("div", "pc-why-head");
-      // Both units, because they answer different questions: the fit number is
-      // what the pick card quotes, and the points are what the segments below
-      // actually sum to. Showing only one would either orphan the card's
-      // headline or make the bar fail to add up.
-      const totals = h("span", "pc-why-total");
-      if (typeof meta.fit === "number") {
-        totals.appendChild(h("span", "pc-why-fit", `${Math.round(meta.fit)} fit`));
-        totals.appendChild(h("span", "pc-why-pts", `${meta.score} pts`));
-      } else {
-        totals.appendChild(h("span", "pc-why-fit", `${meta.score} pts`));
-      }
-      head.append(h("span", "pc-roundel pc-roundel--sm", String(i + 1)), h("span", "pc-why-name", f.name), totals);
-      head.querySelector(".pc-why-name").style.color = f.color.solid;
-      row.appendChild(head);
-
-      const track = h("div", "pc-why-track");
-      pos.forEach((t, k) => {
-        const seg = h("span", "pc-why-seg");
-        seg.style.width = ((t.points / posTotal) * 100).toFixed(2) + "%";
-        seg.style.background = segShade(k, pos.length);
-        seg.title = `${t.label}: +${t.points}`;
-        track.appendChild(seg);
-      });
-      row.appendChild(track);
-
-      const legend = h("ul", "pc-why-terms");
-      meta.terms.forEach((t, k) => {
-        const li = h("li", "pc-why-term" + (t.points < 0 ? " is-neg" : ""));
-        const sw = h("span", "pc-why-swatch");
-        // Deductions get no swatch colour — they aren't in the bar.
-        sw.style.background = t.points > 0 ? segShade(pos.indexOf(t), pos.length) : "transparent";
-        li.append(sw, h("span", "pc-why-termlabel", t.label), h("span", "pc-why-termpts", (t.points > 0 ? "+" : "") + t.points));
-        li.appendChild(h("span", "pc-why-termnote", t.note));
-        legend.appendChild(li);
-      });
-      row.appendChild(legend);
-      if (neg.length) row.appendChild(h("p", "pc-why-deduction", `Marked down ${neg.reduce((s, t) => s + t.points, 0)} for ${neg.map((t) => t.label.toLowerCase()).join(" and ")}.`));
-      rows.appendChild(row);
-    });
-    card.appendChild(rows);
-
-    const sep = this.whySeparator();
-    if (sep) card.appendChild(sep);
-    const settle = this.whyRunnerUp();
-    if (settle) card.appendChild(settle);
-    return card;
-  }
-
-  // What actually decided first place. A visitor looking at two paddles three
-  // points apart deserves to know which three points.
-  whySeparator() {
-    const a = this.featuredMeta[0];
-    const b = this.featuredMeta[1];
-    if (!a || !b) return null;
-    const mapOf = (m) => new Map(m.terms.map((t) => [t.key, t]));
-    const ma = mapOf(a);
-    const mb = mapOf(b);
-    const diffs = [];
-    for (const key of new Set([...ma.keys(), ...mb.keys()])) {
-      const pa = ma.get(key) ? ma.get(key).points : 0;
-      const pb = mb.get(key) ? mb.get(key).points : 0;
-      if (pa !== pb) diffs.push({ label: (ma.get(key) || mb.get(key)).label.toLowerCase(), delta: pa - pb });
-    }
-    if (!diffs.length) return null;
-    diffs.sort((x, y) => Math.abs(y.delta) - Math.abs(x.delta));
-    const gap = a.score - b.score;
-    const won = diffs.filter((d) => d.delta > 0).slice(0, 2);
-    const lost = diffs.filter((d) => d.delta < 0).slice(0, 2);
-
-    const p = h("p", "pc-why-sep");
-    const n1 = this.featured[0].name;
-    const n2 = this.featured[1].name;
-    let text = gap === 0
-      ? `${n1} and ${n2} tied on points — ${n1} takes the top slot on the spin-then-forgiveness tiebreak.`
-      : `${n1} beat ${n2} by ${gap} ${plural(gap, "point", "points")}`;
-    if (gap !== 0 && won.length) text += `, ahead on ${won.map((d) => `${d.label} (+${d.delta})`).join(" and ")}`;
-    if (gap !== 0 && lost.length) text += `, behind on ${lost.map((d) => `${d.label} (${d.delta})`).join(" and ")}`;
-    p.textContent = text.replace(/\s+$/, "") + ".";
-    return p;
-  }
-
-  // How settled the podium is. A one-point gap over #4 means "these three are
-  // interchangeable with the next one"; the visitor can't see #4 to judge.
-  whyRunnerUp() {
-    if (!this.runnerUp || !this.featuredMeta[2]) return null;
-    const gap = this.featuredMeta[2].score - this.runnerUp.score;
-    const p = h("p", "pc-note");
-    p.textContent = gap <= 1
-      ? `Worth knowing: ${this.runnerUp.paddle.name} missed the list by ${gap === 0 ? "a tiebreak" : "one point"}. The third slot is close to a coin toss — browse the full catalog if none of these feel right.`
-      : `Your #3 cleared the next paddle (${this.runnerUp.paddle.name}) by ${gap} points, so this list isn't a photo finish.`;
-    return p;
   }
 
   // ===================== 2c — Match stress-test =====================
