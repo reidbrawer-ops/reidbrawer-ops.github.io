@@ -667,11 +667,23 @@
 }
 .pc-why-total {
   margin-left: auto;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  flex: none;
+}
+.pc-why-fit {
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 0.8125rem;
   color: var(--ink);
-  flex: none;
+}
+/* The raw points the segments below sum to — secondary to the fit figure the
+   pick cards quote, but present so the bar can be checked against a number. */
+.pc-why-pts {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--ink-faint);
 }
 .pc-why-track {
   display: flex;

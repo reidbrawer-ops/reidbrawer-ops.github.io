@@ -284,8 +284,19 @@ class PaddleCharts {
     // can plot price against what THEY asked for instead of a flat trait mean.
     // Absent on browse, where nobody has answered anything.
     this.fitScores = opts.fitScores || null;
+    // Raw scores are placed on 0–100 against the range the visitor's answers
+    // actually produced (paddle-quiz.js fitOutOf100). Monotonic, so the
+    // ordering, the Pareto frontier and the cheaper-equivalent search are all
+    // unchanged — it only makes the axis readable and match the pick cards.
+    this.fitScale = opts.fitScale || null;
     if (this.fitScores) {
-      for (const d of [...this.catalog, ...this.featured]) d.fit = this.fitScores.get(d.id);
+      const span = this.fitScale ? this.fitScale.max - this.fitScale.min : 0;
+      const norm = (raw) => {
+        if (typeof raw !== "number") return undefined;
+        if (!this.fitScale || span <= 0) return 100;
+        return ((raw - this.fitScale.min) / span) * 100;
+      };
+      for (const d of [...this.catalog, ...this.featured]) d.fit = norm(this.fitScores.get(d.id));
       // A paddle the quiz never scored (filtered out by a tournament-legal
       // answer) has no fit and is dropped from fit-scored views rather than
       // plotted at zero, which would read as "terrible for you" instead of
@@ -821,6 +832,12 @@ class PaddleCharts {
   valueScoreOf(d) {
     return this.state.scoreMode === "fit" ? d.fit : d.overall;
   }
+  // Fit is quoted as a whole number on the pick cards, so quote it the same way
+  // here — 93.75 showing as "94" above and "93.8" below is one paddle with two
+  // scores as far as a reader is concerned.
+  fmtValueScore(n) {
+    return this.state.scoreMode === "fit" ? String(Math.round(n)) : fmtScore(n);
+  }
   valueSet() {
     return this.state.scoreMode === "fit" ? this.fitCatalog : this.catalog;
   }
@@ -993,7 +1010,7 @@ class PaddleCharts {
     box.appendChild(h("p", "pc-alt-label", "Same performance, less money"));
     box.appendChild(
       h("p", "pc-alt-body",
-        `${best.brand} ${best.name} at ${fmtPrice(best.price)} scores ${fmtScore(this.valueScoreOf(best))} against ${f.name}'s ${fmtScore(target)} — ${fmtPrice(saving)} less. ${cheaper.length - 1 > 0 ? `${cheaper.length - 1} other ${plural(cheaper.length - 1, "paddle does", "paddles do")} the same.` : ""}`.trim())
+        `${best.brand} ${best.name} at ${fmtPrice(best.price)} scores ${this.fmtValueScore(this.valueScoreOf(best))} against ${f.name}'s ${this.fmtValueScore(target)} — ${fmtPrice(saving)} less. ${cheaper.length - 1 > 0 ? `${cheaper.length - 1} other ${plural(cheaper.length - 1, "paddle does", "paddles do")} the same.` : ""}`.trim())
     );
     box.appendChild(h("p", "pc-alt-note", "Scores this close come from the same rating tiers, so treat them as a tie rather than a win — then let feel, grip and warranty decide."));
     return box;
@@ -1043,7 +1060,7 @@ class PaddleCharts {
     // card and the dot can never quote two different numbers for one paddle.
     const shown = this.valueScoreOf(f);
     const total = h("div", "pc-break-total");
-    total.appendChild(h("div", "pc-break-score", fmtScore(shown)));
+    total.appendChild(h("div", "pc-break-score", this.fmtValueScore(shown)));
     total.appendChild(h("div", "pc-break-pp", `${this.state.scoreMode === "fit" ? "fit for you" : "overall"} · $${(f.price / (shown || 1)).toFixed(2)}/pt`));
     body.appendChild(total);
     card.appendChild(body);
@@ -1063,7 +1080,7 @@ class PaddleCharts {
     card.appendChild(h("p", "pc-eyebrow", "Why these three"));
     card.appendChild(h("h3", "pc-title", "What each pick earned"));
     card.appendChild(
-      h("p", "pc-explain", "Your answers scored every paddle in the catalog on the same terms. These are the points each pick collected — the whole calculation, not a summary of it.")
+      h("p", "pc-explain", "Your answers scored every paddle in the catalog on the same terms. These are the points each pick collected — the whole calculation, not a summary of it. The points are what the fit score on the cards above is built from: they're placed on 0–100 against the best and worst scores any paddle managed for you.")
     );
 
     const rows = h("div", "pc-why-rows");
@@ -1077,11 +1094,18 @@ class PaddleCharts {
 
       const row = h("div", "pc-why-row");
       const head = h("div", "pc-why-head");
-      head.append(
-        h("span", "pc-roundel pc-roundel--sm", String(i + 1)),
-        h("span", "pc-why-name", f.name),
-        h("span", "pc-why-total", `${meta.score} pts`)
-      );
+      // Both units, because they answer different questions: the fit number is
+      // what the pick card quotes, and the points are what the segments below
+      // actually sum to. Showing only one would either orphan the card's
+      // headline or make the bar fail to add up.
+      const totals = h("span", "pc-why-total");
+      if (typeof meta.fit === "number") {
+        totals.appendChild(h("span", "pc-why-fit", `${Math.round(meta.fit)} fit`));
+        totals.appendChild(h("span", "pc-why-pts", `${meta.score} pts`));
+      } else {
+        totals.appendChild(h("span", "pc-why-fit", `${meta.score} pts`));
+      }
+      head.append(h("span", "pc-roundel pc-roundel--sm", String(i + 1)), h("span", "pc-why-name", f.name), totals);
       head.querySelector(".pc-why-name").style.color = f.color.solid;
       row.appendChild(head);
 

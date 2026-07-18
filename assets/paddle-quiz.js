@@ -492,7 +492,24 @@ export function computeMatches(paddles, answers) {
   // instead of approximating it — the mistake scoreTerms exists to prevent.
   const fitScores = new Map(scored.map((s) => [s.paddle.id, s.score]));
 
-  return { fullAnswers, top, runnerUp, fitScores, poolSize: pool.length };
+  // The raw score is unreadable on its own — "29" is 29 of nothing in
+  // particular, and its ceiling moves with the answers (a visitor who ticks
+  // five current-paddle gripes has more terms available than one who ticks
+  // none, so their scores aren't on the same scale either). fitScale carries
+  // the achieved range so the surfaces can show a 0–100 instead.
+  //
+  // Anchored on scores paddles ACTUALLY got, not on a theoretical maximum.
+  // The theoretical max is unreachable — it would need a paddle that is at once
+  // maximally powerful and maximally controlled, soft-faced and stiff, light
+  // and heavy — so dividing by it would rate a perfect match somewhere in the
+  // sixties. Dividing by the top score instead puts the catalog's WORST paddle
+  // at 29–52 depending on the answers, which reads as "average" when it means
+  // "worst available". Min-max over the real range is the one that doesn't lie
+  // at either end: 100 is the best fit found, 0 is the worst.
+  const allScores = scored.map((s) => s.score);
+  const fitScale = { min: Math.min(...allScores), max: Math.max(...allScores) };
+
+  return { fullAnswers, top, runnerUp, fitScores, fitScale, poolSize: pool.length };
 }
 
 // ---------- Lead capture (Firestore, write-only) ----------
@@ -553,11 +570,24 @@ export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// The transparent overall score the value chart (assets/paddle-charts.js) uses:
-// the mean of the four trait ratings on 0–100. Shown on each results pick card
-// so the headline figure there matches the same paddle's dot on 2b below.
-function overallScoreOf(paddle) {
-  return ((powerRating(paddle) + controlRating(paddle) + spinRatingOf(paddle) + forgivenessRatingOf(paddle)) / 4) * 100;
+// A raw fit score placed on 0–100 against the range this visitor's answers
+// actually produced. See computeMatches' fitScale for why the anchors are the
+// achieved min/max rather than a theoretical maximum.
+//
+// This REPLACED an "overall" figure on the pick cards — the mean of the four
+// trait ratings — which was a property of the paddle alone and took no account
+// of the visitor at all. It contradicted the ranking it sat next to: a balanced
+// paddle could show 73.7 "overall" at #3 above a specialist showing 63.7 at #1,
+// because the specialist fit the answers better and the headline number wasn't
+// measuring fit. Whatever number tops a pick card has to be the number that
+// ordered the cards.
+export function fitOutOf100(score, scale) {
+  if (!scale || typeof score !== "number") return null;
+  const span = scale.max - scale.min;
+  // Every paddle tied (possible on a narrow pool): they all fit equally, and
+  // the honest rendering of that is a full bar, not a divide-by-zero.
+  if (span <= 0) return 100;
+  return ((score - scale.min) / span) * 100;
 }
 
 class PaddleQuizApp {
@@ -616,7 +646,14 @@ class PaddleQuizApp {
         // per-paddle fit scores the value chart plots against price, the named
         // terms "Why these three" renders, and the paddle that just missed.
         fitScores: this.matches.fitScores,
-        featuredMeta: this.matches.top.map((m) => ({ score: m.score, terms: m.terms })),
+        // The scale the pick cards above are already using, so the chart's
+        // y-axis, the cards and "Why these three" all quote one number.
+        fitScale: this.matches.fitScale,
+        featuredMeta: this.matches.top.map((m) => ({
+          score: m.score,
+          fit: fitOutOf100(m.score, this.matches.fitScale),
+          terms: m.terms,
+        })),
         runnerUp: this.matches.runnerUp,
         // Ordered as the questions get asked: why these three, then what they
         // cost, then how they sit against the whole catalog, then how much of
@@ -742,8 +779,9 @@ class PaddleQuizApp {
     // from the Product Advertising API, which this site has no access to), so
     // label whose price it is rather than imply it's what the visitor will pay.
     const cards = top
-      .map(({ paddle, dims }, i) => {
+      .map(({ paddle, dims, score }, i) => {
         const link = links[i];
+        const fit = fitOutOf100(score, this.matches.fitScale);
         const rankBadge = i === 0 ? `<span class="rank-badge top">Best match</span>` : `<span class="rank-badge">#${i + 1}</span>`;
         let buy = "";
         if (link) {
@@ -762,7 +800,7 @@ class PaddleQuizApp {
         <div class="pq-pick" style="--pick:${seriesColorFor(i)}">
           <div class="pq-pick-top">
             ${rankBadge}
-            <span class="pq-pick-overall">${overallScoreOf(paddle).toFixed(1)}<span class="pq-pick-overall-label">overall</span></span>
+            <span class="pq-pick-overall">${fit == null ? "—" : Math.round(fit)}<span class="pq-pick-overall-label">fit</span></span>
           </div>
           <h3 class="pq-pick-name">${paddle.name}</h3>
           <p class="pq-pick-sub">${paddle.brand}${paddle.price != null ? ` · $${paddle.price} list` : ""}</p>
@@ -788,10 +826,33 @@ class PaddleQuizApp {
         <h3 class="pq-prompt">Your top 3 picks</h3>
       </div>
       <div class="pq-picks">${cards}</div>
+      ${this.fitScaleNote(top)}
       ${disclosure}
       <div id="pq-charts"></div>
       <button type="button" class="clear-btn pq-retake" data-action="retake">Retake the quiz</button>
     `;
+  }
+
+  // Says what the number on the cards means, and — when the picks tie — says so
+  // out loud. Ties are the norm here rather than an edge case, because the
+  // ratings are coarsened to four quartile tiers: across sample answer sets it
+  // is common for all three picks to land on the identical raw score, ordered
+  // only by the spin-then-forgiveness tiebreak. Three cards reading 100 / 100 /
+  // 100 under ranks #1 / #2 / #3 looks broken unless the page admits that the
+  // ranking between them is arbitrary — and admitting it is the useful part:
+  // it tells the visitor to stop optimising and choose on feel or price.
+  fitScaleNote(top) {
+    const scaleSentence =
+      "<strong>Fit</strong> is out of 100, where 100 is the best-fitting paddle in the catalog for your answers and 0 the worst. The breakdown below shows how each one earned it.";
+    // Count the LEADING tie group, not just an all-three tie. Two picks sharing
+    // the top score is the case that most changes what the visitor should do —
+    // it means the "best match" badge was awarded by tiebreak — and it happens
+    // far more often than a clean sweep.
+    let tied = 1;
+    while (tied < top.length && top[tied].score === top[0].score) tied++;
+    if (tied === 1) return `<p class="pq-fit-note">${scaleSentence}</p>`;
+    const which = tied === top.length ? `All ${top.length}` : `The top ${tied}`;
+    return `<p class="pq-fit-note">${which} scored <strong>identically</strong> against your answers — the order between them is only a tiebreak, so treat them as equals and choose on feel, price or looks. ${scaleSentence}</p>`;
   }
 
   toggleMulti(key, value) {
