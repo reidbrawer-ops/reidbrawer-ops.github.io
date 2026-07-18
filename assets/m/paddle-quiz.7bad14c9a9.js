@@ -27,6 +27,13 @@ import { renderPaddleCharts, seriesColorFor } from "/assets/paddle-charts.js";
 // Reuse it rather than adding the N+1th copy this codebase already audited away.
 const escapeAttr = (s) => window.PBUtils.escapeHtml(s);
 
+// assets/analytics.js defines window.pbaTrack and no-ops it when the visitor
+// has opted out. Guarded anyway: this module also loads on pages where a
+// blocked analytics.js means the global never appears.
+const track = (name, params) => {
+  if (typeof window.pbaTrack === "function") window.pbaTrack(name, params);
+};
+
 const QUESTIONS = [
   {
     key: "experience",
@@ -355,49 +362,99 @@ const SHAPE_MAP = { widebody: "Widebody", elongated: "Elongated", hybrid: "Hybri
 // least one) always scores strictly higher, full stop. A null dim (only
 // budgetFit today, on a "no budget" answer) contributes 0 to every paddle
 // alike, so dropping it can't reorder anything.
-function totalScore(dims, a) {
-  let score =
-    dims.power + dims.control + dims.spin + dims.forgiveness + dims.weightFit + dims.twistWeightFit + (dims.budgetFit || 0);
+//
+// The score is expressed as a LIST OF NAMED TERMS rather than a running
+// total, because the results page has to show its work: "Why these three"
+// (assets/paddle-charts.js) renders exactly these terms, and totalScore is
+// nothing but their sum. One implementation, so the explanation cannot drift
+// from the ranking it explains.
+//
+// It drifted before. The stress-test used to re-derive the visitor's answers
+// as a five-factor weight vector (power/control/spin/forgiveness/value) and
+// caption the result "This is the ranking your quiz produced" — but that
+// approximation dropped skill match, shape, weight fit, twist-weight fit,
+// sensitivity and frequency entirely. Simulated across 3,000 answer sets it
+// disagreed with the real podium 71% of the time and displaced the actual #1
+// pick 57% of the time, directly above the buy links. Terms that don't reach
+// the scorer don't get to describe it.
+//
+// `note` is the plain-language reason shown to the visitor; it must describe
+// what the term actually rewards, never restate the score.
+export function scoreTerms(dims, a) {
+  const terms = [];
+  // Zero-point terms are dropped: a reason worth nothing isn't a reason. The
+  // trait term is pushed unconditionally — every paddle is rated on it.
+  const push = (key, label, points, note) => {
+    if (points) terms.push({ key, label, points, note });
+  };
 
-  if (a.style === "power") score += dims.power;
-  else if (a.style === "spin") score += dims.spin;
-  else if (a.style === "soft") score += dims.control;
+  terms.push({
+    key: "traits",
+    label: "What the paddle is",
+    points: dims.power + dims.control + dims.spin + dims.forgiveness,
+    note: "Its own power, control, spin and forgiveness — 1 to 3 points each, before anything you told us.",
+  });
+
+  push("feel", "The feel you asked for", dims.weightFit + dims.twistWeightFit,
+    "How close it lands to your answers on weight in the hand and how much a mishit should punish you.");
+  push("budget", "Your budget", dims.budgetFit || 0,
+    "How comfortably the list price sits inside the range you gave.");
+
+  if (a.style === "power") push("style", "You play a power game", dims.power, "You said power banger, so its power counts twice.");
+  else if (a.style === "spin") push("style", "You play a spin game", dims.spin, "You said spin & control, so its spin counts twice.");
+  else if (a.style === "soft") push("style", "You play a soft game", dims.control, "You said soft game and resets, so its control counts twice.");
   // "allround" adds nothing on purpose — no lean is the point.
 
   if (Array.isArray(a.current)) {
-    if (a.current.includes("more_power")) score += dims.power;
-    if (a.current.includes("more_spin")) score += dims.spin;
-    if (a.current.includes("more_forgiveness")) score += dims.forgiveness;
-    if (a.current.includes("less_weight")) score += dims.lightness;
-    if (a.current.includes("less_arm_strain")) score += dims.forgiveness + (dims.softImpact ? 1 : 0);
+    if (a.current.includes("more_power")) push("want_power", "You wanted more power", dims.power, "You asked for more mustard on drives, so its power counts again.");
+    if (a.current.includes("more_spin")) push("want_spin", "You wanted more spin", dims.spin, "You asked for more bite, so its spin counts again.");
+    if (a.current.includes("more_forgiveness")) push("want_sweet", "You wanted a bigger sweet spot", dims.forgiveness, "You said off-centre hits punish you, so its forgiveness counts again.");
+    if (a.current.includes("less_weight")) push("want_light", "You wanted a lighter swing", dims.lightness, "You said your current paddle feels heavy late in matches.");
+    if (a.current.includes("less_arm_strain")) {
+      push("want_arm", "You wanted less arm strain", dims.forgiveness + (dims.softImpact ? 1 : 0),
+        dims.softImpact
+          ? "A forgiving head plus a soft face, which dwells on the ball instead of jarring off it."
+          : "Scored on forgiveness alone — this one's face isn't soft.");
+    }
   }
 
   if (a.shape && a.shape !== "notsure") {
     const want = SHAPE_MAP[a.shape];
-    if (dims.shape === want) score += 3;
+    if (dims.shape === want) push("shape", "The shape you asked for", 3, `You asked for ${want.toLowerCase()} and this is one.`);
     // A Hybrid paddle is a reasonable middle-ground fallback when the
     // visitor wanted one of the two extremes (widebody/elongated) — but if
     // they asked for Hybrid specifically, a non-Hybrid paddle isn't a
     // meaningful "close enough," so this bonus shouldn't apply in that
     // direction (that would flatten every other shape to the same score).
-    else if (dims.shape === "Hybrid" && want !== "Hybrid") score += 1;
-    else if (a.shape === "elongated" && dims.shape === "Extra-elongated") score += 2;
+    else if (dims.shape === "Hybrid" && want !== "Hybrid") push("shape", "Close on shape", 1, `You asked for ${want.toLowerCase()}; a hybrid splits the difference.`);
+    else if (a.shape === "elongated" && dims.shape === "Extra-elongated") push("shape", "Close on shape", 2, "You asked for elongated; this one goes further still.");
   }
 
   if (a.sensitivity === "sensitive") {
-    score += dims.forgiveness;
-    score += dims.softImpact ? 2 : -1;
-    if (dims.weightOz != null && dims.weightOz <= 7.6) score += 1;
+    push("arm_forgive", "Ongoing arm issues", dims.forgiveness, "You told us about ongoing elbow, wrist or shoulder trouble, so forgiveness counts again.");
+    push("arm_feel", dims.softImpact ? "A soft, arm-friendly face" : "A firm face", dims.softImpact ? 2 : -1,
+      dims.softImpact
+        ? "A soft face cushions contact, which is what a sore arm wants."
+        : "Marked down: with ongoing arm trouble, a firm face is the wrong direction.");
+    if (dims.weightOz != null && dims.weightOz <= 7.6) push("arm_light", "Light enough to spare your arm", 1, `${dims.weightOz}oz — under the 7.6oz line we treat as arm-friendly.`);
   } else if (a.sensitivity === "mild") {
-    score += dims.softImpact ? 1 : 0;
+    push("arm_feel", "A soft, arm-friendly face", dims.softImpact ? 1 : 0, "You mentioned occasional soreness; a soft face is gentler on contact.");
   }
 
-  if ((a.frequency === "daily" || a.frequency === "frequent") && dims.skillLevel === "Advanced") score += 1;
-  if (a.frequency === "rarely") score += dims.forgiveness;
+  if ((a.frequency === "daily" || a.frequency === "frequent") && dims.skillLevel === "Advanced") {
+    push("frequency", "You're on court a lot", 1, "Built for advanced play, which rewards the hours you're putting in.");
+  }
+  if (a.frequency === "rarely") push("frequency", "You play occasionally", dims.forgiveness, "Playing a few times a year, a forgiving paddle matters more than a specialised one.");
 
-  score += skillMatchScore(dims.skillLevel, a.experience);
+  const level = String(dims.skillLevel).toLowerCase();
+  push("skill", "Tagged for your level", skillMatchScore(dims.skillLevel, a.experience),
+    `This is ${/^[aeiou]/.test(level) ? "an" : "a"} ${level}-tagged paddle.`);
 
-  return score;
+  return terms;
+}
+
+function totalScore(dims, a) {
+  return scoreTerms(dims, a).reduce((sum, t) => sum + t.points, 0);
 }
 
 export function computeMatches(paddles, answers) {
@@ -416,9 +473,26 @@ export function computeMatches(paddles, answers) {
   // but its name. This is the same tiebreak the browse grid uses, so both
   // surfaces order equal-scoring paddles identically.
   scored.sort((a, b) => (b.score !== a.score ? b.score - a.score : tiebreak(a.paddle, b.paddle)));
-  const top = scored.slice(0, 3).map(({ paddle, dims }) => ({ paddle, dims }));
+  // Terms are re-derived for the podium only (three arrays, not 486) so the
+  // results page can show why each one placed. Same function the scorer summed,
+  // so "why" and "which" can never disagree — see scoreTerms.
+  const top = scored.slice(0, 3).map(({ paddle, dims, score }) => ({ paddle, dims, score, terms: scoreTerms(dims, fullAnswers) }));
 
-  return { fullAnswers, top };
+  // runnerUp is what #3 had to beat. The gap between #3 and #4 is the honest
+  // answer to "how settled is this list?" — a one-point gap over a near-identical
+  // paddle means something very different from a ten-point one, and the visitor
+  // can't see #4 to judge for themselves.
+  const runnerUp = scored[3] ? { paddle: scored[3].paddle, score: scored[3].score } : null;
+
+  // Every scored paddle's fit, keyed by id. The value chart plots price against
+  // THIS rather than the catalog-wide trait average: "best performance for my
+  // money" is a question about the visitor's own definition of performance, and
+  // a flat mean of four traits marks down exactly the specialist a power player
+  // came for. Handing over the real scores means the chart re-uses the ranking
+  // instead of approximating it — the mistake scoreTerms exists to prevent.
+  const fitScores = new Map(scored.map((s) => [s.paddle.id, s.score]));
+
+  return { fullAnswers, top, runnerUp, fitScores, poolSize: pool.length };
 }
 
 // ---------- Lead capture (Firestore, write-only) ----------
@@ -507,6 +581,14 @@ class PaddleQuizApp {
   // multi-select toggle, or the "submitting…" busy re-render.
   render(opts) {
     const isResults = this.step > QUESTIONS.length;
+    // The email gate is the site's single biggest conversion cliff — ten
+    // questions of effort sunk, then a wall — and nothing measured how many
+    // people reach it versus clear it. Fired once per session, not per
+    // re-render (a failed validation re-renders this same step).
+    if (this.step === QUESTIONS.length && !this.gateSeen) {
+      this.gateSeen = true;
+      track("quiz_email_gate_reached");
+    }
     this.root.classList.toggle("pq-shell--wide", isResults);
     if (this.step < QUESTIONS.length) this.root.innerHTML = this.renderQuestion(QUESTIONS[this.step]);
     else if (this.step === QUESTIONS.length) this.root.innerHTML = this.renderEmailStep();
@@ -530,9 +612,19 @@ class PaddleQuizApp {
         featured: this.matches.top.map((m) => m.paddle),
         mode: "quiz",
         answers: this.matches.fullAnswers,
-        // The axis explorer (2a) now lives only on /paddles/browse; the results
-        // page keeps the value chart and the stress-test.
-        components: ["value", "stress"],
+        // The real scorer's output, handed over rather than re-derived: the
+        // per-paddle fit scores the value chart plots against price, the named
+        // terms "Why these three" renders, and the paddle that just missed.
+        fitScores: this.matches.fitScores,
+        featuredMeta: this.matches.top.map((m) => ({ score: m.score, terms: m.terms })),
+        runnerUp: this.matches.runnerUp,
+        // Ordered as the questions get asked: why these three, then what they
+        // cost, then how they sit against the whole catalog, then how much of
+        // that survives a change of priorities. The explorer is back on the
+        // results page — "is my match actually the best for spin AND power" is
+        // a results-page question, and sending people to /paddles/browse to
+        // answer it lost them.
+        components: ["why", "value", "explorer", "stress"],
       });
     } catch (err) {
       console.error("[PaddleQuiz] Comparison charts failed to render.", err);
@@ -722,6 +814,18 @@ class PaddleQuizApp {
     this.render();
   }
 
+  // One event per answered question, carrying the step index and the question
+  // key — enough to build a drop-off curve and see WHICH question loses people,
+  // which is the thing worth knowing. The answer value goes along because it's
+  // a fixed enum from QUESTIONS, not free text.
+  trackAnswer(key, value) {
+    if (!this.started) {
+      this.started = true;
+      track("quiz_start");
+    }
+    track("quiz_answer", { question_key: key, question_index: this.step + 1, answer: String(value).slice(0, 60) });
+  }
+
   onClick(e) {
     const opt = e.target.closest(".pq-option[data-key]");
     if (opt) {
@@ -729,6 +833,7 @@ class PaddleQuizApp {
         this.toggleMulti(opt.dataset.key, opt.dataset.value);
       } else {
         this.answers[opt.dataset.key] = opt.dataset.value;
+        this.trackAnswer(opt.dataset.key, opt.dataset.value);
         this.step += 1;
         this.render({ focus: true });
       }
@@ -737,12 +842,15 @@ class PaddleQuizApp {
     const cont = e.target.closest('[data-action="continue"]');
     if (cont) {
       if (cont.disabled) return;
+      const q = QUESTIONS[this.step];
+      if (q) this.trackAnswer(q.key, (this.answers[q.key] || []).join(","));
       this.step += 1;
       this.render({ focus: true });
       return;
     }
     const back = e.target.closest('[data-action="back"]');
     if (back) {
+      track("quiz_back", { from_index: this.step + 1 });
       this.step = Math.max(0, this.step - 1);
       this.emailError = null;
       this.render({ focus: true });
@@ -750,6 +858,7 @@ class PaddleQuizApp {
     }
     const retake = e.target.closest('[data-action="retake"]');
     if (retake) {
+      track("quiz_retake");
       this.step = 0;
       this.answers = {};
       this.emailError = null;
@@ -767,6 +876,9 @@ class PaddleQuizApp {
 
     const email = form.email.value.trim();
     if (!EMAIL_RE.test(email)) {
+      // Never the address itself — only that one bounced. A validation loop
+      // people can't escape looks identical to disinterest in the funnel.
+      track("quiz_email_invalid");
       this.emailError = "That doesn't look like a valid email — mind double-checking it?";
       this.render();
       // Send focus back to the field so the (role="alert") error is heard and
@@ -782,7 +894,16 @@ class PaddleQuizApp {
 
     this.matches = computeMatches(this.paddles, this.answers);
     const recommendedPaddleIds = this.matches.top.map((m) => m.paddle.id);
-    await submitLead(email, this.matches.fullAnswers, recommendedPaddleIds);
+    const saved = await submitLead(email, this.matches.fullAnswers, recommendedPaddleIds);
+
+    // A silently failing lead write is the worst outcome the quiz has: the
+    // visitor sees their results and we lose the only thing we asked them for.
+    // It was console.error-only, which nobody reads on a production site.
+    track("quiz_completed", {
+      lead_saved: saved ? 1 : 0,
+      top_paddle: recommendedPaddleIds[0] || "none",
+      result_count: this.matches.top.length,
+    });
 
     this.submitting = false;
     this.step += 1;

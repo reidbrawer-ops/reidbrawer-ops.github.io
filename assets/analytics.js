@@ -31,6 +31,26 @@ function pbaAnalyticsOptedOut() {
   return false;
 }
 
+// Shared event helper. Defined unconditionally and OUTSIDE the load gate, so
+// callers never have to know whether GA is on: when the visitor has opted out,
+// or the ID is a placeholder, this is a no-op that still returns cleanly.
+//
+// It exists because until now the only custom event this site emitted was
+// affiliate_click. Everything upstream of the click — how far people get
+// through the quiz, which question loses them, whether the email gate is worth
+// what it costs, what gets filtered and compared on browse — was invisible, so
+// there was no data to analyse, only guesses. Events are the cheapest way to
+// stop guessing, and none of them carry anything personal: no email, no query
+// text, no paddle-level identity beyond ids already public in paddles.json.
+window.pbaTrack = function (name, params) {
+  try {
+    if (typeof window.gtag !== "function") return;
+    window.gtag("event", name, params || {});
+  } catch (e) {
+    /* analytics must never break the page it measures */
+  }
+};
+
 if (GA_MEASUREMENT_ID.indexOf("XXXXXXXXXX") === -1 && !pbaAnalyticsOptedOut()) {
   var gaScript = document.createElement("script");
   gaScript.async = true;

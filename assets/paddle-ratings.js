@@ -54,6 +54,28 @@ export function forgivenessRatingOf(paddle) {
   return paddle.twistWeightPercentile != null ? paddle.twistWeightPercentile : 0.5;
 }
 
+// Which of the four ratings a given paddle actually has evidence for.
+//
+// Every rating function above degrades to a middle value when its source field
+// is missing, so a paddle with no data still gets a number. That is right for
+// RANKING (a missing field shouldn't fling a paddle to the top or bottom) and
+// wrong for DISPLAY: 137 of 486 paddles have no spinRating at all, and plotting
+// them at "spin 50" states a measurement the catalog never made. The grid cards
+// already omit a spec rather than fake it (see paddle-grid.js); the charts need
+// the same fact to do the same thing, and to keep unrated paddles out of any
+// "Nth of M" claim.
+//
+// power/control fall back to paddleType, which IS real data — just coarser — so
+// they count as known whenever the label exists. Spin has no such fallback: with
+// no spinRating there is no signal, only the 0.5.
+export function ratingKnown(paddle, key) {
+  if (key === "spin") return paddle.spinRating != null;
+  if (key === "forgiveness") return paddle.twistWeightPercentile != null;
+  if (key === "power") return paddle.paddleType != null || paddle.powerPercentile != null;
+  if (key === "control") return paddle.paddleType != null;
+  return true; // price, and anything else that isn't a derived rating
+}
+
 // Tie-break comparator, shared by the quiz's ranking (paddle-quiz.js) and the
 // browse grid's (paddle-grid.js) so both surfaces order equal-scoring paddles
 // the same way. Ties are the NORM, not an edge case: the percentiles are

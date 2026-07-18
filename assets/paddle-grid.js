@@ -24,6 +24,15 @@ import { renderPaddleCharts, seriesColorFor } from "/assets/paddle-charts.js";
 
 const esc = (s) => window.PBUtils.escapeHtml(s);
 
+// See assets/analytics.js. Deliberately NOT sending the search box's contents:
+// the filters are a fixed enum and safe to report, but a free-text field can
+// contain anything a visitor types, and /privacy commits to aggregate traffic
+// data. How often search is used and whether it finds anything answers the
+// product question ("is search pulling its weight?") without collecting prose.
+const track = (name, params) => {
+  if (typeof window.pbaTrack === "function") window.pbaTrack(name, params);
+};
+
 // paddles.json's percentiles are coarsened to quartile tiers on the way out of
 // scripts/rebuild_paddle_data.py — a data-licensing firewall (see RUNBOOK), and
 // validate.mjs fails if the values are anything but these four. So the number is
@@ -160,6 +169,7 @@ class PaddleGrid {
     if (!sel) return;
     this.filters[sel.dataset.filter] = sel.value;
     this.render();
+    track("browse_filter", { filter: sel.dataset.filter, value: sel.value, results: this.lastCount });
   }
 
   onInput(e) {
@@ -167,6 +177,13 @@ class PaddleGrid {
     if (!box) return;
     this.query = box.value.trim().toLowerCase();
     this.render();
+    // Debounced to the end of typing — one event per search, not per keystroke.
+    clearTimeout(this.searchTimer);
+    const len = this.query.length;
+    if (!len) return;
+    this.searchTimer = setTimeout(() => {
+      track("browse_search", { query_length: len, results: this.lastCount, found: this.lastCount > 0 ? 1 : 0 });
+    }, 900);
   }
 
   onClick(e) {
@@ -377,6 +394,7 @@ class PaddleGrid {
     if (i >= 0) this.selected.splice(i, 1);
     else if (this.selected.length < 3) this.selected.push(id);
     else return; // at the cap — the card toggles are already disabled
+    track("browse_compare", { action: i >= 0 ? "remove" : "add", paddle: id, tray_size: this.selected.length });
     this.syncCompareUI();
   }
 
@@ -397,7 +415,11 @@ class PaddleGrid {
 
   renderTray() {
     if (!this.selected.length) {
-      this.trayEl.innerHTML = `<span class="pg-tray-hint">Add up to 3 paddles — tap a dot in the chart, or “+ Compare” on any card below.</span>`;
+      // Wording follows the chart's actual behaviour: a tap now INSPECTS a dot
+      // and the readout's button commits it. Tapping used to add it outright,
+      // which on a lattice where 43 paddles can share one coordinate meant the
+      // tap chose for you.
+      this.trayEl.innerHTML = `<span class="pg-tray-hint">Add up to 3 paddles — tap a dot in the chart to see what it is, then add it, or “+ Compare” on any card below.</span>`;
       return;
     }
     const chips = this.selected
@@ -425,7 +447,9 @@ class PaddleGrid {
     }
     if (n >= 2) components.push("stress");
 
-    const prev = this.charts ? { xKey: this.charts.state.xKey, yKey: this.charts.state.yKey, preset: this.charts.state.preset } : null;
+    const prev = this.charts
+      ? { xKey: this.charts.state.xKey, yKey: this.charts.state.yKey, preset: this.charts.state.preset, scoreMode: this.charts.state.scoreMode }
+      : null;
     this.analyticsEl.innerHTML = "";
     this.charts = renderPaddleCharts(this.analyticsEl, {
       paddles: this.paddles,
@@ -440,6 +464,9 @@ class PaddleGrid {
   render() {
     const list = this.filtered();
     this.ranked = rankable(this.filters);
+    // Read by the filter/search events, which fire after render so they can
+    // report what the visitor actually ended up looking at.
+    this.lastCount = list.length;
     const links = list.map((p) => vendorLinkFor(p, this.affiliateMap)).filter(Boolean);
     const anyAmazon = links.some((l) => l.isAmazon);
     const anyAffiliate = links.some((l) => l.isAffiliate);
