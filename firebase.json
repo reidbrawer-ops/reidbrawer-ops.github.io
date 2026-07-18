@@ -5,28 +5,72 @@
   "hosting": {
     "public": ".",
     "cleanUrls": true,
-    "predeploy": ["node scripts/validate.mjs"],
+    "predeploy": [
+      "node scripts/validate.mjs",
+      "node scripts/hash-modules.mjs --check"
+    ],
     "redirects": [
-      { "source": "/gear", "destination": "/paddles", "type": 301 },
-      { "source": "/paddle-quiz", "destination": "/paddles", "type": 301 },
-      { "source": "/directory", "destination": "/map", "type": 301 }
+      {
+        "source": "/gear",
+        "destination": "/paddles",
+        "type": 301
+      },
+      {
+        "source": "/paddle-quiz",
+        "destination": "/paddles",
+        "type": 301
+      },
+      {
+        "source": "/directory",
+        "destination": "/map",
+        "type": 301
+      }
     ],
     "headers": [
       {
         "source": "**",
-        "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }]
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=300, must-revalidate"
+          }
+        ]
       },
       {
         "source": "**/*.@(css|json)",
-        "headers": [{ "key": "Cache-Control", "value": "public, max-age=600, must-revalidate" }]
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=600, must-revalidate"
+          }
+        ]
       },
       {
         "source": "**/*.js",
-        "headers": [{ "key": "Cache-Control", "value": "public, no-cache" }]
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/assets/m/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
       },
       {
         "source": "**/*.@(png|jpg|jpeg|gif|svg|webp|ico|woff|woff2)",
-        "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=604800"
+          }
+        ]
       }
     ],
     "ignore": [

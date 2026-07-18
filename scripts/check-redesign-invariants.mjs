@@ -132,6 +132,18 @@ group('Paddles — revenue + legal');
   check(!/th pct|thpct/.test(gridCode), 'paddle-grid.js: renders a raw percentile — violates the data-licensing firewall');
   check(/TIER_WORD/.test(grid), 'paddle-grid.js: tier-word mapping for powerPercentile gone');
 
+  // Content-hashed module graph. Any page loading a module entry must pin the
+  // whole graph with an import map, and must not reference a module by its
+  // unhashed path — an unhashed entry is always-fresh and would pair a new
+  // entry with the old deps a stale HTML pinned, which is the skew bug.
+  for (const rel of allPages) {
+    const src = read(rel);
+    if (!/<script type="module" src="\/assets\//.test(src)) continue;
+    check(/<script type="importmap">/.test(src), `${rel}: loads an ES module but has no import map — module graph is unpinned`);
+    check(!/<script type="module" src="\/assets\/(?!m\/)[^"]*\.js"/.test(src),
+      `${rel}: loads a module by unhashed path — run \`npm run hash\``);
+  }
+
   // Every JS mount must be watchdogged. A module that fails to boot leaves its
   // placeholder on screen forever — that took the quiz down in production when a
   // shared export moved between modules and browsers held a stale sibling. The

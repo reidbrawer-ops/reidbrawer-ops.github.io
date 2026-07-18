@@ -261,6 +261,12 @@ control, active pill on `--ink`.
   section nav built from `.pf-choose`/`.pf-choice`, inlined on each of the three
   and marked with `aria-current="page"`. `sync-header.js` maps `paddles/*` to
   the `/paddles` nav tab, so the tab lights on all three.
+- **ES modules are content-hashed.** `assets/*.js` modules are copied to
+  `assets/m/<name>.<hash>.js` and pinned per page by a generated
+  `<script type="importmap">`; run `npm run hash` after editing one (the
+  predeploy hook and `npm run check` both fail on a stale map). Module source
+  keeps importing the plain `/assets/x.js` path — the map does the redirect —
+  so nothing cascades and diffs stay readable. See RUNBOOK for why.
 - **Chrome is generated, not hand-copied**: the header comes from
   `partials/site-header.html` → `node scripts/sync-header.js`; the "Before you
   head out" block from `partials/lane-router.html` → `node

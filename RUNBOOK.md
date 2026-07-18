@@ -68,22 +68,32 @@ ratings from `assets/paddle-ratings.js`. Neither is duplicated — don't.
   `--check` currently fails extraction across all pages — prefer the `sync-*`
   scripts above.)
 
-## Why JS is served `no-cache`
+## Editing an ES module → run `npm run hash`
 
-`assets/*.js` are unversioned ES modules that import each other by bare path
-(`paddle-quiz.js` → `paddle-ratings.js` → …). If a browser holds ONE stale
-module against fresh siblings it gets *"does not provide an export named X"*,
-the module aborts, and the page keeps its `Loading…` placeholder **forever**.
-That took the quiz — the revenue funnel — down in production when `tiebreak`
-moved into `paddle-ratings.js` and the quiz began importing it: browsers with
-the previous `paddle-ratings.js` cached (`max-age=600`) got a dead page.
+`assets/*.js` modules are content-hashed into `assets/m/<name>.<hash>.js`, and
+every page that loads one carries a generated `<script type="importmap">`
+pinning the whole graph. **Edit a module, then run `npm run hash`** (same shape
+as `npm run sync` for the header partial) and commit the result.
 
-`no-cache` still caches; it just revalidates, so an unchanged file is a 304 with
-no body — a conditional request, not a re-download. Keep it until these URLs
-carry a content hash. **If you change what one module exports to another, that
-is a breaking change for anyone mid-cache** — the `data-mount-pending` watchdog
-(`assets/mount-watchdog.js`) is the safety net that turns the resulting hang
-into an honest error plus a Reload button.
+You cannot forget: `npm run check` and the Firebase **predeploy** hook both run
+`hash-modules.mjs --check`, so a stale import map blocks the deploy.
+
+Why it exists: modules import each other by bare path, so when a shared export
+moved between two of them, browsers holding one stale sibling got *"does not
+provide an export named X"*, the module aborted, and the quiz — the revenue
+funnel — sat on "Loading…" forever. The import map fixes that structurally: a
+document resolves EVERY specifier through the one map it was served with, so
+you get a wholly-new graph or a wholly-old one, never a mix. Hashed files are
+`immutable` (cached a year); the unhashed originals stay on disk as `no-cache`
+so a browser too old for import maps still resolves the plain paths.
+
+Module **source is never rewritten** — it still says
+`import … from "/assets/paddle-ratings.js"`. Only the HTML changes. That keeps
+diffs readable and means a hash change never cascades into its importers.
+
+The `data-mount-pending` watchdog (`assets/mount-watchdog.js`) remains the
+backstop: if a module still fails to boot for any reason, the placeholder
+becomes an honest error plus a Reload button instead of hanging forever.
 
 ## Deploy
 
