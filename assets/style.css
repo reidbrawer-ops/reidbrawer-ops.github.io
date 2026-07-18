@@ -484,8 +484,9 @@ img, svg {
    italic serif wordmark, pulled up 2px so the two lines read as one object.
    v3's 28px logo mark is deliberately gone — the design's brand is purely
    typographic, and a square mark next to a tightened two-line stack fights
-   the -2px optical join. /assets/logo/mark.svg is still the favicon source,
-   so the file stays; only the header stopped rendering it. */
+   the -2px optical join. /assets/logo/favicon.svg is the site-icon source of
+   truth (mark.svg is kept as a copy of it); only the header stopped rendering
+   a mark. */
 .brand {
   display: inline-flex;
   flex-direction: column;

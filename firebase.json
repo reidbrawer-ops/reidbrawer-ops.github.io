@@ -84,6 +84,7 @@
       "quiz/**",
       "design_handoff_pickleball_redesign/**",
       "design_handoff_paddle_comparison/**",
+      "design_handoff_favicon/**",
       "_pc-test.html",
       "**/*.md",
       "firestore.rules",

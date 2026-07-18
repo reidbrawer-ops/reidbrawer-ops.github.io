@@ -1,28 +1,12 @@
-<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pickleball Bay Area mark">
-  <defs>
-    <clipPath id="roundedSquare">
-      <rect width="256" height="256" rx="57"></rect>
-    </clipPath>
-  </defs>
-  <g clip-path="url(#roundedSquare)">
-    <rect width="256" height="256" fill="#123240"></rect>
-
-    <rect x="49.8" y="35.6" width="24.9" height="184.9" rx="7.1" fill="#b54b2c"></rect>
-    <rect x="181.3" y="35.6" width="24.9" height="184.9" rx="7.1" fill="#b54b2c"></rect>
-
-    <rect x="0" y="174.2" width="256" height="10.7" fill="#b54b2c"></rect>
-
-    <circle cx="128" cy="131.6" r="53.3" fill="#d7e94b"></circle>
-    <circle cx="106.7" cy="110.2" r="5.3" fill="#9aa81e"></circle>
-    <circle cx="128" cy="110.2" r="5.3" fill="#9aa81e"></circle>
-    <circle cx="149.3" cy="110.2" r="5.3" fill="#9aa81e"></circle>
-    <circle cx="106.7" cy="131.6" r="5.3" fill="#9aa81e"></circle>
-    <circle cx="128" cy="131.6" r="5.3" fill="#123240"></circle>
-    <circle cx="149.3" cy="131.6" r="5.3" fill="#9aa81e"></circle>
-    <circle cx="106.7" cy="152.9" r="5.3" fill="#9aa81e"></circle>
-    <circle cx="128" cy="152.9" r="5.3" fill="#9aa81e"></circle>
-    <circle cx="149.3" cy="152.9" r="5.3" fill="#9aa81e"></circle>
-
-    <rect x="0" y="206.2" width="256" height="49.8" fill="#f5f7f6" opacity="0.55"></rect>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#f7f2e7"></rect>
+  <path d="M32 6 a19 19 0 0 1 19 19 c0 13-19 33-19 33 s-19-20-19-33 a19 19 0 0 1 19-19 z" fill="#55665f"></path>
+  <circle cx="32" cy="25" r="12" fill="#f7f2e7"></circle>
+  <circle cx="32" cy="25" r="2.5" fill="#55665f"></circle>
+  <circle cx="39.5" cy="25" r="2.5" fill="#55665f"></circle>
+  <circle cx="24.5" cy="25" r="2.5" fill="#55665f"></circle>
+  <circle cx="35.8" cy="18.6" r="2.5" fill="#55665f"></circle>
+  <circle cx="28.2" cy="18.6" r="2.5" fill="#55665f"></circle>
+  <circle cx="35.8" cy="31.4" r="2.5" fill="#55665f"></circle>
+  <circle cx="28.2" cy="31.4" r="2.5" fill="#55665f"></circle>
 </svg>
