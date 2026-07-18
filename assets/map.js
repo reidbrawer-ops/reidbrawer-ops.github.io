@@ -470,9 +470,12 @@
           alt: label,
           keyboard: false,
         });
-        marker.bindPopup(popupHtml(record));
+        // autoPan off: every selection now centers the court itself, so the
+        // popup always lands in view — and autoPan's panBy would fight the
+        // in-flight flyTo (Leaflet runs the two animations concurrently).
+        marker.bindPopup(popupHtml(record), { autoPan: false });
         marker.__record = record;
-        marker.on("click", () => selectVenue(record.id, { pan: false }));
+        marker.on("click", () => selectVenue(record.id));
         markersById[record.id] = marker;
         markerShown[record.id] = false;
         return marker;
@@ -699,9 +702,7 @@
         // after a city focus isn't yanked back out to the city bounds.
         flyToken++;
         if (record.plottable && opts.pan !== false) {
-          map.setView([record.lat, record.lon], Math.max(map.getZoom() || 0, 14), {
-            animate: true,
-          });
+          flyToVenue(record, opts.animate !== false);
         }
         const marker = markersById[id];
         if (marker && markerShown[id]) marker.openPopup();
@@ -725,6 +726,91 @@
         } else {
           map.setView([37.75, -122.2], 9);
         }
+      }
+
+      // Selecting a court always pulls back before it swoops in, and always
+      // lands with the court centered.
+      //
+      // Neither Leaflet primitive gives us that. flyTo only arcs out in
+      // proportion to the ground it covers, so from the default Bay Area
+      // overview it just zooms straight in — no pull-back at all. Chaining two
+      // flyTos to force one stalls dead between the legs (the first has to
+      // decelerate to fire moveend before the second accelerates) and makes the
+      // second leg a degenerate zero-distance flight, since the first already
+      // centered the court.
+      //
+      // So drive the whole move ourselves: the center eases toward the court
+      // across the entire flight while the zoom eases out to PULLBACK levels
+      // below the shallower end by the midpoint, then eases back in. Both zoom
+      // halves are easeInOutQuad, so their slopes meet at zero and the reversal
+      // has no kink — and because the center never stops gliding, the pull-back
+      // reads as one continuous swoop rather than two legs.
+      // This mirrors how flyTo animates itself (_moveStart / _move per frame /
+      // _moveEnd) — private, but Leaflet is pinned by SRI hash in map.html.
+      const PULLBACK = 2; // zoom levels to pull back mid-flight
+      const FLIGHT_MS = 1500;
+      let venueFlight = null;
+
+      function flyToVenue(record, animate) {
+        // Guard against a stale container size, which would offset the center
+        // the flight settles on.
+        map.invalidateSize();
+        const center = L.latLng(record.lat, record.lon);
+        // Close to street level, but never yank the user back out if they've
+        // already zoomed in past it.
+        const targetZoom = Math.max(map.getZoom() || 0, 14);
+
+        const reduce =
+          window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (animate === false || reduce) {
+          map.setView(center, targetZoom);
+          return;
+        }
+
+        const startZoom = map.getZoom();
+        // Re-selecting mid-flight measures from a zoom that's already pulled
+        // back, so pulling back again from it compounds into a much deeper dip
+        // than intended. The user has already seen one, so this flight just
+        // glides to the new court.
+        const outZoom = venueFlight
+          ? Math.min(startZoom, targetZoom)
+          : Math.max(map.getMinZoom() || 0, Math.min(startZoom, targetZoom) - PULLBACK);
+        // Interpolate in projected space, the way flyTo does, so the glide
+        // tracks straight on screen rather than bending with the Mercator.
+        const from = map.project(map.getCenter(), startZoom);
+        const to = map.project(center, startZoom);
+
+        // Cancel whatever is already in the air — a city fly-in, or an earlier
+        // court selection still mid-curve.
+        if (venueFlight) cancelAnimationFrame(venueFlight);
+        map._stop();
+
+        const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+        // Out to outZoom over the first half, back in over the second, so the
+        // low point is exactly outZoom at the midpoint.
+        const zoomAt = (t) =>
+          t < 0.5
+            ? startZoom + (outZoom - startZoom) * ease(t * 2)
+            : outZoom + (targetZoom - outZoom) * ease((t - 0.5) * 2);
+        const started = performance.now();
+
+        const frame = () => {
+          const t = Math.min(1, (performance.now() - started) / FLIGHT_MS);
+          if (t < 1) {
+            map._move(
+              map.unproject(from.add(to.subtract(from).multiplyBy(ease(t))), startZoom),
+              zoomAt(t),
+              { flyTo: true }
+            );
+            venueFlight = requestAnimationFrame(frame);
+          } else {
+            venueFlight = null;
+            map._move(center, targetZoom)._moveEnd(true);
+          }
+        };
+
+        map._moveStart(true, false);
+        venueFlight = requestAnimationFrame(frame);
       }
 
       // Two-phase move when focusing a city: a quick zoom-out that glides toward
@@ -1173,7 +1259,7 @@
       });
 
       if (venueParam && recordsById[venueParam]) {
-        selectVenue(venueParam);
+        selectVenue(venueParam, { animate: false });
       }
 
       // Keep tiles aligned on later window resizes without re-fitting bounds.
