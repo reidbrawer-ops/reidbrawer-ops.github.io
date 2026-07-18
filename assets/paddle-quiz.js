@@ -722,12 +722,18 @@ class PaddleQuizApp {
         </div>
         <label for="pq-email" class="pq-email-label">Email address</label>
         <input type="email" id="pq-email" name="email" placeholder="you@example.com" required autocomplete="email"${this.emailError ? ' aria-invalid="true" aria-describedby="pq-email-error"' : ""}>
-        <button type="submit" class="btn pq-submit" ${this.submitting ? "disabled" : ""}>
-          ${this.submitting ? "Finding your matches…" : "See my top picks →"}
-        </button>
         ${this.emailError ? `<p class="pq-error" id="pq-email-error" role="alert">${this.emailError}</p>` : ""}
+        <!-- Back and submit share one row: back left, submit right. The Back
+             button lives INSIDE the form here (unlike every other step, where
+             it follows the options) so the two can sit on one line — it is
+             type="button", so it still cannot submit. -->
+        <div class="pq-form-actions">
+          <button type="button" class="pq-back" data-action="back">← Back</button>
+          <button type="submit" class="btn pq-submit" ${this.submitting ? "disabled" : ""}>
+            ${this.submitting ? "Finding your matches…" : "See my top picks →"}
+          </button>
+        </div>
       </form>
-      <button type="button" class="pq-back" data-action="back">← Back</button>
     `;
   }
 

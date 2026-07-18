@@ -245,7 +245,7 @@ function buildPresets() {
     key: "answered",
     label: "Balanced",
     weights: P([1, 1, 1, 1, 1]),
-    note: "An even weighting across all five factors — the neutral baseline before you lean it one way. Your own answers already picked these three; this asks what happens if the priorities shift.",
+    note: "All five factors weighted evenly — the neutral baseline.",
   });
   presets.push({ key: "spin", label: "Spin first", weights: P([0.6, 0.5, 2.4, 0.6, 0.5]), note: "If spin were everything, the heaviest-biting paddle stretches its lead." });
   presets.push({ key: "control", label: "Control & feel", weights: P([0.5, 1.7, 0.5, 1.5, 0.6]), note: "Prioritize touch and a big sweet spot and the softer, more forgiving picks jump ahead." });
@@ -847,8 +847,8 @@ class PaddleCharts {
 
     this.valueTitle.textContent = byFit ? "Price against fit for you" : "Price against overall score";
     this.valueExplain.textContent = byFit
-      ? "Up and left is better. Height is your own quiz score — the same number that ranked your top three — so this is value measured against what you asked for, not against a generic average."
-      : "Up and left is better. Height is the plain average of the four ratings, which treats a specialist and an all-rounder the same way.";
+      ? "Up and left is better. Height is your own fit score, so this is value measured against what you asked for."
+      : "Up and left is better. Height is the plain average of the four ratings, which rates a specialist and an all-rounder alike.";
     if (this.valuePills) {
       for (const key in this.valuePills) this.valuePills[key].classList.toggle("is-active", this.state.scoreMode === key);
     }
@@ -1003,7 +1003,10 @@ class PaddleCharts {
       h("p", "pc-alt-body",
         `${best.brand} ${best.name} at ${fmtPrice(best.price)} scores ${this.fmtValueScore(this.valueScoreOf(best))} against ${f.name}'s ${this.fmtValueScore(target)} — ${fmtPrice(saving)} less. ${cheaper.length - 1 > 0 ? `${cheaper.length - 1} other ${plural(cheaper.length - 1, "paddle does", "paddles do")} the same.` : ""}`.trim())
     );
-    box.appendChild(h("p", "pc-alt-note", "Scores this close come from the same rating tiers, so treat them as a tie rather than a win — then let feel, grip and warranty decide."));
+    // The "treat this as a tie, not a win" caveat that used to sit here is now
+    // said better under the pick cards, with the actual scores (paddle-quiz.js
+    // fitScaleNote) — and since the podium breaks ties on price, a cheaper
+    // equal is already promoted rather than merely noted.
     return box;
   }
 
@@ -1027,7 +1030,7 @@ class PaddleCharts {
     card.appendChild(h("p", "pc-eyebrow", this.mode === "quiz" ? "How solid is your #1?" : "How solid is the ranking?"));
     card.appendChild(h("h3", "pc-title", this.mode === "quiz" ? "Stress-test your match" : "Stress-test the ranking"));
     card.appendChild(
-      h("p", "pc-explain", "Each pill is a what-if, not your result: it re-scores these three on the four traits plus value, as if that one thing were all you cared about.")
+      h("p", "pc-explain", "Each pill is a what-if, not your result. The discs keep your ranking, so watch the rows move.")
     );
 
     const pills = h("div", "pc-pillgroup pc-preset-group");
@@ -1047,7 +1050,15 @@ class PaddleCharts {
     rows.style.height = Math.max(0, this.featured.length * 70 - 14) + "px";
     this.stressRows = this.featured.map((f) => {
       const row = h("div", "pc-row");
-      const roundel = h("span", "pc-roundel pc-roundel--sm");
+      // The disc carries the paddle's rank FROM THE RESULTS and never changes.
+      // It used to be renumbered to the row's position under the current
+      // preset, which meant the neutral "Balanced" view could label a different
+      // paddle "1" than the pick cards did, directly under a heading asking
+      // "how solid is your #1?" — the card contradicted the page it was
+      // explaining. Fixed identity plus a moving row is also just a better
+      // stress test: seeing disc 1 slide to the bottom is the answer.
+      const roundel = h("span", "pc-roundel pc-roundel--sm", String(f.rank));
+      roundel.title = `#${f.rank} in your results`;
       const meta = h("div", "pc-row-meta");
       const name = h("span", "pc-row-name", f.name);
       name.style.color = f.color.solid;
@@ -1077,9 +1088,11 @@ class PaddleCharts {
       legend.appendChild(item);
     });
     card.appendChild(legend);
-    card.appendChild(
-      h("p", "pc-note", "If the podium barely moves as you change what matters, the recommendation is robust — which is exactly what you want to see right before the buy links.")
-    );
+    // Replaces a static "if the podium barely moves, the recommendation is
+    // robust" note that restated the heading and told the visitor nothing about
+    // their own result. This says what actually happened.
+    this.stressVerdict = h("p", "pc-note");
+    card.appendChild(this.stressVerdict);
 
     this.updateStress();
     return card;
@@ -1125,13 +1138,24 @@ class PaddleCharts {
     const order = [...scored].sort((a, b) => b.total - a.total);
     order.forEach((s, idx) => {
       s.r.row.style.top = idx * 70 + "px";
-      s.r.roundel.textContent = String(idx + 1);
       s.r.total.textContent = Math.round(s.total) + "%";
       s.contribs.forEach((c, i) => {
         s.r.segs[i].style.width = c.toFixed(1) + "%";
         s.r.segs[i].title = `${C_FACTORS[i].label}: ${Math.round(c)} pts`;
       });
     });
+
+    // Where your top pick ended up under this lens — the question the card asks.
+    const topRow = this.stressRows.find((r) => r.f.rank === 1);
+    if (this.stressVerdict && topRow) {
+      const pos = order.findIndex((s) => s.r === topRow) + 1;
+      // Deliberately not "that's what it costs to care about this one thing" —
+      // true of the four leaning presets, false of Balanced, which is an even
+      // weighting. One sentence that holds for all five.
+      this.stressVerdict.textContent = pos === 1
+        ? `Your #1 (${topRow.f.name}) still leads here — it holds up even when the priorities change.`
+        : `Here your #1 (${topRow.f.name}) slips to ${ordinal(pos)}. These five factors aren't what your answers weighed, so the podium moves.`;
+    }
   }
 }
 

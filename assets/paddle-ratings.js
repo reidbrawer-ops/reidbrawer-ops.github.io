@@ -83,12 +83,27 @@ export function ratingKnown(paddle, key) {
 // rebuild_paddle_data.py), so dozens of paddles routinely share one score.
 // Without this, a tie falls to the array's original order — alphabetical by
 // brand — so a late-alphabet brand like "Six Zero" loses the last podium slot
-// for no reason but its name. So ties fall instead to the traits the score
-// didn't already decide: among equals, prefer the one that also bites (spin)
-// and then forgives (sweet spot), degrading to name order only when two paddles
-// are genuinely indistinguishable on every axis we hold. Returns a value for
-// Array.sort: negative if a should sort before b.
+// for no reason but its name.
+//
+// PRICE BREAKS FIRST. If two paddles fit the visitor equally well, the cheaper
+// one is the better recommendation, full stop — and the alternative was
+// indefensible once the results page started showing the fit score: a $169
+// paddle could sit at #1 above an identically-fitting $109.99 one, with both
+// cards reading "100 fit", and the only thing separating them was a spin tier
+// the visitor could not see. Whatever ordered the podium has to be something
+// the reader can act on, and price is the one tiebreaker that always is.
+//
+// After price come the traits the score didn't already decide — among equals,
+// prefer the one that also bites (spin) and then forgives (sweet spot) —
+// degrading to name order only when two paddles are genuinely indistinguishable
+// on every axis we hold. Returns a value for Array.sort: negative if a sorts
+// before b.
 export function tiebreak(a, b) {
+  // A paddle with no price sorts last rather than first: "price unknown" is not
+  // a bargain, and one catalog entry has no price at all.
+  const pa = typeof a.price === "number" ? a.price : Infinity;
+  const pb = typeof b.price === "number" ? b.price : Infinity;
+  if (pa !== pb) return pa - pb;
   const spin = spinRatingOf(b) - spinRatingOf(a);
   if (Math.abs(spin) > 1e-9) return spin;
   const forgive = forgivenessRatingOf(b) - forgivenessRatingOf(a);

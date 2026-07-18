@@ -270,8 +270,26 @@
    removed in favor of the accessible sitewide default. */
 
 .pq-submit {
-  align-self: flex-start;
   cursor: pointer;
+}
+
+/* Back and submit on one line — back left, submit right. Only the email step
+   uses this; every other step floats .pq-back below the options. A flex parent
+   ignores the child's `float: left`, so .pq-back needs no override here, but it
+   does need its margin cleared so both buttons sit on the same baseline. */
+.pq-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pq-form-actions .pq-back {
+  float: none;
+  margin: 0;
+}
+.pq-form-actions .pq-submit {
+  margin-left: auto;
 }
 
 .pq-submit:disabled {
