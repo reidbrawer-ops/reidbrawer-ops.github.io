@@ -277,105 +277,6 @@
 /* The 2a hover tooltip (.pc-tip) was removed with the hover-only interaction
    it belonged to — see .pc-readout below for what replaced it and why. */
 
-/* ---------- 2b breakdown cards ---------- */
-.pc-break-row {
-  display: flex;
-  gap: 12px;
-  margin-top: 12px;
-}
-.pc-break-card {
-  flex: 1;
-  border: 1px solid var(--rule-10);
-  border-radius: 7px;
-  padding: 12px 14px;
-  min-width: 0;
-}
-.pc-break-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-.pc-break-swatch {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  flex: none;
-}
-.pc-break-name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.75rem;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.pc-break-price {
-  margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  color: var(--ink-faint);
-  flex: none;
-}
-.pc-break-body {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-}
-.pc-gauges {
-  display: flex;
-  gap: 7px;
-  align-items: flex-end;
-}
-.pc-gauge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-.pc-gauge-track {
-  width: 11px;
-  height: 30px;
-  background: var(--fog-dim);
-  border-radius: 2px;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-}
-.pc-gauge-fill {
-  width: 100%;
-  border-radius: 2px;
-}
-.pc-gauge-label {
-  font-family: var(--font-mono);
-  font-size: 0.469rem;
-  letter-spacing: 0.03em;
-  color: var(--ink-faint);
-}
-.pc-break-avg {
-  font-family: var(--font-body);
-  font-size: 0.8125rem;
-  color: var(--ink-faint);
-  padding-bottom: 12px;
-}
-.pc-break-total {
-  margin-left: auto;
-  text-align: right;
-  padding-bottom: 4px;
-}
-.pc-break-score {
-  font-family: var(--font-headline);
-  font-weight: 700;
-  font-size: 1.1875rem;
-  color: var(--ink);
-}
-.pc-break-pp {
-  font-family: var(--font-mono);
-  font-size: 0.594rem;
-  color: var(--ink-faint);
-}
-
 /* ---------- 2c stress-test ---------- */
 .pc-preset-group {
   margin: 10px 0 6px;
@@ -661,9 +562,6 @@
   }
   .pc-pillgroup {
     flex-wrap: wrap;
-  }
-  .pc-break-row {
-    flex-direction: column;
   }
   .pc-strip {
     flex-wrap: wrap;

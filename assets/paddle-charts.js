@@ -70,7 +70,6 @@ const RATINGS = {
   control: { label: "Control", short: "CTL", get: (p) => controlRating(p) },
   forgiveness: { label: "Forgiveness", short: "FGV", get: (p) => forgivenessRatingOf(p) },
 };
-const RATING_KEYS = ["power", "spin", "control", "forgiveness"];
 // 2a's axis pills: the four ratings plus price. (The prototype listed "Hand
 // speed" too — no such field exists here, so it is not offered.)
 const AXIS_KEYS = ["power", "spin", "control", "forgiveness", "price"];
@@ -936,13 +935,14 @@ class PaddleCharts {
     this.valueBody.appendChild(this.frontierHeadline(front, set));
     const cheaper = this.cheaperEquivalent();
     if (cheaper) this.valueBody.appendChild(cheaper);
-
-    if (this.featured.length) {
-      const row = h("div", "pc-break-row");
-      for (const f of this.featured) row.appendChild(this.breakdownCard(f));
-      this.valueBody.appendChild(row);
-    }
   }
+  // A per-pick trait breakdown (four gauges + score + $/pt) used to sit here.
+  // It repeated itself: across sampled answer sets, two of the three picks share
+  // an identical four-trait profile 38% of the time — the picks are selected to
+  // suit one set of answers, so they tend to be alike — which rendered two
+  // side-by-side cards a reader cannot tell apart. Trait comparison is better
+  // served by the explorer below, where any two traits can be put on the axes
+  // and the whole catalog gives the numbers a scale.
 
   // "Past $X, nothing scores higher" — the single most useful sentence this
   // chart can produce, and previously not said anywhere.
@@ -1019,43 +1019,6 @@ class PaddleCharts {
       }
     }
     return out;
-  }
-
-  breakdownCard(f) {
-    const card = h("div", "pc-break-card");
-    const head = h("div", "pc-break-head");
-    const sw = h("span", "pc-break-swatch");
-    sw.style.background = f.color.solid;
-    head.appendChild(sw);
-    head.appendChild(h("span", "pc-break-name", f.name));
-    head.appendChild(h("span", "pc-break-price", fmtPrice(f.price)));
-    card.appendChild(head);
-
-    const body = h("div", "pc-break-body");
-    const gauges = h("div", "pc-gauges");
-    for (const key of RATING_KEYS) {
-      const g = h("div", "pc-gauge");
-      const track = h("div", "pc-gauge-track");
-      const fill = h("div", "pc-gauge-fill");
-      fill.style.height = (f.r[key] * 100).toFixed(0) + "%";
-      fill.style.background = f.color.solid;
-      track.appendChild(fill);
-      track.title = `${RATINGS[key].label}: ${Math.round(f.r[key] * 100)} of 100`;
-      g.appendChild(track);
-      g.appendChild(h("span", "pc-gauge-label", RATINGS[key].short));
-      gauges.appendChild(g);
-    }
-    body.appendChild(gauges);
-    body.appendChild(h("div", "pc-break-avg", "→ avg"));
-    // Headline figure follows whatever the chart above is measuring, so the
-    // card and the dot can never quote two different numbers for one paddle.
-    const shown = this.valueScoreOf(f);
-    const total = h("div", "pc-break-total");
-    total.appendChild(h("div", "pc-break-score", this.fmtValueScore(shown)));
-    total.appendChild(h("div", "pc-break-pp", `${this.state.scoreMode === "fit" ? "fit for you" : "overall"} · $${(f.price / (shown || 1)).toFixed(2)}/pt`));
-    body.appendChild(total);
-    card.appendChild(body);
-    return card;
   }
 
   // ===================== 2c — Match stress-test =====================
