@@ -241,6 +241,16 @@
   gap: 8px;
 }
 
+/* Shown in place of the charts when the filters leave fewer than two paddles —
+   there is no distribution to plot and no frontier to draw. */
+.pg-analytics-empty {
+  margin: 0;
+  padding: 20px 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
 .pg-tray-hint {
   font-family: var(--font-display);
   font-size: 0.8125rem;

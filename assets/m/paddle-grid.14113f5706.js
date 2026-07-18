@@ -169,6 +169,7 @@ class PaddleGrid {
     if (!sel) return;
     this.filters[sel.dataset.filter] = sel.value;
     this.render();
+    this.scheduleAnalytics();
     track("browse_filter", { filter: sel.dataset.filter, value: sel.value, results: this.lastCount });
   }
 
@@ -177,6 +178,7 @@ class PaddleGrid {
     if (!box) return;
     this.query = box.value.trim().toLowerCase();
     this.render();
+    this.scheduleAnalytics();
     // Debounced to the end of typing — one event per search, not per keystroke.
     clearTimeout(this.searchTimer);
     const len = this.query.length;
@@ -211,6 +213,7 @@ class PaddleGrid {
     const box = this.root.querySelector('[data-role="pg-search"]');
     if (box) box.value = "";
     this.render();
+    this.scheduleAnalytics();
   }
 
   activeFilterCount() {
@@ -437,6 +440,15 @@ class PaddleGrid {
   // chart and strip need at least one pick, and the stress-test at least two.
   // The previous instance's axis/preset are carried across so toggling a pick
   // doesn't jump the view back to the defaults.
+  // Rebuilding the charts costs ~500 derived paddles and ~500 SVG circles, so
+  // it must not run per keystroke of the search box. Filters fire a `change`
+  // (rare, so the delay is imperceptible) and search fires `input`; one short
+  // debounce covers both.
+  scheduleAnalytics() {
+    clearTimeout(this.analyticsTimer);
+    this.analyticsTimer = setTimeout(() => this.renderAnalytics(), 200);
+  }
+
   renderAnalytics() {
     const featured = this.selected.map((id) => this.byId(id)).filter(Boolean);
     const n = featured.length;
@@ -447,16 +459,38 @@ class PaddleGrid {
     }
     if (n >= 2) components.push("stress");
 
+    // The chart plots what the grid is showing. It used to plot the entire
+    // catalog regardless: filtering to Control + Widebody + under $120 left the
+    // grid with 3 cards and the chart with 485 dots, so the cloud described a
+    // population the visitor had explicitly filtered away, and every rank in
+    // the readout was measured against paddles not on the page.
+    const list = this.filtered();
+    const scoped = this.activeFilterCount() > 0 || this.query;
     const prev = this.charts
       ? { xKey: this.charts.state.xKey, yKey: this.charts.state.yKey, preset: this.charts.state.preset, scoreMode: this.charts.state.scoreMode }
       : null;
     this.analyticsEl.innerHTML = "";
+
+    // Below two paddles there is no distribution to plot and no frontier to
+    // draw — say so rather than render an axis through one dot. The compared
+    // picks are still listed in the tray above, so nothing is lost.
+    if (list.length < 2) {
+      this.charts = null;
+      this.analyticsEl.innerHTML = `<p class="pg-analytics-empty">${
+        list.length ? "Only one paddle matches — widen a filter to compare it against the field." : "No paddles match those filters, so there's nothing to chart."
+      }</p>`;
+      return;
+    }
+
     this.charts = renderPaddleCharts(this.analyticsEl, {
-      paddles: this.paddles,
+      // Featured paddles are derived separately from the plotted set, so a
+      // compared pick stays on the chart even when a filter excludes it.
+      paddles: list,
       featured,
       mode: "browse",
       components,
       initialState: prev,
+      scopeLabel: scoped ? "matching your filters" : null,
       onDotClick: (paddle) => this.toggleCompare(paddle.id),
     });
   }

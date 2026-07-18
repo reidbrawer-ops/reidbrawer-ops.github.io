@@ -298,9 +298,21 @@ class PaddleCharts {
     }
     // Per-pick score terms from the real quiz scorer, aligned to `featured`.
 
+    // What set the dots represent, in words — "matching your filters" on browse
+    // once the grid is narrowed, null when the plot is the whole catalog. Every
+    // "Nth of M" claim and the dot legend carry it, so a rank can't be read as
+    // catalog-wide when it is only within a filter.
+    this.scopeLabel = opts.scopeLabel || null;
+
+    // The browse chart now follows the grid's filters, so the plotted set can be
+    // small or empty. Math.min of nothing is Infinity, which would poison the
+    // axis domain and render an invisible chart rather than an obviously broken
+    // one — guard, and give a degenerate range (one paddle, or several at one
+    // price) enough width to draw.
     const prices = this.catalog.map((d) => d.price);
-    this.priceMin = Math.min(...prices);
-    this.priceMax = Math.max(...prices);
+    this.priceMin = prices.length ? Math.min(...prices) : 0;
+    this.priceMax = prices.length ? Math.max(...prices) : 0;
+    if (this.priceMax - this.priceMin < 20) this.priceMax = this.priceMin + 20;
     // Price axis domain fit to real data, padded to round bounds.
     this.priceDom = [Math.floor((this.priceMin - 10) / 20) * 20, Math.ceil((this.priceMax + 10) / 20) * 20];
 
@@ -405,7 +417,9 @@ class PaddleCharts {
     const label = key === "price" ? "Price" : RATINGS[key].label;
     const r = this.rankOf(d, key);
     if (!r) return `${label}: not rated in this catalog`;
-    const head = `${label}: ${ordinal(r.rank)} of ${r.total}`;
+    // The scope suffix is load-bearing once browse filters the plot: "3rd of
+    // 39" reads as a catalog-wide rank unless it says which 39.
+    const head = `${label}: ${ordinal(r.rank)} of ${r.total}${this.scopeLabel ? " " + this.scopeLabel : ""}`;
     // tied counts the paddle itself, so subtract it to describe the others.
     const others = r.tied - 1;
     return others > 0 ? `${head} — tied with ${others} ${plural(others, "other", "others")}` : head;
@@ -462,7 +476,7 @@ class PaddleCharts {
     titles.appendChild(h("p", "pc-eyebrow", "Explore any tradeoff"));
     titles.appendChild(h("h3", "pc-title", "Pick your axes"));
     titles.appendChild(
-      h("p", "pc-explain", "The whole catalog on whichever tradeoff you care about. Tap any dot to see where it ranks on both axes — and what, if anything, beats it on both.")
+      h("p", "pc-explain", `${this.scopeLabel ? "The paddles matching your filters" : "The whole catalog"}, on whichever tradeoff you care about. Tap any dot to see where it ranks on both axes — and what, if anything, beats it on both.`)
     );
     head.appendChild(titles);
 
@@ -684,7 +698,7 @@ class PaddleCharts {
       .map((k) => (RATINGS[k] ? RATINGS[k].label.toLowerCase() : "price"));
     this.exNote.textContent = dropped
       ? `${this.exPlottedCount} of ${this.catalog.length} paddles plotted — the other ${dropped} carry no ${gaps.join(" or ")} rating in this catalog, so they're left out rather than drawn at a made-up middle value.`
-      : `All ${this.exPlottedCount} scored paddles are plotted. Dots are nudged apart where several share the same tier — position is a tier, not a measurement.`;
+      : `All ${this.exPlottedCount} paddles ${this.scopeLabel || "in the catalog"} are plotted. Dots are nudged apart where several share the same tier — position is a tier, not a measurement.`;
 
     this.renderReadout();
   }
@@ -736,7 +750,7 @@ class PaddleCharts {
       const xL = (xKey === "price" ? "price" : RATINGS[xKey].label.toLowerCase());
       const yL = (yKey === "price" ? "price" : RATINGS[yKey].label.toLowerCase());
       if (!dom.length) {
-        verdict.textContent = `Nothing in the catalog beats it on ${xL} and ${yL} together. On these two axes, this is as good as it gets.`;
+        verdict.textContent = `Nothing ${this.scopeLabel || "in the catalog"} beats it on ${xL} and ${yL} together. On these two axes, this is as good as it gets.`;
         verdict.classList.add("is-good");
       } else {
         const n = dom.length;
@@ -932,6 +946,17 @@ class PaddleCharts {
     plot.appendChild(ov);
     this.valueBody.appendChild(plot);
 
+    // Say what a grey dot is. The explorer has always labelled its cloud; this
+    // chart never did, and readers reported the dots as confusing out of
+    // context — reasonably, since the frontier headline below argues FROM them
+    // ("451 paddles cost more and none fits you better") without ever saying
+    // what they are.
+    const legend = h("p", "pc-note pc-dot-legend");
+    legend.textContent = this.scopeLabel
+      ? `Each grey dot is one of the ${set.length} paddles ${this.scopeLabel}. Your picks are ringed.`
+      : `Each grey dot is one of the ${set.length} paddles scored for you. Your ${this.featured.length === 1 ? "pick is" : "picks are"} ringed.`;
+    this.valueBody.appendChild(legend);
+
     this.valueBody.appendChild(this.frontierHeadline(front, set));
     const cheaper = this.cheaperEquivalent();
     if (cheaper) this.valueBody.appendChild(cheaper);
@@ -957,9 +982,10 @@ class PaddleCharts {
     const byFit = this.state.scoreMode === "fit";
     const top = front[front.length - 1];
     const above = set.filter((d) => d.price > top.price).length;
+    const scope = this.scopeLabel ? ` ${this.scopeLabel}` : "";
     p.textContent = above
-      ? `The curve stops at ${fmtPrice(top.price)}. ${above} ${plural(above, "paddle costs", "paddles cost")} more than ${top.name} and not one of them ${byFit ? "fits you better" : "scores higher"} — past that price you're buying something other than ${byFit ? "fit" : "score"}.`
-      : `${top.name} at ${fmtPrice(top.price)} tops the curve, and nothing in the catalog costs more.`;
+      ? `The curve stops at ${fmtPrice(top.price)}. ${above} ${plural(above, "paddle costs", "paddles cost")} more than ${top.name}${scope} and not one of them ${byFit ? "fits you better" : "scores higher"} — past that price you're buying something other than ${byFit ? "fit" : "score"}.`
+      : `${top.name} at ${fmtPrice(top.price)} tops the curve, and nothing${scope || " in the catalog"} costs more.`;
     wrap.appendChild(p);
     // Your budget answer is one of the terms in your fit score, so a cheap
     // paddle is partly winning here because you asked for a cheap paddle. Say

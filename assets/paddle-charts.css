@@ -490,6 +490,10 @@
   fill: rgba(var(--ink-rgb), 0.04);
   pointer-events: none;
 }
+/* Sits directly under the plot, above the headline that argues from it. */
+.pc-dot-legend {
+  margin-top: 6px;
+}
 .pc-headline {
   margin: 12px 0 0;
   font-family: var(--font-headline);
