@@ -132,6 +132,22 @@ group('Paddles — revenue + legal');
   check(!/th pct|thpct/.test(gridCode), 'paddle-grid.js: renders a raw percentile — violates the data-licensing firewall');
   check(/TIER_WORD/.test(grid), 'paddle-grid.js: tier-word mapping for powerPercentile gone');
 
+  // Every JS mount must be watchdogged. A module that fails to boot leaves its
+  // placeholder on screen forever — that took the quiz down in production when a
+  // shared export moved between modules and browsers held a stale sibling. The
+  // watchdog turns that hang into an honest error + Reload.
+  for (const [f, mount] of [['paddles.html', 'paddle-quiz-app'], ['paddles/browse.html', 'paddle-grid-app']]) {
+    const src = read(f);
+    check(/data-mount-pending=/.test(src), `${f}: mount placeholder lost data-mount-pending — a failed module would hang on "Loading…" forever`);
+    check(/mount-watchdog\.js/.test(src), `${f}: no mount-watchdog.js — nothing would report a dead ${mount}`);
+  }
+  // The watchdog must stay a PLAIN script: as a module it could be taken out by
+  // the very module failure it exists to report.
+  for (const f of ['paddles.html', 'paddles/browse.html']) {
+    check(!/type="module"[^>]*mount-watchdog|mount-watchdog[^>]*type="module"/.test(read(f)),
+      `${f}: mount-watchdog.js must not be type="module"`);
+  }
+
   // Paddles & Gear is three pages: /paddles (quiz), /paddles/browse, /paddles/rent.
   const ph = read('paddles.html');
   const pb = read('paddles/browse.html');

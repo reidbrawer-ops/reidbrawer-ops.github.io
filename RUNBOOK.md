@@ -68,6 +68,23 @@ ratings from `assets/paddle-ratings.js`. Neither is duplicated — don't.
   `--check` currently fails extraction across all pages — prefer the `sync-*`
   scripts above.)
 
+## Why JS is served `no-cache`
+
+`assets/*.js` are unversioned ES modules that import each other by bare path
+(`paddle-quiz.js` → `paddle-ratings.js` → …). If a browser holds ONE stale
+module against fresh siblings it gets *"does not provide an export named X"*,
+the module aborts, and the page keeps its `Loading…` placeholder **forever**.
+That took the quiz — the revenue funnel — down in production when `tiebreak`
+moved into `paddle-ratings.js` and the quiz began importing it: browsers with
+the previous `paddle-ratings.js` cached (`max-age=600`) got a dead page.
+
+`no-cache` still caches; it just revalidates, so an unchanged file is a 304 with
+no body — a conditional request, not a re-download. Keep it until these URLs
+carry a content hash. **If you change what one module exports to another, that
+is a breaking change for anyone mid-cache** — the `data-mount-pending` watchdog
+(`assets/mount-watchdog.js`) is the safety net that turns the resulting hang
+into an honest error plus a Reload button.
+
 ## Deploy
 
 1. `npm run validate` (also runs automatically as the `predeploy` hook).
