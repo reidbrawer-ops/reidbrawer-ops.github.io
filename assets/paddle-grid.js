@@ -17,7 +17,7 @@
 import { vendorLinkFor, trackVendorClicks } from "/assets/affiliate-links.js";
 // The same four ratings the quiz uses — so "most powerful" means one thing on
 // this site. See assets/paddle-ratings.js.
-import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf } from "/assets/paddle-ratings.js";
+import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf, tiebreak } from "/assets/paddle-ratings.js";
 // The consolidated analytics view (axis explorer + value chart + stress-test),
 // driven by the compare tray's selection. Same module the quiz results use.
 import { renderPaddleCharts, seriesColorFor } from "/assets/paddle-charts.js";
@@ -112,27 +112,15 @@ function fitScore(paddle, filters) {
 
 const rankable = (filters) => Boolean(TYPE_FIT[filters.type] || SKILL_FIT[filters.skill]);
 
-// Ties are not an edge case here, they're the norm: powerPercentile is coarsened
-// to four quartile tiers (the licensing firewall — see TIER_WORD), so filtering
-// to Power leaves ~187 paddles sharing about five distinct fit scores. Roughly
-// 37 paddles tie at each.
-//
-// Without a tiebreak the sort is stable and the order inside a tier is just
-// catalog order — i.e. alphabetical by brand, so "#1 most powerful" would
-// really mean "first paddle whose brand starts with a digit". The rank number
-// would be an accident wearing a precision costume.
-//
-// So ties fall to the traits the filter didn't ask about: among equally
-// powerful paddles, prefer the one that also bites and forgives. That's a real
-// preference, applied consistently, and it degrades to name order only when two
-// paddles are genuinely indistinguishable on every axis we hold.
-function tiebreak(a, b) {
-  const spin = spinRatingOf(b) - spinRatingOf(a);
-  if (Math.abs(spin) > 1e-9) return spin;
-  const forgive = forgivenessRatingOf(b) - forgivenessRatingOf(a);
-  if (Math.abs(forgive) > 1e-9) return forgive;
-  return `${a.brand} ${a.name}`.localeCompare(`${b.brand} ${b.name}`);
-}
+// tiebreak() (spin → forgiveness → name) is shared with the quiz — it lives in
+// paddle-ratings.js now so both surfaces order equal-scoring paddles the same
+// way. Ties are the norm here, not an edge case: powerPercentile is coarsened to
+// four quartile tiers (the licensing firewall — see TIER_WORD), so filtering to
+// Power leaves ~187 paddles sharing about five distinct fit scores, ~37 tied at
+// each. Without the tiebreak the order inside a tier would be catalog order —
+// alphabetical by brand — so "#1 most powerful" would mean "first paddle whose
+// brand starts with a digit". The rank number would be an accident in a
+// precision costume.
 
 // Brand and model only. Matching the spec fields too would mean typing "16"
 // and getting every 16mm paddle, which is what the filters are for.

@@ -14,7 +14,7 @@ import { vendorLinkFor, trackVendorClicks } from "/assets/affiliate-links.js";
 
 // The four trait ratings are shared with the browsable catalog so the site has
 // one opinion about how powerful a paddle is — see assets/paddle-ratings.js.
-import { clamp01, isSoftImpact, powerRating, controlRating, spinRatingOf, forgivenessRatingOf } from "/assets/paddle-ratings.js";
+import { clamp01, isSoftImpact, powerRating, controlRating, spinRatingOf, forgivenessRatingOf, tiebreak } from "/assets/paddle-ratings.js";
 
 // The results-page comparison visualizations (Top 3 strip + axis explorer +
 // value chart + priority stress-test). Its own module so the same components
@@ -409,7 +409,13 @@ export function computeMatches(paddles, answers) {
     return { paddle, dims, score: totalScore(dims, fullAnswers) };
   });
 
-  scored.sort((a, b) => b.score - a.score);
+  // Ties are the norm, not an edge case, because the ratings are coarsened to
+  // four tiers (see paddle-ratings.js tiebreak). Without the tiebreak, equal
+  // scores fall to catalog order — alphabetical by brand — so a great fit from
+  // a late-alphabet brand ("Six Zero") loses the last podium slot for no reason
+  // but its name. This is the same tiebreak the browse grid uses, so both
+  // surfaces order equal-scoring paddles identically.
+  scored.sort((a, b) => (b.score !== a.score ? b.score - a.score : tiebreak(a.paddle, b.paddle)));
   const top = scored.slice(0, 3).map(({ paddle, dims }) => ({ paddle, dims }));
 
   return { fullAnswers, top };

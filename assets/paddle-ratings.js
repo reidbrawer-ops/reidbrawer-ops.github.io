@@ -53,3 +53,23 @@ export function spinRatingOf(paddle) {
 export function forgivenessRatingOf(paddle) {
   return paddle.twistWeightPercentile != null ? paddle.twistWeightPercentile : 0.5;
 }
+
+// Tie-break comparator, shared by the quiz's ranking (paddle-quiz.js) and the
+// browse grid's (paddle-grid.js) so both surfaces order equal-scoring paddles
+// the same way. Ties are the NORM, not an edge case: the percentiles are
+// coarsened to four quartile tiers (a data-licensing firewall — see
+// rebuild_paddle_data.py), so dozens of paddles routinely share one score.
+// Without this, a tie falls to the array's original order — alphabetical by
+// brand — so a late-alphabet brand like "Six Zero" loses the last podium slot
+// for no reason but its name. So ties fall instead to the traits the score
+// didn't already decide: among equals, prefer the one that also bites (spin)
+// and then forgives (sweet spot), degrading to name order only when two paddles
+// are genuinely indistinguishable on every axis we hold. Returns a value for
+// Array.sort: negative if a should sort before b.
+export function tiebreak(a, b) {
+  const spin = spinRatingOf(b) - spinRatingOf(a);
+  if (Math.abs(spin) > 1e-9) return spin;
+  const forgive = forgivenessRatingOf(b) - forgivenessRatingOf(a);
+  if (Math.abs(forgive) > 1e-9) return forgive;
+  return `${a.brand} ${a.name}`.localeCompare(`${b.brand} ${b.name}`);
+}
