@@ -668,13 +668,19 @@ class PaddleQuizApp {
         // same 0–100 scale as the pick cards above.
         fitScores: this.matches.fitScores,
         fitScale: this.matches.fitScale,
-        // Ordered as the questions get asked: what they cost, then how they sit
-        // against the whole catalog, then how much of that survives a change of
-        // priorities. The "why" is a single sentence under the pick cards
-        // (fitScaleNote) rather than a component — the full per-term ledger it
-        // used to render repeated the same notes for every pick and buried the
-        // two rows that separated them.
-        components: ["value", "explorer", "stress"],
+        // Ordered as the questions get asked: what they cost, then how much of
+        // that survives a change of priorities. The "why" is a single sentence
+        // under the pick cards (fitScaleNote) rather than a component — the
+        // full per-term ledger it used to render repeated the same notes for
+        // every pick and buried the two rows that separated them.
+        //
+        // The axis explorer ("Pick your axes") is deliberately NOT here. It was
+        // tried on the results page and taken back off: this page answers "here
+        // are your three", and a free-form catalog scatter invites the visitor
+        // to re-litigate that from scratch at the moment they should be
+        // choosing between the three. It stays on /paddles/browse, which is the
+        // surface for going looking yourself.
+        components: ["value", "stress"],
       });
     } catch (err) {
       console.error("[PaddleQuiz] Comparison charts failed to render.", err);
