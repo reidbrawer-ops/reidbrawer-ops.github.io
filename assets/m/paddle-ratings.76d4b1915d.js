@@ -34,14 +34,49 @@ export function powerRating(paddle) {
   return paddle.powerPercentile != null ? base * 0.4 + paddle.powerPercentile * 0.6 : base;
 }
 
-// No measured control tier exists in the data, so this is the label plus the
-// one physical signal that reliably tracks touch: a soft face dwells longer on
-// the ball, a stiff one pops off it.
+// No measured CONTROL tier exists in the data, so this rating is assembled from
+// the signals that do exist. It used to be the label plus a soft/stiff nudge,
+// and that produced exactly two values across the 91 Control-type paddles: 84
+// at 1.00 and 7 at 0.85. An 84-way tie is not a ranking — it handed the whole
+// podium to the tiebreak, so "the most control-oriented paddles" silently meant
+// "the cheapest ones with a soft face". Hence the measured terms below.
+//
+// The three signals, in order of how much they actually discriminate:
+//
+//   powerPercentile (357/486) — inverted, this is by far the strongest control
+//     proxy in the catalog. Mean powerPercentile by label is Control 0.174,
+//     All-Court 0.418, Power 0.696: a clean monotonic split. Weighted highest.
+//
+//   swingWeightPercentile (486/486) — a low swingweight is a paddle you can
+//     reposition at the kitchen, which is most of what touch is. It leans the
+//     right way (Control 0.414 vs Power 0.501) but only weakly, and it barely
+//     tracks power at all (r = 0.117), so it earns a real but minority weight.
+//     Its job is as much structural as predictive: it is the one term present
+//     on EVERY paddle, so no paddle can fall back to a flat label constant.
+//     That matters — with a label-only fallback the 32 Control paddles missing
+//     powerPercentile all landed on the ceiling and beat every measured paddle,
+//     which makes "we have no data on this one" the winning strategy.
+//
+//   the label + impact feel — design intent and the one bit of face physics we
+//     hold: a soft face dwells on the ball, a stiff one pops off it. Kept for
+//     the same reason powerRating keeps its label, but no longer decisive.
 export function controlRating(paddle) {
-  let base = paddle.paddleType === "Control" ? 0.85 : paddle.paddleType === "All-Court" ? 0.5 : paddle.paddleType === "Power" ? 0.2 : 0.5;
-  if (isSoftImpact(paddle)) base = clamp01(base + 0.15);
-  else if (isStiffImpact(paddle)) base = clamp01(base - 0.15);
-  return base;
+  let label = paddle.paddleType === "Control" ? 0.85 : paddle.paddleType === "All-Court" ? 0.5 : paddle.paddleType === "Power" ? 0.2 : 0.5;
+  if (isSoftImpact(paddle)) label = clamp01(label + 0.15);
+  else if (isStiffImpact(paddle)) label = clamp01(label - 0.15);
+
+  const maneuver = paddle.swingWeightPercentile != null ? 1 - paddle.swingWeightPercentile : 0.5;
+  // Inverted powerRating rather than inverted powerPercentile, deliberately.
+  // Reaching for the raw percentile means branching on whether it exists, and
+  // the branch that skips it has to hand its weight to the label — which sends
+  // every unmeasured paddle to the top, because the label is exactly what says
+  // "Control". powerRating already owns that fallback and degrades to the label
+  // base (0.2 for a Control paddle) instead of a bonus, so a paddle we measured
+  // as genuinely low-power still outranks one we simply never measured.
+  //
+  // It also keeps this function the exact mirror of powerRating, which is what
+  // lets allCourtFit() read the gap between them as a meaningful number.
+  return clamp01((1 - powerRating(paddle)) * 0.5 + maneuver * 0.25 + label * 0.25);
 }
 
 // spinPercentile is the banded rank of the paddle's measured spin RPM and is
@@ -124,7 +159,11 @@ export function ratingKnown(paddle, key) {
   if (key === "spin") return paddle.spinPercentile != null || paddle.spinRating != null;
   if (key === "forgiveness") return paddle.twistWeightPercentile != null;
   if (key === "power") return paddle.paddleType != null || paddle.powerPercentile != null;
-  if (key === "control") return paddle.paddleType != null;
+  // swingWeightPercentile is on every paddle, so control would be "known" for
+  // all 486 if it counted — but a swingweight alone is too thin to claim we
+  // measured a paddle's touch (it barely tracks power at all). Same judgement
+  // as spin below: a weak signal on its own is not evidence.
+  if (key === "control") return paddle.paddleType != null || paddle.powerPercentile != null;
   return true; // price, and anything else that isn't a derived rating
 }
 
@@ -137,28 +176,37 @@ export function ratingKnown(paddle, key) {
 // brand — so a late-alphabet brand like "Six Zero" loses the last podium slot
 // for no reason but its name.
 //
-// PRICE BREAKS FIRST. If two paddles fit the visitor equally well, the cheaper
-// one is the better recommendation, full stop — and the alternative was
-// indefensible once the results page started showing the fit score: a $169
-// paddle could sit at #1 above an identically-fitting $109.99 one, with both
-// cards reading "100 fit", and the only thing separating them was a spin tier
-// the visitor could not see. Whatever ordered the podium has to be something
-// the reader can act on, and price is the one tiebreaker that always is.
+// There are TWO tiebreaks, because the two surfaces are answering different
+// questions and price belongs in exactly one of them.
 //
-// After price come the traits the score didn't already decide — among equals,
-// prefer the one that also bites (spin) and then forgives (sweet spot) —
-// degrading to name order only when two paddles are genuinely indistinguishable
-// on every axis we hold. Returns a value for Array.sort: negative if a sorts
-// before b.
+// tiebreakByTrait — "which paddle is most X?" (the browse grid). Price is not
+// an answer to that question. A cheap paddle is not more control-oriented than
+// an expensive one, and letting price order the podium is what made the Control
+// filter return the four cheapest soft-faced paddles. Among paddles that embody
+// the filter equally, prefer the one that also bites (spin) and then forgives
+// (sweet spot), degrading to name order only when two are genuinely
+// indistinguishable on every axis we hold.
+//
+// tiebreak — "which paddle should YOU buy?" (the quiz). Here price leads, and
+// has to: the results page shows the fit score, so without it a $169 paddle
+// could sit at #1 above an identically-fitting $109.99 one, both cards reading
+// "100 fit", separated only by a spin tier the visitor cannot see. Whatever
+// orders that podium has to be something the reader can act on.
+//
+// Both return a value for Array.sort: negative if a sorts before b.
+export function tiebreakByTrait(a, b) {
+  const spin = spinRatingOf(b) - spinRatingOf(a);
+  if (Math.abs(spin) > 1e-9) return spin;
+  const forgive = forgivenessRatingOf(b) - forgivenessRatingOf(a);
+  if (Math.abs(forgive) > 1e-9) return forgive;
+  return `${a.brand} ${a.name}`.localeCompare(`${b.brand} ${b.name}`);
+}
+
 export function tiebreak(a, b) {
   // A paddle with no price sorts last rather than first: "price unknown" is not
   // a bargain, and one catalog entry has no price at all.
   const pa = typeof a.price === "number" ? a.price : Infinity;
   const pb = typeof b.price === "number" ? b.price : Infinity;
   if (pa !== pb) return pa - pb;
-  const spin = spinRatingOf(b) - spinRatingOf(a);
-  if (Math.abs(spin) > 1e-9) return spin;
-  const forgive = forgivenessRatingOf(b) - forgivenessRatingOf(a);
-  if (Math.abs(forgive) > 1e-9) return forgive;
-  return `${a.brand} ${a.name}`.localeCompare(`${b.brand} ${b.name}`);
+  return tiebreakByTrait(a, b);
 }

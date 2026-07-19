@@ -17,7 +17,7 @@
 import { vendorLinkFor, trackVendorClicks } from "/assets/affiliate-links.js";
 // The same four ratings the quiz uses — so "most powerful" means one thing on
 // this site. See assets/paddle-ratings.js.
-import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf, allCourtFit, APPROVAL_POOLS, tiebreak } from "/assets/paddle-ratings.js";
+import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf, allCourtFit, APPROVAL_POOLS, tiebreakByTrait } from "/assets/paddle-ratings.js";
 // The consolidated analytics view (axis explorer + value chart + stress-test),
 // driven by the compare tray's selection. Same module the quiz results use.
 import { renderPaddleCharts, seriesColorFor } from "/assets/paddle-charts.js";
@@ -152,23 +152,118 @@ const ALL_FILTERS_OFF = () => Object.fromEntries(FILTERS.map((f) => [f.key, "all
 //
 // Scores are 0-1 and averaged, so adding a second ranking filter re-weights
 // rather than letting the first one dominate by accumulating points.
-const TYPE_FIT = {
-  Power: (p) => powerRating(p),
-  Control: (p) => controlRating(p),
-  // Balance, not mediocrity: closest to an even split between power and control.
-  // Balance, not mediocrity: closest to an even split between power and
-  // control. Moved to paddle-ratings.js so the quiz's "All-around" answer
-  // scores it identically — see allCourtFit.
-  "All-Court": (p) => allCourtFit(p),
+// "The best control paddle" is not "the most extreme control paddle". A paddle
+// that dinks beautifully and can do nothing else is a worse recommendation than
+// one with nearly as much touch that also drives, forgives an off-centre hit
+// and bites the ball. Same for power: the hardest-hitting paddle in the catalog
+// is a bad rec if it has no touch and a sweet spot the size of a coin. So both
+// rankings are trait-dominant (0.7) with a well-roundedness term (0.3) rather
+// than the raw rating.
+//
+// Roundedness is "the traits this filter didn't already ask about": always
+// forgiveness and spin, plus the OPPOSITE of whatever the filter selected —
+// power counts toward a control paddle's roundedness and vice versa. Passing
+// the counterpart in is what keeps Power and Control symmetric. All-Court
+// passes none, because its rating already asked about BOTH sides.
+//
+// This does NOT flip either sign. controlRating carries an inverted-power term,
+// so at these weights power still nets out NEGATIVE for the Control ranking
+// (0.7 x -0.5 + 0.1 = -0.25) and POSITIVE for Power (0.7 - 0.1 x 0.5 = +0.65).
+// The counterpart term softens each rating's extremism without cancelling it —
+// prefer a control paddle that kept some pop, and a power paddle that can still
+// reset, over either taken to its limit.
+const mean = (...ns) => ns.reduce((a, b) => a + b, 0) / ns.length;
+
+const roundedness = (p, counterpart) => {
+  const traits = [forgivenessRatingOf(p), spinRatingOf(p)];
+  if (counterpart) traits.push(counterpart(p));
+  return mean(...traits);
 };
 
+// Every ranking below is "what you asked for, dominant — plus what you didn't".
+// Single-sourced so the 0.7/0.3 ratio is one number to tune, not six.
+const blend = (primary, secondary) => primary * 0.7 + secondary * 0.3;
+
+const TYPE_FIT = {
+  Power: (p) => blend(powerRating(p), roundedness(p, controlRating)),
+  Control: (p) => blend(controlRating(p), roundedness(p, powerRating)),
+  // Balance, not mediocrity: closest to an even split between power and control.
+  // Lives in paddle-ratings.js so the quiz's "All-around" answer scores it
+  // identically — see allCourtFit.
+  //
+  // Balance needs the roundedness term MORE than the other two, not less, for
+  // two reasons the catalog makes obvious:
+  //
+  //   1. Balance is blind to everything else. The old #1 was the Gearbox GX2
+  //      Integra XL on forgiveness 0.07 — near the worst sweet spot in the
+  //      catalog — purely because its power and control landed 0.48/0.49. The
+  //      top 20 by raw balance averaged 0.373 forgiveness against a pool mean
+  //      of 0.485, so this ranking was actively selecting for punishing paddles.
+  //
+  //   2. Perfect balance is what MISSING DATA looks like. An All-Court paddle
+  //      with no powerPercentile gets powerRating 0.5 exactly (the label base),
+  //      which puts controlRating at ~0.5, which scores allCourtFit 1.0 — the
+  //      ceiling. Unmeasured paddles don't merely survive here, they win by
+  //      construction. Forgiveness is the fix: twistWeightPercentile is on all
+  //      486 paddles, so it is the one term no paddle can abstain from.
+  //
+  // No counterpart trait is passed: power and control are both already inside
+  // allCourtFit, and adding either back would double-count the axis this
+  // filter exists to balance. Level is deliberately absent too — control is
+  // built as roughly inverted power, so (power + control) / 2 only spans
+  // 0.388-0.613 across the whole pool and carries no signal to reward.
+  "All-Court": (p) => blend(allCourtFit(p), roundedness(p)),
+};
+
+// Same 0.7/0.3 shape as TYPE_FIT, but the secondary term is chosen DIFFERENTLY
+// and deliberately so.
+//
+// For a type filter, roundedness is unambiguously good: a power paddle that
+// also forgives is simply a better power paddle. A skill level is not a trait
+// though, it is a PLAYER — so its secondary traits are directional. Rewarding a
+// beginner paddle for raw power would push beginners toward paddles that are
+// harder to keep in play, which is the opposite of helping. So each level gets
+// the traits that serve that player, not a generic well-roundedness score.
 const SKILL_FIT = {
   // A beginner's paddle forgives: a big sweet spot matters more than pace.
-  Beginner: (p) => forgivenessRatingOf(p),
-  // Advanced play rewards what you can DO with the ball over what you survive.
-  Advanced: (p) => (powerRating(p) + spinRatingOf(p)) / 2,
+  //
+  // Forgiveness alone could not rank them. It is raw twistWeightPercentile,
+  // banded to 20 steps, so 130 beginner paddles shared 15 scores and SEVENTEEN
+  // tied for #1 — the podium was decided by the spin tiebreak, which is close
+  // to irrelevant at this level. It showed: the Selkirk Omni (control 0.39,
+  // power 0.57) took #1 over the Volair V.1F (control 0.82, power 0.22), the
+  // far more beginner-appropriate paddle, on a spin coin-flip.
+  //
+  // Control is the secondary, NOT roundedness — keeping the ball in play is
+  // what a beginner needs next after a big sweet spot. Spin and power are left
+  // out on purpose.
+  Beginner: (p) => blend(forgivenessRatingOf(p), controlRating(p)),
+  // Advanced play rewards what you can DO with the ball over what you survive —
+  // so power and spin still lead at 0.7. But taken alone that crowned paddles
+  // in the bottom quartile of sweet spot (RPM Q2 at forgiveness 0.28, Luzz
+  // Frozen Inferno at 0.23), and the modern advanced game is as much reset and
+  // dink as it is pace. Forgiveness and control at 0.3 keep a cannon with no
+  // touch from topping a list aimed at the best players.
+  Advanced: (p) => blend(mean(powerRating(p), spinRatingOf(p)), mean(forgivenessRatingOf(p), controlRating(p))),
   // The all-rounder's compromise — some touch, still forgiving.
-  Intermediate: (p) => (controlRating(p) + forgivenessRatingOf(p)) / 2,
+  //
+  // DELIBERATELY has no secondary term, unlike every other ranking in this
+  // file. Two things were measured before leaving it alone:
+  //
+  //   It doesn't need one. 159 paddles carry 110 distinct scores with a single
+  //   paddle at the top — none of the mass-tie pathology that made the Control
+  //   and Beginner rankings a tiebreak in a precision costume.
+  //
+  //   And no available trait helps. Power nearly cancels the control half
+  //   (controlRating carries an inverted-power term, so at 0.35 control / 0.15
+  //   power the net coefficient is 0.35 x -0.5 + 0.15 = -0.025, i.e. free), and
+  //   spin does the same thing by proxy: corr(spin, power) = +0.51 against
+  //   corr(spin, control) = -0.36. Forgiveness and control are already the
+  //   primary. Both were tried; both dragged top-20 mean control BELOW the pool
+  //   mean (0.391 and 0.435 against 0.475) on the one ranking whose premise is
+  //   touch. Adding a term here buys tiebreak resolution this ranking does not
+  //   need, at the cost of pointing intermediates at power paddles.
+  Intermediate: (p) => mean(controlRating(p), forgivenessRatingOf(p)),
 };
 
 // null = nothing selected that can rank, so the catalog keeps its own order and
@@ -185,16 +280,19 @@ function fitScore(paddle, filters) {
 
 const rankable = (filters) => Boolean(TYPE_FIT[filters.type] || SKILL_FIT[filters.skill]);
 
-// tiebreak() (spin → forgiveness → name) is shared with the quiz — it lives in
-// paddle-ratings.js now so both surfaces order equal-scoring paddles the same
-// way. Ties still happen here: powerPercentile is banded (the licensing
-// firewall — see tierWord), so filtering to Power leaves paddles sharing fit
-// scores — far fewer since the 2026-07-18 refresh took four tiers to twenty
-// bands, but enough that the order matters. Without the tiebreak the order
-// inside a tie would be catalog order —
-// alphabetical by brand — so "#1 most powerful" would mean "first paddle whose
-// brand starts with a digit". The rank number would be an accident in a
-// precision costume.
+// tiebreakByTrait() (spin → forgiveness → name) is the PRICE-FREE tiebreak —
+// the grid asks "which paddle is most X", and a paddle is not more control-
+// oriented for being cheap. The quiz uses the price-first tiebreak() instead,
+// because it asks a different question; see the note above both in
+// paddle-ratings.js.
+//
+// Ties still happen here: the percentiles are banded (the licensing firewall —
+// see tierWord), so filtering to Power leaves paddles sharing fit scores — far
+// fewer since the 2026-07-18 refresh took four tiers to twenty bands, but
+// enough that the order matters. Without the tiebreak the order inside a tie
+// would be catalog order — alphabetical by brand — so "#1 most powerful" would
+// mean "first paddle whose brand starts with a digit". The rank number would be
+// an accident in a precision costume.
 
 // Brand and model only. Matching the spec fields too would mean typing "16"
 // and getting every 16mm paddle, which is what the filters are for.
@@ -307,7 +405,7 @@ class PaddleGrid {
     // comparator O(n log n) times and these ratings are not free.
     return list
       .map((p) => ({ p, fit: fitScore(p, this.filters) }))
-      .sort((a, b) => (Math.abs(b.fit - a.fit) > 1e-9 ? b.fit - a.fit : tiebreak(a.p, b.p)))
+      .sort((a, b) => (Math.abs(b.fit - a.fit) > 1e-9 ? b.fit - a.fit : tiebreakByTrait(a.p, b.p)))
       .map(({ p }) => p);
   }
 
@@ -621,9 +719,6 @@ class PaddleGrid {
       components,
       initialState: prev,
       scopeLabel: scoped ? "matching your filters" : null,
-      // Buy links for the recommendations, built with the same vendorLinkFor
-      // + affiliate map the cards use, so a recommended paddle links exactly as
-      // it would anywhere else on the site.
       linkFor: (paddle) => vendorLinkFor(paddle, this.affiliateMap),
     });
   }

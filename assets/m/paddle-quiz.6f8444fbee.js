@@ -742,7 +742,11 @@ class PaddleQuizApp {
         // to re-litigate that from scratch at the moment they should be
         // choosing between the three. It stays on /paddles/browse, which is the
         // surface for going looking yourself.
-        components: ["value", "stress"],
+        // Buy links for the recommendations, built with the same vendorLinkFor
+        // + affiliate map the pick cards use, so a recommended paddle links
+        // exactly as it would anywhere else on the site.
+        linkFor: (paddle) => vendorLinkFor(paddle, this.affiliateMap),
+        components: ["recommend", "stress"],
       });
     } catch (err) {
       console.error("[PaddleQuiz] Comparison charts failed to render.", err);

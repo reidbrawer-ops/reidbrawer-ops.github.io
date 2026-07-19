@@ -480,21 +480,44 @@ img, svg {
   padding-bottom: 1rem;
 }
 
-/* Two-line typographic lockup: a Space Mono micro-label stacked over the
-   italic serif wordmark, pulled up 2px so the two lines read as one object.
-   v3's 28px logo mark is deliberately gone — the design's brand is purely
-   typographic, and a square mark next to a tightened two-line stack fights
-   the -2px optical join. /assets/logo/favicon.svg is the site-icon source of
-   truth (mark.svg is kept as a copy of it); only the header stopped rendering
-   a mark. */
+/* The pin mark beside a two-line typographic lockup: a Space Mono micro-label
+   stacked over the italic serif wordmark, pulled up 2px so the two lines read
+   as one object. v4 ran mark-less for a while (a square mark fought the -2px
+   optical join), but the mark is back now that it's a pin silhouette rather
+   than a filled tile — its cream plate is exactly --fog, so on the header's
+   paper ground only the pin reads and there's no box to fight the stack.
+   /assets/logo/favicon.svg is the site-icon source of truth; mark.svg is a
+   copy of it and is what the header renders.
+
+   .brand is the row (mark + stack); .brand-lockup is the stack. The footer
+   reuses .brand-eyebrow/.brand-word WITHOUT either wrapper, which is why the
+   column lives on .brand-lockup and not on the shared children. */
 .brand {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+/* 34px sits just inside the lockup's own ~39px, so the text stack still drives
+   the row's height and adding the mark didn't grow the header band. Going much
+   past 39 starts pushing the band taller on every page — measure, don't guess,
+   if you retune this. */
+.brand-mark {
+  display: block;
+  width: 34px;
+  height: 34px;
+  flex: none;
+}
+
+.brand-lockup {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
-  flex: none;
-  text-decoration: none;
-  color: var(--ink);
 }
 
 .brand:hover {
