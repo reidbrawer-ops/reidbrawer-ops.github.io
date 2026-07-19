@@ -28,6 +28,14 @@
 // The returned `isAffiliate` flag drives both the link's rel (sponsored vs.
 // plain) and whether the commission disclosure is shown — so a plain vendor
 // link is never dressed up as, or disclosed as, something that earns money.
+//
+// Two labels come back, not one. `label` names the vendor outright ("Search
+// Six Zero") and suits the quiz's three wide result cards. `shortLabel` drops
+// the brand and keeps only the verb + destination ("Search brand site"), for
+// the browse grid's 254px cards, where "Search Honolulu Pickleball" rendered a
+// 193px button that broke out of the card. Both say the same thing about what
+// the click DOES — deep link vs. search vs. front door — which is the part
+// that has to stay honest; the brand is the card's own eyebrow either way.
 
 export function appendParams(url, params) {
   const keys = Object.keys(params || {});
@@ -57,7 +65,7 @@ export function vendorLinkFor(paddle, affiliateMap) {
     } else {
       href = appendParams(base, brandCfg.params);
     }
-    return { href, label: brandCfg.label || `Buy ${paddle.brand}`, isAffiliate: true, linkType: "brand-program" };
+    return { href, label: brandCfg.label || `Buy ${paddle.brand}`, shortLabel: brandCfg.shortLabel || brandCfg.label || "Buy from brand", isAffiliate: true, linkType: "brand-program" };
   }
 
   // 2) Amazon Associates fallback — for brands with no program of their own
@@ -75,15 +83,21 @@ export function vendorLinkFor(paddle, affiliateMap) {
     const asin = az.asins ? az.asins[paddle.id] : null;
     if (asin) {
       const detailBase = az.detailBase || "https://www.amazon.com/dp/";
-      return { href: appendParams(detailBase + encodeURIComponent(asin), { tag: az.tag }), label: "Buy on Amazon", isAffiliate: true, isAmazon: true, linkType: "amazon-deep" };
+      return { href: appendParams(detailBase + encodeURIComponent(asin), { tag: az.tag }), label: "Buy on Amazon", shortLabel: "Buy on Amazon", isAffiliate: true, isAmazon: true, linkType: "amazon-deep" };
     }
     const searchBase = az.searchBase || "https://www.amazon.com/s?k=";
     const query = encodeURIComponent(`${paddle.brand} ${paddle.name} pickleball paddle`);
-    return { href: appendParams(searchBase + query, { tag: az.tag }), label: "Search Amazon", isAffiliate: true, isAmazon: true, linkType: "amazon-search" };
+    return { href: appendParams(searchBase + query, { tag: az.tag }), label: "Search Amazon", shortLabel: "Search Amazon", isAffiliate: true, isAmazon: true, linkType: "amazon-search" };
   }
 
   // 3) No program yet — an honest, un-tagged link to the brand's own site.
-  return { href: base, label: searchUrl ? `Search ${paddle.brand}` : `Visit ${paddle.brand}`, isAffiliate: false, linkType: "plain" };
+  return {
+    href: base,
+    label: searchUrl ? `Search ${paddle.brand}` : `Visit ${paddle.brand}`,
+    shortLabel: searchUrl ? "Search brand site" : "Visit brand site",
+    isAffiliate: false,
+    linkType: "plain",
+  };
 }
 // Outbound buy-link tracking.
 //

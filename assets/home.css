@@ -16,9 +16,17 @@
   border-top: none;
 }
 
+/* overflow MUST stay visible: the hero search's results dropdown is ~380px
+   tall and starts ~30px above this band's bottom edge, so `overflow:hidden`
+   guillotined it — you saw the first result and nothing else, with the next
+   section showing through where the rest should have been. Nothing in the hero
+   actually overruns it horizontally (checked at 375 and 1280), so the clip was
+   buying nothing. `overflow-x:clip; overflow-y:visible` does NOT work as an
+   alternative here — .hero carries a pbaFadeUp transform, and a transformed
+   box clips on both axes regardless. */
 .home-hero {
   background: var(--fog);
-  overflow: hidden;
+  overflow: visible;
   padding: 56px 0 0;
 }
 
@@ -38,6 +46,19 @@
    0.15s step rather than arriving unannounced ahead of it. */
 .home-hero .hero-search-hint {
   animation: pbaFadeUp 0.6s var(--ease) 0.15s both;
+}
+
+/* ...but that animation is what made the hint paint OVER the open dropdown.
+   `both` keeps the animation in effect forever after it ends, so the hint stays
+   a stacking context — and so does .hero-search, for the same reason. Two
+   sibling stacking contexts, both at z-index auto: the later one in the DOM
+   wins, which traps the results panel's own z-index:20 underneath the hint
+   text. Lifting the search above its own hint is the whole fix. Scoped to the
+   home hero on purpose — map.html mounts .hero-search inside .finder-controls
+   (z-index:20), where the filter panel expects to sit above it. */
+.home-hero .hero-search {
+  position: relative;
+  z-index: 2;
 }
 
 .home-lanes-band {

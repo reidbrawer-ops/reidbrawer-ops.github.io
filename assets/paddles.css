@@ -212,26 +212,99 @@
 
 /* ---------- Compare & explore panel (tray + consolidated analytics) ---------- */
 
-/* The browse page leads with this: the axis explorer over the whole catalog,
-   plus the value chart and stress-test once paddles are picked into the tray.
-   The charts themselves are the pc-* component (paddle-charts.css); this panel
-   only frames them and holds the tray. */
+/* The axis explorer over the whole catalog, plus the value chart and
+   stress-test once paddles are picked into the tray. The charts themselves are
+   the pc-* component (paddle-charts.css); this panel only frames them and
+   holds the tray.
+
+   A <details>, closed by default: open it is ~900px — taller than the viewport
+   — and it sits above the grid, so the browse page opened on a chart and the
+   paddles it is named for began below the fold. Closed it costs one header row
+   and the cards start immediately after the filters. */
 .pg-compare {
   margin-bottom: 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--paper);
+}
+
+.pg-compare-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  cursor: pointer;
+  list-style: none;
+  border-radius: var(--radius-m);
+}
+
+/* Safari draws its own disclosure triangle through a pseudo-element that
+   list-style:none alone doesn't reach. */
+.pg-compare-summary::-webkit-details-marker {
+  display: none;
+}
+
+.pg-compare-summary:hover .pg-compare-title {
+  color: var(--bay-deep);
+}
+
+.pg-compare-summary:focus-visible {
+  outline: 2px solid var(--bay);
+  outline-offset: 2px;
 }
 
 .pg-compare-head {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .pg-compare-title {
   font-size: 1.375rem;
-  margin: 2px 0 0;
+  margin: 0;
+  transition: color 0.15s var(--ease);
+}
+
+/* Carries what the tray would say if it were visible — the selection count —
+   plus the affordance that this opens. */
+.pg-compare-state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.pg-compare-state.has-picks {
+  font-weight: 700;
+  color: var(--bay-deep);
+}
+
+.pg-compare-state::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.15s var(--ease);
+}
+
+.pg-compare[open] .pg-compare-state::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.pg-compare-body {
+  padding: 0 20px 20px;
+  border-top: 1px solid var(--rule-08);
+}
+
+.pg-compare-body .pg-tray {
+  padding-top: 16px;
 }
 
 .pg-tray {
@@ -423,11 +496,16 @@
   gap: 10px;
 }
 
+/* Approval note over the buy button, always — not a note/button row that wraps
+   when it runs out of width. Wrapping-on-demand meant the foot's shape depended
+   on how long the note and the label happened to be: 481 of 486 cards stacked
+   and 5 stayed inline, so the rare card was the odd one out. Stacking every
+   card makes the foot one fixed height across the grid. */
 .pg-foot {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
   padding-top: 10px;
   border-top: 1px solid var(--rule-08);
 }
@@ -472,12 +550,21 @@
 }
 
 /* .btn carries the optic ground + ink border + hover invert; only the
-   proportions differ at card scale. */
+   proportions differ at card scale.
+
+   Sized to its label, capped at the card's content box. The cap plus wrappable
+   text is the backstop for a label the card can't hold: labels are kept short
+   at the source (shortLabel in affiliate-links.js), but a nowrap button in a
+   fixed-width card overhangs the border rather than reflowing, which is how
+   "Search Honolulu Pickleball" used to break 34 cards. A long label added
+   later now costs a second line instead. */
 .pg-buy.btn {
   border-radius: 8px;
   padding: 8px 14px;
   font-size: 0.78125rem;
-  white-space: nowrap;
+  text-align: center;
+  flex: 0 0 auto;
+  max-width: 100%;
 }
 
 .pg-empty {

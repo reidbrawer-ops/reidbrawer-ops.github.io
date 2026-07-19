@@ -381,15 +381,21 @@ class PaddleGrid {
         `data-pq-surface="grid"`,
         `data-pq-position="${i + 1}"`,
       ].join(" ");
-      // link.label, not a generic "Check price": vendorLinkFor already knows
-      // whether this is a verified deep link to the exact model ("Buy on
+      // link.shortLabel, not a generic "Check price": vendorLinkFor already
+      // knows whether this is a verified deep link to the exact model ("Buy on
       // Amazon"), a search that may or may not surface it ("Search Amazon",
-      // "Search Six Zero"), or just the brand's front door ("Visit Gearbox").
-      // Saying which is honest about what the click will actually do, and it's
-      // what the quiz's results have always said.
+      // "Search brand site"), or just the brand's front door ("Visit brand
+      // site"). Saying which is honest about what the click will actually do.
+      //
+      // shortLabel rather than the quiz's brand-naming `label`: at 254px a card
+      // cannot hold "Search Honolulu Pickleball" (193px of button against 218px
+      // of content box, so 34 of 486 cards had the CTA hanging over the border,
+      // and the widest buttons were double the narrowest). The brand is already
+      // this card's eyebrow, and the visually-hidden suffix below still names
+      // brand + model for anyone who arrives at the link out of context.
       foot = `<div class="pg-foot">
           <span class="pg-note">${esc(note)}</span>
-          <a class="btn pg-buy" href="${esc(link.href)}" target="_blank" rel="${rel}" ${data}>${esc(link.label)}<span class="visually-hidden"> — ${esc(p.brand)} ${esc(p.name)} (opens in new tab)</span></a>
+          <a class="btn pg-buy" href="${esc(link.href)}" target="_blank" rel="${rel}" ${data}>${esc(link.shortLabel || link.label)}<span class="visually-hidden"> — ${esc(p.brand)} ${esc(p.name)} (opens in new tab)</span></a>
         </div>`;
     } else {
       const note = approvalNote(p);
@@ -433,18 +439,26 @@ class PaddleGrid {
   // one inserted with content already in it doesn't fire). Same reason
   // dom-utils.js's PBUtils.setStatus writes textContent to a persistent node.
   mount() {
+    // Collapsed by default. Expanded, this panel is ~900px tall — taller than
+    // the viewport — so the first paddle card started below 1750px and the
+    // page's actual subject was a screen and a half down. It stays ABOVE the
+    // grid rather than moving below it: the grid runs 40,000px, and anything
+    // after it is unreachable in practice.
     this.root.innerHTML = `
       ${this.filterHtml()}
-      <section class="pg-compare">
-        <div class="pg-compare-head">
-          <div>
-            <p class="pc-eyebrow">Compare &amp; explore</p>
+      <details class="pg-compare" data-role="pg-compare">
+        <summary class="pg-compare-summary">
+          <span class="pg-compare-head">
+            <span class="pc-eyebrow">Compare &amp; explore</span>
             <h2 class="pg-compare-title">Line paddles up side by side</h2>
-          </div>
+          </span>
+          <span class="pg-compare-state" data-role="pg-compare-state"></span>
+        </summary>
+        <div class="pg-compare-body">
           <div class="pg-tray" data-role="pg-tray"></div>
+          <div class="pg-analytics" data-role="pg-analytics"></div>
         </div>
-        <div class="pg-analytics" data-role="pg-analytics"></div>
-      </section>
+      </details>
       <p class="pg-count" role="status"></p>
       <div data-role="pg-disclosure"></div>
       <div class="pg-rent">
@@ -458,10 +472,32 @@ class PaddleGrid {
     this.bodyEl = this.root.querySelector('[data-role="pg-body"]');
     this.trayEl = this.root.querySelector('[data-role="pg-tray"]');
     this.analyticsEl = this.root.querySelector('[data-role="pg-analytics"]');
+    this.compareEl = this.root.querySelector('[data-role="pg-compare"]');
+    this.compareStateEl = this.root.querySelector('[data-role="pg-compare-state"]');
+    // `toggle` does not bubble, so this can't ride the delegated click listener
+    // in the constructor.
+    this.compareEl.addEventListener("toggle", () => {
+      if (this.compareEl.open && this.analyticsStale) this.renderAnalytics();
+      track("browse_compare_panel", { action: this.compareEl.open ? "open" : "close", tray_size: this.selected.length });
+    });
     this.render();
     this.renderTray();
-    this.renderAnalytics();
+    // Not rendered yet — see refreshAnalytics. The panel starts closed, and the
+    // charts are built the first time it is opened.
+    this.analyticsStale = true;
     return this;
+  }
+
+  // The charts cost ~500 derived paddles and ~500 SVG circles to rebuild. With
+  // the panel closed by default that would run on every filter change for a
+  // view nobody is looking at, so while it's closed we only mark the charts
+  // stale and let the toggle handler catch up.
+  refreshAnalytics() {
+    if (!this.compareEl || !this.compareEl.open) {
+      this.analyticsStale = true;
+      return;
+    }
+    this.renderAnalytics();
   }
 
   byId(id) {
@@ -492,10 +528,22 @@ class PaddleGrid {
       btn.textContent = on ? "✓ Comparing" : "+ Compare";
     });
     this.renderTray();
-    this.renderAnalytics();
+    this.refreshAnalytics();
+  }
+
+  // The panel is collapsed by default, so the summary has to carry the state a
+  // visitor would otherwise read off the tray — otherwise "+ Compare" on a card
+  // turns one button teal and nothing else on the page acknowledges it.
+  renderCompareState() {
+    const n = this.selected.length;
+    this.compareStateEl.textContent = n
+      ? `${n} of 3 selected`
+      : `Chart ${this.total} paddles on any two axes`;
+    this.compareStateEl.classList.toggle("has-picks", n > 0);
   }
 
   renderTray() {
+    this.renderCompareState();
     if (!this.selected.length) {
       // Wording follows the chart's actual behaviour: a tap now INSPECTS a dot
       // and the readout's button commits it. Tapping used to add it outright,
@@ -525,10 +573,11 @@ class PaddleGrid {
   // debounce covers both.
   scheduleAnalytics() {
     clearTimeout(this.analyticsTimer);
-    this.analyticsTimer = setTimeout(() => this.renderAnalytics(), 200);
+    this.analyticsTimer = setTimeout(() => this.refreshAnalytics(), 200);
   }
 
   renderAnalytics() {
+    this.analyticsStale = false;
     const featured = this.selected.map((id) => this.byId(id)).filter(Boolean);
     const n = featured.length;
     const components = ["explorer"];
