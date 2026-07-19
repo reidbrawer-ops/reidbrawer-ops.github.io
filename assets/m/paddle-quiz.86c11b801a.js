@@ -164,6 +164,29 @@ function weightPrefScore(paddle, weightPref) {
 // "nobudget" deliberately has no range — see budgetScore.
 const BUDGET_RANGES = { under100: [0, 100], "100to200": [100, 200] };
 
+// How far past the stated range the budget score decays to nothing.
+//
+// Was 80, which made budget a CLIFF rather than a gradient: "under $100" hit
+// zero at $180 and "$100-$200" at $280, so every paddle beyond those points
+// scored identically no matter how far beyond. In a catalog running $69-$333
+// that flattened a large slice of it — a visitor who said "under $100" was
+// given no reason at all to prefer a $190 paddle over a $333 one, and the
+// stress-test's "Budget first" lens could not reorder three expensive picks
+// because it was handing all of them the same floor.
+//
+// Sized to the catalog's own price span (~$264) so the score is still falling
+// at the most expensive paddle in the file rather than having bottomed out
+// long before. Revisit if a future export widens that range a lot.
+const BUDGET_FALLOFF = 250;
+
+// A stated budget is a firmer constraint than a taste preference, so its term
+// carries more than a single dimension's worth — but deliberately not enough to
+// decide the ranking on its own. At 1.5x the budget term spans 15-45 points
+// against a trait block of 40-120, so a genuinely better-fitting paddle can
+// still win while costing more; it just has to be better by a real margin
+// rather than by a rounding error.
+const BUDGET_WEIGHT = 1.5;
+
 // Null (not a flat top score) when the visitor said price isn't a factor: a
 // constraint they don't have shouldn't earn every paddle three dots of
 // "budget fit" it did nothing to deserve. The row is dropped from the table
@@ -171,7 +194,7 @@ const BUDGET_RANGES = { under100: [0, 100], "100to200": [100, 200] };
 function budgetScore(paddle, budgetPref) {
   const r = BUDGET_RANGES[budgetPref];
   if (!r) return null;
-  return trapezoid(paddle.price, r[0], r[1], 80);
+  return trapezoid(paddle.price, r[0], r[1], BUDGET_FALLOFF);
 }
 
 // Swing weight — how heavy a paddle feels in motion — isn't a field in the
@@ -439,7 +462,7 @@ export function scoreTerms(dims, a) {
 
   push("feel", "The feel you asked for", dims.weightFit + dims.twistWeightFit,
     "How close it lands to your answers on weight in the hand and how much a mishit should punish you.");
-  push("budget", "Your budget", dims.budgetFit || 0,
+  push("budget", "Your budget", Math.round((dims.budgetFit || 0) * BUDGET_WEIGHT),
     "How comfortably the list price sits inside the range you gave.");
 
   if (a.style === "power") push("style", "You play a power game", dims.power, "You said power banger, so its power counts twice.");
