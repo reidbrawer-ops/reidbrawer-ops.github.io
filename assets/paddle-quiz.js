@@ -14,7 +14,7 @@ import { vendorLinkFor, trackVendorClicks } from "/assets/affiliate-links.js";
 
 // The four trait ratings are shared with the browsable catalog so the site has
 // one opinion about how powerful a paddle is — see assets/paddle-ratings.js.
-import { clamp01, isSoftImpact, powerRating, controlRating, spinRatingOf, forgivenessRatingOf, tiebreak } from "/assets/paddle-ratings.js";
+import { clamp01, isSoftImpact, powerRating, controlRating, spinRatingOf, forgivenessRatingOf, allCourtFit, approvalPoolFor, tiebreak } from "/assets/paddle-ratings.js";
 
 // The results-page comparison visualizations (Top 3 strip + axis explorer +
 // value chart + priority stress-test). Its own module so the same components
@@ -45,16 +45,18 @@ const QUESTIONS = [
       { value: "pro", label: "Pro / tournament", hint: "Dialed-in technique, playing to win (4.5+)" },
     ],
   },
-  {
-    key: "frequency",
-    prompt: "How often do you get on the court?",
-    options: [
-      { value: "rarely", label: "A few times a year", hint: "Casual, social games here and there" },
-      { value: "weekly", label: "Weekly", hint: "A regular game or two most weeks" },
-      { value: "frequent", label: "A few times a week", hint: "Pickleball is a real part of your routine" },
-      { value: "daily", label: "Daily / competitive", hint: "You train, drill, and play tournaments" },
-    ],
-  },
+  // "How often do you get on the court?" was removed on 2026-07-18. It looked
+  // like a real question and wasn't: of its four options, "A few times a week"
+  // and "Daily / competitive" scored IDENTICALLY (0% difference across 240
+  // sampled answer sets), and "Weekly" produced no scoring term at all — so it
+  // was a four-way control with two settings. The one that worked, "A few times
+  // a year", simply added the paddle's forgiveness, which is now what the level
+  // question does (see levelForgivenessBonus), and its other bonus was gated on
+  // the Advanced skill tag that the same change stopped matching on.
+  //
+  // Ten questions is a long run-up to an email gate that is already the biggest
+  // drop-off on the page; a question that duplicates another one isn't worth
+  // the step.
   {
     key: "style",
     prompt: "What best describes your game?",
@@ -122,10 +124,13 @@ const QUESTIONS = [
   },
   {
     key: "tournament",
-    prompt: "Do you need it tournament-legal?",
+    prompt: "Do you need it tournament-approved?",
+    hint: "The two sanctioning bodies certify separately, and some paddles carry both.",
     options: [
-      { value: "yes", label: "Yes — USAP approved", hint: "Required for USA Pickleball–sanctioned tournaments" },
-      { value: "no", label: "No, just recreational play", hint: "" },
+      { value: "usap", label: "USAP approved", hint: "USA Pickleball — most club, league and community tournaments" },
+      { value: "upa", label: "UPA-A approved", hint: "United Pickleball Association — the PPA and APP pro tours" },
+      { value: "either", label: "Either is fine", hint: "Any approved paddle, just not an unapproved one" },
+      { value: "no", label: "No — recreational play", hint: "Show me everything, approved or not" },
     ],
   },
   {
@@ -220,9 +225,9 @@ function twistWeightPrefScore(paddle, pref) {
   return trapezoid(t, 0, 0.35, 0.25); // low = precise & lively
 }
 
-function isTournamentLegal(paddle) {
-  return paddle.approvalBody === "USAP" || paddle.approvalBody === "USAP/UPA-A";
-}
+// approvalPoolFor lives in paddle-ratings.js — the browse grid filters on the
+// same four states, and one definition means the two surfaces can never
+// disagree about whether a dual-certified paddle counts as USAP.
 
 
 
@@ -292,6 +297,10 @@ function dimensionsFor(paddle, fullAnswers) {
     control: toDots(raw.control),
     spin: toDots(raw.spin),
     forgiveness: toDots(raw.forgiveness),
+    // How even the power/control split is — what "All-around" actually asks
+    // for. Scored on the same 10-30 scale as the four traits so the style
+    // bonus below weighs the same whichever style was chosen.
+    balance: toDots(allCourtFit(paddle)),
     weightFit: toDots(weightFitScore(paddle, fullAnswers.weight)),
     twistWeightFit: toDots(twistWeightPrefScore(paddle, fullAnswers.twistWeight)),
     budgetFit: toDots(budgetScore(paddle, fullAnswers.budget)),
@@ -349,28 +358,34 @@ function taglineFor(dims) {
     : `Balanced paddle with a bit more ${LEAN_LABEL[lead]} — ${LEAN_COPY[lead]}`;
 }
 
-const SKILL_LEVELS = ["Beginner", "Intermediate", "Advanced"];
+// How much EXTRA the paddle's forgiveness is worth, given the visitor's level.
+//
+// This replaced a skill-TAG MATCH worth +40 — the largest single term in the
+// model — and it was the wrong shape twice over.
+//
+// It wasn't independent information. skillLevel is derived by
+// rebuild_paddle_data.py from twist weight, core thickness and paddle type, two
+// of which the scorer already counts directly, so the tag is a re-encoding of
+// traits already scored: Beginner-tagged paddles average .76 forgiveness / .34
+// power, Advanced-tagged .27 / .64. Matching it added those traits a second
+// time with a 40-point amplifier.
+//
+// And it acted as a filter rather than a preference. Answering "Advanced" put
+// +40 on 196 paddles of which only FOUR are forgiving, so an advanced player
+// asking for touch and a big sweet spot was steered into 0.85-power paddles,
+// while the forgiving ones they asked for sat two tag-steps away earning
+// nothing. In the other direction no Beginner-tagged paddle is high-power at
+// all, so a beginner who wanted pace — or an intermediate with a tennis
+// background wanting plow-through — could not reach one.
+//
+// A weight, not a match: a newer player benefits from a bigger sweet spot, so
+// forgiveness counts for more, and nothing is fenced off. An advanced player
+// gets forgiveness weighted exactly as they asked for it, no more and no less.
+const LEVEL_FORGIVENESS_BOOST = { beginner: 1, intermediate: 0.3, advanced: 0, pro: 0 };
 
-// An exact match to the visitor's stated level is worth more than the
-// typical 1-2 point gap between skill tiers on raw dot totals (Advanced-
-// tagged paddles trade away forgiveness dots for specialization, so without
-// a large-enough bonus here, "Advanced" tags would never surface for
-// advanced players — the raw stat sum would always favor the more
-// forgiving, easier-rated paddle regardless of who's asking). "Pro" maps
-// onto the same "Advanced" tier as "advanced" for matching purposes — the
-// data doesn't tag a separate Pro tier, and pretending it does would be
-// inventing precision the dataset can't back up. One step off (e.g. an
-// Intermediate paddle for a Beginner) gets a small nod; the opposite end of
-// the spectrum gets nothing.
-function skillMatchScore(paddleSkillLevel, experience) {
-  const userLevel = experience === "beginner" ? "Beginner" : experience === "intermediate" ? "Intermediate" : "Advanced";
-  const distance = Math.abs(SKILL_LEVELS.indexOf(paddleSkillLevel) - SKILL_LEVELS.indexOf(userLevel));
-  // x10 with the rest of the model — see toDots. 40 = four "dots", the margin
-  // this needs to actually surface Advanced-tagged paddles for advanced players
-  // (the reason it was 4 and not 2 in the original tuning).
-  if (distance === 0) return 40;
-  if (distance === 1) return 10;
-  return 0;
+function levelForgivenessBonus(forgivenessPoints, experience) {
+  const mult = LEVEL_FORGIVENESS_BOOST[experience] ?? 0;
+  return Math.round(forgivenessPoints * mult);
 }
 
 const SHAPE_MAP = { widebody: "Widebody", elongated: "Elongated", hybrid: "Hybrid" };
@@ -381,9 +396,9 @@ const SHAPE_MAP = { widebody: "Widebody", elongated: "Elongated", hybrid: "Hybri
 // answers that aren't shown as their own row (style, current-paddle gripes,
 // shape, arm sensitivity, play frequency). The visitor's stated style
 // counts its one matching dimension double, since that's the thing they
-// explicitly said matters most; a paddle tagged for the visitor's exact
-// stated skill level gets its own (larger) bonus — see skillMatchScore for
-// why it needs more than a simple double to actually move the needle.
+// explicitly said matters most; their stated level weights forgiveness up
+// rather than matching a tag — see levelForgivenessBonus for why the tag
+// match it replaced was both redundant and exclusionary.
 // Every dot term is a non-negative integer, so a paddle that's
 // equal-or-better on every shown dimension (and strictly better on at
 // least one) always scores strictly higher, full stop. A null dim (only
@@ -430,7 +445,13 @@ export function scoreTerms(dims, a) {
   if (a.style === "power") push("style", "You play a power game", dims.power, "You said power banger, so its power counts twice.");
   else if (a.style === "spin") push("style", "You play a spin game", dims.spin, "You said spin & control, so its spin counts twice.");
   else if (a.style === "soft") push("style", "You play a soft game", dims.control, "You said soft game and resets, so its control counts twice.");
-  // "allround" adds nothing on purpose — no lean is the point.
+  // "allround" used to add nothing, on the theory that no lean meant no thumb
+  // on the scale. In practice that wasn't neutral — with no bonus the raw trait
+  // sum decided, and it returned a top 3 that was 43% Power-type against 31%
+  // All-Court, so the one answer meaning "a bit of everything" delivered
+  // specialists. Rewarding an even power/control split is the actual neutral
+  // position, and it's how the browse grid has always ranked All-Court.
+  else if (a.style === "allround") push("style", "You play an all-court game", dims.balance, "You said a bit of everything, so an even power/control split counts extra.");
 
   if (Array.isArray(a.current)) {
     if (a.current.includes("more_power")) push("want_power", "You wanted more power", dims.power, "You asked for more mustard on drives, so its power counts again.");
@@ -468,14 +489,10 @@ export function scoreTerms(dims, a) {
     push("arm_feel", "A soft, arm-friendly face", dims.softImpact ? 10 : 0, "You mentioned occasional soreness; a soft face is gentler on contact.");
   }
 
-  if ((a.frequency === "daily" || a.frequency === "frequent") && dims.skillLevel === "Advanced") {
-    push("frequency", "You're on court a lot", 10, "Built for advanced play, which rewards the hours you're putting in.");
-  }
-  if (a.frequency === "rarely") push("frequency", "You play occasionally", dims.forgiveness, "Playing a few times a year, a forgiving paddle matters more than a specialised one.");
-
-  const level = String(dims.skillLevel).toLowerCase();
-  push("skill", "Tagged for your level", skillMatchScore(dims.skillLevel, a.experience),
-    `This is ${/^[aeiou]/.test(level) ? "an" : "a"} ${level}-tagged paddle.`);
+  push("level", "Room to grow into", levelForgivenessBonus(dims.forgiveness, a.experience),
+    a.experience === "beginner"
+      ? "Newer players gain most from a big sweet spot, so its forgiveness counts double for you."
+      : "Still building consistency, so its forgiveness counts for a little extra.");
 
   return terms;
 }
@@ -506,7 +523,7 @@ export function scorePaddle(paddle, answers) {
 
 export function computeMatches(paddles, answers) {
   const fullAnswers = { ...answers };
-  const pool = (answers.tournament === "yes" ? paddles.filter(isTournamentLegal) : paddles).filter((p) => p.price != null);
+  const pool = paddles.filter(approvalPoolFor(answers.tournament)).filter((p) => p.price != null);
 
   const scored = pool.map((paddle) => {
     const dims = dimensionsFor(paddle, fullAnswers);
@@ -587,7 +604,6 @@ export async function submitLead(email, fullAnswers, recommendedPaddleIds) {
       email,
       answers: {
         experience: fullAnswers.experience,
-        frequency: fullAnswers.frequency,
         style: fullAnswers.style,
         current: fullAnswers.current || [],
         shape: fullAnswers.shape,
@@ -898,8 +914,7 @@ class PaddleQuizApp {
     arm_forgive: "forgiveness",
     arm_feel: "how soft the face is",
     arm_light: "being light enough to spare your arm",
-    frequency: "how often you play",
-    skill: "your level",
+    level: "sweet-spot size for your level",
   };
 
   // One sentence naming what actually decided the order, derived from the same
@@ -944,11 +959,10 @@ class PaddleQuizApp {
       : `${other.paddle.name} finished ${gapFit} fit ${gapFit === 1 ? "point" : "points"} back`;
     if (ahead) s += `, ahead on ${phrase(ahead)}`;
     if (behind) {
-      // Skill is usually the decisive term and has a far more concrete phrasing
-      // available than "behind on your level" — name both tags.
-      s += behind.key === "skill" && other.dims.skillLevel !== lead.dims.skillLevel
-        ? ` but tagged ${String(other.dims.skillLevel).toLowerCase()} rather than ${String(lead.dims.skillLevel).toLowerCase()}`
-        : `${ahead ? " but" : ","} behind on ${phrase(behind)}`;
+      // The old skill-tag special case ("tagged intermediate rather than
+      // advanced") went with the tag match it described — there is no tag
+      // comparison left to name, only a smaller sweet spot.
+      s += `${ahead ? " but" : ","} behind on ${phrase(behind)}`;
     }
     return s + ".";
   }

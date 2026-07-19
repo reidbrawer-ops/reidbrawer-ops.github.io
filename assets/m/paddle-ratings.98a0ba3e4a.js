@@ -60,6 +60,52 @@ export function forgivenessRatingOf(paddle) {
   return paddle.twistWeightPercentile != null ? paddle.twistWeightPercentile : 0.5;
 }
 
+// Which paddles satisfy each answer to "do you need it tournament-approved?".
+//
+// Not a rating, but it belongs in this module for the reason the module exists:
+// it is a fact about a paddle that BOTH the quiz and the browsable catalog have
+// to agree on. The quiz filters its scoring pool with it and the grid filters
+// its list with it, and two copies would eventually disagree about whether a
+// dual-certified paddle counts as USAP — which is the drift this file was
+// created to prevent (see the header).
+//
+// The two sanctioning bodies certify SEPARATELY, and the catalog carries four
+// states: USAP (392), USAP/UPA-A (66), UPA-A (23), Unapproved (5). The 66
+// dual-certified paddles satisfy either requirement, so they appear in both
+// pools — the thing a yes/no question could never express.
+export const APPROVAL_POOLS = {
+  usap: (p) => p.approvalBody === "USAP" || p.approvalBody === "USAP/UPA-A",
+  upa: (p) => p.approvalBody === "UPA-A" || p.approvalBody === "USAP/UPA-A",
+  either: (p) => Boolean(p.approvalBody) && p.approvalBody !== "Unapproved",
+  unapproved: (p) => p.approvalBody === "Unapproved",
+  no: () => true,
+};
+
+// Resolve an answer to a predicate. "yes" is the old binary value and meant
+// USAP; it is mapped rather than dropped so a stale answer can never widen the
+// pool to paddles the visitor can't use — failing open on a legality filter is
+// the wrong direction to fail.
+export function approvalPoolFor(answer) {
+  const key = answer === "yes" ? "usap" : answer;
+  return APPROVAL_POOLS[key] || APPROVAL_POOLS.no;
+}
+
+// How well a paddle plays the all-court game: balance, not mediocrity. A paddle
+// scores 1 when its power and control are equal and falls away as either
+// dominates, so a genuine do-everything paddle beats both a power specialist
+// and a control specialist — which is the whole point of asking for one.
+//
+// Lives here because BOTH surfaces need the same answer. paddle-grid.js has
+// ranked its "All-Court" filter this way for a while; the quiz's "All-around"
+// style answer added no bonus at all, so it fell through to the raw trait sum
+// and returned a top 3 that was 43% Power-type against 31% All-Court. Two
+// surfaces disagreeing about what all-court means is exactly the drift this
+// module exists to prevent (see the header) — so the formula moved here and
+// both call it.
+export function allCourtFit(paddle) {
+  return 1 - Math.abs(powerRating(paddle) - controlRating(paddle));
+}
+
 // Which of the four ratings a given paddle actually has evidence for.
 //
 // Every rating function above degrades to a middle value when its source field

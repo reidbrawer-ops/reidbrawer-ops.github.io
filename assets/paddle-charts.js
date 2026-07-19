@@ -249,7 +249,7 @@ const TERM_GROUPS = [
   { label: "What the paddle is", keys: ["traits"] },
   { label: "Your style", keys: ["style", "want_power", "want_spin", "want_sweet", "want_light", "want_arm"] },
   { label: "Fit & feel", keys: ["feel", "shape", "arm_forgive", "arm_feel", "arm_light"] },
-  { label: "Your level", keys: ["skill", "frequency"] },
+  { label: "Your level", keys: ["level"] },
   { label: "Budget", keys: ["budget"] },
 ];
 

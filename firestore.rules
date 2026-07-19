@@ -189,7 +189,18 @@ service cloud.firestore {
           && data.answers is map
           && data.answers.keys().hasOnly(['experience', 'frequency', 'style', 'current', 'shape', 'sensitivity', 'weight', 'twistWeight', 'tournament', 'budget'])
           && data.answers.experience is string
-          && data.answers.frequency is string
+          // frequency is OPTIONAL. The question was removed from the quiz on
+          // 2026-07-18 (it had four options, two of which scored identically and
+          // one of which did nothing at all — see paddle-quiz.js QUESTIONS).
+          //
+          // Tolerant rather than deleted, for the same deploy-order reason as
+          // updatedAt above: assets/*.js ships Cache-Control max-age=600 and an
+          // open tab can hold old JS indefinitely, so a client that still sends
+          // frequency must keep working. Requiring it would have rejected every
+          // lead from the new client; forbidding it would reject every lead from
+          // a cached old one. Optional accepts both, and this rule must reach
+          // production BEFORE the hosting deploy that drops the question.
+          && (data.answers.get('frequency', null) == null || data.answers.frequency is string)
           && data.answers.style is string
           && data.answers.current is list
           && data.answers.shape is string

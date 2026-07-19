@@ -17,7 +17,7 @@
 import { vendorLinkFor, trackVendorClicks } from "/assets/affiliate-links.js";
 // The same four ratings the quiz uses — so "most powerful" means one thing on
 // this site. See assets/paddle-ratings.js.
-import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf, tiebreak } from "/assets/paddle-ratings.js";
+import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf, allCourtFit, APPROVAL_POOLS, tiebreak } from "/assets/paddle-ratings.js";
 // The consolidated analytics view (axis explorer + value chart + stress-test),
 // driven by the compare tray's selection. Same module the quiz results use.
 import { renderPaddleCharts, seriesColorFor } from "/assets/paddle-charts.js";
@@ -110,6 +110,19 @@ const FILTERS = [
       standard: (p) => p.gripSizeIn > 4.13 && p.gripSizeIn <= 4.3,
       thick: (p) => p.gripSizeIn > 4.3,
     } },
+  // Tournament approval, sharing APPROVAL_POOLS with the quiz so both surfaces
+  // treat the 66 dual-certified paddles identically — they satisfy USAP and
+  // UPA-A alike, and appear under either. Without this filter someone could
+  // state a UPA-A requirement in the quiz and then have no way to hold to it
+  // while browsing the catalog.
+  { key: "approval", label: "Filter by tournament approval", all: "Any approval",
+    options: [["usap", "USAP approved"], ["upa", "UPA-A approved"], ["either", "Approved by either"], ["unapproved", "Not tournament approved"]],
+    tests: {
+      usap: APPROVAL_POOLS.usap,
+      upa: APPROVAL_POOLS.upa,
+      either: APPROVAL_POOLS.either,
+      unapproved: APPROVAL_POOLS.unapproved,
+    } },
   { key: "year", label: "Filter by release year", all: "Any year",
     options: [["2026", "Released 2026"], ["2025", "Released 2025"], ["2024", "Released 2024"], ["older", "2023 & earlier"]],
     tests: {
@@ -143,7 +156,10 @@ const TYPE_FIT = {
   Power: (p) => powerRating(p),
   Control: (p) => controlRating(p),
   // Balance, not mediocrity: closest to an even split between power and control.
-  "All-Court": (p) => 1 - Math.abs(powerRating(p) - controlRating(p)),
+  // Balance, not mediocrity: closest to an even split between power and
+  // control. Moved to paddle-ratings.js so the quiz's "All-around" answer
+  // scores it identically — see allCourtFit.
+  "All-Court": (p) => allCourtFit(p),
 };
 
 const SKILL_FIT = {
