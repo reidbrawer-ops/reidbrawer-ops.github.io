@@ -180,63 +180,6 @@
   color: var(--ink-faint);
 }
 
-/* ---------- SVG plot + overlay ---------- */
-.pc-plot {
-  position: relative;
-}
-.pc-svg {
-  width: 100%;
-  display: block;
-}
-.pc-grid-line {
-  stroke: var(--rule-06);
-  stroke-width: 1;
-}
-.pc-dot {
-  fill: rgba(var(--ink-rgb), 0.18);
-  transition: cx 0.4s var(--ease), cy 0.4s var(--ease);
-}
-.pc-frontier {
-  fill: none;
-  stroke: var(--ink-faint);
-  stroke-width: 1.5;
-  stroke-dasharray: 5 5;
-}
-
-/* Overlay: percent-positioned text over the SVG, non-interactive. */
-.pc-ov {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.pc-ov-label {
-  position: absolute;
-  font-family: var(--font-body);
-  white-space: nowrap;
-  line-height: 1;
-}
-.pc-tick {
-  font-size: 0.656rem;
-  font-weight: 400;
-  color: var(--ink-faint);
-}
-.pc-axis-title {
-  font-weight: 600;
-  font-size: 0.719rem;
-  color: var(--ink-soft);
-}
-.pc-pick-label {
-  font-weight: 600;
-  font-size: 0.75rem;
-}
-.pc-frontier-note {
-  font-family: var(--font-headline);
-  font-style: italic;
-  font-weight: 600;
-  font-size: 0.75rem;
-  color: var(--ink-faint);
-}
-
 /* ---------- 2c stress-test ---------- */
 .pc-preset-group {
   margin: 10px 0 6px;
@@ -332,66 +275,6 @@
   flex: none;
 }
 
-/* ---------- value chart: frontier, dead zone, callouts ---------- */
-.pc-frontier-dot {
-  fill: var(--ink-soft);
-}
-/* Everything priced past the last frontier point buys no more score. */
-.pc-deadzone {
-  fill: rgba(var(--ink-rgb), 0.04);
-  pointer-events: none;
-}
-/* Sits directly under the plot, above the headline that argues from it. */
-.pc-dot-legend {
-  margin-top: 6px;
-}
-.pc-headline {
-  margin: 12px 0 0;
-  font-family: var(--font-headline);
-  font-size: 0.9375rem;
-  line-height: 1.45;
-  font-weight: 600;
-  color: var(--ink);
-}
-.pc-alt {
-  margin-top: 12px;
-  padding: 12px 14px;
-  border: 1px solid var(--bay);
-  border-left-width: 3px;
-  border-radius: var(--radius-s);
-  background: var(--bay-tint);
-}
-.pc-alt.is-good {
-  border-color: var(--rule-16);
-  background: var(--fog);
-}
-.pc-alt-label {
-  margin: 0 0 4px;
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--bay-deep);
-}
-.pc-alt-body {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: var(--ink);
-}
-.pc-alt-note {
-  margin: 6px 0 0;
-  font-family: var(--font-body);
-  font-size: 0.6875rem;
-  line-height: 1.5;
-  color: var(--ink-soft);
-}
-.pc-value-modes {
-  margin-bottom: 10px;
-}
-
 /* ---------- responsive ---------- */
 @media (max-width: 720px) {
   .pc-card {
@@ -420,9 +303,157 @@
 
 /* Kill the delight-moment transitions when the visitor asked for less motion. */
 @media (prefers-reduced-motion: reduce) {
-  .pc-dot,
   .pc-row,
   .pc-seg {
     transition: none;
+  }
+}
+
+/* ---------- shopping recommendations ---------- */
+/* Replaced the price-vs-score scatter. Reads as a shopping list, not a chart:
+   a panel for the paddle you picked, then rows of alternatives with the price
+   difference as the loudest number in each one. */
+.pc-shop-anchor {
+  border: 1px solid var(--bay);
+  border-left-width: 3px;
+  border-radius: var(--radius-s);
+  background: var(--bay-tint);
+  padding: 12px 14px;
+  margin-bottom: 18px;
+}
+.pc-shop-anchor-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pc-shop-anchor-label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bay-deep);
+}
+.pc-shop-anchor-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--ink);
+}
+.pc-shop-anchor-price {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--ink);
+}
+.pc-shop-claim {
+  margin: 6px 0 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--bay-deep);
+}
+.pc-shop-claim.is-neutral {
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+
+.pc-shop-group + .pc-shop-group {
+  margin-top: 18px;
+}
+.pc-shop-grouptitle {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.pc-shop-empty {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.pc-shop-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--rule-08);
+}
+.pc-shop-row:first-of-type {
+  border-top: none;
+}
+.pc-shop-main {
+  min-width: 0;
+  flex: 1;
+}
+.pc-shop-name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--ink);
+}
+.pc-shop-delta {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.pc-shop-money {
+  flex: none;
+  text-align: right;
+}
+.pc-shop-price {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--ink);
+}
+/* The saving is the point of the row, so it is the coloured number. */
+.pc-shop-diff {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--ink-faint);
+}
+.pc-shop-diff.is-save {
+  color: var(--bay-deep);
+  font-weight: 700;
+}
+.pc-shop-buy {
+  flex: none;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.6875rem;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pc-shop-buy:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+@media (max-width: 720px) {
+  .pc-shop-row {
+    flex-wrap: wrap;
+  }
+  .pc-shop-money {
+    text-align: left;
+  }
+  .pc-shop-buy {
+    width: 100%;
+    text-align: center;
   }
 }

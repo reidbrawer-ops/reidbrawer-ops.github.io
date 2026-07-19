@@ -1,43 +1,42 @@
-// Paddle comparison visualizations — a "Your top 3" strip plus three
-// interactive charts: an axis-adjustable catalog scatter (2a), a
-// price-vs-overall-score value chart (2b), and a preset-reweighted priority
-// stress-test (2c). Two surfaces use it:
-//   - the quiz results page (assets/paddle-quiz.js) mounts the value + stress
-//     charts under the buy CTAs; featured = the quiz's top 3.
-//   - the browse page (assets/paddle-grid.js) mounts the full set as a
-//     consolidated analytics view; featured = the paddles the visitor picked
-//     into the compare tray, and the scatter's dots are clickable to add more.
+// Paddle comparison components — a "Your top 3" strip, a shopping recommender,
+// and a priority stress-test. Two surfaces use them:
+//   - the quiz results page (assets/paddle-quiz.js) mounts recommend + stress
+//     under the buy CTAs; featured = the quiz's top 3.
+//   - the browse page (assets/paddle-grid.js) mounts strip + recommend, plus
+//     stress once two paddles are compared; featured = the compare tray.
 //
-// Recreated from design_handoff_paddle_comparison/README.md. The prototype's
-// data was illustrative and used six normalized lab ratings; this site only
-// has FOUR trait ratings it can honestly stand behind (power, control, spin,
-// forgiveness — see assets/paddle-ratings.js), so the two the data can't back
-// (pop, hand speed) are dropped rather than invented, and the headline figure
-// is the transparent overall score, never a fabricated "match %".
+// This module used to be three charts. Two have gone, and for the same reason
+// both times: they answered questions about the CATALOG when the visitor is
+// asking what to buy.
 //
-// IMPORTANT — the scatter is banded on purpose. power/spin/control/forgiveness
-// derive from percentiles that scripts/rebuild_paddle_data.py bands into 20
-// steps before they reach this public file (a data-licensing firewall —
+//   - The axis explorer (a 486-dot scatter with adjustable axes) was removed on
+//     2026-07-18. It could show where a paddle sat but not whether that was any
+//     good, and reading it was a project.
+//   - The value chart (price against a normalised score, with a Pareto frontier
+//     and a shaded dead zone) was replaced by buildRecommend. It needed three
+//     concepts explained before it told anyone anything, and the one genuinely
+//     useful thing in it — spotting an equivalent paddle for less — was a
+//     footnote at the bottom. That footnote is now the whole component.
+//
+// The ratings behind it all: this site has FOUR it can honestly stand behind
+// (power, control, spin, forgiveness — see assets/paddle-ratings.js), so the
+// prototype's other two (pop, hand speed) are dropped rather than invented, and
+// no surface prints a fabricated "match %".
+//
+// IMPORTANT — the ratings are banded. power/spin/control/forgiveness derive
+// from percentiles that scripts/rebuild_paddle_data.py bands into 20 steps
+// before they reach this public file (a data-licensing firewall —
 // PickleballEffect's exact percentiles are proprietary; see
-// PADDLE_DATA_SETUP.md). Paddles can therefore still share coordinates, and
-// dodgeCloud() spreads those exact overlaps a few pixels for legibility — it
-// never changes a value, only nudges coincident dots apart so a cluster reads
-// as a cluster instead of one dot.
+// PADDLE_DATA_SETUP.md). That is why the recommender talks in BANDS and treats
+// anything under two of them as noise: 0.05 is the finest difference the data
+// can express, so a one-band gap is an artifact, not a fact about a paddle.
 //
-// It used to be four quartile bands, which put the entire 486-paddle catalog on
-// twenty distinct positions; the 2026-07-18 refresh widened it to twenty bands
-// and 253 positions, so the clusters are real overlap now rather than an
-// artifact of the storage format.
-//
-// No framework — the chart DOM is built once and then MUTATED in place on
-// axis/preset changes (never re-serialized), because the CSS transitions on
-// dot position (2a) and bar re-sort (2c) are the components' delight moment
-// and would not fire across an innerHTML swap. This mirrors the hand-rolled
-// class style of the rest of this site (paddle-quiz.js, paddle-grid.js).
+// No framework — the stress-test's DOM is built once and MUTATED in place on
+// preset changes (never re-serialized), because the CSS row re-sort is the
+// component's delight moment and would not fire across an innerHTML swap. This
+// mirrors the hand-rolled class style of the rest of this site.
 
 import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf, clamp01 } from "/assets/paddle-ratings.js";
-
-const SVGNS = "http://www.w3.org/2000/svg";
 
 // See assets/analytics.js. Which axis pairs and presets people actually reach
 // for is the only way to know whether these controls earn their complexity —
@@ -60,7 +59,6 @@ const SERIES = [
   { solid: "#9c4322", rgb: "156,67,34" },   // --poppy-deep
   { solid: "#56621a", rgb: "86,98,26" },    // --kitchen
 ];
-const haloFill = (s) => `rgba(${s.rgb},0.16)`;
 
 // Shared with paddle-quiz.js's buy cards so paddle #1's teal card matches its
 // teal dot on every chart. Falls back to the first accent past rank 3.
@@ -76,94 +74,33 @@ const RATINGS = {
   control: { get: (p) => controlRating(p) },
   forgiveness: { get: (p) => forgivenessRatingOf(p) },
 };
+const RATING_KEYS = ["power", "spin", "control", "forgiveness"];
+// How each trait reads mid-sentence in the shopping copy ("better on spin and
+// sweet spot"). "Forgiveness" is the internal name; "sweet spot" is what a
+// buyer would actually say, and it's the wording the quiz already uses.
+const TRAIT_WORD = { power: "power", spin: "spin", control: "control", forgiveness: "sweet spot" };
+
+// "a", "a and b", "a, b and c" — Oxford-free, matching the site's prose.
+function listWords(words) {
+  if (words.length <= 1) return words[0] || "";
+  return words.slice(0, -1).join(", ") + " and " + words[words.length - 1];
+}
+
 // All dynamic text is written via textContent (never innerHTML), so paddle
 // names and brands need no escaping here — the DOM API handles it.
 const fmtPrice = (n) => "$" + (Number.isInteger(n) ? n : n.toFixed(2));
 const fmtScore = (n) => n.toFixed(1);
 
-function svg(tag, attrs) {
-  const e = document.createElementNS(SVGNS, tag);
-  for (const k in attrs) e.setAttribute(k, attrs[k]);
-  return e;
-}
+// Every element in this module is built here. Text goes in as textContent, so
+// paddle names and brands are never parsed as markup — which is why nothing
+// downstream escapes them.
 function h(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
   if (text != null) e.textContent = text;
   return e;
 }
-// An absolutely-positioned overlay label placed by PERCENT of the SVG box, so
-// it tracks the responsive <svg width:100%> with no resize handler — exactly
-// how the prototype positions every tick and data label.
-function ovLabel(vbW, vbH) {
-  return (xPx, yPx, anchor, text, color, cls) => {
-    const d = h("div", "pc-ov-label" + (cls ? " " + cls : ""));
-    d.style.left = ((xPx / vbW) * 100).toFixed(2) + "%";
-    d.style.top = ((yPx / vbH) * 100).toFixed(2) + "%";
-    d.style.transform = anchor === "middle" ? "translate(-50%,-50%)" : anchor === "start" ? "translate(0,-50%)" : "translate(-100%,-50%)";
-    if (color) d.style.color = color;
-    d.textContent = text;
-    return d;
-  };
-}
 
-// "Nice" tick list for a value domain — used for the price axis, whose range
-// comes from the real catalog rather than a fixed 0–100.
-function ticksFor(min, max, step) {
-  const out = [];
-  for (let v = Math.ceil(min / step) * step; v <= max - step / 2; v += step) out.push(v);
-  return out;
-}
-
-// A 1/2/5/10-style step that lands ~`target` ticks across a range. The value
-// chart's y-axis is a fixed 0–100 in "catalog average" mode but a raw quiz
-// score in "fit for you" mode, whose range depends entirely on the answers —
-// so the old hardcoded step of 10 could produce two ticks or forty.
-function niceStep(range, target = 6) {
-  if (!(range > 0)) return 1;
-  const rough = range / target;
-  const mag = Math.pow(10, Math.floor(Math.log10(rough)));
-  const norm = rough / mag;
-  return (norm <= 1 ? 1 : norm <= 2 ? 2 : norm <= 5 ? 5 : 10) * mag;
-}
-
-// Spread coincident points a few pixels apart (overplotting "dodge"). Because
-// the ratings are banded, several paddles can still land on one exact
-// coordinate; without this a cluster reads as a single dot.
-// Points are grouped by a coarse cell, then those in a shared cell are laid out
-// on a golden-angle spiral around their shared centre — deterministic, so the
-// same catalog always dodges the same way. It moves DISPLAY positions only; the
-// underlying tier values are untouched, and lone dots never move.
-function dodgeCloud(pts, cell = 4, maxR = 13) {
-  const groups = new Map();
-  for (let i = 0; i < pts.length; i++) {
-    const key = Math.round(pts[i].x / cell) + "," + Math.round(pts[i].y / cell);
-    let g = groups.get(key);
-    if (!g) groups.set(key, (g = []));
-    g.push(i);
-  }
-  const out = pts.map((p) => ({ x: p.x, y: p.y }));
-  for (const idxs of groups.values()) {
-    const n = idxs.length;
-    if (n <= 1) continue;
-    let cx = 0;
-    let cy = 0;
-    for (const i of idxs) {
-      cx += pts[i].x;
-      cy += pts[i].y;
-    }
-    cx /= n;
-    cy /= n;
-    const R = Math.min(maxR, 2.6 * Math.sqrt(n));
-    idxs.forEach((i, k) => {
-      const r = R * Math.sqrt((k + 0.5) / n);
-      const theta = k * 2.399963229728653; // golden angle
-      out[i].x = cx + r * Math.cos(theta);
-      out[i].y = cy + r * Math.sin(theta);
-    });
-  }
-  return out;
-}
 
 // ---------- Derived per-paddle model ----------
 
@@ -332,6 +269,10 @@ class PaddleCharts {
     // "Nth of M" claim and the dot legend carry it, so a rank can't be read as
     // catalog-wide when it is only within a filter.
     this.scopeLabel = opts.scopeLabel || null;
+    // Buy-link builder, supplied by the surface that holds the affiliate map
+    // (vendorLinkFor bound to it). Passed in rather than imported so this
+    // module keeps knowing nothing about affiliate configuration.
+    this.linkFor = opts.linkFor || null;
 
     // The browse chart now follows the grid's filters, so the plotted set can be
     // small or empty. Math.min of nothing is Infinity, which would poison the
@@ -363,9 +304,7 @@ class PaddleCharts {
     const preset = init.preset && this.presets.some((p) => p.key === init.preset) ? init.preset : this.initialPreset();
     // Default the value chart to the visitor's own fit score wherever we have
     // it — that's the question they asked. Browse falls back to the average.
-    const wantMode = init.scoreMode === "overall" || init.scoreMode === "fit" ? init.scoreMode : this.canScoreByFit() ? "fit" : "overall";
-    const scoreMode = this.canScoreByFit() ? wantMode : "overall";
-    this.state = { preset, scoreMode };
+    this.state = { preset };
   }
 
   // Initial 2c preset: an explicit, known ?preset= wins; otherwise the default
@@ -385,7 +324,15 @@ class PaddleCharts {
     this.root.classList.add("pc-root");
     const builders = {
       strip: () => this.buildStrip(),
-      value: () => this.buildValue(),
+      recommend: () => this.buildRecommend(),
+      // Transitional alias. The browse grid asks for "value" on main; its rename
+      // to "recommend" is one line sitting in a file a parallel session is
+      // rewriting, so the two land separately. Without this, HEAD would have a
+      // window where browse requests a builder that no longer exists — the
+      // lookup below fails soft, so it wouldn't throw, it would just silently
+      // render the strip and nothing else. Delete once the grid says
+      // "recommend".
+      value: () => this.buildRecommend(),
       stress: () => this.buildStressTest(),
     };
     for (const key of this.components) {
@@ -421,272 +368,194 @@ class PaddleCharts {
     return card;
   }
 
-  tickLabel(node) {
-    node.classList.add("pc-tick");
-    return node;
+
+  // ===================== Shopping recommendations =====================
+  //
+  // Replaced a price-against-score scatter. That chart answered "what does the
+  // curve look like" — a question about the catalog — when the visitor is
+  // asking "what should I buy". Reading it required understanding a Pareto
+  // frontier, a dead zone and a normalised score before it told anyone
+  // anything, and the thing it was actually good at (spotting an equivalent
+  // paddle for less) was one callout at the bottom.
+  //
+  // Same data, stated as a shopping decision: what the pick is genuinely best
+  // at for its price, what costs less without giving anything up, and what is
+  // worth a little more.
+  //
+  // Every claim here is a comparison the reader could check on the cards
+  // themselves — no composite score, no "match %".
+
+  // Trait deltas are quoted in BANDS, never decimals. The percentiles ship
+  // banded into 20 steps (see the header), so 0.05 is the smallest difference
+  // the data can express and anything finer is an artifact of averaging. Two
+  // bands is the floor for calling a paddle better or worse at something —
+  // one band is inside the noise the banding itself introduces.
+  bandsBetween(a, b, key) {
+    return Math.round((a.r[key] - b.r[key]) / 0.05);
   }
 
-  // ===================== 2b — Price against performance =====================
-  //
-  // "What gives me the best performance for my money" is two questions: what
-  // does the curve look like, and where do I get off it. The frontier answers
-  // the first and used to be a dashed line with a whispered caption; it now
-  // carries the headline, because the finding is genuinely strong — the curve
-  // flattens well below the top of the price range, so the most expensive
-  // paddles are not buying score. The "for less" callout answers the second.
-  //
-  // On the quiz results the y-axis is the visitor's OWN fit score, not the
-  // catalog-wide trait average. A flat mean of four traits marks down exactly
-  // the specialist a power player came for, so measuring "performance" that way
-  // answers the money question with the wrong numerator.
-  buildValue() {
-    const card = h("section", "pc-card pc-value");
-    card.appendChild(h("p", "pc-eyebrow", "What does each dollar buy?"));
-    this.valueTitle = h("h3", "pc-title");
-    card.appendChild(this.valueTitle);
-    this.valueExplain = h("p", "pc-explain");
-    card.appendChild(this.valueExplain);
+  // "Gives up nothing": no trait more than one band below the anchor.
+  givesUpNothing(cand, anchor) {
+    return RATING_KEYS.every((k) => this.bandsBetween(cand, anchor, k) >= -1);
+  }
 
-    // Mode switch, only where there's a real second option: the quiz knows what
-    // this visitor asked for, browse doesn't.
-    if (this.canScoreByFit()) {
-      const pills = h("div", "pc-pillgroup pc-value-modes");
-      this.valuePills = {};
-      for (const [key, label] of [["fit", "Fit for you"], ["overall", "Catalog average"]]) {
-        const b = h("button", "pc-pill", label);
-        b.type = "button";
-        b.addEventListener("click", () => this.setScoreMode(key));
-        pills.appendChild(b);
-        this.valuePills[key] = b;
-      }
-      card.appendChild(pills);
+  // "Genuinely better": gives up nothing AND clears two bands somewhere.
+  clearlyBetter(cand, anchor) {
+    return this.givesUpNothing(cand, anchor) && RATING_KEYS.some((k) => this.bandsBetween(cand, anchor, k) >= 2);
+  }
+
+  // How far apart two paddles are overall — total band distance across the four
+  // traits. Used to rank "similar" candidates so the closest match leads.
+  bandDistance(a, b) {
+    return RATING_KEYS.reduce((sum, k) => sum + Math.abs(this.bandsBetween(a, b, k)), 0);
+  }
+
+  // The traits a candidate beats or trails the anchor on, in plain words,
+  // strongest first. Only differences of two bands or more are named.
+  traitDeltaWords(cand, anchor) {
+    const up = [];
+    const down = [];
+    for (const k of RATING_KEYS) {
+      const d = this.bandsBetween(cand, anchor, k);
+      if (d >= 2) up.push({ k, d });
+      else if (d <= -2) down.push({ k, d });
     }
+    up.sort((x, y) => y.d - x.d);
+    down.sort((x, y) => x.d - y.d);
+    return { up, down };
+  }
 
-    this.valueBody = h("div", "pc-value-body");
-    card.appendChild(this.valueBody);
-    this.updateValue();
+  // What the anchor is genuinely the best at, for its money.
+  //
+  // Scoped to paddles at or below its price, so the claim is "nothing cheaper
+  // beats it at this" rather than a boast about the whole catalog. Ties are
+  // counted, not hidden: with banded data a top spot is often shared, and
+  // "best spin under $200 (tied with 3 others)" is the honest version.
+  anchorStrengths(anchor) {
+    const cheaperOrSame = this.catalog.filter((d) => d.price <= anchor.price);
+    const out = [];
+    for (const k of RATING_KEYS) {
+      let better = 0;
+      let tied = 0;
+      for (const d of cheaperOrSame) {
+        if (d.id === anchor.id) continue;
+        const b = this.bandsBetween(d, anchor, k);
+        if (b > 0) better++;
+        else if (b === 0) tied++;
+      }
+      if (better === 0) out.push({ key: k, tied, pool: cheaperOrSame.length });
+    }
+    return out;
+  }
+
+  buildRecommend() {
+    const anchor = this.featured[0];
+    const card = h("section", "pc-card pc-shop");
+    if (!anchor) return card;
+
+    card.appendChild(h("p", "pc-eyebrow", "Before you buy"));
+    card.appendChild(h("h3", "pc-title", "Is there a better buy?"));
+    card.appendChild(
+      h("p", "pc-explain", `Every other paddle ${this.scopeLabel || "in the catalog"}, compared against ${anchor.name} on the four traits and the price.`)
+    );
+
+    card.appendChild(this.anchorPanel(anchor));
+
+    const pool = this.catalog.filter((d) => d.id !== anchor.id);
+    const cheaper = pool
+      .filter((d) => d.price < anchor.price && this.givesUpNothing(d, anchor))
+      .sort((a, b) => this.bandDistance(a, anchor) - this.bandDistance(b, anchor) || a.price - b.price)
+      .slice(0, 3);
+    // "A little more" is capped at +25%: past that it stops being an upgrade to
+    // the same purchase and becomes a different budget conversation.
+    const upgrade = pool
+      .filter((d) => d.price > anchor.price && d.price <= anchor.price * 1.25 && this.clearlyBetter(d, anchor))
+      .sort((a, b) => this.bandDistance(b, anchor) - this.bandDistance(a, anchor) || a.price - b.price)
+      .slice(0, 2);
+
+    card.appendChild(this.recGroup("Costs less, gives up nothing", cheaper, anchor,
+      `Nothing ${this.scopeLabel || "in the catalog"} costs less than ${anchor.name} without giving something up.`));
+    card.appendChild(this.recGroup("Worth a little more", upgrade, anchor,
+      "Nothing within 25% more is clearly better — you're not leaving anything on the table by stopping here."));
+
+    if (this.linkFor && [...cheaper, ...upgrade].some((d) => (this.linkFor(d.src) || {}).isAffiliate)) {
+      card.appendChild(h("p", "pc-note", "Some links here are affiliate links — we may earn a commission at no extra cost to you, and it never changes what gets recommended."));
+    }
     return card;
   }
 
-  // Fit scoring needs the quiz's scores AND enough scored paddles to plot.
-  canScoreByFit() {
-    return Boolean(this.fitCatalog && this.fitCatalog.length > 1);
-  }
-  valueScoreOf(d) {
-    return this.state.scoreMode === "fit" ? d.fit : d.overall;
-  }
-  // Fit is quoted as a whole number on the pick cards, so quote it the same way
-  // here — 93.75 showing as "94" above and "93.8" below is one paddle with two
-  // scores as far as a reader is concerned.
-  fmtValueScore(n) {
-    return this.state.scoreMode === "fit" ? String(Math.round(n)) : fmtScore(n);
-  }
-  valueSet() {
-    return this.state.scoreMode === "fit" ? this.fitCatalog : this.catalog;
-  }
-
-  setScoreMode(key) {
-    if (this.state.scoreMode === key) return;
-    this.state.scoreMode = key;
-    this.updateValue();
-    track("chart_score_mode", { mode: this.mode, score_mode: key });
-  }
-
-  updateValue() {
-    const byFit = this.state.scoreMode === "fit";
-    const set = this.valueSet();
-    const scoreOf = (d) => this.valueScoreOf(d);
-    const yLabel = byFit ? "Fit for you" : "Overall score";
-
-    this.valueTitle.textContent = byFit ? "Price against fit for you" : "Price against overall score";
-    this.valueExplain.textContent = byFit
-      ? "Up and left is better. Height is your own fit score, so this is value measured against what you asked for."
-      : "Up and left is better. Height is the plain average of the four ratings, which rates a specialist and an all-rounder alike.";
-    if (this.valuePills) {
-      for (const key in this.valuePills) this.valuePills[key].classList.toggle("is-active", this.state.scoreMode === key);
-    }
-
-    this.valueBody.replaceChildren();
-    if (set.length < 2) return;
-
-    const scores = set.map(scoreOf);
-    const rawMin = Math.min(...scores);
-    const rawMax = Math.max(...scores);
-    const step = niceStep(rawMax - rawMin);
-    const yMin = Math.floor(rawMin / step) * step;
-    const yMax = Math.ceil(rawMax / step) * step;
-    const xDom = this.priceDom;
-    const X = (v) => 60 + ((v - xDom[0]) / (xDom[1] - xDom[0])) * 740;
-    const Y = (v) => 380 - ((v - yMin) / (yMax - yMin || 1)) * 340;
-    const xTicks = ticksFor(xDom[0], xDom[1], 50);
-    const yTicks = ticksFor(yMin, yMax + step / 2, step);
-
-    const plot = h("div", "pc-plot");
-    const s = svg("svg", { viewBox: "0 0 860 430", class: "pc-svg" });
-    const grid = svg("g", {});
-    for (const t of xTicks) grid.appendChild(svg("line", { x1: X(t), y1: 40, x2: X(t), y2: 380, class: "pc-grid-line" }));
-    for (const t of yTicks) grid.appendChild(svg("line", { x1: 60, y1: Y(t), x2: 800, y2: Y(t), class: "pc-grid-line" }));
-    s.appendChild(grid);
-
-    const front = this.frontier();
-    // Draw the frontier as a STAIRCASE, not a diagonal. The diagonal implied
-    // that a paddle existed at every price along it; the step is what the data
-    // says — the score holds flat until some paddle actually beats it.
-    if (front.length > 1) {
-      const pts = [];
-      front.forEach((d, i) => {
-        if (i) pts.push(`${X(d.price).toFixed(1)},${Y(scoreOf(front[i - 1])).toFixed(1)}`);
-        pts.push(`${X(d.price).toFixed(1)},${Y(scoreOf(d)).toFixed(1)}`);
-      });
-      const top = front[front.length - 1];
-      pts.push(`${X(xDom[1]).toFixed(1)},${Y(scoreOf(top)).toFixed(1)}`);
-      s.appendChild(svg("polyline", { points: pts.join(" "), class: "pc-frontier" }));
-      // Everything right of the last frontier point is paying more for no more.
-      s.appendChild(svg("rect", { x: X(top.price).toFixed(1), y: "40", width: Math.max(0, X(xDom[1]) - X(top.price)).toFixed(1), height: "340", class: "pc-deadzone" }));
-    }
-
-    // Catalog cloud (context), dodged, then frontier members, then featured.
-    const cloudG = svg("g", { class: "pc-cloud" });
-    const raw = set.map((d) => ({ x: X(d.price), y: Y(scoreOf(d)) }));
-    const dd = dodgeCloud(raw);
-    for (let i = 0; i < set.length; i++) cloudG.appendChild(svg("circle", { cx: dd[i].x.toFixed(1), cy: dd[i].y.toFixed(1), r: "2.3", class: "pc-dot" }));
-    s.appendChild(cloudG);
-    const frontG = svg("g", {});
-    for (const d of front) frontG.appendChild(svg("circle", { cx: X(d.price).toFixed(1), cy: Y(scoreOf(d)).toFixed(1), r: "3.6", class: "pc-frontier-dot" }));
-    s.appendChild(frontG);
-    const pickG = svg("g", {});
-    for (const f of this.featured) {
-      if (byFit && typeof f.fit !== "number") continue;
-      pickG.appendChild(svg("circle", { cx: X(f.price).toFixed(1), cy: Y(scoreOf(f)).toFixed(1), r: "11", fill: haloFill(f.color), stroke: f.color.solid, "stroke-width": "2.5" }));
-      pickG.appendChild(svg("circle", { cx: X(f.price).toFixed(1), cy: Y(scoreOf(f)).toFixed(1), r: "4", fill: f.color.solid }));
-    }
-    s.appendChild(pickG);
-    plot.appendChild(s);
-
-    const ov = h("div", "pc-ov");
-    const mk = ovLabel(860, 430);
-    for (const t of xTicks) ov.appendChild(this.tickLabel(mk(X(t), 397, "middle", "$" + t)));
-    for (const t of yTicks) ov.appendChild(this.tickLabel(mk(48, Y(t), "end", String(Math.round(t)))));
-    ov.appendChild(mk(800, 410, "end", "Price →", null, "pc-axis-title"));
-    ov.appendChild(mk(14, 26, "start", yLabel + " ↑", null, "pc-axis-title"));
-    if (front.length > 1) {
-      // Sits low in the dead zone, not at the top: the pick labels crowd the
-      // upper band (the featured paddles are near the frontier by definition)
-      // and the note collided with them.
-      const top = front[front.length - 1];
-      ov.appendChild(mk(X(top.price) + 10, 356, "start", byFit ? "nothing pricier fits you better" : "nothing pricier scores higher", null, "pc-frontier-note"));
-    }
-    this.featured.forEach((f, i) => {
-      if (byFit && typeof f.fit !== "number") return;
-      const dx = i === 0 ? 16 : -16;
-      const dy = i === 1 ? -18 : 16;
-      ov.appendChild(mk(X(f.price) + dx, Y(scoreOf(f)) + dy, i === 0 ? "start" : "end", f.name, f.color.solid, "pc-pick-label"));
-    });
-    plot.appendChild(ov);
-    this.valueBody.appendChild(plot);
-
-    // Say what a grey dot is. The explorer has always labelled its cloud; this
-    // chart never did, and readers reported the dots as confusing out of
-    // context — reasonably, since the frontier headline below argues FROM them
-    // ("451 paddles cost more and none fits you better") without ever saying
-    // what they are.
-    const legend = h("p", "pc-note pc-dot-legend");
-    legend.textContent = this.scopeLabel
-      ? `Each grey dot is one of the ${set.length} paddles ${this.scopeLabel}. Your picks are ringed.`
-      : `Each grey dot is one of the ${set.length} paddles scored for you. Your ${this.featured.length === 1 ? "pick is" : "picks are"} ringed.`;
-    this.valueBody.appendChild(legend);
-
-    this.valueBody.appendChild(this.frontierHeadline(front, set));
-    const cheaper = this.cheaperEquivalent();
-    if (cheaper) this.valueBody.appendChild(cheaper);
-  }
-  // A per-pick trait breakdown (four gauges + score + $/pt) used to sit here.
-  // It repeated itself: across sampled answer sets, two of the three picks share
-  // an identical four-trait profile 38% of the time — the picks are selected to
-  // suit one set of answers, so they tend to be alike — which rendered two
-  // side-by-side cards a reader cannot tell apart. Trait comparison is better
-  // served by the explorer below, where any two traits can be put on the axes
-  // and the whole catalog gives the numbers a scale.
-
-  // "Past $X, nothing scores higher" — the single most useful sentence this
-  // chart can produce, and previously not said anywhere.
-  frontierHeadline(front, set) {
-    const wrap = h("div", "pc-headline-wrap");
-    const p = h("p", "pc-headline");
-    if (front.length < 2) {
-      p.textContent = `${set.length} paddles plotted.`;
-      wrap.appendChild(p);
-      return wrap;
-    }
-    const byFit = this.state.scoreMode === "fit";
-    const top = front[front.length - 1];
-    const above = set.filter((d) => d.price > top.price).length;
-    const scope = this.scopeLabel ? ` ${this.scopeLabel}` : "";
-    p.textContent = above
-      ? `The curve stops at ${fmtPrice(top.price)}. ${above} ${plural(above, "paddle costs", "paddles cost")} more than ${top.name}${scope} and not one of them ${byFit ? "fits you better" : "scores higher"} — past that price you're buying something other than ${byFit ? "fit" : "score"}.`
-      : `${top.name} at ${fmtPrice(top.price)} tops the curve, and nothing${scope || " in the catalog"} costs more.`;
-    wrap.appendChild(p);
-    // Your budget answer is one of the terms in your fit score, so a cheap
-    // paddle is partly winning here because you asked for a cheap paddle. Say
-    // so — an unqualified "nothing pricier fits you better" would be passing a
-    // constraint the visitor set off as a discovery the data made.
-    // Only when budget actually scored. "No budget" makes budgetScore null and
-    // the term is dropped from the sum entirely (see paddle-quiz.js), so for
-    // those visitors price is NOT steering the curve and saying it is would be
-    // a caveat about a term they don't have.
-    if (byFit && above && this.answers && this.answers.budget && this.answers.budget !== "nobudget") {
-      wrap.appendChild(
-        h("p", "pc-note", "Bear in mind your budget answer is itself one of the scored terms, so price is partly steering this curve. Switch to “Catalog average” to see the shape without it.")
-      );
-    }
-    return wrap;
-  }
-
-  // "Same performance, less money" — for the top pick, the cheapest paddle that
-  // matches or beats it. This is the question people actually came to ask, and
-  // the honest answer is often yes.
-  cheaperEquivalent() {
-    const f = this.featured[0];
-    if (!f) return null;
-    const byFit = this.state.scoreMode === "fit";
-    if (byFit && typeof f.fit !== "number") return null;
-    const target = this.valueScoreOf(f);
-    const cheaper = this.valueSet().filter((d) => d.id !== f.id && d.price < f.price && this.valueScoreOf(d) >= target);
-    const box = h("div", "pc-alt");
-    if (!cheaper.length) {
-      box.classList.add("is-good");
-      box.appendChild(h("p", "pc-alt-body", `Nothing cheaper than ${f.name} matches it${byFit ? " for you" : ""}. At ${fmtPrice(f.price)} it's the least you can pay for this much ${byFit ? "fit" : "score"}.`));
-      return box;
-    }
-    const best = cheaper.reduce((m, d) => (d.price < m.price ? d : m), cheaper[0]);
-    // Rounded before formatting: 169.99 - 109.99 is 60.000000000000014 in
-    // binary floating point, which fmtPrice renders as "$60.00" instead of the
-    // "$60" it gives every other whole-dollar figure on the page.
-    const saving = Math.round((f.price - best.price) * 100) / 100;
-    box.appendChild(h("p", "pc-alt-label", "Same performance, less money"));
-    box.appendChild(
-      h("p", "pc-alt-body",
-        `${best.brand} ${best.name} at ${fmtPrice(best.price)} scores ${this.fmtValueScore(this.valueScoreOf(best))} against ${f.name}'s ${this.fmtValueScore(target)} — ${fmtPrice(saving)} less. ${cheaper.length - 1 > 0 ? `${cheaper.length - 1} other ${plural(cheaper.length - 1, "paddle does", "paddles do")} the same.` : ""}`.trim())
+  anchorPanel(anchor) {
+    const box = h("div", "pc-shop-anchor");
+    const head = h("div", "pc-shop-anchor-head");
+    head.append(
+      h("span", "pc-shop-anchor-label", "Your pick"),
+      h("span", "pc-shop-anchor-name", `${anchor.brand} ${anchor.name}`),
+      h("span", "pc-shop-anchor-price", fmtPrice(anchor.price))
     );
-    // The "treat this as a tie, not a win" caveat that used to sit here is now
-    // said better under the pick cards, with the actual scores (paddle-quiz.js
-    // fitScaleNote) — and since the podium breaks ties on price, a cheaper
-    // equal is already promoted rather than merely noted.
+    box.appendChild(head);
+
+    const strengths = this.anchorStrengths(anchor);
+    const claim = h("p", "pc-shop-claim");
+    if (!strengths.length) {
+      claim.textContent = `Nothing it leads on outright below ${fmtPrice(anchor.price)} — the picks below cover the same ground for less.`;
+      claim.classList.add("is-neutral");
+    } else {
+      const names = strengths.map((s) => TRAIT_WORD[s.key]);
+      const tied = strengths.reduce((m, s) => Math.max(m, s.tied), 0);
+      claim.textContent =
+        `Best for ${listWords(names)} at ${fmtPrice(anchor.price)} or under` +
+        (tied ? ` — tied with ${tied} ${plural(tied, "paddle", "paddles")}.` : ", outright.");
+    }
+    box.appendChild(claim);
     return box;
   }
 
-  frontier() {
-    const sorted = [...this.valueSet()].sort((a, b) => a.price - b.price || this.valueScoreOf(b) - this.valueScoreOf(a));
-    const out = [];
-    let best = -Infinity;
-    for (const d of sorted) {
-      const v = this.valueScoreOf(d);
-      if (v > best) {
-        out.push(d);
-        best = v;
-      }
+  recGroup(title, rows, anchor, emptyNote) {
+    const wrap = h("div", "pc-shop-group");
+    wrap.appendChild(h("h4", "pc-shop-grouptitle", title));
+    if (!rows.length) {
+      wrap.appendChild(h("p", "pc-shop-empty", emptyNote));
+      return wrap;
     }
-    return out;
+    for (const d of rows) wrap.appendChild(this.recRow(d, anchor));
+    return wrap;
+  }
+
+  recRow(d, anchor) {
+    const row = h("div", "pc-shop-row");
+    const main = h("div", "pc-shop-main");
+    main.appendChild(h("span", "pc-shop-name", `${d.brand} ${d.name}`));
+
+    const { up, down } = this.traitDeltaWords(d, anchor);
+    const parts = [];
+    if (up.length) parts.push(`better ${listWords(up.slice(0, 2).map((x) => TRAIT_WORD[x.k]))}`);
+    if (down.length) parts.push(`less ${listWords(down.slice(0, 2).map((x) => TRAIT_WORD[x.k]))}`);
+    main.appendChild(h("span", "pc-shop-delta", parts.length ? parts.join(", ") : "a close match on all four traits"));
+    row.appendChild(main);
+
+    const money = h("div", "pc-shop-money");
+    money.appendChild(h("span", "pc-shop-price", fmtPrice(d.price)));
+    const diff = Math.round((d.price - anchor.price) * 100) / 100;
+    const delta = h("span", "pc-shop-diff" + (diff < 0 ? " is-save" : ""), (diff < 0 ? "−" : "+") + fmtPrice(Math.abs(diff)));
+    money.appendChild(delta);
+    row.appendChild(money);
+
+    const link = this.linkFor ? this.linkFor(d.src) : null;
+    if (link) {
+      const a = h("a", "pc-shop-buy", link.shortLabel || link.label);
+      a.href = link.href;
+      a.target = "_blank";
+      a.rel = link.isAffiliate ? "sponsored nofollow noopener" : "nofollow noopener";
+      // Same attribution the quiz and grid emit, so a click from here is counted
+      // like any other and can be told apart by surface.
+      a.setAttribute("data-pq-paddle", d.id);
+      a.setAttribute("data-pq-brand", d.brand);
+      a.setAttribute("data-pq-link-type", link.linkType || "unknown");
+      a.setAttribute("data-pq-affiliate", link.isAffiliate ? "1" : "0");
+      a.setAttribute("data-pq-surface", "recommend");
+      row.appendChild(a);
+    }
+    return row;
   }
 
   // ===================== 2c — Match stress-test =====================
