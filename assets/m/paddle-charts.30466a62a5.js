@@ -385,7 +385,6 @@ class PaddleCharts {
     this.root.classList.add("pc-root");
     const builders = {
       strip: () => this.buildStrip(),
-      explorer: () => this.buildExplorer(),
       value: () => this.buildValue(),
       stress: () => this.buildStressTest(),
     };
