@@ -549,7 +549,7 @@ class PaddleGrid {
       // and the readout's button commits it. Tapping used to add it outright,
       // which on a lattice where 43 paddles can share one coordinate meant the
       // tap chose for you.
-      this.trayEl.innerHTML = `<span class="pg-tray-hint">Add up to 3 paddles — tap a dot in the chart to see what it is, then add it, or “+ Compare” on any card below.</span>`;
+      this.trayEl.innerHTML = `<span class="pg-tray-hint">Add up to 3 paddles with “+ Compare” on any card below.</span>`;
       return;
     }
     const chips = this.selected
@@ -580,11 +580,15 @@ class PaddleGrid {
     this.analyticsStale = false;
     const featured = this.selected.map((id) => this.byId(id)).filter(Boolean);
     const n = featured.length;
-    const components = ["explorer"];
-    if (n >= 1) {
-      components.unshift("strip");
-      components.push("value");
+    // Nothing to show until something is compared. The axis explorer used to
+    // fill this space with the whole catalog whether or not the visitor had
+    // picked anything; without it the panel has no reason to exist empty.
+    if (!n) {
+      this.charts = null;
+      this.analyticsEl.innerHTML = `<p class="pg-analytics-empty">Pick a paddle with “+ Compare” on any card below to see how it prices up against the field.</p>`;
+      return;
     }
+    const components = ["strip", "value"];
     if (n >= 2) components.push("stress");
 
     // The chart plots what the grid is showing. It used to plot the entire
@@ -594,9 +598,7 @@ class PaddleGrid {
     // the readout was measured against paddles not on the page.
     const list = this.filtered();
     const scoped = this.activeFilterCount() > 0 || this.query;
-    const prev = this.charts
-      ? { xKey: this.charts.state.xKey, yKey: this.charts.state.yKey, preset: this.charts.state.preset, scoreMode: this.charts.state.scoreMode }
-      : null;
+    const prev = this.charts ? { preset: this.charts.state.preset, scoreMode: this.charts.state.scoreMode } : null;
     this.analyticsEl.innerHTML = "";
 
     // Below two paddles there is no distribution to plot and no frontier to
@@ -619,7 +621,6 @@ class PaddleGrid {
       components,
       initialState: prev,
       scopeLabel: scoped ? "matching your filters" : null,
-      onDotClick: (paddle) => this.toggleCompare(paddle.id),
     });
   }
 

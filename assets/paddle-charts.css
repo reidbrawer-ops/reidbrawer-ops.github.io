@@ -180,35 +180,6 @@
   color: var(--ink-faint);
 }
 
-/* ---------- explorer header ---------- */
-.pc-head {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
-.pc-titles {
-  flex: 1;
-}
-.pc-axis-pickers {
-  flex: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: flex-end;
-}
-.pc-axis-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.pc-axis-label {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.625rem;
-  letter-spacing: 0.08em;
-  color: var(--ink-faint);
-}
-
 /* ---------- SVG plot + overlay ---------- */
 .pc-plot {
   position: relative;
@@ -223,14 +194,6 @@
 }
 .pc-dot {
   fill: rgba(var(--ink-rgb), 0.18);
-  transition: cx 0.4s var(--ease), cy 0.4s var(--ease);
-}
-.pc-pick-ring {
-  cursor: pointer;
-  transition: cx 0.4s var(--ease), cy 0.4s var(--ease);
-}
-.pc-pick-dot {
-  pointer-events: none;
   transition: cx 0.4s var(--ease), cy 0.4s var(--ease);
 }
 .pc-frontier {
@@ -273,9 +236,6 @@
   font-size: 0.75rem;
   color: var(--ink-faint);
 }
-
-/* The 2a hover tooltip (.pc-tip) was removed with the hover-only interaction
-   it belonged to — see .pc-readout below for what replaced it and why. */
 
 /* ---------- 2c stress-test ---------- */
 .pc-preset-group {
@@ -372,115 +332,6 @@
   flex: none;
 }
 
-/* ---------- explorer readout ----------
-   Replaces the old hover tooltip. A tooltip could only say where a dot sat;
-   the question is whether that's any good, which needs room for two rank lines
-   and a verdict — and had to survive touch, which hover never did. */
-.pc-svg--interactive {
-  cursor: crosshair;
-  touch-action: manipulation;
-}
-.pc-focus-ring {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 1.5;
-  stroke-dasharray: 3 3;
-  pointer-events: none;
-}
-.pc-readout {
-  margin-top: 12px;
-  padding: 12px 14px;
-  border: 1px solid var(--rule-10);
-  border-radius: var(--radius-s);
-  background: var(--fog);
-}
-.pc-readout-empty {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  color: var(--ink-faint);
-}
-.pc-readout-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.pc-readout-swatch {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  flex: none;
-}
-.pc-readout-name {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.8125rem;
-  color: var(--ink);
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.pc-readout-price {
-  margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  color: var(--ink-soft);
-  flex: none;
-}
-.pc-readout-ranks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 16px;
-  margin-top: 6px;
-}
-.pc-readout-rank {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  color: var(--ink-soft);
-}
-.pc-readout-verdict {
-  margin: 8px 0 0;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  line-height: 1.5;
-  font-weight: 600;
-  color: var(--ink);
-}
-.pc-readout-verdict.is-good {
-  color: var(--bay-deep);
-}
-.pc-readout-verdict.is-warn {
-  color: var(--poppy-deep);
-}
-.pc-readout-verdict.is-neutral {
-  color: var(--ink-soft);
-  font-weight: 400;
-}
-.pc-readout-action {
-  margin-top: 10px;
-  border: 1px solid var(--ink);
-  background: var(--ink);
-  color: var(--paper);
-  border-radius: 999px;
-  padding: 7px 14px;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.6875rem;
-  cursor: pointer;
-  transition: background 0.2s var(--ease), color 0.2s var(--ease);
-}
-.pc-readout-action.is-on {
-  background: transparent;
-  color: var(--ink);
-}
-.pc-readout-action:disabled {
-  border-color: var(--rule-16);
-  background: transparent;
-  color: var(--ink-faint);
-  cursor: not-allowed;
-}
-
 /* ---------- value chart: frontier, dead zone, callouts ---------- */
 .pc-frontier-dot {
   fill: var(--ink-soft);
@@ -543,26 +394,8 @@
 
 /* ---------- responsive ---------- */
 @media (max-width: 720px) {
-  .pc-readout-ranks {
-    flex-direction: column;
-    gap: 2px;
-  }
-  /* A crosshair cursor means nothing on a touch screen, and the chart is
-     tall enough there that vertical panning must stay with the page. */
-  .pc-svg--interactive {
-    cursor: default;
-    touch-action: pan-y;
-  }
   .pc-card {
     padding: 20px 18px;
-  }
-  .pc-head {
-    flex-direction: column;
-    gap: 12px;
-  }
-  .pc-axis-pickers {
-    align-items: flex-start;
-    width: 100%;
   }
   .pc-pillgroup {
     flex-wrap: wrap;
@@ -588,8 +421,6 @@
 /* Kill the delight-moment transitions when the visitor asked for less motion. */
 @media (prefers-reduced-motion: reduce) {
   .pc-dot,
-  .pc-pick-ring,
-  .pc-pick-dot,
   .pc-row,
   .pc-seg {
     transition: none;

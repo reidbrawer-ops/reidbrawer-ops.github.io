@@ -35,7 +35,7 @@
 // and would not fire across an innerHTML swap. This mirrors the hand-rolled
 // class style of the rest of this site (paddle-quiz.js, paddle-grid.js).
 
-import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf, clamp01, ratingKnown } from "/assets/paddle-ratings.js";
+import { powerRating, controlRating, spinRatingOf, forgivenessRatingOf, clamp01 } from "/assets/paddle-ratings.js";
 
 const SVGNS = "http://www.w3.org/2000/svg";
 
@@ -68,18 +68,14 @@ export function seriesColorFor(rank0) {
   return (SERIES[rank0] || SERIES[0]).solid;
 }
 
-// The four trait ratings, in the order they read across every chart. `get`
-// returns the 0–1 rating; charts scale to 0–100 for display.
+// The four trait ratings that make up the overall score. Their display labels
+// went with the axis explorer — nothing renders a per-trait name any more.
 const RATINGS = {
-  power: { label: "Power", short: "PWR", get: (p) => powerRating(p) },
-  spin: { label: "Spin", short: "SPN", get: (p) => spinRatingOf(p) },
-  control: { label: "Control", short: "CTL", get: (p) => controlRating(p) },
-  forgiveness: { label: "Forgiveness", short: "FGV", get: (p) => forgivenessRatingOf(p) },
+  power: { get: (p) => powerRating(p) },
+  spin: { get: (p) => spinRatingOf(p) },
+  control: { get: (p) => controlRating(p) },
+  forgiveness: { get: (p) => forgivenessRatingOf(p) },
 };
-// 2a's axis pills: the four ratings plus price. (The prototype listed "Hand
-// speed" too — no such field exists here, so it is not offered.)
-const AXIS_KEYS = ["power", "spin", "control", "forgiveness", "price"];
-
 // All dynamic text is written via textContent (never innerHTML), so paddle
 // names and brands need no escaping here — the DOM API handles it.
 const fmtPrice = (n) => "$" + (Number.isInteger(n) ? n : n.toFixed(2));
@@ -178,24 +174,13 @@ function derive(p) {
     control: clamp01(RATINGS.control.get(p)),
     forgiveness: clamp01(RATINGS.forgiveness.get(p)),
   };
-  // Which of those four the catalog actually has evidence for. 137 of 486
-  // paddles carry no spinRating and therefore sit at a flat 0.5 — fine for
-  // ranking, a fabrication if drawn as a measurement. `known` lets the charts
-  // draw them as unrated and keep them out of every "Nth of M" claim.
-  const known = {
-    power: ratingKnown(p, "power"),
-    spin: ratingKnown(p, "spin"),
-    control: ratingKnown(p, "control"),
-    forgiveness: ratingKnown(p, "forgiveness"),
-    price: true,
-  };
   // Overall = the transparent mean of the four ratings, on 0–100. This is 2b's
   // y-axis and the breakdown cards' headline; deliberately a plain average so
   // the score explains itself (see README 2b).
   const overall = ((r.power + r.spin + r.control + r.forgiveness) / 4) * 100;
   // src keeps the original paddle so a clicked scatter dot can be handed back
   // to the browse page's compare tray with all its fields intact.
-  return { id: p.id, name: p.name, brand: p.brand, price: p.price, r, known, overall, src: p };
+  return { id: p.id, name: p.name, brand: p.brand, price: p.price, r, overall, src: p };
 }
 
 // 1st, 2nd, 3rd… — spelled out because "Spin: 1 of 348" reads as a count.
@@ -307,7 +292,6 @@ class PaddleCharts {
     this.root = root;
     this.mode = opts.mode || "quiz";
     this.answers = opts.answers || null;
-    this.onDotClick = opts.onDotClick || null;
     // Which components to render, in order. Quiz results pass ["value","stress"]
     // (the buy cards above replace the strip; the explorer lives on browse);
     // browse passes the full set, gated on how many paddles are selected.
@@ -373,20 +357,15 @@ class PaddleCharts {
     this.answerStress = Boolean(this.scoreWith && this.answers);
     this.presets = this.answerStress ? ANSWER_PRESETS : buildPresets();
     // Initial view state — an explicit initialState (browse passes the previous
-    // instance's, so rebuilding on a selection change doesn't reset the axes)
+    // instance's, so rebuilding on a selection change doesn't reset the view)
     // wins, then a valid ?preset=, then the defaults.
     const init = opts.initialState || {};
-    let xKey = AXIS_KEYS.includes(init.xKey) ? init.xKey : "power";
-    let yKey = AXIS_KEYS.includes(init.yKey) ? init.yKey : "control";
-    if (xKey === yKey) yKey = xKey === "control" ? "power" : "control";
     const preset = init.preset && this.presets.some((p) => p.key === init.preset) ? init.preset : this.initialPreset();
     // Default the value chart to the visitor's own fit score wherever we have
     // it — that's the question they asked. Browse falls back to the average.
     const wantMode = init.scoreMode === "overall" || init.scoreMode === "fit" ? init.scoreMode : this.canScoreByFit() ? "fit" : "overall";
     const scoreMode = this.canScoreByFit() ? wantMode : "overall";
-    // hovered/pinned feed focusPaddle(), which falls back to the top pick —
-    // there is no separate "focus" field to drift out of sync with them.
-    this.state = { xKey, yKey, preset, scoreMode, hovered: null, pinned: null };
+    this.state = { preset, scoreMode };
   }
 
   // Initial 2c preset: an explicit, known ?preset= wins; otherwise the default
@@ -416,83 +395,6 @@ class PaddleCharts {
     }
   }
 
-  factorValue(d, key) {
-    return key === "price" ? d.price : d.r[key] * 100;
-  }
-
-  // Domain + ticks + label formatter for a given axis key.
-  axisScale(key) {
-    if (key === "price") {
-      return { dom: this.priceDom, ticks: ticksFor(this.priceDom[0], this.priceDom[1], 50), fmt: (v) => "$" + v };
-    }
-    return { dom: [0, 100], ticks: [0, 20, 40, 60, 80, 100], fmt: (v) => "" + v };
-  }
-
-  // ---------- "Is this the best?" — rank, ties, and domination ----------
-  //
-  // The scatter can show you WHERE a paddle sits; it can't tell you whether
-  // that's good. These do, and they have to be honest about ties to be worth
-  // anything: the ratings are banded (the licensing firewall — see the header),
-  // so paddles still share values and a bare "1st of 348" can imply a
-  // uniqueness the data does not support. Saying "tied with N others" turns a
-  // flattering non-fact into the useful one: where the tie is wide you cannot
-  // differentiate on this axis, so decide on something else. Ties are far
-  // narrower since the 2026-07-18 refresh widened four tiers to twenty bands,
-  // which is exactly why the count is worth printing rather than assuming.
-
-  // Is a better than b on `key`? Cheaper wins on price; higher wins on ratings.
-  betterOn(a, b, key) {
-    return key === "price" ? a.price < b.price : this.factorValue(a, key) > this.factorValue(b, key);
-  }
-  atLeastOn(a, b, key) {
-    return key === "price" ? a.price <= b.price : this.factorValue(a, key) >= this.factorValue(b, key);
-  }
-
-  // Rank among paddles the catalog actually rates on this axis. Returns null
-  // for an unrated paddle — it has no place in the ordering, so it gets no
-  // claim rather than a fabricated one.
-  rankOf(d, key) {
-    if (!d.known[key]) return null;
-    const pool = this.catalog.filter((o) => o.known[key]);
-    const v = this.factorValue(d, key);
-    let better = 0;
-    let tied = 0;
-    for (const o of pool) {
-      const ov = this.factorValue(o, key);
-      if (key === "price" ? ov < v : ov > v) better++;
-      else if (ov === v) tied++;
-    }
-    return { rank: better + 1, tied, total: pool.length };
-  }
-
-  rankLabel(d, key) {
-    const label = key === "price" ? "Price" : RATINGS[key].label;
-    const r = this.rankOf(d, key);
-    if (!r) return `${label}: not rated in this catalog`;
-    // The scope suffix is load-bearing once browse filters the plot: "3rd of
-    // 39" reads as a catalog-wide rank unless it says which 39.
-    const head = `${label}: ${ordinal(r.rank)} of ${r.total}${this.scopeLabel ? " " + this.scopeLabel : ""}`;
-    // tied counts the paddle itself, so subtract it to describe the others.
-    const others = r.tied - 1;
-    return others > 0 ? `${head} — tied with ${others} ${plural(others, "other", "others")}` : head;
-  }
-
-  // Every paddle at least as good on BOTH axes and strictly better on one —
-  // the direct answer to "does this give me the best X and Y?". An empty list
-  // means nothing in 486 paddles beats it on both, which is the strongest
-  // claim this data can make and the one worth putting on screen.
-  dominators(d, xKey, yKey) {
-    return this.catalog.filter(
-      (o) =>
-        o.id !== d.id &&
-        o.known[xKey] &&
-        o.known[yKey] &&
-        this.atLeastOn(o, d, xKey) &&
-        this.atLeastOn(o, d, yKey) &&
-        (this.betterOn(o, d, xKey) || this.betterOn(o, d, yKey))
-    );
-  }
-
   // ===================== Top 3 strip =====================
   buildStrip() {
     const card = h("section", "pc-card pc-strip");
@@ -520,323 +422,9 @@ class PaddleCharts {
     return card;
   }
 
-  // ===================== 2a — Catalog explorer =====================
-  buildExplorer() {
-    const card = h("section", "pc-card");
-    const head = h("div", "pc-head");
-    const titles = h("div", "pc-titles");
-    titles.appendChild(h("p", "pc-eyebrow", "Explore any tradeoff"));
-    titles.appendChild(h("h3", "pc-title", "Pick your axes"));
-    titles.appendChild(
-      h("p", "pc-explain", `${this.scopeLabel ? "The paddles matching your filters" : "The whole catalog"}, on whichever tradeoff you care about. Tap any dot to see where it ranks on both axes — and what, if anything, beats it on both.`)
-    );
-    head.appendChild(titles);
-
-    const pickers = h("div", "pc-axis-pickers");
-    this.xPills = this.axisPillRow("X", "xKey");
-    this.yPills = this.axisPillRow("Y", "yKey");
-    pickers.append(this.xPills.row, this.yPills.row);
-    head.appendChild(pickers);
-    card.appendChild(head);
-
-    const plot = h("div", "pc-plot");
-    const s = svg("svg", { viewBox: "0 0 860 520", class: "pc-svg pc-svg--interactive" });
-    this.exSvg = s;
-    this.exGrid = svg("g", {});
-    this.exCloudG = svg("g", { class: "pc-cloud" });
-    this.exPickG = svg("g", {});
-    s.append(this.exGrid, this.exCloudG, this.exPickG);
-
-    // Cloud: one dot per catalog paddle. Built once; repositioned on axis
-    // change. Dots carry NO listeners of their own — see hitTest: a 3px target
-    // inside a 43-paddle dodged cluster is not a target, it's a coin flip, and
-    // on a touch screen mouseenter never fires at all. One handler on the SVG
-    // picks the nearest dot within a generous radius instead, which works the
-    // same for a mouse, a finger and a stylus.
-    this.exCloud = this.catalog.map((d) => {
-      const c = svg("circle", { r: "2.6", class: "pc-dot" });
-      this.exCloudG.appendChild(c);
-      return { d, el: c };
-    });
-    // Featured: halo ring + solid centre.
-    this.exPicks = this.featured.map((f) => {
-      const ring = svg("circle", { r: "15", class: "pc-pick-ring", fill: haloFill(f.color), stroke: f.color.solid, "stroke-width": "2.5" });
-      const dot = svg("circle", { r: "4", class: "pc-pick-dot", fill: f.color.solid });
-      this.exPickG.append(ring, dot);
-      return { f, ring, dot };
-    });
-    // Ring drawn around whatever the readout is currently describing.
-    this.exFocusRing = svg("circle", { r: "10", class: "pc-focus-ring", style: "display:none" });
-    s.appendChild(this.exFocusRing);
-
-    s.addEventListener("pointermove", (e) => this.hitTest(e, false));
-    s.addEventListener("pointerleave", () => this.clearHover());
-    s.addEventListener("click", (e) => this.hitTest(e, true));
-    plot.appendChild(s);
-
-    this.exOv = h("div", "pc-ov");
-    plot.appendChild(this.exOv);
-    this.exXTitle = h("div", "pc-ov-label pc-axis-title");
-    this.exYTitle = h("div", "pc-ov-label pc-axis-title");
-    this.exOv.append(this.exXTitle, this.exYTitle);
-    this.exPickLabels = this.featured.map((f) => {
-      const l = h("div", "pc-ov-label pc-pick-label", f.name);
-      l.style.color = f.color.solid;
-      this.exOv.appendChild(l);
-      return l;
-    });
-    card.appendChild(plot);
-
-    // The readout replaces the old floating tooltip. A tooltip could only ever
-    // say where a dot sits; the question is whether that's any good, which
-    // needs room for two rank lines and a verdict. It also survives touch,
-    // which a hover tooltip never did.
-    this.exReadout = h("div", "pc-readout");
-    this.exReadout.setAttribute("role", "status");
-    card.appendChild(this.exReadout);
-
-    this.exNote = h("p", "pc-note");
-    card.appendChild(this.exNote);
-
-    this.updateExplorer();
-    return card;
-  }
-
-  // ---------- focus: which paddle the readout describes ----------
-
-  // Pointer position -> nearest plotted dot, in viewBox units. Generous radius
-  // (18 units ~ a fingertip at mobile widths) so the 3px dots are reachable.
-  hitTest(e, pin) {
-    if (!this.exPositions || !this.exPositions.length) return;
-    const rect = this.exSvg.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    const vx = ((e.clientX - rect.left) / rect.width) * 860;
-    const vy = ((e.clientY - rect.top) / rect.height) * 520;
-    let best = null;
-    let bestDist = Infinity;
-    for (const p of this.exPositions) {
-      const dx = p.x - vx;
-      const dy = p.y - vy;
-      const dist = dx * dx + dy * dy;
-      if (dist < bestDist) {
-        bestDist = dist;
-        best = p;
-      }
-    }
-    if (!best || bestDist > 18 * 18) {
-      if (!pin) this.clearHover();
-      return;
-    }
-    if (pin) {
-      this.state.pinned = best.d;
-      track("chart_inspect", { mode: this.mode, paddle: best.d.id, x: this.state.xKey, y: this.state.yKey });
-    }
-    this.state.hovered = best.d;
-    this.renderReadout();
-  }
-
-  clearHover() {
-    this.state.hovered = null;
-    this.renderReadout();
-  }
-
-  // Pinned (tapped) wins over hovered wins over the top pick — so the panel
-  // always describes something rather than going blank.
-  focusPaddle() {
-    return this.state.hovered || this.state.pinned || this.featured[0] || null;
-  }
-
-  axisPillRow(label, stateKey) {
-    const row = h("div", "pc-axis-row");
-    row.appendChild(h("span", "pc-axis-label", label));
-    const group = h("div", "pc-pillgroup");
-    const pills = {};
-    for (const key of AXIS_KEYS) {
-      const b = h("button", "pc-pill", RATINGS[key] ? RATINGS[key].label : "Price");
-      b.type = "button";
-      b.addEventListener("click", () => this.setAxis(stateKey, key));
-      group.appendChild(b);
-      pills[key] = b;
-    }
-    row.appendChild(group);
-    return { row, pills };
-  }
-
-  // Selecting the factor already on the other axis swaps them (never X == Y).
-  setAxis(stateKey, key) {
-    const other = stateKey === "xKey" ? "yKey" : "xKey";
-    if (this.state[stateKey] === key) return;
-    if (this.state[other] === key) this.state[other] = this.state[stateKey];
-    this.state[stateKey] = key;
-    this.updateExplorer();
-    track("chart_axis", { mode: this.mode, x: this.state.xKey, y: this.state.yKey });
-  }
-
-  updateExplorer() {
-    const { xKey, yKey } = this.state;
-    const sx = this.axisScale(xKey);
-    const sy = this.axisScale(yKey);
-    const X = (v) => 60 + ((v - sx.dom[0]) / (sx.dom[1] - sx.dom[0])) * 740;
-    const Y = (v) => 470 - ((v - sy.dom[0]) / (sy.dom[1] - sy.dom[0])) * 430;
-
-    for (const key of AXIS_KEYS) {
-      this.xPills.pills[key].classList.toggle("is-active", xKey === key);
-      this.yPills.pills[key].classList.toggle("is-active", yKey === key);
-    }
-
-    // Gridlines snap (no animation); tick labels rebuilt alongside.
-    this.exGrid.replaceChildren();
-    for (const t of sx.ticks) this.exGrid.appendChild(svg("line", { x1: X(t), y1: 40, x2: X(t), y2: 470, class: "pc-grid-line" }));
-    for (const t of sy.ticks) this.exGrid.appendChild(svg("line", { x1: 60, y1: Y(t), x2: 800, y2: Y(t), class: "pc-grid-line" }));
-
-    this.exOv.querySelectorAll(".pc-tick").forEach((n) => n.remove());
-    const ov = ovLabel(860, 520);
-    for (const t of sx.ticks) this.exOv.appendChild(this.tickLabel(ov(X(t), 487, "middle", sx.fmt(t))));
-    for (const t of sy.ticks) this.exOv.appendChild(this.tickLabel(ov(48, Y(t), "end", sy.fmt(t))));
-
-    this.placeOv(this.exXTitle, 800, 500, "end", 860, 520);
-    this.exXTitle.textContent = (xKey === "price" ? "Price" : RATINGS[xKey].label) + " →";
-    this.placeOv(this.exYTitle, 14, 26, "start", 860, 520);
-    this.exYTitle.textContent = (yKey === "price" ? "Price" : RATINGS[yKey].label) + " ↑";
-
-    // A paddle the catalog doesn't rate on a chosen axis is HIDDEN rather than
-    // drawn at the mid-value its rating function falls back to. 137 paddles
-    // carry no spinRating; plotting them at "spin 50" would put a fabricated
-    // measurement on screen and, worse, bury the real mid-spin paddles inside a
-    // cluster of paddles that were never measured at all. The note below says
-    // how many dropped out and why, so the missing dots are a disclosure
-    // instead of a silent filter.
-    const plotted = [];
-    this.exPositions = [];
-    const raw = this.exCloud.map(({ d }) => ({ x: X(this.factorValue(d, xKey)), y: Y(this.factorValue(d, yKey)) }));
-    const dd = dodgeCloud(raw);
-    this.exCloud.forEach(({ d, el }, i) => {
-      if (!d.known[xKey] || !d.known[yKey]) {
-        el.style.display = "none";
-        return;
-      }
-      el.style.display = "";
-      el.setAttribute("cx", dd[i].x.toFixed(1));
-      el.setAttribute("cy", dd[i].y.toFixed(1));
-      plotted.push(d);
-      this.exPositions.push({ d, x: dd[i].x, y: dd[i].y });
-    });
-    this.exPlottedCount = plotted.length;
-    // Featured stay at their TRUE (un-dodged) position, so the highlight marks
-    // the real coordinate the cluster sits on.
-    const off = [[24, 4, "start"], [-24, -12, "end"], [-24, 18, "end"]];
-    this.exPicks.forEach(({ f, ring, dot }, i) => {
-      const shown = f.known[xKey] && f.known[yKey];
-      ring.style.display = dot.style.display = shown ? "" : "none";
-      this.exPickLabels[i].style.display = shown ? "" : "none";
-      if (!shown) return;
-      const cx = X(this.factorValue(f, xKey));
-      const cy = Y(this.factorValue(f, yKey));
-      ring.setAttribute("cx", cx.toFixed(1));
-      ring.setAttribute("cy", cy.toFixed(1));
-      dot.setAttribute("cx", cx.toFixed(1));
-      dot.setAttribute("cy", cy.toFixed(1));
-      const o = off[i] || off[0];
-      this.placeOv(this.exPickLabels[i], cx + o[0], cy + o[1], o[2], 860, 520);
-      this.exPositions.push({ d: f, x: cx, y: cy });
-    });
-
-    const dropped = this.catalog.length - this.exPlottedCount;
-    // Name every axis with gaps, not just the first — picking power against
-    // spin drops paddles for two different reasons and blaming one of them
-    // would be wrong about the other.
-    const gaps = [xKey, yKey]
-      .filter((k, i, arr) => arr.indexOf(k) === i && !this.catalog.every((d) => d.known[k]))
-      .map((k) => (RATINGS[k] ? RATINGS[k].label.toLowerCase() : "price"));
-    this.exNote.textContent = dropped
-      ? `${this.exPlottedCount} of ${this.catalog.length} paddles plotted — the other ${dropped} carry no ${gaps.join(" or ")} rating in this catalog, so they're left out rather than drawn at a made-up middle value.`
-      : `All ${this.exPlottedCount} paddles ${this.scopeLabel || "in the catalog"} are plotted. Dots are nudged apart where several share the same tier — position is a tier, not a measurement.`;
-
-    this.renderReadout();
-  }
-
-  // ---------- the readout: "is this actually the best?" ----------
-  renderReadout() {
-    if (!this.exReadout) return;
-    const { xKey, yKey } = this.state;
-    const d = this.focusPaddle();
-    this.exReadout.replaceChildren();
-
-    if (!d) {
-      this.exReadout.appendChild(h("p", "pc-readout-empty", "Tap any dot to see how that paddle ranks on both axes."));
-      this.exFocusRing.style.display = "none";
-      return;
-    }
-
-    // Move the focus ring onto whatever we're describing — but only when that
-    // paddle is actually on screen for the current axes.
-    const onPlot = d.known[xKey] && d.known[yKey];
-    if (onPlot) {
-      const pos = this.exPositions.find((p) => p.d.id === d.id);
-      if (pos) {
-        this.exFocusRing.setAttribute("cx", pos.x.toFixed(1));
-        this.exFocusRing.setAttribute("cy", pos.y.toFixed(1));
-        this.exFocusRing.style.display = "";
-      } else this.exFocusRing.style.display = "none";
-    } else this.exFocusRing.style.display = "none";
-
-    const head = h("div", "pc-readout-head");
-    const sw = h("span", "pc-readout-swatch");
-    const feat = this.featured.find((f) => f.id === d.id);
-    sw.style.background = feat ? feat.color.solid : "rgba(var(--ink-rgb),0.35)";
-    head.append(sw, h("span", "pc-readout-name", `${d.brand} ${d.name}`), h("span", "pc-readout-price", `${fmtPrice(d.price)} list`));
-    this.exReadout.appendChild(head);
-
-    const ranks = h("div", "pc-readout-ranks");
-    for (const key of [xKey, yKey]) ranks.appendChild(h("span", "pc-readout-rank", this.rankLabel(d, key)));
-    this.exReadout.appendChild(ranks);
-
-    // The verdict. This is the whole point of the panel.
-    const verdict = h("p", "pc-readout-verdict");
-    if (!onPlot) {
-      verdict.textContent = "Not rated on both of these axes, so it can't be ranked against the rest here.";
-      verdict.classList.add("is-neutral");
-    } else {
-      const dom = this.dominators(d, xKey, yKey);
-      const cheaper = dom.filter((o) => o.price < d.price);
-      const xL = (xKey === "price" ? "price" : RATINGS[xKey].label.toLowerCase());
-      const yL = (yKey === "price" ? "price" : RATINGS[yKey].label.toLowerCase());
-      if (!dom.length) {
-        verdict.textContent = `Nothing ${this.scopeLabel || "in the catalog"} beats it on ${xL} and ${yL} together. On these two axes, this is as good as it gets.`;
-        verdict.classList.add("is-good");
-      } else {
-        const n = dom.length;
-        const base = `${n} ${plural(n, "paddle beats", "paddles beat")} it on ${xL} and ${yL} together`;
-        verdict.textContent = cheaper.length
-          ? `${base} — and ${cheaper.length} of those ${plural(cheaper.length, "costs", "cost")} less. Cheapest: ${cheaper.reduce((m, o) => (o.price < m.price ? o : m), cheaper[0]).name}.`
-          : `${base}, but none of them for less money.`;
-        verdict.classList.add(cheaper.length ? "is-warn" : "is-neutral");
-      }
-    }
-    this.exReadout.appendChild(verdict);
-
-    // Browse can act on what it's looking at. The button, not the dot, is the
-    // compare control now — a tap that lands on one of 43 dodged dots in a
-    // cluster should not silently commit a choice.
-    if (this.mode === "browse" && this.onDotClick) {
-      const inTray = this.featured.some((f) => f.id === d.id);
-      const btn = h("button", "pc-readout-action" + (inTray ? " is-on" : ""), inTray ? "Remove from comparison" : "+ Add to comparison");
-      btn.type = "button";
-      btn.disabled = !inTray && this.featured.length >= 3;
-      if (btn.disabled) btn.textContent = "Comparison is full (3)";
-      btn.addEventListener("click", () => this.onDotClick(d.src));
-      this.exReadout.appendChild(btn);
-    }
-  }
-
   tickLabel(node) {
     node.classList.add("pc-tick");
     return node;
-  }
-  placeOv(el, xPx, yPx, anchor, vbW, vbH) {
-    el.style.left = ((xPx / vbW) * 100).toFixed(2) + "%";
-    el.style.top = ((yPx / vbH) * 100).toFixed(2) + "%";
-    el.style.transform = anchor === "middle" ? "translate(-50%,-50%)" : anchor === "start" ? "translate(0,-50%)" : "translate(-100%,-50%)";
   }
 
   // ===================== 2b — Price against performance =====================
