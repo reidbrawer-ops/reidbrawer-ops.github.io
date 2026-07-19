@@ -588,7 +588,7 @@ class PaddleGrid {
       this.analyticsEl.innerHTML = `<p class="pg-analytics-empty">Pick a paddle with “+ Compare” on any card below to see how it prices up against the field.</p>`;
       return;
     }
-    const components = ["strip", "value"];
+    const components = ["strip", "recommend"];
     if (n >= 2) components.push("stress");
 
     // The chart plots what the grid is showing. It used to plot the entire
@@ -621,6 +621,10 @@ class PaddleGrid {
       components,
       initialState: prev,
       scopeLabel: scoped ? "matching your filters" : null,
+      // Buy links for the recommendations, built with the same vendorLinkFor
+      // + affiliate map the cards use, so a recommended paddle links exactly as
+      // it would anywhere else on the site.
+      linkFor: (paddle) => vendorLinkFor(paddle, this.affiliateMap),
     });
   }
 

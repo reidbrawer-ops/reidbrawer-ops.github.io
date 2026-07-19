@@ -325,14 +325,6 @@ class PaddleCharts {
     const builders = {
       strip: () => this.buildStrip(),
       recommend: () => this.buildRecommend(),
-      // Transitional alias. The browse grid asks for "value" on main; its rename
-      // to "recommend" is one line sitting in a file a parallel session is
-      // rewriting, so the two land separately. Without this, HEAD would have a
-      // window where browse requests a builder that no longer exists — the
-      // lookup below fails soft, so it wouldn't throw, it would just silently
-      // render the strip and nothing else. Delete once the grid says
-      // "recommend".
-      value: () => this.buildRecommend(),
       stress: () => this.buildStressTest(),
     };
     for (const key of this.components) {
@@ -614,14 +606,24 @@ class PaddleCharts {
     });
     card.appendChild(rows);
 
+    // The legend is filtered to the buckets that actually score under the
+    // current preset (see updateStress), because two of the five can be
+    // legitimately empty for a given visitor: an advanced or pro answer zeroes
+    // the level bonus (LEVEL_FORGIVENESS_BOOST), and a "no budget" answer makes
+    // budgetFit null. The scorer drops zero-point terms, so those segments draw
+    // at zero width — a legend naming a shade that appears nowhere in the bars
+    // reads as a broken chart rather than as "this didn't apply to you". The
+    // swatch colour stays pinned to the bucket's index so a bucket never
+    // changes shade when a neighbour drops out.
     const legend = h("div", "pc-legend");
-    this.stressFactors().forEach((factor, i) => {
+    this.stressLegendItems = this.stressFactors().map((factor, i) => {
       const item = h("span", "pc-legend-item");
       const sw = h("span", "pc-legend-swatch");
       sw.style.background = SEG_SHADES[i];
       item.appendChild(sw);
       item.appendChild(document.createTextNode(factor.label));
       legend.appendChild(item);
+      return item;
     });
     card.appendChild(legend);
     // Replaces a static "if the podium barely moves, the recommendation is
@@ -746,6 +748,19 @@ class PaddleCharts {
         s.r.segs[i].title = `${factors[i].label}: ${Math.round(c)} pts`;
       });
     });
+
+    // Show only the buckets that draw something. The test is Math.max(0, c),
+    // exactly what the widths above use, so the legend and the bars can't
+    // disagree — including on the one term that can go negative (arm_feel, -10
+    // for a firm face under "Fit & feel"). Re-run per preset rather than once at
+    // build: "Budget first" patches the visitor's budget answer, which brings a
+    // dead budget bucket back to life, and the legend should follow it.
+    if (this.stressLegendItems) {
+      this.stressLegendItems.forEach((item, i) => {
+        const drawn = scored.some((s) => Math.max(0, s.contribs[i]) > 0);
+        item.style.display = drawn ? "" : "none";
+      });
+    }
 
     // Where your top pick ended up under this lens — the question the card asks.
     const topRow = this.stressRows.find((r) => r.f.rank === 1);
