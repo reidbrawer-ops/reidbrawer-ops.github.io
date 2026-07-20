@@ -507,17 +507,18 @@ class PaddleFinder {
               </select>
             </div>
           </div>
+          <!-- The affiliate disclosure sits ABOVE the results, and has to stay
+               there. It is the ONLY place the verbatim Amazon Associates
+               sentence appears on the catalog, and below the grid it landed
+               ~15,800px under the first affiliate buy link — 9+ screens on a
+               phone, which is not "clear and conspicuous" by any reading.
+               The per-card "· affiliate link" note that cardHtml() renders
+               beside every affiliate buy button is the disclosure at the point
+               of the link and must not be removed either; the two work
+               together, and neither one alone carries the FTC burden. -->
+          <div data-role="disclosure"></div>
           <div data-role="body"></div>
           <div data-role="pager"></div>
-          <!-- The affiliate disclosure sits BELOW the results, not above them.
-               What carries the FTC "clear and conspicuous, close to the link"
-               burden is the per-card "· affiliate" note that cardHtml() renders
-               beside every affiliate buy button — that is the disclosure at the
-               point of the link, and it must not be removed. This block is the
-               page-level statement, and it is the ONLY place the verbatim Amazon
-               Associates sentence appears on the catalog, so it has to stay on
-               the page even though it no longer sits above the fold. -->
-          <div data-role="disclosure"></div>
         </div>
       </div>`;
 
@@ -990,7 +991,10 @@ class PaddleFinder {
       // `${approvalBody} approved`, which renders "Unapproved approved" on the
       // 5 paddles that are not tournament legal.
       const rel = link.isAffiliate ? "sponsored nofollow noopener" : "nofollow noopener";
-      const note = [approvalNote(p), link.isAffiliate ? "affiliate" : null].filter(Boolean).join(" · ");
+      // "affiliate link", not bare "affiliate": this note is the disclosure at
+      // the point of the link, and a lone adjective doesn't tell a shopper that
+      // the button beside it earns us a commission.
+      const note = [approvalNote(p), link.isAffiliate ? "affiliate link" : null].filter(Boolean).join(" · ");
       const data = [
         `data-pq-paddle="${esc(p.id)}"`,
         `data-pq-brand="${esc(p.brand)}"`,

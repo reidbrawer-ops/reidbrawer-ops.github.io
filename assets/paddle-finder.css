@@ -219,10 +219,10 @@ body {
   gap: 0.5rem;
 }
 
-/* The disclosure now CLOSES the results instead of opening them, so its spacing
-   flips: it needs air above it, separating it from the pager, not below it. */
+/* The disclosure OPENS the results — it sits between the toolbar and the first
+   row of cards, so it needs air below it, separating it from the grid. */
 .pn-results [data-role="disclosure"] .affiliate-disclosure {
-  margin: var(--space-2) 0 0;
+  margin: 0 0 var(--space-2);
 }
 
 .pn-chip {
@@ -773,14 +773,20 @@ summary.pn-facet-head::-webkit-details-marker {
   text-decoration: none;
 }
 
-/* The "· affiliate" note, which is conditional on the link actually being one
-   (see assets/affiliate-links.js). */
+/* The "· affiliate link" note, which is conditional on the link actually being
+   one (see assets/affiliate-links.js).
+
+   --ink-soft at 0.6875rem, NOT --ink-faint at 0.625rem: this note is a legal
+   disclosure sitting next to a commissioned buy button, so it has to be
+   readable as real text. --ink-faint measures 2.90:1 on --paper and 2.69:1 on
+   --fog — both fail WCAG AA (4.5:1). --ink-soft is 5.94:1 and 5.51:1. This is
+   the same call, for the same reason, as the one recorded at style.css:1610. */
 .pn-note {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.04em;
-  color: var(--ink-faint);
+  color: var(--ink-soft);
 }
 
 /* Same z-index reasoning as .pn-buy. */
