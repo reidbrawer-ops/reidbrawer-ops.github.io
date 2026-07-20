@@ -554,6 +554,12 @@ function moduleHtml(model, roster, affiliateMap) {
       ${recoCard(win, lose, affiliateMap, verdict.picked ? "win" : "even", winPos, verdict.badge)}
       ${recoCard(lose, win, affiliateMap, verdict.picked ? "lose" : "even", losePos, null)}
     </div>
+    <!-- Directly under the two buy buttons it describes. It used to sit at the
+         foot of .h2h-others, ~1,880px below them, while its own first words
+         were "One or more links above" — so the one sentence that has to be
+         near the link was the length of a screen away from it, on a page whose
+         whole job is to talk you into one of these two. -->
+    ${disclosureHtml(links)}
 
     <div class="h2h-analysis">
       <div class="h2h-radar">
@@ -586,7 +592,6 @@ function moduleHtml(model, roster, affiliateMap) {
     <div class="h2h-others">
       <div class="h2h-others-label">OTHER OPTIONS</div>
       <div class="h2h-others-grid">${optionCards}</div>
-      ${disclosureHtml(links)}
     </div>
   </div>`;
 }
