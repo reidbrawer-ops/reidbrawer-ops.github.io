@@ -56,14 +56,32 @@ export function vendorLinkFor(paddle, affiliateMap) {
 
   // 1) A brand/DTC affiliate program is configured for this brand.
   if (brandCfg && (brandCfg.template || brandCfg.params)) {
+    // A program may pin specific models to a product page instead of the
+    // generic search base. One Shopify product URL already covers every
+    // shape/thickness variant of a line, so we match by id-prefix rather than
+    // listing each variant (a new variant then inherits its line's page for
+    // free). Longest matching prefix wins; a model with no rule keeps `base`
+    // (search, else brand home) so it still gets the affiliate ref applied —
+    // just not a pinned product page. The ref itself lives in `params` and is
+    // account-level, so every path below is tracked either way.
+    let programBase = base;
+    if (Array.isArray(brandCfg.products) && paddle.id) {
+      let best = null;
+      for (const p of brandCfg.products) {
+        if (p && p.idPrefix && p.url && paddle.id.startsWith(p.idPrefix) && (!best || p.idPrefix.length > best.idPrefix.length)) {
+          best = p;
+        }
+      }
+      if (best) programBase = best.url;
+    }
     let href;
     if (brandCfg.template) {
       href = brandCfg.template
-        .replaceAll("{url}", encodeURIComponent(base))
+        .replaceAll("{url}", encodeURIComponent(programBase))
         .replaceAll("{query}", encodeURIComponent(paddle.name))
         .replaceAll("{name}", encodeURIComponent(paddle.name));
     } else {
-      href = appendParams(base, brandCfg.params);
+      href = appendParams(programBase, brandCfg.params);
     }
     return { href, label: brandCfg.label || `Buy ${paddle.brand}`, shortLabel: brandCfg.shortLabel || brandCfg.label || "Buy from brand", isAffiliate: true, linkType: "brand-program" };
   }

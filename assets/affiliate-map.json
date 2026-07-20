@@ -6,7 +6,8 @@
     "Per brand you may set any of:",
     "  template : a deep-link template. Placeholders {url} (the brand's own product/search URL, encoded), {query} and {name} (the paddle name, encoded) are substituted. Use for affiliate-network wrappers or brand deep links, e.g. \"https://go.brand.com/aff?u={url}&id=PBA123\".",
     "  params   : query params appended to the brand's own product/search URL. Use for DTC programs that track via a ref/subid, e.g. { \"ref\": \"pba\" }. Ignored when `template` is set.",
-    "  label    : optional CTA text override (default \"Buy <Brand>\").",
+    "  label    : optional CTA text override (default \"Buy <Brand>\"). shortLabel overrides the narrower grid-card variant.",
+    "  products : optional [{ idPrefix, url }] deep-link overlay. When a paddle's paddles.json `id` starts with idPrefix, that product URL becomes the {url}/base the template or params act on, instead of the brand's search route — so one account-level ref can still tag every model while each product LINE lands on its own page. One Shopify product URL covers all of a line's shape/thickness variants, hence prefix (not per-id): a new variant inherits its line's page automatically. Longest matching prefix wins; a model matching no rule keeps the search base and is still ref-tagged, just not pinned to a product page. Requires template or params to be set (the ref is what makes it affiliate); products alone does nothing.",
     "A brand with neither template nor params gets an honest, un-tagged plain link to its own site.",
     "",
     "LINK CHAIN (vendorLinkFor resolves in this order, first match wins):",
@@ -85,5 +86,18 @@
       "engage-pursuit-pro-mx-6-0": "B0CGVYPK2D"
     }
   },
-  "brands": {}
+  "brands": {
+    "Vatic Pro": {
+      "_note": "DTC affiliate approved 2026-07-19. sca_ref is Vatic Pro's account-level Social Snowball ref — appended to ANY vaticpro.com URL it tags the sale, so it pays better than the ~3% Amazon fallback that still sits in amazonFallback for these ids (dormant now that this brand program wins the link chain). `products` pins each line to its Shopify product page (the 4 links Reid was given); the 3 models with no rule — Flash 14/16mm and the original V7 — fall to the ref-tagged on-site search until product URLs are added.",
+      "params": { "sca_ref": "11849428.uPFOSjhdZy" },
+      "label": "Buy Vatic Pro",
+      "shortLabel": "Buy Vatic Pro",
+      "products": [
+        { "idPrefix": "vatic-pro-v-sol-power-", "url": "https://vaticpro.com/products/vsol-power" },
+        { "idPrefix": "vatic-pro-v-sol-pro-", "url": "https://vaticpro.com/products/v-sol-pro-16mm" },
+        { "idPrefix": "vatic-pro-saga-", "url": "https://vaticpro.com/products/saga" },
+        { "idPrefix": "vatic-pro-prism-", "url": "https://vaticpro.com/products/prism" }
+      ]
+    }
+  }
 }
