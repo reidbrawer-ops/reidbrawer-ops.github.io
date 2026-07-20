@@ -154,7 +154,8 @@
   "searchVerified": true
  },
  "Prince": {
-  "vendorUrl": "https://princepickleball.com/"
+  "vendorUrl": null,
+  "siteGone": "princepickleball.com serves {\"message\":\"Cannot GET /\",\"statusCode\":404} at every path — the pickleball line's site is down, not moved. prince.com is the musician's estate; princetennis.com is the racquet brand but sells tennis only, with no pickleball anywhere on it. Verified 2026-07-20. There is no official Prince pickleball destination to link to, so the detail CTA falls back to a brand search."
  },
  "ProXR": {
   "vendorUrl": "https://proxrpickleball.com/",
@@ -228,7 +229,8 @@
   "searchVerified": true
  },
  "Versix": {
-  "vendorUrl": "https://versixpickleball.com/"
+  "vendorUrl": null,
+  "siteGone": "versixpickleball.com's TLS cert expired 2025-11-15 (CN=*.myshopify.com — the custom domain is detached), so a browser shows a full-page security interstitial. The store behind it is closed too: versix.myshopify.com returns \"This store is unavailable\", and versix.com does not resolve. Verified 2026-07-20."
  },
  "Volair": {
   "vendorUrl": "https://volair.com/",

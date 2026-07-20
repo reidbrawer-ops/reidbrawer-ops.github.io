@@ -144,7 +144,26 @@ The 8 that don't, and why:
 |---|---|
 | Callaway, Element6 | `/search?q=` returned a real HTTP 404 — confirmed broken, not just blocked |
 | Adidas, Franklin, Head, Vulcan, Wilson | Blocked automated fetching (403) at verification time — inconclusive either way |
-| Versix | Had an expired TLS certificate at verification time |
+| Prince, Versix | Site is **gone**, not merely unverifiable — see below |
+
+### Brands whose site has gone away
+
+Two entries carry `"vendorUrl": null` plus a `siteGone` note instead of a URL.
+`vendor_fields()` treats that exactly like an unmapped brand and emits no
+`vendorUrl`, so `vendorLinkFor()` returns null: the grid and head-to-head drop
+the buy button, and the detail page falls back to a plain Google brand search
+that is correctly declared non-affiliate.
+
+| Brand | State as of 2026-07-20 |
+|---|---|
+| Prince | `princepickleball.com` returns `{"message":"Cannot GET /","statusCode":404}` at every path. `prince.com` is the musician's estate; `princetennis.com` is the racquet brand but sells tennis only. No official Prince pickleball destination exists. |
+| Versix | `versixpickleball.com`'s TLS cert expired 2025-11-15 (`CN=*.myshopify.com`), so browsers show a security interstitial. The store behind it is closed: `versix.myshopify.com` returns "This store is unavailable". |
+
+The entries stay rather than being deleted, so the next person researching
+vendor links doesn't find the same dead URL on the same Google result and add
+it back. **Re-check before trusting a status code either way**: this catalog's
+vendors return 403 from WAFs on perfectly good pages, and dead storefronts
+return 200 with an empty SPA shell. Read the response body.
 
 **If this script warns about an unmapped brand** (one that doesn't appear
 in `paddle-vendor-map.json` at all — i.e. a brand new to this export),

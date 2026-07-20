@@ -52,7 +52,7 @@
   },
   {
     "brand": "Prince",
-    "officialSite": "https://princepickleball.com/",
+    "officialSite": null,
     "paddles": [
       {"name":"Response Pro","shape":"Widebody","paddleType":"Control","coreThicknessMm":14.3,"weightOz":8.0,"gripLengthIn":5.5,"gripSizeIn":4.13,"price":169.99,"yearReleased":2020,"approvalBody":"USAP"}
     ]

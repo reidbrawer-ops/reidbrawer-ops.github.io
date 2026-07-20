@@ -330,8 +330,15 @@ def skill_level(twist_weight_percentile, core_thickness_mm, paddle_type):
 #     Brands without this get a plain vendorUrl link instead of a guessed
 #     search URL — see PADDLE_DATA_SETUP.md for the full list of what
 #     failed and why (Adidas/Franklin/Head/Vulcan/Wilson blocked automated
-#     verification; Callaway/Element6 confirmed 404; Versix had an expired
-#     TLS cert at verification time).
+#     verification; Callaway/Element6 confirmed 404).
+#   - vendorUrl: null + siteGone: the brand's site is gone, not merely
+#     unverifiable. Prince and Versix are both in this state as of
+#     2026-07-20 — see their siteGone notes for exactly what was checked.
+#     The entry stays so the dead URL is not researched and re-added.
+#
+# A status code alone decides none of this: this catalog's vendors return 403
+# from WAFs on perfectly good pages, and dead storefronts return 200 with an
+# empty SPA shell. Every verdict above came from reading the response body.
 # ---------------------------------------------------------------------------
 
 
@@ -341,11 +348,22 @@ def load_vendor_map():
 
 def vendor_fields(brand, vendor_map):
     """Returns (vendorUrl, vendorSearchBase) for a brand, or (None, None) if
-    the brand has no entry in paddle-vendor-map.json at all."""
+    the brand has no entry in paddle-vendor-map.json at all, or if its entry
+    records a dead site.
+
+    A brand whose site has gone away keeps its entry with "vendorUrl": null and
+    a "siteGone" note saying what was checked and when, rather than being
+    deleted. Deleting it loses the finding, and the next person researching
+    vendor links re-adds the same dead URL from the same Google result. The
+    paddle then has no vendorUrl at all, which every surface already handles:
+    vendorLinkFor() returns null, the grid and head-to-head drop the buy button,
+    and the detail page falls back to a brand search."""
     vendor = vendor_map.get(brand)
     if vendor is None:
         return None, None
-    vendor_url = vendor["vendorUrl"]
+    vendor_url = vendor.get("vendorUrl")
+    if not vendor_url:
+        return None, None
     search_base = None
     if vendor.get("searchVerified"):
         # The verified search route is always at the domain root (e.g.
