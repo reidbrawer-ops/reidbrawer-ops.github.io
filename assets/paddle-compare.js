@@ -136,6 +136,11 @@ function totalOf(p) {
 const valueOf = (p, total) => (total != null && typeof p.price === "number" && p.price > 0 ? (total / p.price) * 100 : null);
 const f1 = (v) => (v == null ? "—" : v.toFixed(1));
 
+// One tie predicate for the whole page. analyse() and the two number rows both
+// read it, so the verdict can never say "higher total" over a row that prints
+// "Even" — they used to disagree, because analyse() compared with a bare >=.
+const sameScore = (x, y) => Math.abs(x - y) < 1e-9;
+
 /* --------------------------------------------------------------- radar points */
 
 const CX = 130;
@@ -238,48 +243,83 @@ function sharedStrip(a, b) {
 /* ------------------------------------------------------------------- verdict */
 
 // Everything the view needs, computed once from the active pair. Slot A is deep
-// green, slot B is olive, by position. The verdict is the higher Total score,
-// with slot A winning a tie (the handoff's rule).
+// green, slot B is olive, by position.
+//
+// `basis` records WHAT the verdict rests on, and the headline and the pick badge
+// are both derived from it — they used to be hardcoded to "higher total", which
+// made the page claim a Total comparison it had not made. 171 of the catalog's
+// paddles have no complete Total (totalOf needs all five axes), so on 55% of
+// pairs at least one side prints "—" on that row:
+//
+//   total    both Totals present and different — a real Total comparison
+//   tie      both Totals present and equal — nobody wins, say so
+//   measured only one side (or neither) has a Total, but qualityScore separates
+//            them on the axes we do hold for both — a real but narrower call
+//   none     neither paddle has enough bench data to separate them at all.
+//            Previously this fell through to `(qA ?? -1) >= (qB ?? -1)`, which
+//            is always true, so slot A "won" purely for being first in ?vs= —
+//            reversing the URL flipped the verdict with no change in data.
 function analyse(a, b, labCount) {
   const tA = totalOf(a);
   const tB = totalOf(b);
   const vA = valueOf(a, tA);
   const vB = valueOf(b, tB);
+  const bothTotals = tA != null && tB != null;
 
-  // winnerSlot drives the whole page. With both Totals present it's the higher
-  // one; otherwise fall back to qualityScore so a specs-only pair still gets a
-  // verdict rather than an error.
+  let basis;
   let winnerSlot;
-  if (tA != null && tB != null) winnerSlot = tA >= tB ? "a" : "b";
-  else {
+  if (bothTotals) {
+    basis = sameScore(tA, tB) ? "tie" : "total";
+    winnerSlot = tA > tB ? "a" : "b";
+  } else {
     const qA = qualityScore(a);
     const qB = qualityScore(b);
-    winnerSlot = (qA ?? -1) >= (qB ?? -1) ? "a" : "b";
+    if (qA == null && qB == null) basis = "none";
+    else basis = sameScore(qA ?? -1, qB ?? -1) ? "none" : "measured";
+    winnerSlot = (qA ?? -1) > (qB ?? -1) ? "a" : "b";
   }
+  // Nothing is picked on "tie" or "none", so fall back to the order the URL
+  // named them in — the strict > above resolves an unpicked pair to slot B,
+  // which would silently render the second paddle's card first while the
+  // kicker above it still reads "A vs B".
+  if (basis === "tie" || basis === "none") winnerSlot = "a";
+  // win/lose are then only the slot order the two cards render in, and the view
+  // gives neither of them the pick treatment.
   const win = winnerSlot === "a" ? a : b;
   const lose = winnerSlot === "a" ? b : a;
 
-  const bothTotals = tA != null && tB != null;
   const hi = bothTotals ? Math.max(tA, tB) : null;
   const lo = bothTotals ? Math.min(tA, tB) : null;
+  const bothValues = vA != null && vB != null;
+  const valWin = bothValues ? (vA > vB ? a : b) : null;
+  const valEven = bothValues && sameScore(vA, vB);
 
   let blurb;
-  if (bothTotals && vA != null && vB != null) {
-    const valWin = vA >= vB ? a : b;
+  if (basis === "total" && bothValues) {
     const vHi = Math.max(vA, vB);
     const vLo = Math.min(vA, vB);
     blurb =
-      valWin === win
+      valWin === win || valEven
         ? `Total score ${f1(hi)}–${f1(lo)}, and the better value at ${f1(vHi)} points per $100.`
         : `Total score ${f1(hi)}–${f1(lo)}; but the ${valWin.short} is the better value — ${f1(vHi)} vs ${f1(vLo)} points per $100.`;
-  } else {
+  } else if (basis === "total") {
+    blurb = `Total score ${f1(hi)}–${f1(lo)}.`;
+  } else if (basis === "tie") {
+    // Dead level on the one number that decides this page. Naming the better
+    // value is a real tiebreak; picking one anyway would not be.
+    blurb = bothValues && !valEven
+      ? `Dead level on Total, ${f1(hi)} each. The ${valWin.short} is the better value — ${f1(Math.max(vA, vB))} vs ${f1(Math.min(vA, vB))} points per $100.`
+      : `Dead level on Total, ${f1(hi)} each. Pick on feel, shape and price.`;
+  } else if (basis === "measured") {
     // No complete Total for one side — describe the call without inventing a
-    // score. We still know who won on the data we hold for both.
+    // score. We still know who came out ahead on the data we hold for both.
     blurb = `The ${win.short} edges it across the measurements we hold for both. Their detail pages carry everything else.`;
+  } else {
+    blurb = `Neither of these has been through the bench we score Totals from, so we're not going to call a winner on numbers we don't have. What we do hold is below — and each one's own case is worth reading.`;
   }
 
   return {
-    a, b, win, lose, winnerSlot,
+    a, b, win, lose, winnerSlot, basis,
     totals: { a: tA, b: tB },
     values: { a: vA, b: vB },
     kicker: `${a.name} (${moneyLabel(a.price)}) vs ${b.name} (${moneyLabel(b.price)})`,
@@ -307,7 +347,10 @@ function ctaHtml(p, affiliateMap, position, variant) {
     </div>`;
   }
   const rel = link.isAffiliate ? "sponsored nofollow noopener" : "nofollow noopener";
-  const note = [approvalNote(p), link.isAffiliate ? "affiliate" : null].filter(Boolean).join(" · ");
+  // "affiliate link", not bare "affiliate" — same wording as the grid's
+  // .pn-note, because it is the same disclosure doing the same job beside the
+  // same kind of button, and two surfaces wording it differently is a tell.
+  const note = [approvalNote(p), link.isAffiliate ? "affiliate link" : null].filter(Boolean).join(" · ");
   const data = [
     `data-pq-paddle="${esc(p.id)}"`,
     `data-pq-brand="${esc(p.brand)}"`,
@@ -376,7 +419,7 @@ function specRow(spec, a, b) {
   const av = spec.get(a);
   const bv = spec.get(b);
   const both = typeof av === "number" && typeof bv === "number";
-  const even = both && Math.abs(av - bv) < 1e-9;
+  const even = both && sameScore(av, bv);
   let winnerSlot = null;
   if (both && !even) winnerSlot = (av < bv) === spec.lowerWins ? "a" : "b";
   const cA = { label: typeof av === "number" ? spec.fmt(av) : "—" };
@@ -392,7 +435,7 @@ function specRow(spec, a, b) {
 function scoreRow(label, tip, av, bv, a, b, rowMod) {
   // Higher score always wins on these two rows (more total, more value per $).
   const both = av != null && bv != null;
-  const even = both && Math.abs(av - bv) < 1e-9;
+  const even = both && sameScore(av, bv);
   let winnerSlot = null;
   if (both && !even) winnerSlot = av > bv ? "a" : "b";
   return `<div class="h2h-row ${rowMod}">
@@ -427,9 +470,12 @@ function radarHtml(a, b) {
   </svg>`;
 }
 
-function recoCard(p, other, affiliateMap, variant, position) {
+// badgeText is null on every card that isn't the pick, and on BOTH cards when
+// analyse() couldn't separate the pair — the badge is a claim, so it is passed
+// in from the basis rather than inferred from the variant.
+function recoCard(p, other, affiliateMap, variant, position, badgeText) {
   const bullets = pickBullets(p, other).map((b) => `<li>${esc(b)}</li>`).join("");
-  const badge = variant === "win" ? `<span class="h2h-reco-badge">OUR PICK — HIGHER TOTAL</span>` : "";
+  const badge = badgeText ? `<span class="h2h-reco-badge">${esc(badgeText)}</span>` : "";
   return `<div class="h2h-reco h2h-reco--${variant}">
     ${badge}
     <div class="h2h-reco-title">Get the ${esc(p.short)} if…</div>
@@ -456,10 +502,27 @@ function optionCard(p, badge, aShort, bShort) {
 
 /* -------------------------------------------------------------------- render */
 
+// The headline and the pick badge, both keyed off analyse()'s basis so neither
+// can assert a comparison the page didn't make. "picked" is false when the pair
+// couldn't be separated: no badge, no winner styling, and a headline that says
+// so instead of naming one.
+const VERDICT = {
+  total: { picked: true, badge: "OUR PICK — HIGHER TOTAL" },
+  measured: { picked: true, badge: "OUR PICK — ON WHAT WE MEASURED" },
+  tie: { picked: false, badge: null },
+  none: { picked: false, badge: null },
+};
+
 function moduleHtml(model, roster, affiliateMap) {
-  const { a, b, win, lose, winnerSlot, totals, values, kicker, blurb, strip, labCount } = model;
+  const { a, b, win, lose, winnerSlot, basis, totals, values, kicker, blurb, strip, labCount } = model;
   const winPos = winnerSlot === "a" ? 1 : 2;
   const losePos = winnerSlot === "a" ? 2 : 1;
+  const verdict = VERDICT[basis];
+  const headline = verdict.picked
+    ? `The verdict: get the <span class="h2h-mark">${esc(win.short)}</span>.`
+    : basis === "tie"
+      ? `The verdict: <span class="h2h-mark">it's a tie</span>.`
+      : `We can't <span class="h2h-mark">call this one</span>.`;
 
   const perfRows = TABLE_AXES.map((k) => perfRow(axByKey[k], a, b)).join("");
   const specRowsHtml = SPEC_ROWS.map((s) => specRow(s, a, b)).join("");
@@ -482,14 +545,14 @@ function moduleHtml(model, roster, affiliateMap) {
   return `<div class="h2h">
     <header class="h2h-header">
       <div class="h2h-kicker">${esc(kicker)}</div>
-      <h1 class="h2h-verdict">The verdict: get the <span class="h2h-mark">${esc(win.short)}</span>.</h1>
+      <h1 class="h2h-verdict">${headline}</h1>
       <p class="h2h-blurb">${esc(blurb)}</p>
     </header>
 
     <h2 class="visually-hidden">Which to get, and why</h2>
     <div class="h2h-recos">
-      ${recoCard(win, lose, affiliateMap, "win", winPos)}
-      ${recoCard(lose, win, affiliateMap, "lose", losePos)}
+      ${recoCard(win, lose, affiliateMap, verdict.picked ? "win" : "even", winPos, verdict.badge)}
+      ${recoCard(lose, win, affiliateMap, verdict.picked ? "lose" : "even", losePos, null)}
     </div>
 
     <div class="h2h-analysis">

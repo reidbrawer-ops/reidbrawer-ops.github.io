@@ -91,7 +91,11 @@
 .h2h-reco--win {
   border: 2px solid #a3b02f;
 }
-.h2h-reco--lose {
+.h2h-reco--lose,
+/* Both cards when the pair couldn't be separated (tie on Total, or neither
+   paddle has the bench data to score one). Neither gets the winner's 2px
+   border, because neither won. */
+.h2h-reco--even {
   border: 1px solid rgba(34, 50, 43, 0.15);
 }
 .h2h-reco-badge {
@@ -143,7 +147,10 @@
 .h2h-cta--win {
   background: #d9e353;
 }
-.h2h-cta--lose {
+.h2h-cta--lose,
+/* No pick was made, so neither buy button gets the filled treatment that reads
+   as an endorsement — matched pair, same weight. */
+.h2h-cta--even {
   background: transparent;
   border-color: rgba(34, 50, 43, 0.35);
   font-weight: 600;
@@ -154,9 +161,12 @@
   border-color: #22322b;
   text-decoration: none;
 }
+/* The point-of-link affiliate disclosure, so it has to read as real text:
+   #8b887c was 3.46:1 on the card and failed WCAG AA (4.5:1). --ink-soft is
+   5.99:1. Same call as the grid's .pn-note in paddle-finder.css. */
 .h2h-cta-note {
   font-size: 11px;
-  color: #8b887c;
+  color: var(--ink-soft);
 }
 
 /* ------------------------------------------------------ fingerprint + table */
@@ -552,7 +562,9 @@
   }
   .h2h-cta-note {
     text-align: center;
-    font-size: 10.5px;
+    /* Not 10.5px — see the AA note on the base rule. A disclosure that shrinks
+       on the surface most people read it on is the wrong direction. */
+    font-size: 11px;
   }
 
   .h2h-analysis {
