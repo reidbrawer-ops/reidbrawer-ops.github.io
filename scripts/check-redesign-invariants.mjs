@@ -370,5 +370,91 @@ group('CSS selector coverage vs v3 baseline');
   }
 }
 
+/* ---------- 9. shared <head> boilerplate ---------- */
+// scripts/build.mjs used to generate the <head> on every page and shipped its
+// own --check. It was retired (see RUNBOOK) because the same script had drifted
+// into owning a stale <header> that would have reverted the live nav. That left
+// the <head> hand-maintained on ~57 pages with NOTHING verifying it — precisely
+// the silent-drift class this file exists to catch. This is its replacement.
+//
+// index.html is the REFERENCE rather than a hardcoded list of tag values. A
+// deliberate sitewide change — bumping the favicon `?v=`, changing theme-color,
+// moving to a new font URL — edits index.html along with everything else and
+// still passes. A PARTIAL rollout, which is the actual failure mode, fails
+// loudly and names the page. So this check needs no edit when the chrome
+// legitimately moves, which is what let build.mjs's own templates rot.
+group('Shared <head> boilerplate (replaces build.mjs --check)');
+{
+  const headOf = (rel) => (read(rel).match(/<head>([\s\S]*?)<\/head>/i) || ['', ''])[1];
+  const REF = 'index.html';
+  const refHead = headOf(REF);
+
+  // Which tags count as chrome, and how to find them. The expected VALUE is
+  // never written here — it is read off the reference page.
+  const CHROME = [
+    ['charset', /<meta charset=[^>]*>/i],
+    ['viewport', /<meta name="viewport"[^>]*>/i],
+    ['preconnect googleapis', /<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com"[^>]*>/i],
+    ['preconnect gstatic', /<link rel="preconnect" href="https:\/\/fonts\.gstatic\.com"[^>]*>/i],
+    ['google-fonts stylesheet', /<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]*>/i],
+    ['favicon.ico', /<link rel="icon" href="\/favicon\.ico[^>]*>/i],
+    ['favicon-32', /<link rel="icon" href="\/assets\/logo\/favicon-32\.png[^>]*>/i],
+    ['favicon-16', /<link rel="icon" href="\/assets\/logo\/favicon-16\.png[^>]*>/i],
+    ['favicon.svg', /<link rel="icon" href="\/assets\/logo\/favicon\.svg[^>]*>/i],
+    ['apple-touch-icon', /<link rel="apple-touch-icon"[^>]*>/i],
+    ['mask-icon', /<link rel="mask-icon"[^>]*>/i],
+    ['manifest', /<link rel="manifest"[^>]*>/i],
+    ['theme-color', /<meta name="theme-color"[^>]*>/i],
+    ['style.css', /<link rel="stylesheet" href="\/assets\/style\.css">/i],
+  ];
+
+  // allPages misses two surfaces that carry the same chrome: compare.html (hand
+  // -maintained, under paddles/browse/, which sync-header.js also now reaches)
+  // and the detail TEMPLATE. Checking the template rather than its 514 outputs
+  // covers all of them in one assertion and points at the file you would edit.
+  const headPages = [...allPages, 'paddles/browse/compare.html', 'partials/paddle-detail-template.html'];
+
+  // If the reference itself loses a tag, every other page would "match" a
+  // missing value and the whole check would silently pass. Anchor it first.
+  for (const [name, re] of CHROME) {
+    check(re.test(refHead), `${REF}: reference <head> lost ${name} — the boilerplate check cannot anchor on it`);
+  }
+
+  for (const rel of headPages) {
+    const head = headOf(rel);
+    const problems = [];
+    for (const [name, re] of CHROME) {
+      const want = (refHead.match(re) || [null])[0];
+      const got = (head.match(re) || [null])[0];
+      if (!got) problems.push(`missing ${name}`);
+      else if (want && got !== want) problems.push(`${name} differs from ${REF}`);
+    }
+    check(problems.length === 0, `${rel}: <head> chrome drift — ${problems.join('; ')}`);
+  }
+
+  // Social + canonical. 404.html is exempt because it is noindexed and has no
+  // canonical URL to claim, so it deliberately ships none of these.
+  // twitter:image is deliberately NOT required: twitter:card falls back to
+  // og:image per Twitter's own spec, and compare.html relies on exactly that —
+  // demanding it would be asserting a preference, not an invariant.
+  const SOCIAL = [
+    ['description', /<meta name="description"[^>]*>/i],
+    ['og:type', /<meta property="og:type"[^>]*>/i],
+    ['og:site_name', /<meta property="og:site_name"[^>]*>/i],
+    ['og:image', /<meta property="og:image"[^>]*>/i],
+    ['twitter:card', /<meta name="twitter:card"[^>]*>/i],
+    ['canonical', /<link rel="canonical"[^>]*>/i],
+  ];
+  for (const rel of headPages.filter((p) => p !== '404.html')) {
+    const head = headOf(rel);
+    const missing = SOCIAL.filter(([, re]) => !re.test(head)).map(([n]) => n);
+    check(missing.length === 0, `${rel}: <head> missing ${missing.join(', ')}`);
+  }
+
+  // The exemption above is only safe while 404 stays out of the index.
+  check(/<meta name="robots"[^>]*noindex/i.test(headOf('404.html')),
+    '404.html: lost its noindex — it can no longer be exempt from the canonical/social head check');
+}
+
 console.log(`\n${fails === 0 ? '✔' : '✘'} ${passes} passed, ${fails} failed`);
 process.exit(fails === 0 ? 0 : 1);
