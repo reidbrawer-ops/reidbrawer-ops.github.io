@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:auto}
+body{margin:0;background:#f7f2e7;color:#232a1f;font-family:'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#2c4f27;text-decoration:none}
+a:hover{color:#1c3618;text-decoration:underline}
+*{box-sizing:border-box}
+input,button,select{font-family:'Archivo',system-ui,sans-serif}
+::selection{background:rgba(44,79,39,.18)}
+@keyframes pbaPulse{0%,100%{opacity:.45}50%{opacity:.9}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column">
+
+<!-- ============ HEADER ============ -->
+<header style="position:sticky;top:0;z-index:40;background:rgba(247,242,231,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(35,42,31,.14)">
+  <div style="max-width:1280px;margin:0 auto;padding:0 clamp(16px,3vw,32px);height:60px;display:flex;align-items:center;gap:24px">
+    <a href="#/" onClick="{{ goHome }}" style="display:flex;align-items:baseline;gap:2px;text-decoration:none;white-space:nowrap" style-hover="text-decoration:none">
+      <span style="font-family:'Source Serif 4',serif;font-weight:700;font-size:19px;color:#2c4f27">Pickleball</span>
+      <span style="font-family:'Source Serif 4',serif;font-weight:500;font-size:19px;color:#232a1f">Bay&nbsp;Area</span>
+    </a>
+    <nav style="display:{{ navDisplay }};gap:20px;font-size:13.5px;font-weight:500;color:#55604b">
+      <span style="cursor:default">Find courts</span><span style="cursor:default">Cities</span><span style="cursor:default">Rankings</span>
+      <a href="#/" onClick="{{ goHome }}" style="color:#232a1f;font-weight:600;border-bottom:2px solid #2c4f27;padding-bottom:2px" style-hover="text-decoration:none">Paddles &amp; Gear</a>
+    </nav>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+      <span style="font-size:11.5px;color:#55604b;display:{{ navDisplay }}">Independent &amp; ad-free</span>
+      <span style="width:8px;height:8px;border-radius:50%;background:#cbd52b;border:1px solid rgba(35,42,31,.25)"></span>
+    </div>
+  </div>
+</header>
+
+<main style="flex:1;width:100%">
+
+<!-- ============ HOME: DATABASE ============ -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <section style="border-bottom:1px solid rgba(35,42,31,.14);background:linear-gradient(180deg,#f7f2e7 0%,#f3ecdc 100%)">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(28px,5vw,52px) clamp(16px,3vw,32px) clamp(22px,3vw,34px)">
+      <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#8a6d1f;margin-bottom:10px">Paddles &amp; Gear · The catalog</div>
+      <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:clamp(30px,4.6vw,46px);line-height:1.05;margin:0 0 12px;letter-spacing:-.01em">Browse all paddles.</h1>
+      <p style="max-width:62ch;font-size:15px;line-height:1.55;color:#55604b;margin:0 0 22px;text-wrap:pretty">Every paddle we track — {{ totalCount }} of them — with lab-measured spin, power and pop where we have it. Filter it, sort it, click into anything for the full picture. No pay-to-list, ever.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <div style="flex:1;min-width:min(320px,100%);max-width:520px;display:flex;align-items:center;gap:10px;background:#fffdf8;border:1px solid rgba(35,42,31,.2);border-radius:8px;padding:0 14px;height:46px;box-shadow:0 1px 2px rgba(35,42,31,.05)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><circle cx="7" cy="7" r="5" stroke="#55604b" stroke-width="1.6"></circle><path d="M11 11L14.5 14.5" stroke="#55604b" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Search {{ totalCount }} paddles or brands…" style="border:none;outline:none;background:transparent;flex:1;font-size:14.5px;color:#232a1f;min-width:0"></input>
+          <sc-if value="{{ hasQ }}" hint-placeholder-val="{{ false }}"><button onClick="{{ clearQ }}" style="border:none;background:rgba(35,42,31,.08);color:#55604b;border-radius:6px;font-size:11px;font-weight:600;padding:4px 8px;cursor:pointer">Clear</button></sc-if>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ collections }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.apply }}" style="border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap" style-hover="border-color:#2c4f27;box-shadow:0 1px 3px rgba(35,42,31,.12)">{{ c.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1280px;margin:0 auto;padding:20px clamp(16px,3vw,32px) 56px;display:grid;grid-template-columns:{{ homeCols }};gap:28px;align-items:start">
+    <!-- FILTER RAIL -->
+    <sc-if value="{{ railVisible }}" hint-placeholder-val="{{ true }}">
+    <aside style="position:{{ railPosition }};top:76px;z-index:{{ railZ }};background:{{ railBg }};border:{{ railBorder }};border-radius:10px;padding:{{ railPad }};max-height:{{ railMaxH }};overflow:auto;box-shadow:{{ railShadow }};inset:{{ railInset }};width:{{ railWidth }};margin:{{ railMargin }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#232a1f">Filters</span>
+        <div style="display:flex;gap:12px;align-items:center">
+          <sc-if value="{{ anyFilter }}" hint-placeholder-val="{{ false }}"><button onClick="{{ clearFilters }}" style="border:none;background:none;color:#a3502a;font-size:12px;font-weight:600;cursor:pointer;padding:0" style-hover="text-decoration:underline">Reset all</button></sc-if>
+          <sc-if value="{{ isNarrow }}" hint-placeholder-val="{{ false }}"><button onClick="{{ closeRail }}" style="border:1px solid rgba(35,42,31,.2);background:#fffdf8;border-radius:6px;font-size:12px;font-weight:600;padding:4px 10px;cursor:pointer">Done</button></sc-if>
+        </div>
+      </div>
+      <sc-for list="{{ facets }}" as="f" hint-placeholder-count="4">
+        <div style="border-top:1px solid rgba(35,42,31,.1);padding:12px 0 14px">
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:9px;display:flex;justify-content:space-between;align-items:baseline">{{ f.label }}<span style="font-weight:400;font-size:11px;color:#8b937f">{{ f.hint }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;max-height:{{ f.maxH }};overflow:auto">
+            <sc-for list="{{ f.options }}" as="o" hint-placeholder-count="3">
+              <button onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:9px;border:none;background:{{ o.rowBg }};border-radius:6px;padding:5px 7px;cursor:pointer;text-align:left;width:100%" style-hover="background:rgba(44,79,39,.07)">
+                <span style="width:15px;height:15px;flex:none;border-radius:4px;border:1.5px solid {{ o.boxBorder }};background:{{ o.boxBg }};display:grid;place-items:center">
+                  <sc-if value="{{ o.on }}" hint-placeholder-val="{{ false }}"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1.5 5.5L4 8L8.5 2.5" stroke="#fffdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                </span>
+                <span style="flex:1;font-size:13px;color:{{ o.labelColor }};font-weight:{{ o.labelWeight }}">{{ o.label }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#8b937f">{{ o.count }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ f.expandable }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ f.toggleExpand }}" style="border:none;background:none;color:#2c4f27;font-size:12px;font-weight:600;cursor:pointer;padding:6px 7px 0" style-hover="text-decoration:underline">{{ f.expandLabel }}</button>
+          </sc-if>
+        </div>
+      </sc-for>
+      <div style="border-top:1px solid rgba(35,42,31,.1);padding-top:12px;font-size:11.5px;line-height:1.5;color:#8b937f">Lab metrics (spin, power, pop) cover {{ labCount }} of {{ totalCount }} paddles; the rest show specs only.</div>
+    </aside>
+    </sc-if>
+
+    <!-- RESULTS -->
+    <div style="min-width:0">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+        <sc-if value="{{ isNarrow }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ openRail }}" style="display:flex;align-items:center;gap:7px;border:1px solid rgba(35,42,31,.25);background:#fffdf8;border-radius:8px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 3h12M3.5 7h7M5.5 11h3" stroke="#232a1f" stroke-width="1.6" stroke-linecap="round"></path></svg>
+            Filters{{ filterCountBadge }}
+          </button>
+        </sc-if>
+        <div style="font-size:13.5px;color:#55604b"><strong style="color:#232a1f;font-family:'IBM Plex Mono',monospace">{{ resultCount }}</strong> {{ resultNoun }}</div>
+        <sc-for list="{{ activeChips }}" as="ch" hint-placeholder-count="0">
+          <button onClick="{{ ch.remove }}" style="display:flex;align-items:center;gap:6px;border:1px solid rgba(44,79,39,.35);background:rgba(44,79,39,.08);color:#2c4f27;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer" style-hover="background:rgba(44,79,39,.14)">{{ ch.label }}<span style="font-size:13px;line-height:1">×</span></button>
+        </sc-for>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+          <label style="font-size:12px;color:#8b937f">Sort</label>
+          <select value="{{ sort }}" onChange="{{ onSort }}" style="border:1px solid rgba(35,42,31,.25);background:#fffdf8;border-radius:7px;padding:7px 10px;font-size:13px;font-weight:500;color:#232a1f;cursor:pointer;outline-color:#2c4f27">
+            <option value="best">Best overall</option>
+            <option value="price-asc">Price: low → high</option>
+            <option value="price-desc">Price: high → low</option>
+            <option value="spin">Most spin</option>
+            <option value="power">Most power</option>
+            <option value="pop">Most pop</option>
+            <option value="newest">Newest</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px dashed rgba(35,42,31,.3);border-radius:12px;padding:48px 24px;text-align:center">
+          <div style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:600;margin-bottom:6px">Nothing matches that combination.</div>
+          <div style="font-size:13.5px;color:#55604b;margin-bottom:16px">Loosen a filter or two — the catalog is deep.</div>
+          <button onClick="{{ clearFilters }}" style="border:none;background:#2c4f27;color:#fffdf8;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer">Reset all filters</button>
+        </div>
+      </sc-if>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:14px">
+        <sc-for list="{{ visible }}" as="p" hint-placeholder-count="9">
+          <article onClick="{{ p.open }}" style="background:#fffdf8;border:1px solid rgba(35,42,31,.14);border-radius:10px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;position:relative;transition:box-shadow .15s,transform .15s" style-hover="box-shadow:0 4px 14px rgba(35,42,31,.12);transform:translateY(-2px);border-color:rgba(44,79,39,.4)">
+            <button onClick="{{ p.toggleCompare }}" title="Add to compare" style="position:absolute;top:10px;right:10px;z-index:2;border:1px solid {{ p.cmpBorder }};background:{{ p.cmpBg }};color:{{ p.cmpColor }};border-radius:6px;font-size:10.5px;font-weight:700;padding:4px 7px;cursor:pointer;letter-spacing:.04em" style-hover="border-color:#2c4f27">{{ p.cmpLabel }}</button>
+            <div style="height:118px;display:grid;place-items:center;background:linear-gradient(160deg,#f3ecdc,#ece3cd);border-radius:8px;position:relative;overflow:hidden">
+              <div style="width:{{ p.silW }};height:84px;background:{{ p.silBg }};border-radius:{{ p.silRadius }};border:1.5px solid rgba(35,42,31,.28);position:relative;display:grid;place-items:center">
+                <span style="font-family:'Source Serif 4',serif;font-weight:700;font-size:17px;color:rgba(35,42,31,.55)">{{ p.initials }}</span>
+                <div style="position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);width:9px;height:16px;background:#d8cdb2;border:1.5px solid rgba(35,42,31,.28);border-radius:3px"></div>
+              </div>
+              <span style="position:absolute;bottom:7px;left:9px;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(35,42,31,.45);font-weight:600">{{ p.shape }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <div style="font-size:11.5px;font-weight:600;color:#8a6d1f;letter-spacing:.02em">{{ p.brand }}</div>
+              <div style="font-size:14.5px;font-weight:600;line-height:1.25;color:#232a1f">{{ p.name }}</div>
+              <div style="display:flex;align-items:center;gap:7px;margin-top:2px;flex-wrap:wrap">
+                <span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:2.5px 7px;border-radius:5px;background:{{ p.chipBg }};color:{{ p.chipColor }}">{{ p.typeLabel }}</span>
+                <span style="font-size:11px;color:#8b937f">{{ p.coreLabel }} · {{ p.weightLabel }}</span>
+              </div>
+            </div>
+            <sc-if value="{{ p.hasLab }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:5px;margin-top:auto">
+                <sc-for list="{{ p.miniBars }}" as="b" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8b937f;width:38px;flex:none">{{ b.label }}</span>
+                    <div style="flex:1;height:5px;border-radius:3px;background:rgba(35,42,31,.1);overflow:hidden"><div style="height:100%;border-radius:3px;background:{{ b.color }};width:{{ b.w }}"></div></div>
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#55604b;width:30px;text-align:right;flex:none">{{ b.val }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ p.noLab }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:auto;font-size:11px;color:#8b937f;font-style:italic">Not lab-tested yet — specs only</div>
+            </sc-if>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid rgba(35,42,31,.1);padding-top:9px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:15px">{{ p.priceLabel }}</span>
+              <span style="font-size:11.5px;font-weight:600;color:#2c4f27">Details →</span>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ showPager }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:26px 0 4px">
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
+            <button onClick="{{ prevGo }}" disabled="{{ prevDisabled }}" style="border:1px solid rgba(35,42,31,.3);background:#fffdf8;color:{{ prevColor }};border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:{{ prevCursor }}" style-hover="border-color:#2c4f27">← Prev</button>
+            <sc-for list="{{ pagerItems }}" as="pg" hint-placeholder-count="0">
+              <sc-if value="{{ pg.gap }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8b937f;padding:0 3px">…</span></sc-if>
+              <sc-if value="{{ pg.num }}" hint-placeholder-val="{{ false }}"><button onClick="{{ pg.go }}" style="min-width:36px;border:1px solid {{ pg.border }};background:{{ pg.bg }};color:{{ pg.color }};border-radius:7px;padding:8px 6px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;cursor:pointer" style-hover="border-color:#2c4f27">{{ pg.label }}</button></sc-if>
+            </sc-for>
+            <button onClick="{{ nextGo }}" disabled="{{ nextDisabled }}" style="border:1px solid rgba(35,42,31,.3);background:#fffdf8;color:{{ nextColor }};border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:{{ nextCursor }}" style-hover="border-color:#2c4f27">Next →</button>
+          </div>
+          <div style="text-align:center;font-size:11.5px;color:#8b937f;margin-top:10px">{{ pageSummary }}</div>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+</sc-if>
+
+<!-- ============ DETAIL ============ -->
+<sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+  <section style="max-width:1280px;margin:0 auto;padding:18px clamp(16px,3vw,32px) 56px">
+    <button onClick="{{ goHome }}" style="border:none;background:none;color:#2c4f27;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:16px;display:flex;align-items:center;gap:6px" style-hover="text-decoration:underline">← All paddles</button>
+    <div style="display:grid;grid-template-columns:{{ detailCols }};gap:clamp(20px,3vw,40px);align-items:start">
+      <!-- left: silhouette + quick specs -->
+      <div style="display:flex;flex-direction:column;gap:14px;position:{{ detailLeftPos }};top:84px">
+        <div style="background:linear-gradient(160deg,#f3ecdc,#ece3cd);border:1px solid rgba(35,42,31,.14);border-radius:14px;height:clamp(240px,30vw,320px);display:grid;place-items:center;position:relative">
+          <div style="width:{{ d.bigSilW }};height:58%;background:{{ d.silBg }};border-radius:{{ d.silRadius }};border:2px solid rgba(35,42,31,.3);display:grid;place-items:center;position:relative">
+            <span style="font-family:'Source Serif 4',serif;font-weight:700;font-size:34px;color:rgba(35,42,31,.5)">{{ d.initials }}</span>
+            <div style="position:absolute;bottom:-44px;left:50%;transform:translateX(-50%);width:20px;height:42px;background:#d8cdb2;border:2px solid rgba(35,42,31,.3);border-radius:6px"></div>
+          </div>
+          <span style="position:absolute;top:12px;left:14px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(35,42,31,.45);font-weight:700">Schematic — {{ d.shape }}</span>
+        </div>
+        <div style="background:#fffdf8;border:1px solid rgba(35,42,31,.14);border-radius:12px;padding:16px 18px">
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#8b937f;margin-bottom:10px">At a glance</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px">
+            <sc-for list="{{ d.glance }}" as="g" hint-placeholder-count="6">
+              <div><div style="font-size:10.5px;color:#8b937f;margin-bottom:1px">{{ g.k }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:#232a1f">{{ g.v }}</div></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <!-- right: everything else -->
+      <div style="min-width:0;display:flex;flex-direction:column;gap:26px">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
+            <span style="font-size:13px;font-weight:700;color:#8a6d1f;letter-spacing:.03em">{{ d.brand }}</span>
+            <span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:5px;background:{{ d.chipBg }};color:{{ d.chipColor }}">{{ d.typeLabel }}</span>
+            <span style="font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:5px;border:1px solid rgba(35,42,31,.2);color:#55604b">{{ d.approval }}</span>
+            <span style="font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:5px;border:1px solid rgba(35,42,31,.2);color:#55604b">{{ d.year }}</span>
+          </div>
+          <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:clamp(26px,3.4vw,36px);line-height:1.08;margin:0 0 10px;letter-spacing:-.01em">{{ d.name }}</h1>
+          <p style="margin:0;font-size:14.5px;line-height:1.55;color:#55604b;max-width:60ch;text-wrap:pretty">{{ d.blurb }}</p>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fffdf8;border:1px solid rgba(35,42,31,.14);border-radius:12px;padding:16px 18px">
+          <div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:26px;line-height:1">{{ d.priceLabel }}</div>
+            <div style="font-size:11px;color:#8b937f;margin-top:3px">street price, tracked {{ today }}</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <sc-if value="{{ d.hasLink }}" hint-placeholder-val="{{ true }}">
+              <a href="{{ d.link }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#2c4f27;color:#fffdf8;border-radius:9px;padding:12px 20px;font-size:14px;font-weight:600;text-decoration:none" style-hover="background:#1c3618;color:#fffdf8;text-decoration:none">Buy this paddle ↗</a>
+            </sc-if>
+            <sc-if value="{{ d.noLink }}" hint-placeholder-val="{{ false }}"><a href="{{ d.brandSearch }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#2c4f27;color:#fffdf8;border-radius:9px;padding:12px 20px;font-size:14px;font-weight:600;text-decoration:none" style-hover="background:#1c3618;color:#fffdf8;text-decoration:none">Search {{ d.brand }} site ↗</a></sc-if>
+          </div>
+          <div style="flex-basis:100%;font-size:11px;color:#8b937f">{{ d.linkNote }}</div>
+        </div>
+
+        <!-- performance -->
+        <div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:4px;flex-wrap:wrap">
+            <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:21px;margin:0">Measured performance.</h2>
+            <sc-if value="{{ d.hasFirepower }}" hint-placeholder-val="{{ true }}"><span style="font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(138,109,31,.12);color:#8a6d1f">Firepower {{ d.firepowerZ }}/100 · {{ d.firepowerTier }}</span></sc-if>
+          </div>
+          <p style="margin:0 0 16px;font-size:12.5px;color:#8b937f">Bars show where this paddle lands across all {{ totalCount }} paddles we track. The tick is the catalog median.</p>
+          <sc-if value="{{ d.hasLab }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:13px;background:#fffdf8;border:1px solid rgba(35,42,31,.14);border-radius:12px;padding:18px">
+              <sc-for list="{{ d.bars }}" as="b" hint-placeholder-count="5">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+                    <span style="font-size:13px;font-weight:600">{{ b.label }} <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#55604b;font-weight:500">{{ b.raw }}</span></span>
+                    <span style="font-size:11.5px;color:{{ b.pctColor }};font-weight:600">{{ b.pctLabel }}</span>
+                  </div>
+                  <div style="position:relative;height:9px;border-radius:5px;background:rgba(35,42,31,.09)">
+                    <div style="position:absolute;inset:0 auto 0 0;width:{{ b.w }};border-radius:5px;background:{{ b.color }}"></div>
+                    <div style="position:absolute;top:-2px;bottom:-2px;left:50%;width:1.5px;background:rgba(35,42,31,.35)"></div>
+                  </div>
+                  <div style="font-size:11px;color:#8b937f;margin-top:4px">{{ b.note }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ d.noLab }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px dashed rgba(35,42,31,.3);border-radius:12px;padding:22px;font-size:13.5px;color:#55604b;background:rgba(255,253,248,.6)">This paddle hasn't been through our lab bench yet — no spin, power or pop measurements. Specs below are from the manufacturer and USA Pickleball filings.</div>
+          </sc-if>
+        </div>
+
+        <!-- spec table -->
+        <div>
+          <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:21px;margin:0 0 14px">Full specifications.</h2>
+          <div style="background:#fffdf8;border:1px solid rgba(35,42,31,.14);border-radius:12px;overflow:hidden">
+            <sc-for list="{{ d.specs }}" as="s" hint-placeholder-count="8">
+              <div style="display:grid;grid-template-columns:minmax(120px,200px) 1fr;gap:12px;padding:9.5px 18px;border-top:{{ s.border }};background:{{ s.bg }}">
+                <span style="font-size:12.5px;color:#55604b">{{ s.k }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:500;color:#232a1f">{{ s.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- recommendations -->
+        <div>
+          <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:21px;margin:0 0 4px">Where to go from here.</h2>
+          <p style="margin:0 0 16px;font-size:12.5px;color:#8b937f">Same play style, different trade-off — one steps up the performance, one protects your wallet.</p>
+          <div style="display:grid;grid-template-columns:{{ recoCols }};gap:14px">
+            <sc-for list="{{ d.picks }}" as="r" hint-placeholder-count="2">
+              <article onClick="{{ r.open }}" style="border:1.5px solid {{ r.frame }};background:#fffdf8;border-radius:12px;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:9px;position:relative" style-hover="box-shadow:0 4px 14px rgba(35,42,31,.12);transform:translateY(-2px)">
+                <span style="position:absolute;top:-9px;left:14px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:{{ r.badgeBg }};color:#fffdf8;padding:3px 9px;border-radius:5px">{{ r.badge }}</span>
+                <div style="display:flex;gap:12px;align-items:center;margin-top:4px">
+                  <div style="width:44px;height:58px;flex:none;background:{{ r.silBg }};border-radius:{{ r.silRadius }};border:1.5px solid rgba(35,42,31,.25);display:grid;place-items:center"><span style="font-family:'Source Serif 4',serif;font-weight:700;font-size:13px;color:rgba(35,42,31,.5)">{{ r.initials }}</span></div>
+                  <div style="min-width:0">
+                    <div style="font-size:11px;font-weight:600;color:#8a6d1f">{{ r.brand }}</div>
+                    <div style="font-size:14px;font-weight:600;line-height:1.25">{{ r.name }}</div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;margin-top:2px">{{ r.priceLabel }} <span style="font-size:11px;color:{{ r.deltaColor }};font-weight:600">{{ r.priceDelta }}</span></div>
+                  </div>
+                </div>
+                <div style="font-size:12px;line-height:1.5;color:#55604b;border-top:1px solid rgba(35,42,31,.1);padding-top:9px">{{ r.reason }}</div>
+                <span style="font-size:11.5px;font-weight:600;color:#2c4f27">See this paddle →</span>
+              </article>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- similar -->
+        <sc-if value="{{ d.hasSimilar }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <h2 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:21px;margin:0 0 14px">Similar paddles.</h2>
+          <div style="display:grid;grid-auto-flow:column;grid-auto-columns:172px;gap:12px;overflow-x:auto;padding-bottom:8px">
+            <sc-for list="{{ d.similar }}" as="p" hint-placeholder-count="5">
+              <article onClick="{{ p.open }}" style="background:#fffdf8;border:1px solid rgba(35,42,31,.14);border-radius:10px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:7px" style-hover="border-color:rgba(44,79,39,.45);box-shadow:0 3px 10px rgba(35,42,31,.1)">
+                <div style="height:72px;display:grid;place-items:center;background:linear-gradient(160deg,#f3ecdc,#ece3cd);border-radius:7px">
+                  <div style="width:{{ p.silWSm }};height:52px;background:{{ p.silBg }};border-radius:{{ p.silRadius }};border:1.5px solid rgba(35,42,31,.25);display:grid;place-items:center"><span style="font-family:'Source Serif 4',serif;font-weight:700;font-size:12px;color:rgba(35,42,31,.5)">{{ p.initials }}</span></div>
+                </div>
+                <div style="font-size:10.5px;font-weight:600;color:#8a6d1f">{{ p.brand }}</div>
+                <div style="font-size:12.5px;font-weight:600;line-height:1.3">{{ p.name }}</div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:auto">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600">{{ p.priceLabel }}</span>
+                  <span style="font-size:10px;color:#8b937f">{{ p.matchLabel }}</span>
+                </div>
+              </article>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<!-- ============ COMPARE ============ -->
+<sc-if value="{{ isCompare }}" hint-placeholder-val="{{ false }}">
+  <section style="max-width:1080px;margin:0 auto;padding:18px clamp(16px,3vw,32px) 56px">
+    <button onClick="{{ goHome }}" style="border:none;background:none;color:#2c4f27;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:16px" style-hover="text-decoration:underline">← All paddles</button>
+    <h1 style="font-family:'Source Serif 4',serif;font-weight:600;font-size:clamp(26px,3.4vw,34px);margin:0 0 22px">Head to head.</h1>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
+      <sc-for list="{{ cmp.pair }}" as="p" hint-placeholder-count="2">
+        <article style="background:#fffdf8;border:1px solid rgba(35,42,31,.14);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:11px;font-weight:600;color:#8a6d1f">{{ p.brand }}</div>
+          <div style="font-size:16px;font-weight:700;line-height:1.25">{{ p.name }}</div>
+          <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+            <span style="font-size:10px;font-weight:700;letter-spacing:.05em;padding:2.5px 7px;border-radius:5px;background:{{ p.chipBg }};color:{{ p.chipColor }}">{{ p.typeLabel }}</span>
+            <span style="font-size:11px;color:#8b937f">{{ p.coreLabel }} · {{ p.shape }}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:17px;font-weight:600">{{ p.priceLabel }}</span>
+            <button onClick="{{ p.open }}" style="border:1px solid rgba(35,42,31,.25);background:#fffdf8;border-radius:7px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer" style-hover="border-color:#2c4f27;color:#2c4f27">Details →</button>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    <div style="background:#fffdf8;border:1px solid rgba(35,42,31,.14);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:16px">
+      <sc-for list="{{ cmp.rows }}" as="row" hint-placeholder-count="6">
+        <div>
+          <div style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#55604b;margin-bottom:7px;text-align:center">{{ row.label }}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center">
+            <div style="display:flex;align-items:center;gap:9px;flex-direction:row-reverse">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:{{ row.aWeight }};color:{{ row.aColor }};width:64px">{{ row.aVal }}</span>
+              <div style="flex:1;height:8px;border-radius:4px;background:rgba(35,42,31,.08);overflow:hidden;transform:scaleX(-1)"><div style="height:100%;width:{{ row.aW }};background:{{ row.aBar }};border-radius:4px"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px">
+              <div style="flex:1;height:8px;border-radius:4px;background:rgba(35,42,31,.08);overflow:hidden"><div style="height:100%;width:{{ row.bW }};background:{{ row.bBar }};border-radius:4px"></div></div>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:{{ row.bWeight }};color:{{ row.bColor }};width:64px;text-align:right">{{ row.bVal }}</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+      <div style="font-size:11px;color:#8b937f;text-align:center">Longer bar = higher measured value. Bold marks the winner of each row.</div>
+    </div>
+  </section>
+</sc-if>
+
+</main>
+
+<!-- compare tray -->
+<sc-if value="{{ trayVisible }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;bottom:0;left:0;right:0;z-index:60;background:#232a1f;color:#f7f2e7;box-shadow:0 -6px 24px rgba(35,42,31,.3)">
+    <div style="max-width:1280px;margin:0 auto;padding:12px clamp(16px,3vw,32px);display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#cbd52b">Compare</span>
+      <sc-for list="{{ traySel }}" as="t" hint-placeholder-count="1">
+        <span style="display:flex;align-items:center;gap:8px;background:rgba(247,242,231,.12);border-radius:7px;padding:6px 10px;font-size:12.5px;font-weight:600">{{ t.name }}<button onClick="{{ t.remove }}" style="border:none;background:none;color:#f7f2e7;opacity:.7;cursor:pointer;font-size:14px;padding:0;line-height:1">×</button></span>
+      </sc-for>
+      <sc-if value="{{ trayNeedsOne }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:rgba(247,242,231,.6)">pick one more…</span></sc-if>
+      <div style="margin-left:auto;display:flex;gap:10px">
+        <button onClick="{{ clearCompare }}" style="border:1px solid rgba(247,242,231,.3);background:none;color:#f7f2e7;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer" style-hover="border-color:#f7f2e7">Clear</button>
+        <sc-if value="{{ trayReady }}" hint-placeholder-val="{{ false }}"><button onClick="{{ goCompare }}" style="border:none;background:#cbd52b;color:#232a1f;border-radius:7px;padding:8px 18px;font-size:12.5px;font-weight:700;cursor:pointer" style-hover="background:#d9e13f">Compare →</button></sc-if>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ============ FOOTER ============ -->
+<footer style="border-top:1px solid rgba(35,42,31,.14);background:#f3ecdc;margin-top:auto">
+  <div style="max-width:1280px;margin:0 auto;padding:26px clamp(16px,3vw,32px);display:flex;gap:18px;flex-wrap:wrap;align-items:baseline;justify-content:space-between">
+    <div style="display:flex;align-items:baseline;gap:2px">
+      <span style="font-family:'Source Serif 4',serif;font-weight:700;font-size:15px;color:#2c4f27">Pickleball</span><span style="font-family:'Source Serif 4',serif;font-weight:500;font-size:15px">Bay&nbsp;Area</span>
+    </div>
+    <div style="font-size:11.5px;line-height:1.6;color:#55604b;max-width:66ch">Independent court data — no ads, no pay-to-list, no sponsored listings. Some paddle links are affiliate links, disclosed at each one. Paddle &amp; gear picks updated July 2026. Lab data covers {{ labCount }} of {{ totalCount }} paddles.</div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultSort&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;best&quot;, &quot;price-asc&quot;, &quot;spin&quot;, &quot;power&quot;, &quot;newest&quot;], &quot;default&quot;: &quot;best&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Behavior&quot;}, &quot;showCollections&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Behavior&quot;}}">
+class Component extends DCLogic {
+  state = { data: null, route: { view: 'home' }, q: '', sort: 'best', filters: { type: [], shape: [], brand: [], price: [], core: [], feel: [] }, brandExpanded: false, page: 1, compare: [], railOpen: false, w: typeof window !== 'undefined' ? window.innerWidth : 1200 };
+
+  componentDidMount() {
+    this._onHash = () => { this.setState({ route: this.parseHash(), railOpen: false, page: 1 }); window.scrollTo(0, 0); };
+    this._onResize = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('hashchange', this._onHash);
+    window.addEventListener('resize', this._onResize);
+    this.setState({ route: this.parseHash(), sort: this.props.defaultSort ?? 'best' });
+    fetch('data/paddles.json').then(r => r.json()).then(rows => {
+      const slugCount = {};
+      rows.forEach(p => {
+        p.slug = (p.brand + '-' + p.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        if (slugCount[p.slug] != null) p.slug += '-' + (++slugCount[p.slug]); else slugCount[p.slug] = 0;
+        if (p.popMph === 0) p.popMph = null;
+      });
+      const spins = rows.filter(p => p.spinRpm != null).map(p => p.spinRpm).sort((a, b) => a - b);
+      rows.forEach(p => {
+        p.spinPct = p.spinRpm == null ? null : Math.round(spins.filter(s => s <= p.spinRpm).length / spins.length * 100) / 100;
+        const parts = [p.spinPct, p.powerPct, p.popPct, p.twistWeightPct].filter(v => v != null);
+        p.score = parts.length >= 2 ? parts.reduce((a, b) => a + b, 0) / parts.length : null;
+        p.hasLab = p.spinRpm != null || p.powerMph != null || p.popMph != null;
+      });
+      this.setState({ data: rows });
+    }).catch(e => console.error('data load failed', e));
+  }
+  componentWillUnmount() { window.removeEventListener('hashchange', this._onHash); window.removeEventListener('resize', this._onResize); }
+
+  parseHash() {
+    const h = (window.location.hash || '').replace(/^#\/?/, '');
+    if (h.startsWith('p/')) return { view: 'detail', slug: h.slice(2) };
+    if (h.startsWith('compare/')) { const [a, b] = h.slice(8).split('/'); return { view: 'compare', a, b }; }
+    return { view: 'home' };
+  }
+  nav(hash) { if (('#' + hash) === window.location.hash) return; window.location.hash = hash; }
+
+  typeChip(t) {
+    if (t === 'Power') return { bg: 'rgba(163,80,42,.13)', color: '#8a3f1d' };
+    if (t === 'Control') return { bg: 'rgba(82,112,140,.15)', color: '#3e576e' };
+    if (t === 'All-Court') return { bg: 'rgba(44,79,39,.12)', color: '#2c4f27' };
+    return { bg: 'rgba(35,42,31,.08)', color: '#55604b' };
+  }
+  silhouette(p) {
+    const shape = p.shape || 'Hybrid';
+    const w = shape === 'Widebody' ? '66px' : shape === 'Hybrid' ? '57px' : shape === 'Extra-elongated' ? '46px' : '50px';
+    const radius = shape === 'Widebody' ? '42% 42% 34% 34%' : shape === 'Hybrid' ? '46% 46% 32% 32%' : '48% 48% 26% 26%';
+    const hues = { Power: 'linear-gradient(165deg,#e8d9c4,#dcc9a8)', Control: 'linear-gradient(165deg,#dfe3d2,#ccd3bb)', 'All-Court': 'linear-gradient(165deg,#e3e0c9,#d3cfae)' };
+    return { silW: w, silWSm: shape === 'Widebody' ? '40px' : shape === 'Hybrid' ? '35px' : '31px', silRadius: radius, silBg: hues[p.type] || 'linear-gradient(165deg,#e6e0d0,#d6ceb6)', initials: (p.brand || '?').split(/\s+/).map(x => x[0]).join('').slice(0, 2).toUpperCase() };
+  }
+  money(v) { return v == null ? '—' : '$' + (Math.round(v) === v ? v : v.toFixed(2)); }
+  ord(pct) { const n = Math.round(pct * 100); const s = n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th'; return n + s; }
+
+  enrich(p) {
+    const chip = this.typeChip(p.type), sil = this.silhouette(p);
+    const inCmp = this.state.compare.includes(p.slug);
+    const mini = [];
+    if (p.spinPct != null) mini.push({ label: 'Spin', w: Math.round(p.spinPct * 100) + '%', val: p.spinRpm, color: '#2c4f27' });
+    if (p.powerPct != null) mini.push({ label: 'Power', w: Math.round(p.powerPct * 100) + '%', val: p.powerMph, color: '#a3502a' });
+    if (p.popPct != null) mini.push({ label: 'Pop', w: Math.round(p.popPct * 100) + '%', val: p.popMph, color: '#8a6d1f' });
+    return Object.assign({}, p, sil, {
+      open: (e) => { if (e && e.defaultPrevented) return; this.nav('/p/' + p.slug); },
+      toggleCompare: (e) => { e.preventDefault(); e.stopPropagation(); this.toggleCompare(p.slug); },
+      cmpLabel: inCmp ? '✓ Comparing' : '+ Compare',
+      cmpBg: inCmp ? '#2c4f27' : 'rgba(255,253,248,.9)', cmpColor: inCmp ? '#fffdf8' : '#55604b', cmpBorder: inCmp ? '#2c4f27' : 'rgba(35,42,31,.2)',
+      chipBg: chip.bg, chipColor: chip.color, typeLabel: p.type || 'Unrated',
+      coreLabel: p.coreMm + 'mm', weightLabel: p.weightOz + ' oz', priceLabel: this.money(p.price),
+      miniBars: mini, hasLab: mini.length > 0, noLab: mini.length === 0,
+      matchLabel: p.type || ''
+    });
+  }
+
+  toggleCompare(slug) {
+    let c = this.state.compare.slice();
+    if (c.includes(slug)) c = c.filter(s => s !== slug);
+    else { c.push(slug); if (c.length > 2) c = c.slice(-2); }
+    this.setState({ compare: c });
+  }
+
+  applyFilters(rows, skip) {
+    const f = this.state.filters, q = this.state.q.trim().toLowerCase();
+    return rows.filter(p => {
+      if (q && !(p.name + ' ' + p.brand).toLowerCase().includes(q)) return false;
+      if (skip !== 'type' && f.type.length && !f.type.includes(p.type || 'Unrated')) return false;
+      if (skip !== 'shape' && f.shape.length && !f.shape.includes(p.shape)) return false;
+      if (skip !== 'brand' && f.brand.length && !f.brand.includes(p.brand)) return false;
+      if (skip !== 'core' && f.core.length && !f.core.includes(this.coreBucket(p.coreMm))) return false;
+      if (skip !== 'feel' && f.feel.length && !f.feel.includes(p.feel || 'Unlisted')) return false;
+      if (skip !== 'price' && f.price.length && !f.price.includes(this.priceBucket(p.price))) return false;
+      return true;
+    });
+  }
+  coreBucket(mm) { return mm == null ? 'Other' : mm <= 13 ? '≤13mm · thin & poppy' : mm >= 17 ? '17mm+ · extra plush' : mm + 'mm'; }
+  priceBucket(v) { return v == null ? 'Unknown' : v < 100 ? 'Under $100' : v < 150 ? '$100 – 150' : v < 220 ? '$150 – 220' : '$220 and up'; }
+
+  sortRows(rows) {
+    const s = this.state.sort, by = (fn, dir) => rows.slice().sort((a, b) => { const av = fn(a), bv = fn(b); if (av == null && bv == null) return 0; if (av == null) return 1; if (bv == null) return -1; return dir * (av - bv) || (a.price || 999) - (b.price || 999); });
+    if (s === 'price-asc') return by(p => p.price, 1);
+    if (s === 'price-desc') return by(p => p.price, -1);
+    if (s === 'spin') return by(p => p.spinRpm, -1);
+    if (s === 'power') return by(p => p.powerMph, -1);
+    if (s === 'pop') return by(p => p.popMph, -1);
+    if (s === 'newest') return by(p => p.year, -1);
+    if (s === 'name') return rows.slice().sort((a, b) => a.name.localeCompare(b.name));
+    return by(p => p.score, -1);
+  }
+
+  facetDef(rows) {
+    const f = this.state.filters, self = this;
+    const mk = (key, label, values, hint, maxH) => {
+      const within = self.applyFilters(rows, key);
+      const opts = values.map(v => {
+        const count = within.filter(p => v.match(p)).length;
+        const on = f[key].includes(v.label);
+        return { label: v.label, count, on, rowBg: on ? 'rgba(44,79,39,.08)' : 'transparent', boxBg: on ? '#2c4f27' : '#fffdf8', boxBorder: on ? '#2c4f27' : 'rgba(35,42,31,.35)', labelColor: count === 0 && !on ? '#a9b09d' : '#232a1f', labelWeight: on ? '600' : '400', toggle: () => { const cur = self.state.filters[key], next = cur.includes(v.label) ? cur.filter(x => x !== v.label) : cur.concat(v.label); self.setState({ filters: Object.assign({}, self.state.filters, { [key]: next }), page: 1 }); } };
+      });
+      return { key, label, hint: hint || '', options: opts, maxH: maxH || 'none', expandable: false };
+    };
+    const facets = [];
+    facets.push(mk('price', 'Price', ['Under $100', '$100 – 150', '$150 – 220', '$220 and up'].map(l => ({ label: l, match: p => this.priceBucket(p.price) === l }))));
+    facets.push(mk('type', 'Play style', ['Power', 'All-Court', 'Control', 'Unrated'].map(l => ({ label: l, match: p => (p.type || 'Unrated') === l })), 'from lab bench'));
+    facets.push(mk('shape', 'Shape', ['Elongated', 'Hybrid', 'Widebody', 'Extra-elongated'].map(l => ({ label: l, match: p => p.shape === l }))));
+    facets.push(mk('core', 'Core thickness', ['≤13mm · thin & poppy', '14mm', '15mm', '16mm', '17mm+ · extra plush'].map(l => ({ label: l, match: p => this.coreBucket(p.coreMm) === l }))));
+    facets.push(mk('feel', 'Impact feel', ['Soft/Dense', 'Soft/Hollow', 'Neutral', 'Stiff/Dense', 'Stiff/Hollow'].map(l => ({ label: l, match: p => (p.feel || 'Unlisted') === l }))));
+    const brandCounts = {};
+    rows.forEach(p => brandCounts[p.brand] = (brandCounts[p.brand] || 0) + 1);
+    let brands = Object.keys(brandCounts).sort((a, b) => brandCounts[b] - brandCounts[a] || a.localeCompare(b));
+    const selBrands = f.brand;
+    const shown = this.state.brandExpanded ? brands : brands.slice(0, 10).concat(selBrands.filter(b => !brands.slice(0, 10).includes(b)));
+    const bf = mk('brand', 'Brand', shown.map(l => ({ label: l, match: p => p.brand === l })), brands.length + ' brands', this.state.brandExpanded ? '300px' : 'none');
+    bf.expandable = true;
+    bf.expandLabel = this.state.brandExpanded ? 'Show fewer' : 'Show all ' + brands.length + ' brands';
+    bf.toggleExpand = () => this.setState({ brandExpanded: !this.state.brandExpanded });
+    facets.push(bf);
+    return facets;
+  }
+
+  pickRecos(d, rows) {
+    const pool = rows.filter(p => p.slug !== d.slug && (p.type || '') === (d.type || '') && p.price != null);
+    const scored = pool.filter(p => p.score != null);
+    const base = d.score != null ? d.score : 0.5;
+    let top = scored.filter(p => p.score > base + 0.02).sort((a, b) => b.score - a.score || a.price - b.price)[0]
+      || scored.sort((a, b) => b.score - a.score)[0];
+    let value = scored.filter(p => p !== top && d.price != null && p.price <= d.price - 25 && p.score >= base - 0.07)
+      .sort((a, b) => (b.score - b.price / 1000) - (a.score - a.price / 1000))[0]
+      || scored.filter(p => p !== top && d.price != null && p.price < d.price).sort((a, b) => b.score - a.score)[0]
+      || scored.filter(p => p !== top).sort((a, b) => a.price - b.price)[0];
+    const mk = (p, kind) => {
+      if (!p) return null;
+      const e = this.enrich(p);
+      const dP = d.price != null && p.price != null ? p.price - d.price : null;
+      const bits = [];
+      if (p.powerMph != null && d.powerMph != null && Math.abs(p.powerMph - d.powerMph) >= 0.3) bits.push((p.powerMph > d.powerMph ? '+' : '−') + Math.abs(p.powerMph - d.powerMph).toFixed(1) + ' mph power');
+      if (p.spinRpm != null && d.spinRpm != null && Math.abs(p.spinRpm - d.spinRpm) >= 40) bits.push((p.spinRpm > d.spinRpm ? '+' : '−') + Math.abs(p.spinRpm - d.spinRpm) + ' RPM spin');
+      if (p.twistWeightPct != null && d.twistWeightPct != null && Math.abs(p.twistWeightPct - d.twistWeightPct) >= 0.12) bits.push((p.twistWeightPct > d.twistWeightPct ? 'more' : 'less') + ' stable');
+      const same = bits.length === 0 ? 'near-identical bench numbers' : bits.join(' · ');
+      const reason = kind === 'top'
+        ? 'The step up in this play style: ' + same + '. Same ' + (p.shape === d.shape ? p.shape.toLowerCase() + ' shape' : 'category, ' + p.shape.toLowerCase() + ' shape') + ', ' + p.coreMm + 'mm core.'
+        : 'Keeps the ' + (d.type || 'same').toLowerCase() + ' character for less: ' + same + '. ' + (p.shape === d.shape ? 'Same shape' : p.shape) + ', ' + p.coreMm + 'mm core.';
+      return Object.assign(e, {
+        badge: kind === 'top' ? 'Top pick' : 'Value pick',
+        badgeBg: kind === 'top' ? '#2c4f27' : '#8a6d1f',
+        frame: kind === 'top' ? 'rgba(44,79,39,.5)' : 'rgba(138,109,31,.5)',
+        reason,
+        priceDelta: dP == null ? '' : dP > 0 ? '+$' + Math.round(dP) + ' vs this' : dP < 0 ? '−$' + Math.round(-dP) + ' vs this' : 'same price',
+        deltaColor: dP != null && dP < 0 ? '#2c4f27' : '#a3502a'
+      });
+    };
+    return [mk(top, 'top'), value && top !== value ? mk(value, 'value') : null].filter(Boolean);
+  }
+
+  similar(d, rows) {
+    const dist = p => {
+      let s = 0;
+      s += (p.type || '') === (d.type || '') ? 0 : 2.2;
+      s += p.shape === d.shape ? 0 : 1.1;
+      s += Math.abs((p.coreMm || 15) - (d.coreMm || 15)) * .32;
+      s += Math.abs((p.swingWeight || 113) - (d.swingWeight || 113)) / 9;
+      if (p.spinRpm != null && d.spinRpm != null) s += Math.abs(p.spinRpm - d.spinRpm) / 130;
+      if (p.price != null && d.price != null) s += Math.abs(p.price - d.price) / 130;
+      return s;
+    };
+    return rows.filter(p => p.slug !== d.slug).map(p => ({ p, s: dist(p) })).sort((a, b) => a.s - b.s).slice(0, 6).map(x => this.enrich(x.p));
+  }
+
+  detailVals(d, rows) {
+    const e = this.enrich(d);
+    const median = 50;
+    const bars = [];
+    const pctColor = pct => pct >= 0.66 ? '#2c4f27' : pct >= 0.33 ? '#8a6d1f' : '#a3502a';
+    if (d.spinRpm != null) bars.push({ label: 'Spin', raw: d.spinRpm + ' RPM', pct: d.spinPct, note: d.spinRating ? 'Rated ' + d.spinRating.toLowerCase() + (d.spinDurability ? ' · grit durability ' + d.spinDurability : '') : '' });
+    if (d.powerMph != null) bars.push({ label: 'Power', raw: d.powerMph + ' mph', pct: d.powerPct, note: 'Full-swing drive speed off the bench rig' });
+    if (d.popMph != null) bars.push({ label: 'Pop', raw: d.popMph + ' mph', pct: d.popPct, note: 'Short-stroke punch speed — hand battles at the kitchen' });
+    if (d.swingWeightPct != null) bars.push({ label: 'Swing weight', raw: String(d.swingWeight), pct: d.swingWeightPct, note: 'Heavier through the air than ' + Math.round(d.swingWeightPct * 100) + '% of paddles — lower means faster hands', invert: true });
+    if (d.twistWeightPct != null) bars.push({ label: 'Stability', raw: 'tw ' + d.twistWeight, pct: d.twistWeightPct, note: 'Twist weight — resistance to off-center hits. Steadier than ' + Math.round(d.twistWeightPct * 100) + '% of the catalog' });
+    const barVals = bars.filter(b => b.pct != null).map(b => ({ label: b.label, raw: b.raw, w: Math.round(b.pct * 100) + '%', pctLabel: this.ord(b.pct) + ' percentile', pctColor: b.invert ? '#55604b' : pctColor(b.pct), color: b.invert ? '#55604b' : pctColor(b.pct), note: b.note }));
+    const specs = [
+      ['Brand', d.brand], ['Released', String(d.year || '—')], ['Approval', d.approval || '—'], ['Shape', d.shape || '—'],
+      ['Build generation', d.buildType || '—'], ['Surface', d.gritType || '—'], ['Impact feel', d.feel || '—'],
+      ['Core thickness', d.coreMm != null ? d.coreMm + ' mm' : '—'], ['Static weight', d.weightOz != null ? d.weightOz + ' oz' : '—'],
+      ['Swing weight', d.swingWeight != null ? String(d.swingWeight) : '—'], ['Twist weight', d.twistWeight != null ? String(d.twistWeight) : '—'],
+      ['Balance point', d.balanceMm != null ? d.balanceMm + ' mm' : '—'], ['Grip length', d.gripLenIn != null ? d.gripLenIn + ' in' : '—'],
+      ['Grip circumference', d.gripSizeIn != null ? d.gripSizeIn + ' in' : '—'], ['Spin durability', d.spinDurability || '—']
+    ].map((kv, i) => ({ k: kv[0], v: kv[1], border: i === 0 ? 'none' : '1px solid rgba(35,42,31,.08)', bg: i % 2 ? 'rgba(243,236,220,.5)' : 'transparent' }));
+    const feelTxt = d.feel ? d.feel.replace('/', ', ').toLowerCase() : 'unlisted';
+    const blurb = (d.year || 'A') + ' ' + (d.shape || '').toLowerCase() + ' ' + (d.type ? d.type.toLowerCase() : '') + ' paddle from ' + d.brand + ' — ' + (d.coreMm || '?') + 'mm ' + (d.buildType || '') + ' build with a ' + feelTxt + ' impact feel' + (d.spinRpm != null ? ', benched at ' + d.spinRpm + ' RPM of spin' : '') + '.';
+    const sim = this.similar(d, rows);
+    return Object.assign(e, {
+      bars: barVals, hasLab: barVals.length > 0, noLab: barVals.length === 0,
+      hasFirepower: d.firepowerZ != null && d.firepowerZ > 0, firepowerZ: d.firepowerZ, firepowerTier: (d.firepowerTier || '').replace('Firepower ', ''),
+      specs, blurb,
+      glance: [
+        { k: 'Play style', v: d.type || 'Unrated' }, { k: 'Shape', v: d.shape || '—' },
+        { k: 'Core', v: (d.coreMm || '—') + ' mm' }, { k: 'Weight', v: (d.weightOz || '—') + ' oz' },
+        { k: 'Swing wt', v: d.swingWeight != null ? d.swingWeight : '—' }, { k: 'Spin', v: d.spinRpm != null ? d.spinRpm + ' RPM' : 'untested' }
+      ],
+      bigSilW: d.shape === 'Widebody' ? 'min(160px,44%)' : d.shape === 'Hybrid' ? 'min(138px,38%)' : d.shape === 'Extra-elongated' ? 'min(112px,30%)' : 'min(122px,33%)',
+      hasLink: !!d.link, noLink: !d.link, link: d.link || '#',
+      linkNote: d.link ? 'Affiliate link, disclosed as always — it costs you nothing and keeps the court data ad-free.' : 'No purchase link on file for this one — try the brand site search.',
+      brandSearch: 'https://www.google.com/search?q=' + encodeURIComponent(d.brand + ' ' + d.name + ' pickleball paddle'),
+      picks: this.pickRecos(d, rows),
+      similar: sim, hasSimilar: sim.length > 0,
+      approval: d.approval || '—', year: String(d.year || '—')
+    });
+  }
+
+  compareVals(a, b) {
+    const rows = [];
+    const add = (label, av, bv, fmt, dir, max, min) => {
+      if (av == null && bv == null) return;
+      const norm = v => v == null ? 0 : Math.max(.04, Math.min(1, (v - min) / (max - min)));
+      const aWin = av != null && (bv == null || (dir * av > dir * bv));
+      const bWin = bv != null && (av == null || (dir * bv > dir * av));
+      rows.push({ label, aVal: av == null ? '—' : fmt(av), bVal: bv == null ? '—' : fmt(bv), aW: Math.round(norm(av) * 100) + '%', bW: Math.round(norm(bv) * 100) + '%', aBar: aWin ? '#2c4f27' : 'rgba(35,42,31,.3)', bBar: bWin ? '#2c4f27' : 'rgba(35,42,31,.3)', aWeight: aWin ? '700' : '400', bWeight: bWin ? '700' : '400', aColor: aWin ? '#232a1f' : '#55604b', bColor: bWin ? '#232a1f' : '#55604b' });
+    };
+    add('Price (lower wins)', a.price, b.price, v => '$' + v, -1, 340, 60);
+    add('Spin (RPM)', a.spinRpm, b.spinRpm, v => String(v), 1, 2180, 1800);
+    add('Power (mph)', a.powerMph, b.powerMph, v => String(v), 1, 58.5, 50);
+    add('Pop (mph)', a.popMph, b.popMph, v => String(v), 1, 38.3, 33);
+    add('Stability (twist weight)', a.twistWeight, b.twistWeight, v => String(v), 1, 7.9, 4.9);
+    add('Swing weight (lower = quicker)', a.swingWeight, b.swingWeight, v => String(v), -1, 136, 91);
+    add('Static weight (oz)', a.weightOz, b.weightOz, v => v + '', -1, 9, 7.2);
+    add('Core (mm)', a.coreMm, b.coreMm, v => v + '', 1, 20, 10);
+    return { pair: [this.enrich(a), this.enrich(b)], rows };
+  }
+
+  renderVals() {
+    const st = this.state, rows = st.data || [];
+    const ready = rows.length > 0;
+    const isNarrow = st.w < 940, isPhone = st.w < 620;
+    const view = st.route.view;
+    const filtered = ready ? this.sortRows(this.applyFilters(rows)) : [];
+    const PAGE = 30;
+    const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE));
+    const page = Math.min(st.page, pageCount);
+    const visible = filtered.slice((page - 1) * PAGE, page * PAGE).map(p => this.enrich(p));
+    const goPage = n => () => { this.setState({ page: n }); window.scrollTo(0, 0); };
+    let nums = [];
+    if (pageCount <= 7) { for (let i = 1; i <= pageCount; i++) nums.push(i); }
+    else { nums = [...new Set([1, page - 1, page, page + 1, pageCount].filter(n => n >= 1 && n <= pageCount))].sort((a, b) => a - b); }
+    const pagerItems = [];
+    nums.forEach((n, i) => {
+      if (i > 0 && n - nums[i - 1] > 1) pagerItems.push({ gap: true, num: false });
+      pagerItems.push({ gap: false, num: true, label: String(n), on: n === page, go: goPage(n), bg: n === page ? '#2c4f27' : '#fffdf8', color: n === page ? '#fffdf8' : '#232a1f', border: n === page ? '#2c4f27' : 'rgba(35,42,31,.3)' });
+    });
+    const f = st.filters;
+    const nFilters = f.type.length + f.shape.length + f.brand.length + f.core.length + f.feel.length + f.price.length;
+    const chips = [];
+    Object.keys(f).forEach(key => f[key].forEach(label => chips.push({ label, remove: () => this.setState({ filters: Object.assign({}, f, { [key]: f[key].filter(x => x !== label) }) }) })));
+    const setPreset = (filters, sort) => () => { this.setState({ filters: Object.assign({ type: [], shape: [], brand: [], core: [], feel: [], price: [] }, filters), sort, q: '', page: 1, railOpen: false }); this.nav('/'); };
+    const collections = [
+      { label: 'Best overall', apply: setPreset({}, 'best') },
+      { label: 'Under $100', apply: setPreset({ price: ['Under $100'] }, 'best') },
+      { label: 'Spin machines', apply: setPreset({}, 'spin') },
+      { label: 'Control & touch', apply: setPreset({ type: ['Control'] }, 'best') },
+      { label: 'Big power', apply: setPreset({ type: ['Power'] }, 'power') },
+      { label: 'Beginner friendly', apply: setPreset({ core: ['16mm'], feel: ['Soft/Dense'], price: ['Under $100', '$100 – 150'] }, 'best') }
+    ].map(c => Object.assign(c, { bg: '#fffdf8', border: 'rgba(35,42,31,.25)', color: '#232a1f' }));
+    let d = null, cmp = { pair: [], rows: [] };
+    if (view === 'detail' && ready) {
+      const found = rows.find(p => p.slug === st.route.slug);
+      d = found ? this.detailVals(found, rows) : null;
+    }
+    if (view === 'compare' && ready) {
+      const a = rows.find(p => p.slug === st.route.a), b = rows.find(p => p.slug === st.route.b);
+      if (a && b) cmp = this.compareVals(a, b);
+    }
+    const traySel = st.compare.map(slug => { const p = rows.find(x => x.slug === slug); return { name: p ? p.name : slug, remove: () => this.setState({ compare: st.compare.filter(s => s !== slug) }) }; });
+    const labCount = ready ? rows.filter(p => p.hasLab).length : 353;
+    return {
+      isHome: view === 'home' || (view !== 'home' && !ready) || (view === 'detail' && ready && !d),
+      isDetail: view === 'detail' && !!d,
+      isCompare: view === 'compare' && cmp.pair.length === 2,
+      d: d || {}, cmp,
+      q: st.q, hasQ: st.q.length > 0, sort: st.sort,
+      onQ: e => this.setState({ q: e.target.value, page: 1 }),
+      clearQ: () => this.setState({ q: '', page: 1 }),
+      onSort: e => this.setState({ sort: e.target.value, page: 1 }),
+      totalCount: ready ? rows.length : 486, labCount,
+      resultCount: ready ? filtered.length : '…', resultNoun: filtered.length === 1 ? 'paddle' : 'paddles',
+      noResults: ready && filtered.length === 0,
+      visible,
+      showPager: pageCount > 1,
+      pagerItems,
+      prevGo: goPage(Math.max(1, page - 1)), nextGo: goPage(Math.min(pageCount, page + 1)),
+      prevDisabled: page === 1, nextDisabled: page === pageCount,
+      prevColor: page === 1 ? '#a9b09d' : '#232a1f', nextColor: page === pageCount ? '#a9b09d' : '#232a1f',
+      prevCursor: page === 1 ? 'default' : 'pointer', nextCursor: page === pageCount ? 'default' : 'pointer',
+      pageSummary: 'Page ' + page + ' of ' + pageCount + ' · showing ' + ((page - 1) * PAGE + 1) + '–' + Math.min(filtered.length, page * PAGE) + ' of ' + filtered.length,
+      facets: ready ? this.facetDef(rows) : [],
+      anyFilter: nFilters > 0 || st.q.length > 0,
+      clearFilters: () => this.setState({ filters: { type: [], shape: [], brand: [], core: [], feel: [], price: [] }, q: '', page: 1 }),
+      activeChips: isNarrow ? [] : chips,
+      filterCountBadge: nFilters ? ' (' + nFilters + ')' : '',
+      collections: (this.props.showCollections ?? true) ? collections : [],
+      goHome: e => { if (e && e.preventDefault) e.preventDefault(); this.nav('/'); },
+      navDisplay: isPhone ? 'none' : 'flex',
+      homeCols: isNarrow ? '1fr' : '264px minmax(0,1fr)',
+      detailCols: isNarrow ? '1fr' : 'minmax(260px,340px) minmax(0,1fr)',
+      detailLeftPos: isNarrow ? 'static' : 'sticky',
+      recoCols: isPhone ? '1fr' : '1fr 1fr',
+      isNarrow,
+      railVisible: !isNarrow || st.railOpen,
+      railPosition: isNarrow ? 'fixed' : 'sticky',
+      railInset: isNarrow ? 'auto 0 0 0' : 'auto',
+      railZ: isNarrow ? 70 : 1,
+      railBg: isNarrow ? '#f7f2e7' : 'transparent',
+      railBorder: isNarrow ? '1px solid rgba(35,42,31,.2)' : 'none',
+      railPad: isNarrow ? '18px 20px 28px' : '0',
+      railMaxH: isNarrow ? '78vh' : 'calc(100vh - 100px)',
+      railShadow: isNarrow ? '0 -12px 40px rgba(35,42,31,.25)' : 'none',
+      railWidth: 'auto', railMargin: '0',
+      openRail: () => this.setState({ railOpen: true }),
+      closeRail: () => this.setState({ railOpen: false }),
+      trayVisible: st.compare.length > 0 && view !== 'compare',
+      traySel, trayNeedsOne: st.compare.length === 1, trayReady: st.compare.length === 2,
+      clearCompare: () => this.setState({ compare: [] }),
+      goCompare: () => this.nav('/compare/' + st.compare[0] + '/' + st.compare[1]),
+      today: 'Jul 2026'
+    };
+  }
+}
+</script>
+</body>
+</html>

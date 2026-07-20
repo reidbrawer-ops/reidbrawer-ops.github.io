@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,600&amp;family=Martian+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#E9E5D8;font-family:'DM Sans',system-ui,sans-serif;color:#22322B}
+a{color:#17594A}a:hover{color:#0E3F34}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 8px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 'DM Sans',sans-serif;color:#1a1a1a}
+.dv-note{max-width:760px;font:400 12px/1.55 'DM Sans',sans-serif;color:rgba(0,0,0,.55);margin:0 0 24px}
+.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 'DM Sans',sans-serif;color:rgba(0,0,0,.55)}
+.dv-card{max-width:100%;background:#F6F2E7;border:1px solid rgba(34,50,43,.14);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}
+.dv-next{margin:22px 0 0;font:12px/1.5 'DM Sans',sans-serif;color:rgba(0,0,0,.5)}
+.tip{position:relative;cursor:help;border-bottom:1px dotted rgba(34,50,43,.45)}
+.tipbox{position:absolute;left:0;bottom:calc(100% + 7px);width:230px;background:#22322B;color:#F6F2E7;padding:9px 11px;border-radius:8px;font:400 11.5px/1.5 'DM Sans',sans-serif;letter-spacing:0;text-transform:none;font-weight:400;opacity:0;pointer-events:none;transition:opacity .15s;z-index:9;text-align:left}
+.tip:hover .tipbox{opacity:1}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t3">
+<div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname">Head-to-head with user-picked swaps + total and value scores</span></div>
+<p class="dv-note">Still strictly two at a time, in <a class="dv-oid" href="#1c">1c</a>'s layout. Each card under "Other options" has swap buttons — <b>you pick which side of the match it replaces</b>. The verdict, "get it if…" cards, fingerprint and table all follow the new pair, and the table now closes with a <b>Total score</b> (sum of the five ratings, out of 50) and a <b>Value score</b> (rating points per $100). Try swapping the Prism Flash in for the Hybrid. Two determinations: copy nowhere assumes the pair shares a brand or shell — kicker, verdict and the "both have" strip are computed from the pair; and because raw 0–10 scores cluster (everything reads 8–9.6), each rating now shows the raw score plus its <b>percentile</b> across our test base, with the fingerprint percentile-scaled so shapes actually separate.</p>
+<div class="dv-opts">
+
+<div class="dv-opt" id="3a" data-screen-label="3a 1c + Compare">
+<div class="dv-olabel"><a class="dv-oid" href="#3a">3a</a>Verdict-first head-to-head — pick who swaps in, scored totals (+ mobile)</div>
+<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+<div class="dv-card" style="width:940px;padding:40px 44px 32px">
+  <div style="text-align:center;max-width:640px;margin:0 auto">
+    <div style="font-family:'Martian Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#77762F">{{ v3Kicker }}</div>
+    <h1 style="margin:10px 0 0;font-family:'Source Serif 4',Georgia,serif;font-size:42px;font-weight:700;letter-spacing:-.015em;line-height:1.1">The verdict: get the <span style="box-shadow:inset 0 -12px 0 #D9E353">{{ v3Name }}</span>.</h1>
+    <p style="margin:12px auto 0;font-size:14px;line-height:1.6;color:#5C594C">{{ v3Blurb }}</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px">
+    <div style="background:#FDFCF6;border:2px solid #A3B02F;border-radius:12px;padding:20px 22px;position:relative">
+      <span style="position:absolute;top:-9px;left:20px;background:#D9E353;color:#3A3F14;font-family:'Martian Mono',monospace;font-size:8.5px;padding:3px 8px;border-radius:4px;font-weight:700;letter-spacing:.12em">OUR PICK — HIGHER TOTAL</span>
+      <div style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:700">{{ cw_title }}</div>
+      <ul style="margin:10px 0 0;padding-left:18px;font-size:13px;line-height:1.7;color:#3F4430">
+        <li>{{ cw_b1 }}</li>
+        <li>{{ cw_b2 }}</li>
+        <li>{{ cw_b3 }}</li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:14px"><a href="#3a" style="background:#D9E353;border:1px solid rgba(34,50,43,.4);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;color:#22322B;text-decoration:none">Search Amazon</a><span style="font-size:11px;color:#8B887C">UPA-A approved · affiliate</span></div>
+    </div>
+    <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.15);border-radius:12px;padding:20px 22px">
+      <div style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:700">{{ cl_title }}</div>
+      <ul style="margin:10px 0 0;padding-left:18px;font-size:13px;line-height:1.7;color:#3F4430">
+        <li>{{ cl_b1 }}</li>
+        <li>{{ cl_b2 }}</li>
+        <li>{{ cl_b3 }}</li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:14px"><a href="#3a" style="border:1px solid rgba(34,50,43,.35);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;color:#22322B;text-decoration:none">Search Amazon</a><span style="font-size:11px;color:#8B887C">UPA-A approved · affiliate</span></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:300px 1fr;gap:36px;margin-top:30px;align-items:center">
+    <div>
+      <div style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;color:#77762F;text-align:center">THE FINGERPRINT</div>
+      <svg viewBox="0 0 260 230" style="width:100%;margin-top:6px">
+        <polygon points="130,34 209.9,92 179.4,186 80.6,186 50.1,92" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+        <polygon points="130,62 183.3,100.7 162.9,163.3 97.1,163.3 76.7,100.7" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+        <polygon points="130,90 156.6,109.3 146.5,140.7 113.5,140.7 103.4,109.3" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+        <line x1="130" y1="118" x2="130" y2="34" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="209.9" y2="92" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="179.4" y2="186" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="80.6" y2="186" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="50.1" y2="92" stroke="#DDD8C6" stroke-width="1"></line>
+        <polygon points="{{ p3a }}" fill="rgba(23,89,74,.13)" stroke="#17594A" stroke-width="2"></polygon>
+        <polygon points="{{ p3b }}" fill="rgba(163,176,47,.2)" stroke="#8C9A2B" stroke-width="2"></polygon>
+        <text x="130" y="24" text-anchor="middle" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">SPIN</text>
+        <text x="216" y="88" text-anchor="start" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">POWER</text>
+        <text x="186" y="201" text-anchor="start" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">FORGIVE</text>
+        <text x="74" y="201" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">HANDS</text>
+        <text x="48" y="88" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.02em">CONTROL</text>
+      </svg>
+      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;font-family:'Martian Mono',monospace;font-size:9.5px;color:#8B887C;margin-top:4px">
+        <div style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#17594A"></span>{{ h3aU }}</div>
+        <div style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#8C9A2B"></span>{{ h3bU }}</div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;color:#77762F">WHERE THEY ACTUALLY DIFFER</div>
+      <div style="margin-top:8px">
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.12)"><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8B887C">METRIC</span><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#17594A;text-align:right">{{ h3aU }}</span><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8C9A2B;text-align:right">{{ h3bU }}</span><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8B887C;text-align:right">EDGE</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Hand speed<span class="tipbox">How quickly the paddle moves in fast kitchen exchanges — driven by swing weight.</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:{{ m3_hands_afw }};color:{{ m3_hands_ac }}">{{ m3_hands_a }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4;margin-top:1px">{{ m3_hands_ap }}</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:{{ m3_hands_bfw }};color:{{ m3_hands_bc }}">{{ m3_hands_b }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4;margin-top:1px">{{ m3_hands_bp }}</span></span><span style="font-size:11.5px;text-align:right;color:{{ m3_hands_ec }}">{{ m3_hands_e }}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Forgiveness<span class="tipbox">Sweet-spot size and stability on off-center hits.</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:{{ m3_forgive_afw }};color:{{ m3_forgive_ac }}">{{ m3_forgive_a }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4;margin-top:1px">{{ m3_forgive_ap }}</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:{{ m3_forgive_bfw }};color:{{ m3_forgive_bc }}">{{ m3_forgive_b }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4;margin-top:1px">{{ m3_forgive_bp }}</span></span><span style="font-size:11.5px;text-align:right;color:{{ m3_forgive_ec }}">{{ m3_forgive_e }}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Spin<span class="tipbox">How much RPM the surface generates on serves and rolls.</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:{{ m3_spin_afw }};color:{{ m3_spin_ac }}">{{ m3_spin_a }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4;margin-top:1px">{{ m3_spin_ap }}</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:{{ m3_spin_bfw }};color:{{ m3_spin_bc }}">{{ m3_spin_b }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4;margin-top:1px">{{ m3_spin_bp }}</span></span><span style="font-size:11.5px;text-align:right;color:{{ m3_spin_ec }}">{{ m3_spin_e }}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Power<span class="tipbox">Pop on drives and serves — how fast the ball leaves the face.</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:{{ m3_power_afw }};color:{{ m3_power_ac }}">{{ m3_power_a }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4;margin-top:1px">{{ m3_power_ap }}</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:{{ m3_power_bfw }};color:{{ m3_power_bc }}">{{ m3_power_b }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4;margin-top:1px">{{ m3_power_bp }}</span></span><span style="font-size:11.5px;text-align:right;color:{{ m3_power_ec }}">{{ m3_power_e }}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Control<span class="tipbox">Touch on resets, drops and dinks — how predictably the ball comes off the face.</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:{{ m3_control_afw }};color:{{ m3_control_ac }}">{{ m3_control_a }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4;margin-top:1px">{{ m3_control_ap }}</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:{{ m3_control_bfw }};color:{{ m3_control_bc }}">{{ m3_control_b }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4;margin-top:1px">{{ m3_control_bp }}</span></span><span style="font-size:11.5px;text-align:right;color:{{ m3_control_ec }}">{{ m3_control_e }}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Static weight<span class="tipbox">Weight on a scale, unmodified. Lighter is easier on the arm.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ m3_weight_afw }};color:{{ m3_weight_ac }}">{{ m3_weight_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ m3_weight_bfw }};color:{{ m3_weight_bc }}">{{ m3_weight_b }}</span><span style="font-size:11.5px;text-align:right;color:{{ m3_weight_ec }}">{{ m3_weight_e }}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Price<span class="tipbox">Street price at time of writing.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ m3_price_afw }};color:{{ m3_price_ac }}">{{ m3_price_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ m3_price_bfw }};color:{{ m3_price_bc }}">{{ m3_price_b }}</span><span style="font-size:11.5px;text-align:right;color:{{ m3_price_ec }}">{{ m3_price_e }}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:9px 0 3px;border-top:1px solid rgba(34,50,43,.2)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:700">Total score<span class="tipbox">Sum of the five playtest ratings — spin, power, forgiveness, hand speed, control. Out of 50.</span></span><span style="font-family:'Martian Mono',monospace;font-size:12px;text-align:right;font-weight:{{ t3TotAfw }};color:{{ t3TotAc }}">{{ t3TotA }}</span><span style="font-family:'Martian Mono',monospace;font-size:12px;text-align:right;font-weight:{{ t3TotBfw }};color:{{ t3TotBc }}">{{ t3TotB }}</span><span style="font-size:11.5px;text-align:right;color:{{ t3TotEc }}">{{ t3TotE }}</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:5px 0 8px"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:700">Value score<span class="tipbox">Rating points per $100 — total score ÷ price × 100. Higher = more paddle for the money.</span></span><span style="font-family:'Martian Mono',monospace;font-size:12px;text-align:right;font-weight:{{ t3ValAfw }};color:{{ t3ValAc }}">{{ t3ValA }}</span><span style="font-family:'Martian Mono',monospace;font-size:12px;text-align:right;font-weight:{{ t3ValBfw }};color:{{ t3ValBc }}">{{ t3ValB }}</span><span style="font-size:11.5px;text-align:right;color:{{ t3ValEc }}">{{ t3ValE }}</span></div>
+      </div>
+      <div style="margin-top:10px;background:#EFEBDD;border-radius:8px;padding:10px 14px;font-family:'Martian Mono',monospace;font-size:10px;color:#77764F">{{ t3Attrs }}</div>
+      <p style="margin:8px 0 0;font-size:10.5px;line-height:1.5;color:#8B887C">Small gray figures are percentiles vs. the 87 paddles we've tested — 93rd = better than 93% of them. The fingerprint is percentile-scaled.</p>
+    </div>
+  </div>
+  <div style="margin-top:28px;border-top:1px solid rgba(34,50,43,.14);padding-top:20px">
+    <div style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;color:#77762F">OTHER OPTIONS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
+      <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:14px 16px">
+        <div style="font-size:12.5px;line-height:1.5"><span style="display:{{ o3_1_bdg_d }};background:{{ o3_1_bdg_bg }};border:{{ o3_1_bdg_bd }};color:{{ o3_1_bdg_fg }};font-size:9px;padding:2px 7px;border-radius:4px;font-weight:700;letter-spacing:.1em;margin-right:8px;vertical-align:1px">{{ o3_1_bdg }}</span><b>{{ o3_1_name }}</b> <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#8B887C">{{ o3_1_price }}</span><br><span style="color:#5C594C">{{ o3_1_desc }}</span> <a href="#3a" style="font-weight:600;text-decoration:none">Details →</a></div>
+        <div style="margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.12em;color:#8B887C">SWAP IN:</span>
+          <span onClick="{{ o3_1_swap_a }}" style="cursor:pointer;border:1px solid rgba(34,50,43,.4);border-radius:7px;padding:6px 11px;font-size:11.5px;font-weight:700;color:#17594A">⇄ {{ swapForA }}</span>
+          <span onClick="{{ o3_1_swap_b }}" style="cursor:pointer;border:1px solid rgba(34,50,43,.4);border-radius:7px;padding:6px 11px;font-size:11.5px;font-weight:700;color:#8C9A2B">⇄ {{ swapForB }}</span>
+        </div>
+      </div>
+      <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:14px 16px">
+        <div style="font-size:12.5px;line-height:1.5"><span style="display:{{ o3_2_bdg_d }};background:{{ o3_2_bdg_bg }};border:{{ o3_2_bdg_bd }};color:{{ o3_2_bdg_fg }};font-size:9px;padding:2px 7px;border-radius:4px;font-weight:700;letter-spacing:.1em;margin-right:8px;vertical-align:1px">{{ o3_2_bdg }}</span><b>{{ o3_2_name }}</b> <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#8B887C">{{ o3_2_price }}</span><br><span style="color:#5C594C">{{ o3_2_desc }}</span> <a href="#3a" style="font-weight:600;text-decoration:none">Details →</a></div>
+        <div style="margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.12em;color:#8B887C">SWAP IN:</span>
+          <span onClick="{{ o3_2_swap_a }}" style="cursor:pointer;border:1px solid rgba(34,50,43,.4);border-radius:7px;padding:6px 11px;font-size:11.5px;font-weight:700;color:#17594A">⇄ {{ swapForA }}</span>
+          <span onClick="{{ o3_2_swap_b }}" style="cursor:pointer;border:1px solid rgba(34,50,43,.4);border-radius:7px;padding:6px 11px;font-size:11.5px;font-weight:700;color:#8C9A2B">⇄ {{ swapForB }}</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin:16px 0 0;font-size:11.5px;line-height:1.6;color:#8B887C">One or more links are affiliate links — we may earn a commission at no extra cost to you. It never changes which paddle wins or how either is described. As an Amazon Associate I earn from qualifying purchases. <a href="#3a">How this works</a>.</p>
+  </div>
+</div>
+<div class="dv-card" style="width:375px;padding:22px 18px">
+  <div style="text-align:center">
+    <div style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:#77762F">{{ v3Kicker }}</div>
+    <h2 style="margin:8px 0 0;font-family:'Source Serif 4',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.15">The verdict: get the <span style="box-shadow:inset 0 -9px 0 #D9E353">{{ v3Name }}</span>.</h2>
+    <p style="margin:8px 0 0;font-size:12px;line-height:1.55;color:#5C594C">{{ v3Blurb }}</p>
+  </div>
+  <div style="margin-top:18px;background:#FDFCF6;border:2px solid #A3B02F;border-radius:12px;padding:16px;position:relative">
+    <span style="position:absolute;top:-8px;left:14px;background:#D9E353;color:#3A3F14;font-family:'Martian Mono',monospace;font-size:8px;padding:2px 7px;border-radius:4px;font-weight:700;letter-spacing:.12em">OUR PICK — HIGHER TOTAL</span>
+    <div style="font-family:'Source Serif 4',serif;font-size:17px;font-weight:700">{{ cw_title }}</div>
+    <ul style="margin:8px 0 0;padding-left:16px;font-size:12px;line-height:1.65;color:#3F4430">
+      <li>{{ cw_b1 }}</li>
+      <li>{{ cw_b2 }}</li>
+      <li>{{ cw_b3 }}</li>
+    </ul>
+    <a href="#3a" style="display:block;margin-top:12px;background:#D9E353;border:1px solid rgba(34,50,43,.4);border-radius:8px;padding:11px;font-size:13.5px;font-weight:700;color:#22322B;text-decoration:none;text-align:center">Search Amazon</a>
+  </div>
+  <div style="margin-top:10px;background:#FDFCF6;border:1px solid rgba(34,50,43,.15);border-radius:12px;padding:16px">
+    <div style="font-family:'Source Serif 4',serif;font-size:17px;font-weight:700">{{ cl_title }}</div>
+    <ul style="margin:8px 0 0;padding-left:16px;font-size:12px;line-height:1.65;color:#3F4430">
+      <li>{{ cl_b1 }}</li>
+      <li>{{ cl_b2 }}</li>
+      <li>{{ cl_b3 }}</li>
+    </ul>
+    <a href="#3a" style="display:block;margin-top:12px;border:1px solid rgba(34,50,43,.35);border-radius:8px;padding:11px;font-size:13.5px;font-weight:600;color:#22322B;text-decoration:none;text-align:center">Search Amazon</a>
+  </div>
+  <div style="margin-top:6px;font-size:10.5px;color:#8B887C;text-align:center">UPA-A approved · affiliate links</div>
+  <div style="margin-top:20px;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.18em;color:#77762F;text-align:center">THE FINGERPRINT</div>
+  <svg viewBox="0 0 260 230" style="width:100%;margin-top:4px">
+    <polygon points="130,34 209.9,92 179.4,186 80.6,186 50.1,92" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+    <polygon points="130,62 183.3,100.7 162.9,163.3 97.1,163.3 76.7,100.7" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+    <polygon points="130,90 156.6,109.3 146.5,140.7 113.5,140.7 103.4,109.3" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+    <line x1="130" y1="118" x2="130" y2="34" stroke="#DDD8C6" stroke-width="1"></line>
+    <line x1="130" y1="118" x2="209.9" y2="92" stroke="#DDD8C6" stroke-width="1"></line>
+    <line x1="130" y1="118" x2="179.4" y2="186" stroke="#DDD8C6" stroke-width="1"></line>
+    <line x1="130" y1="118" x2="80.6" y2="186" stroke="#DDD8C6" stroke-width="1"></line>
+    <line x1="130" y1="118" x2="50.1" y2="92" stroke="#DDD8C6" stroke-width="1"></line>
+    <polygon points="{{ p3a }}" fill="rgba(23,89,74,.13)" stroke="#17594A" stroke-width="2"></polygon>
+    <polygon points="{{ p3b }}" fill="rgba(163,176,47,.2)" stroke="#8C9A2B" stroke-width="2"></polygon>
+    <text x="130" y="24" text-anchor="middle" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">SPIN</text>
+    <text x="216" y="88" text-anchor="start" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">POWER</text>
+    <text x="186" y="201" text-anchor="start" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">FORGIVE</text>
+    <text x="74" y="201" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">HANDS</text>
+    <text x="48" y="88" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.02em">CONTROL</text>
+  </svg>
+  <div style="display:flex;justify-content:center;gap:12px;font-family:'Martian Mono',monospace;font-size:9px;color:#8B887C;margin-top:2px">
+    <div style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#17594A"></span>{{ h3aU }}</div>
+    <div style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#8C9A2B"></span>{{ h3bU }}</div>
+  </div>
+  <div style="margin-top:18px;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.18em;color:#77762F">WHERE THEY DIFFER</div>
+  <div style="margin-top:6px">
+    <div style="display:grid;grid-template-columns:1fr 62px 62px;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.12)"><span style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#8B887C">METRIC</span><span style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#17594A;text-align:right">{{ h3aU }}</span><span style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#8C9A2B;text-align:right">{{ h3bU }}</span></div>
+    <div style="display:grid;grid-template-columns:1fr 62px 62px;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Hand speed</span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11px;font-weight:{{ m3_hands_afw }};color:{{ m3_hands_ac }}">{{ m3_hands_a }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4">{{ m3_hands_ap }}</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11px;font-weight:{{ m3_hands_bfw }};color:{{ m3_hands_bc }}">{{ m3_hands_b }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4">{{ m3_hands_bp }}</span></span></div>
+    <div style="display:grid;grid-template-columns:1fr 62px 62px;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Forgiveness</span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11px;font-weight:{{ m3_forgive_afw }};color:{{ m3_forgive_ac }}">{{ m3_forgive_a }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4">{{ m3_forgive_ap }}</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11px;font-weight:{{ m3_forgive_bfw }};color:{{ m3_forgive_bc }}">{{ m3_forgive_b }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4">{{ m3_forgive_bp }}</span></span></div>
+    <div style="display:grid;grid-template-columns:1fr 62px 62px;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Spin</span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11px;font-weight:{{ m3_spin_afw }};color:{{ m3_spin_ac }}">{{ m3_spin_a }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4">{{ m3_spin_ap }}</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11px;font-weight:{{ m3_spin_bfw }};color:{{ m3_spin_bc }}">{{ m3_spin_b }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4">{{ m3_spin_bp }}</span></span></div>
+    <div style="display:grid;grid-template-columns:1fr 62px 62px;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Power</span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11px;font-weight:{{ m3_power_afw }};color:{{ m3_power_ac }}">{{ m3_power_a }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4">{{ m3_power_ap }}</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11px;font-weight:{{ m3_power_bfw }};color:{{ m3_power_bc }}">{{ m3_power_b }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4">{{ m3_power_bp }}</span></span></div>
+    <div style="display:grid;grid-template-columns:1fr 62px 62px;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Control</span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11px;font-weight:{{ m3_control_afw }};color:{{ m3_control_ac }}">{{ m3_control_a }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4">{{ m3_control_ap }}</span></span><span style="justify-self:end;text-align:right"><span style="display:block;font-family:'Martian Mono',monospace;font-size:11px;font-weight:{{ m3_control_bfw }};color:{{ m3_control_bc }}">{{ m3_control_b }}</span><span style="display:block;font-family:'Martian Mono',monospace;font-size:8px;color:#B8B4A4">{{ m3_control_bp }}</span></span></div>
+    <div style="display:grid;grid-template-columns:1fr 62px 62px;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Static weight</span><span style="font-family:'Martian Mono',monospace;font-size:11px;text-align:right;font-weight:{{ m3_weight_afw }};color:{{ m3_weight_ac }}">{{ m3_weight_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11px;text-align:right;font-weight:{{ m3_weight_bfw }};color:{{ m3_weight_bc }}">{{ m3_weight_b }}</span></div>
+    <div style="display:grid;grid-template-columns:1fr 62px 62px;gap:8px;align-items:baseline;padding:7px 0"><span style="font-size:12px;font-weight:500">Price</span><span style="font-family:'Martian Mono',monospace;font-size:11px;text-align:right;font-weight:{{ m3_price_afw }};color:{{ m3_price_ac }}">{{ m3_price_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11px;text-align:right;font-weight:{{ m3_price_bfw }};color:{{ m3_price_bc }}">{{ m3_price_b }}</span></div>
+    <div style="display:grid;grid-template-columns:1fr 62px 62px;gap:8px;align-items:baseline;padding:8px 0 2px;border-top:1px solid rgba(34,50,43,.2)"><span style="font-size:12px;font-weight:700">Total score</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ t3TotAfw }};color:{{ t3TotAc }}">{{ t3TotA }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ t3TotBfw }};color:{{ t3TotBc }}">{{ t3TotB }}</span></div>
+    <div style="display:grid;grid-template-columns:1fr 62px 62px;gap:8px;align-items:baseline;padding:4px 0 7px"><span style="font-size:12px;font-weight:700">Value score</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ t3ValAfw }};color:{{ t3ValAc }}">{{ t3ValA }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ t3ValBfw }};color:{{ t3ValBc }}">{{ t3ValB }}</span></div>
+  </div>
+  <div style="margin-top:8px;background:#EFEBDD;border-radius:8px;padding:9px 12px;font-family:'Martian Mono',monospace;font-size:9px;line-height:1.6;color:#77764F">{{ t3Attrs }}</div>
+  <p style="margin:8px 0 0;font-size:10px;line-height:1.5;color:#8B887C">Gray figures are percentiles vs. our 87-paddle test base. Total = five ratings, out of 50; value = points per $100.</p>
+  <div style="margin-top:18px;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.18em;color:#77762F">OTHER OPTIONS</div>
+  <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+    <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:12px 13px">
+      <div style="font-size:12px;line-height:1.5"><span style="display:{{ o3_1_bdg_d }};background:{{ o3_1_bdg_bg }};border:{{ o3_1_bdg_bd }};color:{{ o3_1_bdg_fg }};font-size:8.5px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.1em;margin-right:7px;vertical-align:1px">{{ o3_1_bdg }}</span><b>{{ o3_1_name }}</b> <span style="font-family:'Martian Mono',monospace;font-size:10px;color:#8B887C">{{ o3_1_price }}</span><br><span style="color:#5C594C">{{ o3_1_desc }}</span></div>
+      <div style="margin-top:9px;display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+        <span style="font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.12em;color:#8B887C">SWAP IN:</span>
+        <span onClick="{{ o3_1_swap_a }}" style="cursor:pointer;border:1px solid rgba(34,50,43,.4);border-radius:7px;padding:8px 10px;font-size:11px;font-weight:700;color:#17594A">⇄ {{ swapForA }}</span>
+        <span onClick="{{ o3_1_swap_b }}" style="cursor:pointer;border:1px solid rgba(34,50,43,.4);border-radius:7px;padding:8px 10px;font-size:11px;font-weight:700;color:#8C9A2B">⇄ {{ swapForB }}</span>
+      </div>
+    </div>
+    <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:12px 13px">
+      <div style="font-size:12px;line-height:1.5"><span style="display:{{ o3_2_bdg_d }};background:{{ o3_2_bdg_bg }};border:{{ o3_2_bdg_bd }};color:{{ o3_2_bdg_fg }};font-size:8.5px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.1em;margin-right:7px;vertical-align:1px">{{ o3_2_bdg }}</span><b>{{ o3_2_name }}</b> <span style="font-family:'Martian Mono',monospace;font-size:10px;color:#8B887C">{{ o3_2_price }}</span><br><span style="color:#5C594C">{{ o3_2_desc }}</span></div>
+      <div style="margin-top:9px;display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+        <span style="font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.12em;color:#8B887C">SWAP IN:</span>
+        <span onClick="{{ o3_2_swap_a }}" style="cursor:pointer;border:1px solid rgba(34,50,43,.4);border-radius:7px;padding:8px 10px;font-size:11px;font-weight:700;color:#17594A">⇄ {{ swapForA }}</span>
+        <span onClick="{{ o3_2_swap_b }}" style="cursor:pointer;border:1px solid rgba(34,50,43,.4);border-radius:7px;padding:8px 10px;font-size:11px;font-weight:700;color:#8C9A2B">⇄ {{ swapForB }}</span>
+      </div>
+    </div>
+  </div>
+  <p style="margin:12px 0 0;font-size:10.5px;line-height:1.5;color:#8B887C">Affiliate links — we may earn a commission at no extra cost to you. <a href="#3a">How this works</a>.</p>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Bring the alternatives into the match — two interactive patterns</span></div>
+<p class="dv-note">Both are live: <a class="dv-oid" href="#2a">2a</a> keeps the head-to-head format but adds a roster — click any paddle to swap it in (it replaces the older of the two slots); verdict, radar, table and CTAs all recompute. <a class="dv-oid" href="#2b">2b</a> drops the duo entirely: toggle 2–4 paddles onto one board, best in each row gets the highlight. Built on <a class="dv-oid" href="#1c">1c</a>'s language; ratings for the Prism Flash and Friday are placeholders.</p>
+<div class="dv-opts">
+
+<div class="dv-opt" id="2a" data-screen-label="2a Swap-in duo">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Swap-in duo — same head-to-head, any two of the roster (click to swap)</div>
+<div class="dv-card" style="width:880px;padding:36px 40px 30px">
+  <div style="text-align:center">
+    <div style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#77762F">Paddles &amp; Gear · Compare · Pick any two</div>
+    <h1 style="margin:8px 0 0;font-family:'Source Serif 4',Georgia,serif;font-size:38px;font-weight:700;letter-spacing:-.015em"><span style="border-bottom:4px solid #17594A">{{ aShort }}</span> <span style="font-style:italic;font-size:22px;color:#8B887C;vertical-align:4px">vs</span> <span style="border-bottom:4px solid #8C9A2B">{{ bShort }}</span></h1>
+  </div>
+  <div style="margin-top:18px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+    <div onClick="{{ pick_hy }}" style="cursor:pointer;display:flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;border:{{ chip_hy_bd }};background:{{ chip_hy_bg }}">
+      <span style="width:8px;height:8px;border-radius:50%;background:{{ chip_hy_dot }}"></span><span style="font-size:12.5px;font-weight:600">Coral Pro Hybrid</span><span style="font-family:'Martian Mono',monospace;font-size:10px;color:#8B887C">$220</span>
+    </div>
+    <div onClick="{{ pick_wb }}" style="cursor:pointer;display:flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;border:{{ chip_wb_bd }};background:{{ chip_wb_bg }}">
+      <span style="width:8px;height:8px;border-radius:50%;background:{{ chip_wb_dot }}"></span><span style="font-size:12.5px;font-weight:600">Coral Pro Widebody</span><span style="font-family:'Martian Mono',monospace;font-size:10px;color:#8B887C">$220</span>
+    </div>
+    <div onClick="{{ pick_va }}" style="cursor:pointer;display:flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;border:{{ chip_va_bd }};background:{{ chip_va_bg }}">
+      <span style="width:8px;height:8px;border-radius:50%;background:{{ chip_va_dot }}"></span><span style="font-size:12.5px;font-weight:600">Vatic Pro Prism Flash 16</span><span style="font-family:'Martian Mono',monospace;font-size:10px;color:#8B887C">$140</span><span style="background:#D9E353;color:#3A3F14;font-size:8px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.1em">TOP PICK</span>
+    </div>
+    <div onClick="{{ pick_fr }}" style="cursor:pointer;display:flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;border:{{ chip_fr_bd }};background:{{ chip_fr_bg }}">
+      <span style="width:8px;height:8px;border-radius:50%;background:{{ chip_fr_dot }}"></span><span style="font-size:12.5px;font-weight:600">Friday Original 16</span><span style="font-family:'Martian Mono',monospace;font-size:10px;color:#8B887C">$99</span><span style="border:1px solid rgba(34,50,43,.3);color:#4A4E1B;font-size:8px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.1em">VALUE</span>
+    </div>
+  </div>
+  <div style="margin-top:8px;text-align:center;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.14em;color:#8B887C">CLICK A PADDLE TO SWAP IT IN — IT REPLACES THE OLDER PICK</div>
+  <div style="margin-top:20px;background:#EDF2CD;border:1px solid rgba(74,78,27,.2);border-radius:10px;padding:18px 22px;display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="text-align:center"><div style="font-family:'Martian Mono',monospace;font-size:28px;font-weight:700;color:#17594A">{{ aWins }}</div><div style="font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.1em;color:#77762F">{{ aShortU }}</div></div>
+      <div style="font-family:'Martian Mono',monospace;font-size:12px;color:#8B887C">—</div>
+      <div style="text-align:center"><div style="font-family:'Martian Mono',monospace;font-size:28px;font-weight:700;color:#8C9A2B">{{ bWins }}</div><div style="font-family:'Martian Mono',monospace;font-size:8px;letter-spacing:.1em;color:#77762F">{{ bShortU }}</div></div>
+    </div>
+    <div style="flex:1;min-width:280px">
+      <div style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.18em;color:#4A4E1B">THE VERDICT — ROWS WON</div>
+      <div style="font-family:'Source Serif 4',serif;font-size:21px;font-weight:700;margin-top:3px">{{ verdictHead }}</div>
+      <div style="font-size:12.5px;color:#3F4430;margin-top:2px;line-height:1.5">{{ verdictBlurb }}</div>
+    </div>
+    <a href="#2a" style="background:#D9E353;border:1px solid rgba(34,50,43,.4);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;color:#22322B;text-decoration:none;white-space:nowrap">Search Amazon · {{ verdictShort }}</a>
+  </div>
+  <div style="display:grid;grid-template-columns:280px 1fr;gap:34px;margin-top:24px;align-items:center">
+    <div>
+      <div style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;color:#77762F;text-align:center">THE FINGERPRINT</div>
+      <svg viewBox="0 0 260 230" style="width:100%;margin-top:4px">
+        <polygon points="130,34 209.9,92 179.4,186 80.6,186 50.1,92" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+        <polygon points="130,62 183.3,100.7 162.9,163.3 97.1,163.3 76.7,100.7" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+        <polygon points="130,90 156.6,109.3 146.5,140.7 113.5,140.7 103.4,109.3" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+        <line x1="130" y1="118" x2="130" y2="34" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="209.9" y2="92" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="179.4" y2="186" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="80.6" y2="186" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="50.1" y2="92" stroke="#DDD8C6" stroke-width="1"></line>
+        <polygon points="{{ aPoints }}" fill="rgba(23,89,74,.13)" stroke="#17594A" stroke-width="2"></polygon>
+        <polygon points="{{ bPoints }}" fill="rgba(163,176,47,.2)" stroke="#8C9A2B" stroke-width="2"></polygon>
+        <text x="130" y="24" text-anchor="middle" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">SPIN</text>
+        <text x="216" y="88" text-anchor="start" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">POWER</text>
+        <text x="186" y="201" text-anchor="start" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">FORGIVE</text>
+        <text x="74" y="201" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">HANDS</text>
+        <text x="48" y="88" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.02em">CONTROL</text>
+      </svg>
+      <div style="text-align:center;font-family:'Martian Mono',monospace;font-size:9px;color:#8B887C;margin-top:2px"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#17594A;margin-right:4px"></span>{{ aShortU }}&nbsp;&nbsp;<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#8C9A2B;margin-right:4px"></span>{{ bShortU }}</div>
+    </div>
+    <div>
+      <div style="display:grid;grid-template-columns:1fr 86px 86px 150px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.12)"><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8B887C">METRIC</span><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#17594A;text-align:right">{{ aShortU }}</span><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8C9A2B;text-align:right">{{ bShortU }}</span><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8B887C;text-align:right">EDGE</span></div>
+      <div style="display:grid;grid-template-columns:1fr 86px 86px 150px;gap:12px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Spin<span class="tipbox">How much RPM the surface generates on serves and rolls.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ spin_afw }};color:{{ spin_ac }}">{{ spin_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ spin_bfw }};color:{{ spin_bc }}">{{ spin_b }}</span><span style="font-size:11.5px;text-align:right;color:{{ spin_ec }}">{{ spin_e }}</span></div>
+      <div style="display:grid;grid-template-columns:1fr 86px 86px 150px;gap:12px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Power<span class="tipbox">Pop on drives and serves — how fast the ball leaves the face.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ power_afw }};color:{{ power_ac }}">{{ power_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ power_bfw }};color:{{ power_bc }}">{{ power_b }}</span><span style="font-size:11.5px;text-align:right;color:{{ power_ec }}">{{ power_e }}</span></div>
+      <div style="display:grid;grid-template-columns:1fr 86px 86px 150px;gap:12px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Forgiveness<span class="tipbox">Sweet-spot size and stability on off-center hits.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ forgive_afw }};color:{{ forgive_ac }}">{{ forgive_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ forgive_bfw }};color:{{ forgive_bc }}">{{ forgive_b }}</span><span style="font-size:11.5px;text-align:right;color:{{ forgive_ec }}">{{ forgive_e }}</span></div>
+      <div style="display:grid;grid-template-columns:1fr 86px 86px 150px;gap:12px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Hand speed<span class="tipbox">How quickly the paddle moves in fast kitchen exchanges — driven by swing weight.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ hands_afw }};color:{{ hands_ac }}">{{ hands_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ hands_bfw }};color:{{ hands_bc }}">{{ hands_b }}</span><span style="font-size:11.5px;text-align:right;color:{{ hands_ec }}">{{ hands_e }}</span></div>
+      <div style="display:grid;grid-template-columns:1fr 86px 86px 150px;gap:12px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Control<span class="tipbox">Touch on resets, drops and dinks — how predictably the ball comes off the face.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ control_afw }};color:{{ control_ac }}">{{ control_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ control_bfw }};color:{{ control_bc }}">{{ control_b }}</span><span style="font-size:11.5px;text-align:right;color:{{ control_ec }}">{{ control_e }}</span></div>
+      <div style="display:grid;grid-template-columns:1fr 86px 86px 150px;gap:12px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Static weight<span class="tipbox">Weight on a scale, unmodified. Lighter is easier on the arm.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ weight_afw }};color:{{ weight_ac }}">{{ weight_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ weight_bfw }};color:{{ weight_bc }}">{{ weight_b }}</span><span style="font-size:11.5px;text-align:right;color:{{ weight_ec }}">{{ weight_e }}</span></div>
+      <div style="display:grid;grid-template-columns:1fr 86px 86px 150px;gap:12px;align-items:baseline;padding:7px 0"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Price<span class="tipbox">Street price at time of writing.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ price_afw }};color:{{ price_ac }}">{{ price_a }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;text-align:right;font-weight:{{ price_bfw }};color:{{ price_bc }}">{{ price_b }}</span><span style="font-size:11.5px;text-align:right;color:{{ price_ec }}">{{ price_e }}</span></div>
+      <div style="margin-top:8px;background:#EFEBDD;border-radius:8px;padding:9px 12px;font-family:'Martian Mono',monospace;font-size:9.5px;color:#77764F">ALL FOUR: 16MM CORE · RAW CARBON FACE · UPA-A APPROVED</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+    <a href="#2a" style="border:1px solid rgba(34,50,43,.35);border-radius:8px;padding:9px 15px;font-size:12.5px;font-weight:600;color:#22322B;text-decoration:none">Search Amazon · {{ aName }}</a>
+    <a href="#2a" style="border:1px solid rgba(34,50,43,.35);border-radius:8px;padding:9px 15px;font-size:12.5px;font-weight:600;color:#22322B;text-decoration:none">Search Amazon · {{ bName }}</a>
+  </div>
+  <p style="margin:14px 0 0;font-size:11.5px;line-height:1.6;color:#8B887C">Affiliate links — we may earn a commission at no extra cost to you; it never changes who wins a row. As an Amazon Associate I earn from qualifying purchases. <a href="#2a">How this works</a>.</p>
+</div>
+</div>
+
+<div class="dv-opt" id="2b" data-screen-label="2b Field board">
+<div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>Field board — 2–4 paddles on one board, best in each row highlighted</div>
+<div class="dv-card" style="width:980px;padding:36px 40px 30px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px">
+    <div>
+      <div style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#77762F">Paddles &amp; Gear · Compare the field</div>
+      <h1 style="margin:6px 0 0;font-family:'Source Serif 4',Georgia,serif;font-size:36px;font-weight:700;letter-spacing:-.01em">Four paddles, one board.</h1>
+      <p style="margin:6px 0 0;max-width:440px;font-size:13px;line-height:1.5;color:#5C594C">Toggle paddles in and out. <span style="background:#D9E353;padding:1px 6px;border-radius:3px;font-weight:600">Lime</span> marks the best in each row among what's shown.</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <div onClick="{{ tog_hy }}" style="cursor:pointer;padding:8px 14px;border-radius:999px;border:{{ tchip_hy_bd }};background:{{ tchip_hy_bg }};color:{{ tchip_hy_fg }};font-size:12px;font-weight:600">Hybrid</div>
+      <div onClick="{{ tog_wb }}" style="cursor:pointer;padding:8px 14px;border-radius:999px;border:{{ tchip_wb_bd }};background:{{ tchip_wb_bg }};color:{{ tchip_wb_fg }};font-size:12px;font-weight:600">Widebody</div>
+      <div onClick="{{ tog_va }}" style="cursor:pointer;padding:8px 14px;border-radius:999px;border:{{ tchip_va_bd }};background:{{ tchip_va_bg }};color:{{ tchip_va_fg }};font-size:12px;font-weight:600">Prism Flash</div>
+      <div onClick="{{ tog_fr }}" style="cursor:pointer;padding:8px 14px;border-radius:999px;border:{{ tchip_fr_bd }};background:{{ tchip_fr_bg }};color:{{ tchip_fr_fg }};font-size:12px;font-weight:600">Friday</div>
+    </div>
+  </div>
+  <div style="margin-top:22px">
+    <div style="display:grid;grid-template-columns:220px repeat(7,1fr) 74px;gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(34,50,43,.16)">
+      <span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8B887C">PADDLE</span>
+      <span class="tip" style="justify-self:end;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#77762F">SPIN<span class="tipbox">RPM the surface generates on serves and rolls.</span></span>
+      <span class="tip" style="justify-self:end;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#77762F">POWER<span class="tipbox">Pop on drives — how fast the ball leaves the face.</span></span>
+      <span class="tip" style="justify-self:end;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#77762F">FORGIVE<span class="tipbox">Sweet-spot size and stability on off-center hits.</span></span>
+      <span class="tip" style="justify-self:end;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#77762F">HANDS<span class="tipbox">Speed in fast kitchen exchanges — driven by swing weight.</span></span>
+      <span class="tip" style="justify-self:end;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#77762F">CONTROL<span class="tipbox">Touch on resets, drops and dinks.</span></span>
+      <span class="tip" style="justify-self:end;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#77762F">WEIGHT<span class="tipbox">Scale weight, unmodified. Lighter is easier on the arm.</span></span>
+      <span class="tip" style="justify-self:end;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#77762F">PRICE<span class="tipbox" style="left:auto;right:0">Street price at time of writing.</span></span>
+      <span style="justify-self:end;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8B887C">ROWS</span>
+    </div>
+    <sc-if value="{{ show2_hy }}" hint-placeholder-val="{{ true }}">
+    <div style="display:grid;grid-template-columns:220px repeat(7,1fr) 74px;gap:10px;align-items:center;padding:11px 0;border-bottom:1px dashed rgba(34,50,43,.12)">
+      <div><div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#17594A"></span><span style="font-family:'Source Serif 4',serif;font-size:14.5px;font-weight:700">Coral Pro Hybrid</span></div><div style="margin-top:2px;font-size:11px;color:#8B887C">Six Zero · <a href="#2b" style="font-weight:600;text-decoration:none">Amazon →</a></div></div>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ hy_spin_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.2</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ hy_power_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">8.6</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ hy_forgive_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.0</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ hy_hands_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">8.2</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ hy_control_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">8.8</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ hy_weight_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">8.2 oz</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ hy_price_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">$220</span>
+      <span style="justify-self:end;font-family:'Martian Mono',monospace;font-size:15px;font-weight:700;color:#22322B">{{ hy_wins }}</span>
+    </div>
+    </sc-if>
+    <sc-if value="{{ show2_wb }}" hint-placeholder-val="{{ true }}">
+    <div style="display:grid;grid-template-columns:220px repeat(7,1fr) 74px;gap:10px;align-items:center;padding:11px 0;border-bottom:1px dashed rgba(34,50,43,.12)">
+      <div><div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#8C9A2B"></span><span style="font-family:'Source Serif 4',serif;font-size:14.5px;font-weight:700">Coral Pro Widebody</span></div><div style="margin-top:2px;font-size:11px;color:#8B887C">Six Zero · <a href="#2b" style="font-weight:600;text-decoration:none">Amazon →</a></div></div>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ wb_spin_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.4</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ wb_power_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">8.1</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ wb_forgive_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.5</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ wb_hands_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.1</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ wb_control_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.2</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ wb_weight_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">8.16 oz</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ wb_price_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">$220</span>
+      <span style="justify-self:end;font-family:'Martian Mono',monospace;font-size:15px;font-weight:700;color:#22322B">{{ wb_wins }}</span>
+    </div>
+    </sc-if>
+    <sc-if value="{{ show2_va }}" hint-placeholder-val="{{ true }}">
+    <div style="display:grid;grid-template-columns:220px repeat(7,1fr) 74px;gap:10px;align-items:center;padding:11px 0;border-bottom:1px dashed rgba(34,50,43,.12)">
+      <div><div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#B58A2A"></span><span style="font-family:'Source Serif 4',serif;font-size:14.5px;font-weight:700">Vatic Pro Prism Flash 16</span><span style="background:#D9E353;color:#3A3F14;font-size:8px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.1em">TOP PICK</span></div><div style="margin-top:2px;font-size:11px;color:#8B887C">Vatic Pro · <a href="#2b" style="font-weight:600;text-decoration:none">Amazon →</a></div></div>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ va_spin_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.6</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ va_power_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">8.8</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ va_forgive_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.1</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ va_hands_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">8.9</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ va_control_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.0</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ va_weight_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">8.0 oz</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ va_price_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">$140</span>
+      <span style="justify-self:end;font-family:'Martian Mono',monospace;font-size:15px;font-weight:700;color:#22322B">{{ va_wins }}</span>
+    </div>
+    </sc-if>
+    <sc-if value="{{ show2_fr }}" hint-placeholder-val="{{ true }}">
+    <div style="display:grid;grid-template-columns:220px repeat(7,1fr) 74px;gap:10px;align-items:center;padding:11px 0;border-bottom:1px dashed rgba(34,50,43,.12)">
+      <div><div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:#9C5B33"></span><span style="font-family:'Source Serif 4',serif;font-size:14.5px;font-weight:700">Friday Original 16</span><span style="border:1px solid rgba(34,50,43,.3);color:#4A4E1B;font-size:8px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.1em">VALUE</span></div><div style="margin-top:2px;font-size:11px;color:#8B887C">Friday · <a href="#2b" style="font-weight:600;text-decoration:none">Amazon →</a></div></div>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ fr_spin_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.0</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ fr_power_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">7.9</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ fr_forgive_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.3</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ fr_hands_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">9.0</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ fr_control_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">8.9</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ fr_weight_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">7.9 oz</span>
+      <span style="justify-self:end;padding:2px 7px;border-radius:4px;background:{{ fr_price_bg }};font-family:'Martian Mono',monospace;font-size:11.5px">$99</span>
+      <span style="justify-self:end;font-family:'Martian Mono',monospace;font-size:15px;font-weight:700;color:#22322B">{{ fr_wins }}</span>
+    </div>
+    </sc-if>
+  </div>
+  <div style="margin-top:16px;background:#EDF2CD;border:1px solid rgba(74,78,27,.2);border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+    <div style="flex:1;min-width:300px">
+      <div style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.18em;color:#4A4E1B">BEST OF THE BOARD — MOST ROWS WON</div>
+      <div style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:700;margin-top:3px">{{ fieldName }}</div>
+      <div style="font-size:12.5px;color:#3F4430;margin-top:2px">{{ fieldBlurb }}</div>
+    </div>
+    <a href="#2b" style="background:#D9E353;border:1px solid rgba(34,50,43,.4);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;color:#22322B;text-decoration:none;white-space:nowrap">Search Amazon</a>
+  </div>
+  <p style="margin:14px 0 0;font-size:11.5px;line-height:1.6;color:#8B887C">All four: 16mm core, raw carbon face, UPA-A approved. Affiliate links — we may earn a commission at no extra cost to you; it never changes a rating. As an Amazon Associate I earn from qualifying purchases. <a href="#2b">How this works</a>.</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Head-to-head comparison — four directions</span></div>
+<p class="dv-note">Palette, type and voice kept from your current page. All four fix the same complaints: an explicit verdict + per-row winners, no mirrored bars (shared direction or shared axis), ratings separated from measured specs, tighter rows, and top/value alternatives added. Dotted spec names show a plain-English explainer on hover. Numbers and the two alternative picks are placeholders — swap in real data and links. <a class="dv-oid" href="#1a">1a</a> is the safe polish (with a mobile pass); <a class="dv-oid" href="#1b">1b</a>–<a class="dv-oid" href="#1d">1d</a> get progressively bolder.</p>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a" data-screen-label="1a Polish">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Safe polish — paired bars, one direction, verdict up top (+ mobile)</div>
+<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+<div class="dv-card" style="width:860px;padding:36px 40px 32px">
+  <a href="#1a" style="font-size:13px;font-weight:600;text-decoration:none">← Back to all paddles</a>
+  <div style="margin-top:18px;font-family:'Martian Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#77762F">Paddles &amp; Gear · Compare</div>
+  <h1 style="margin:6px 0 0;font-family:'Source Serif 4',Georgia,serif;font-size:40px;font-weight:700;letter-spacing:-.01em">Head to head.</h1>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px">
+    <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:18px 20px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:#17594A"></span><span style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.15em;color:#77762F">SIX ZERO</span></div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:6px"><span style="font-family:'Source Serif 4',serif;font-size:19px;font-weight:700">Coral Pro Hybrid</span><span style="font-family:'Martian Mono',monospace;font-size:13px;font-weight:700">$220</span></div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <span style="padding:3px 10px;border-radius:999px;background:#EDF2CD;color:#4A4E1B;font-size:11.5px;font-weight:500">All-Court</span>
+        <span style="padding:3px 10px;border-radius:999px;border:1px solid rgba(34,50,43,.18);font-size:11.5px">Hybrid</span>
+        <span style="padding:3px 10px;border-radius:999px;border:1px solid rgba(34,50,43,.18);font-size:11.5px">Beginner</span>
+      </div>
+      <p style="margin:12px 0 0;font-size:12.5px;line-height:1.55;color:#5C594C">Head-heavier of the two — more plow-through on drives, a touch slower at the net.</p>
+      <a href="#1a" style="display:inline-block;margin-top:10px;font-size:13px;font-weight:600;text-decoration:none">Details →</a>
+    </div>
+    <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:18px 20px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:#A3B02F"></span><span style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.15em;color:#77762F">SIX ZERO</span></div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:6px"><span style="font-family:'Source Serif 4',serif;font-size:19px;font-weight:700">Coral Pro Widebody</span><span style="font-family:'Martian Mono',monospace;font-size:13px;font-weight:700">$220</span></div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <span style="padding:3px 10px;border-radius:999px;background:#EDF2CD;color:#4A4E1B;font-size:11.5px;font-weight:500">All-Court</span>
+        <span style="padding:3px 10px;border-radius:999px;border:1px solid rgba(34,50,43,.18);font-size:11.5px">Widebody</span>
+        <span style="padding:3px 10px;border-radius:999px;border:1px solid rgba(34,50,43,.18);font-size:11.5px">Beginner</span>
+      </div>
+      <p style="margin:12px 0 0;font-size:12.5px;line-height:1.55;color:#5C594C">Bigger sweet spot and quicker hands — the easier paddle to learn on.</p>
+      <a href="#1a" style="display:inline-block;margin-top:10px;font-size:13px;font-weight:600;text-decoration:none">Details →</a>
+    </div>
+  </div>
+  <div style="margin-top:14px;background:#EDF2CD;border:1px solid rgba(74,78,27,.2);border-radius:10px;padding:20px 22px;display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+    <div style="flex:1;min-width:320px">
+      <div style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.18em;color:#4A4E1B">THE VERDICT</div>
+      <div style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:700;margin-top:4px">Get the Widebody.</div>
+      <p style="margin:5px 0 0;font-size:13px;line-height:1.5;color:#3F4430">Same price, same core, same surface — but it wins 4 of 8 rows, and they're the ones that make learning easier. Pick the Hybrid only if you want its extra power and head weight.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px"><a href="#1a" style="background:#D9E353;border:1px solid rgba(34,50,43,.4);border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:700;color:#22322B;text-decoration:none;white-space:nowrap">Search Amazon · Widebody</a><span style="font-size:11px;color:#8B887C">UPA-A approved · affiliate</span></div>
+      <div style="display:flex;align-items:center;gap:10px"><a href="#1a" style="background:transparent;border:1px solid rgba(34,50,43,.35);border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:600;color:#22322B;text-decoration:none;white-space:nowrap">Search Amazon · Hybrid</a><span style="font-size:11px;color:#8B887C">UPA-A approved · affiliate</span></div>
+    </div>
+  </div>
+  <div style="margin-top:26px;display:flex;align-items:baseline;justify-content:space-between">
+    <span style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;color:#77762F">PLAYTEST RATINGS</span>
+    <span style="font-family:'Martian Mono',monospace;font-size:10px;color:#8B887C"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#17594A;margin-right:5px"></span>HYBRID&nbsp;&nbsp;<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#A3B02F;margin-right:5px"></span>WIDEBODY</span>
+  </div>
+  <div style="margin-top:10px">
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:center;padding:10px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Spin<span class="tipbox">How much RPM the surface generates on serves and rolls, from our spin-machine test.</span></span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:92%;height:6px;background:#17594A;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">Very high · 9.2</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:94%;height:6px;background:#A3B02F;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700">Very high · 9.4<span style="margin-left:7px;background:#D9E353;color:#3A3F14;font-size:8px;padding:2px 5px;border-radius:3px;font-weight:700;letter-spacing:.08em;vertical-align:1px">WIN</span></span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:center;padding:10px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Power<span class="tipbox">Pop on drives and serves — how fast the ball leaves the face.</span></span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:86%;height:6px;background:#17594A;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700">High · 8.6<span style="margin-left:7px;background:#D9E353;color:#3A3F14;font-size:8px;padding:2px 5px;border-radius:3px;font-weight:700;letter-spacing:.08em;vertical-align:1px">WIN</span></span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:81%;height:6px;background:#A3B02F;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">High · 8.1</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:center;padding:10px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Forgiveness<span class="tipbox">Sweet-spot size and stability on off-center hits.</span></span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:90%;height:6px;background:#17594A;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">Very high · 9.0</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:95%;height:6px;background:#A3B02F;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700">Very high · 9.5<span style="margin-left:7px;background:#D9E353;color:#3A3F14;font-size:8px;padding:2px 5px;border-radius:3px;font-weight:700;letter-spacing:.08em;vertical-align:1px">WIN</span></span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:center;padding:10px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Hand speed<span class="tipbox">How quickly the paddle moves in fast kitchen exchanges — driven by swing weight.</span></span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:82%;height:6px;background:#17594A;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">High · 8.2</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:91%;height:6px;background:#A3B02F;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700">Very high · 9.1<span style="margin-left:7px;background:#D9E353;color:#3A3F14;font-size:8px;padding:2px 5px;border-radius:3px;font-weight:700;letter-spacing:.08em;vertical-align:1px">WIN</span></span></div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:22px;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;color:#77762F">MEASURED SPECS</div>
+  <div style="margin-top:10px">
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:center;padding:10px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Price<span class="tipbox">Street price at time of writing.</span></span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:60%;height:6px;background:#17594A;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">$220<span style="margin-left:7px;background:#E7E2D1;color:#8B887C;font-size:8px;padding:2px 5px;border-radius:3px;font-weight:700;letter-spacing:.08em;vertical-align:1px">TIE</span></span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:60%;height:6px;background:#A3B02F;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">$220</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:center;padding:10px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Static weight<span class="tipbox">Weight on a scale, unmodified. Lighter is easier on the arm.</span></span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:78%;height:6px;background:#17594A;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">8.2 oz</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:80%;height:6px;background:#A3B02F;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700">8.16 oz<span style="margin-left:7px;background:#D9E353;color:#3A3F14;font-size:8px;padding:2px 5px;border-radius:3px;font-weight:700;letter-spacing:.08em;vertical-align:1px">WIN</span></span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:center;padding:10px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Core thickness<span class="tipbox">Thicker cores play softer with more control; thinner cores add pop.</span></span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:60%;height:6px;background:#17594A;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">16mm<span style="margin-left:7px;background:#E7E2D1;color:#8B887C;font-size:8px;padding:2px 5px;border-radius:3px;font-weight:700;letter-spacing:.08em;vertical-align:1px">TIE</span></span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:60%;height:6px;background:#A3B02F;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">16mm</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:center;padding:10px 0;border-top:1px dashed rgba(34,50,43,.12);border-bottom:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Balance point<span class="tipbox">Distance from the handle butt to the balance point. Higher = head-heavy = more plow-through, slower hands.</span></span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:72%;height:6px;background:#17594A;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700">238mm<span style="margin-left:7px;background:#D9E353;color:#3A3F14;font-size:8px;padding:2px 5px;border-radius:3px;font-weight:700;letter-spacing:.08em;vertical-align:1px">WIN</span></span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:6px;background:#E7E2D1;border-radius:3px"><div style="width:48%;height:6px;background:#A3B02F;border-radius:3px"></div></div><span style="width:170px;font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">232mm</span></div>
+      </div>
+    </div>
+  </div>
+  <p style="margin:10px 0 0;font-size:11.5px;color:#8B887C">Bars share one scale and one direction — longer is better on every row. Hover a dotted spec name for what it means.</p>
+  <div style="margin-top:24px;background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:16px 20px">
+    <div style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.18em;color:#77762F">ALSO CONSIDER — FROM OUR RANKINGS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px">
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="background:#D9E353;color:#3A3F14;font-size:9px;padding:3px 7px;border-radius:4px;font-weight:700;letter-spacing:.1em;white-space:nowrap">TOP PICK</span><div><span style="font-size:13.5px;font-weight:700">Vatic Pro Prism Flash 16</span> <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">$140</span><div style="font-size:12px;color:#5C594C;margin-top:2px">Out-spun and out-powered both of these in our tests. <a href="#1a" style="font-weight:600;text-decoration:none">Details →</a></div></div></div>
+      <div style="display:flex;gap:12px;align-items:baseline"><span style="border:1px solid rgba(34,50,43,.3);color:#4A4E1B;font-size:9px;padding:3px 7px;border-radius:4px;font-weight:700;letter-spacing:.1em;white-space:nowrap">VALUE PICK</span><div><span style="font-size:13.5px;font-weight:700">Friday Original 16</span> <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">$99</span><div style="font-size:12px;color:#5C594C;margin-top:2px">90% of the Widebody's forgiveness for less than half the price. <a href="#1a" style="font-weight:600;text-decoration:none">Details →</a></div></div></div>
+    </div>
+  </div>
+  <p style="margin:18px 0 0;font-size:12px;line-height:1.6;color:#8B887C">One or both links above are affiliate links — we may earn a commission if you buy, at no extra cost to you. It never changes which paddle wins a row here or how either is described. As an Amazon Associate I earn from qualifying purchases. <a href="#1a">How this works</a>.</p>
+</div>
+<div class="dv-card" style="width:375px;padding:22px 18px">
+  <div style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#77762F">Compare · Mobile</div>
+  <h2 style="margin:4px 0 0;font-family:'Source Serif 4',serif;font-size:27px;font-weight:700">Head to head.</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+    <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:8px;padding:10px 12px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#17594A"></span> <span style="font-size:12.5px;font-weight:700">Hybrid</span><div style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#8B887C;margin-top:2px">$220</div></div>
+    <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:8px;padding:10px 12px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#A3B02F"></span> <span style="font-size:12.5px;font-weight:700">Widebody</span><div style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#8B887C;margin-top:2px">$220</div></div>
+  </div>
+  <div style="margin-top:10px;background:#EDF2CD;border-radius:8px;padding:12px 14px">
+    <div style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.16em;color:#4A4E1B">THE VERDICT</div>
+    <div style="font-family:'Source Serif 4',serif;font-size:17px;font-weight:700;margin-top:2px">Get the Widebody.</div>
+    <div style="font-size:11.5px;color:#3F4430;margin-top:2px;line-height:1.45">Wins 4 of 8 rows — the ones that make learning easier.</div>
+  </div>
+  <div style="margin-top:14px">
+    <div style="padding:9px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.12em;color:#77762F">SPIN</span><span style="font-family:'Martian Mono',monospace;font-size:9.5px;color:#8B887C">9.2 · <b style="color:#22322B">9.4</b></span></div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin-top:6px"><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:92%;height:5px;background:#17594A;border-radius:3px"></div></div><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:94%;height:5px;background:#A3B02F;border-radius:3px"></div></div></div>
+    </div>
+    <div style="padding:9px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.12em;color:#77762F">POWER</span><span style="font-family:'Martian Mono',monospace;font-size:9.5px;color:#8B887C"><b style="color:#22322B">8.6</b> · 8.1</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin-top:6px"><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:86%;height:5px;background:#17594A;border-radius:3px"></div></div><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:81%;height:5px;background:#A3B02F;border-radius:3px"></div></div></div>
+    </div>
+    <div style="padding:9px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.12em;color:#77762F">FORGIVENESS</span><span style="font-family:'Martian Mono',monospace;font-size:9.5px;color:#8B887C">9.0 · <b style="color:#22322B">9.5</b></span></div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin-top:6px"><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:90%;height:5px;background:#17594A;border-radius:3px"></div></div><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:95%;height:5px;background:#A3B02F;border-radius:3px"></div></div></div>
+    </div>
+    <div style="padding:9px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.12em;color:#77762F">HAND SPEED</span><span style="font-family:'Martian Mono',monospace;font-size:9.5px;color:#8B887C">8.2 · <b style="color:#22322B">9.1</b></span></div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin-top:6px"><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:82%;height:5px;background:#17594A;border-radius:3px"></div></div><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:91%;height:5px;background:#A3B02F;border-radius:3px"></div></div></div>
+    </div>
+    <div style="padding:9px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.12em;color:#77762F">WEIGHT</span><span style="font-family:'Martian Mono',monospace;font-size:9.5px;color:#8B887C">8.2 · <b style="color:#22322B">8.16 oz</b></span></div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin-top:6px"><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:78%;height:5px;background:#17594A;border-radius:3px"></div></div><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:80%;height:5px;background:#A3B02F;border-radius:3px"></div></div></div>
+    </div>
+    <div style="padding:9px 0;border-top:1px dashed rgba(34,50,43,.12);border-bottom:1px dashed rgba(34,50,43,.12)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.12em;color:#77762F">BALANCE</span><span style="font-family:'Martian Mono',monospace;font-size:9.5px;color:#8B887C"><b style="color:#22322B">238</b> · 232mm</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin-top:6px"><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:72%;height:5px;background:#17594A;border-radius:3px"></div></div><div style="height:5px;background:#E7E2D1;border-radius:3px"><div style="width:48%;height:5px;background:#A3B02F;border-radius:3px"></div></div></div>
+    </div>
+  </div>
+  <div style="margin-top:6px;font-family:'Martian Mono',monospace;font-size:9px;color:#8B887C">PRICE $220 · CORE 16MM — IDENTICAL</div>
+  <a href="#1a" style="display:block;margin-top:14px;background:#D9E353;border:1px solid rgba(34,50,43,.4);border-radius:8px;padding:12px;font-size:14px;font-weight:700;color:#22322B;text-decoration:none;text-align:center">Search Amazon · Widebody</a>
+  <a href="#1a" style="display:block;margin-top:8px;border:1px solid rgba(34,50,43,.35);border-radius:8px;padding:12px;font-size:14px;font-weight:600;color:#22322B;text-decoration:none;text-align:center">Search Amazon · Hybrid</a>
+  <p style="margin:12px 0 0;font-size:10.5px;line-height:1.5;color:#8B887C">UPA-A approved · affiliate links. <a href="#1a">How this works</a>.</p>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b" data-screen-label="1b Scoreboard ledger">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Scoreboard ledger — one shared axis per row, two dots, ties collapsed</div>
+<div class="dv-card" style="width:860px;padding:36px 40px 30px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px">
+    <div>
+      <div style="font-family:'Martian Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#77762F">Paddles &amp; Gear · Compare</div>
+      <h1 style="margin:6px 0 0;font-family:'Source Serif 4',Georgia,serif;font-size:38px;font-weight:700;letter-spacing:-.01em">Coral Pro, twice.</h1>
+      <p style="margin:8px 0 0;max-width:400px;font-size:13px;line-height:1.5;color:#5C594C">Same shell, two shapes. One axis per row — both dots on the same scale, so the gap <i>is</i> the story.</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:18px;background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:14px 22px">
+      <div style="text-align:center"><div style="font-family:'Martian Mono',monospace;font-size:30px;font-weight:700;color:#17594A">2</div><div style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.12em;color:#77762F;margin-top:2px">HYBRID</div></div>
+      <div style="font-family:'Martian Mono',monospace;font-size:13px;color:#8B887C">—</div>
+      <div style="text-align:center"><div style="font-family:'Martian Mono',monospace;font-size:30px;font-weight:700;color:#A3B02F">4</div><div style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.12em;color:#77762F;margin-top:2px">WIDEBODY</div></div>
+      <div style="border-left:1px dashed rgba(34,50,43,.2);padding-left:18px;font-family:'Martian Mono',monospace;font-size:9.5px;color:#8B887C;line-height:1.6">ROWS WON<br>2 EVEN</div>
+    </div>
+  </div>
+  <div style="margin-top:24px;display:flex;justify-content:flex-end"><span style="font-family:'Martian Mono',monospace;font-size:10px;color:#8B887C"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#17594A;margin-right:5px"></span>HYBRID&nbsp;&nbsp;<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#A3B02F;margin-right:5px"></span>WIDEBODY&nbsp;&nbsp;◎ = ROW WINNER</span></div>
+  <div style="margin-top:8px">
+    <div style="display:grid;grid-template-columns:150px 1fr 178px;gap:18px;align-items:center;padding:11px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Spin<span class="tipbox">How much RPM the surface generates on serves and rolls, from our spin-machine test.</span></span>
+      <div style="position:relative;height:22px">
+        <div style="position:absolute;left:0;right:0;top:9px;height:4px;background:#E7E2D1;border-radius:2px"></div>
+        <div style="position:absolute;left:82%;width:12%;top:10px;height:2px;background:#B8B4A4"></div>
+        <div style="position:absolute;left:calc(82% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#17594A"></div>
+        <div style="position:absolute;left:calc(94% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#A3B02F;box-shadow:0 0 0 3px #E9EDBB"></div>
+      </div>
+      <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#22322B;text-align:right"><b>+0.2</b> → Widebody</span>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 1fr 178px;gap:18px;align-items:center;padding:11px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Power<span class="tipbox">Pop on drives and serves — how fast the ball leaves the face.</span></span>
+      <div style="position:relative;height:22px">
+        <div style="position:absolute;left:0;right:0;top:9px;height:4px;background:#E7E2D1;border-radius:2px"></div>
+        <div style="position:absolute;left:71%;width:15%;top:10px;height:2px;background:#B8B4A4"></div>
+        <div style="position:absolute;left:calc(71% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#A3B02F"></div>
+        <div style="position:absolute;left:calc(86% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#17594A;box-shadow:0 0 0 3px #CBDCD3"></div>
+      </div>
+      <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#22322B;text-align:right"><b>+0.5</b> → Hybrid</span>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 1fr 178px;gap:18px;align-items:center;padding:11px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Forgiveness<span class="tipbox">Sweet-spot size and stability on off-center hits.</span></span>
+      <div style="position:relative;height:22px">
+        <div style="position:absolute;left:0;right:0;top:9px;height:4px;background:#E7E2D1;border-radius:2px"></div>
+        <div style="position:absolute;left:90%;width:5%;top:10px;height:2px;background:#B8B4A4"></div>
+        <div style="position:absolute;left:calc(90% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#17594A"></div>
+        <div style="position:absolute;left:calc(95% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#A3B02F;box-shadow:0 0 0 3px #E9EDBB"></div>
+      </div>
+      <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#22322B;text-align:right"><b>+0.5</b> → Widebody</span>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 1fr 178px;gap:18px;align-items:center;padding:11px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Hand speed<span class="tipbox">How quickly the paddle moves in fast kitchen exchanges — driven by swing weight.</span></span>
+      <div style="position:relative;height:22px">
+        <div style="position:absolute;left:0;right:0;top:9px;height:4px;background:#E7E2D1;border-radius:2px"></div>
+        <div style="position:absolute;left:82%;width:9%;top:10px;height:2px;background:#B8B4A4"></div>
+        <div style="position:absolute;left:calc(82% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#17594A"></div>
+        <div style="position:absolute;left:calc(91% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#A3B02F;box-shadow:0 0 0 3px #E9EDBB"></div>
+      </div>
+      <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#22322B;text-align:right"><b>+0.9</b> → Widebody</span>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 1fr 178px;gap:18px;align-items:center;padding:11px 0;border-top:1px dashed rgba(34,50,43,.12)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Static weight<span class="tipbox">Weight on a scale, unmodified. Lighter is easier on the arm. Axis runs lighter →.</span></span>
+      <div style="position:relative;height:22px">
+        <div style="position:absolute;left:0;right:0;top:9px;height:4px;background:#E7E2D1;border-radius:2px"></div>
+        <div style="position:absolute;left:33%;width:14%;top:10px;height:2px;background:#B8B4A4"></div>
+        <div style="position:absolute;left:calc(33% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#17594A"></div>
+        <div style="position:absolute;left:calc(47% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#A3B02F;box-shadow:0 0 0 3px #E9EDBB"></div>
+      </div>
+      <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#22322B;text-align:right"><b>−0.04 oz</b> → Widebody</span>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 1fr 178px;gap:18px;align-items:center;padding:11px 0;border-top:1px dashed rgba(34,50,43,.12);border-bottom:1px solid rgba(34,50,43,.14)">
+      <span class="tip" style="justify-self:start;font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#77762F">Balance point<span class="tipbox">Distance from handle butt to balance point. Axis runs head-light ←→ head-heavy; head weight buys plow-through, costs hand speed.</span></span>
+      <div style="position:relative;height:22px">
+        <div style="position:absolute;left:0;right:0;top:9px;height:4px;background:#E7E2D1;border-radius:2px"></div>
+        <div style="position:absolute;left:42%;width:24%;top:10px;height:2px;background:#B8B4A4"></div>
+        <div style="position:absolute;left:calc(42% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#A3B02F"></div>
+        <div style="position:absolute;left:calc(66% - 5px);top:6px;width:10px;height:10px;border-radius:50%;background:#17594A;box-shadow:0 0 0 3px #CBDCD3"></div>
+      </div>
+      <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#22322B;text-align:right"><b>+6mm</b> head → Hybrid</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 2px;background:transparent">
+      <span style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.12em;color:#8B887C">DEAD EVEN</span>
+      <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#8B887C">PRICE $220 · CORE 16MM · SURFACE RAW CARBON</span>
+    </div>
+  </div>
+  <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div style="background:#EDF2CD;border-radius:10px;padding:16px 20px;display:flex;flex-direction:column;gap:10px">
+      <div><div style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.16em;color:#4A4E1B">VERDICT</div><div style="font-family:'Source Serif 4',serif;font-size:19px;font-weight:700;margin-top:3px">Widebody, for most players.</div><div style="font-size:12px;color:#3F4430;margin-top:3px;line-height:1.5">It wins every ease-of-play row. The Hybrid's edge is power and plow-through — real, but narrower.</div></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a href="#1b" style="background:#D9E353;border:1px solid rgba(34,50,43,.4);border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:700;color:#22322B;text-decoration:none">Search Amazon · Widebody</a><a href="#1b" style="border:1px solid rgba(34,50,43,.35);border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:600;color:#22322B;text-decoration:none">· Hybrid</a></div>
+      <div style="font-size:10.5px;color:#77764F">UPA-A approved · affiliate</div>
+    </div>
+    <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:16px 20px">
+      <div style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.16em;color:#77762F">BEFORE YOU BUY — TWO THAT BEAT THESE</div>
+      <div style="margin-top:10px;display:flex;gap:10px;align-items:baseline"><span style="background:#D9E353;color:#3A3F14;font-size:8.5px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.1em">TOP PICK</span><span style="font-size:12.5px"><b>Vatic Pro Prism Flash 16</b> <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#8B887C">$140</span> — out-spun and out-powered both. <a href="#1b" style="font-weight:600;text-decoration:none">→</a></span></div>
+      <div style="margin-top:9px;display:flex;gap:10px;align-items:baseline"><span style="border:1px solid rgba(34,50,43,.3);color:#4A4E1B;font-size:8.5px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.1em">VALUE</span><span style="font-size:12.5px"><b>Friday Original 16</b> <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#8B887C">$99</span> — 90% of the forgiveness, under half the price. <a href="#1b" style="font-weight:600;text-decoration:none">→</a></span></div>
+    </div>
+  </div>
+  <p style="margin:16px 0 0;font-size:11.5px;line-height:1.6;color:#8B887C">Affiliate links — we may earn a commission at no extra cost to you; it never changes who wins a row. As an Amazon Associate I earn from qualifying purchases. <a href="#1b">How this works</a>.</p>
+</div>
+</div>
+
+<div class="dv-opt" id="1c" data-screen-label="1c Verdict-first editorial">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Verdict-first editorial — recommendation cards + radar fingerprint, ties collapsed (+ mobile)</div>
+<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+<div class="dv-card" style="width:940px;padding:40px 44px 32px">
+  <div style="text-align:center;max-width:640px;margin:0 auto">
+    <div style="font-family:'Martian Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#77762F">Six Zero Coral Pro · Hybrid vs Widebody · both $220</div>
+    <h1 style="margin:10px 0 0;font-family:'Source Serif 4',Georgia,serif;font-size:42px;font-weight:700;letter-spacing:-.015em;line-height:1.1">The verdict: get the <span style="box-shadow:inset 0 -12px 0 #D9E353">Widebody</span>.</h1>
+    <p style="margin:12px auto 0;font-size:14px;line-height:1.6;color:#5C594C">Identical shell, price and core. The Widebody wins everything that makes the game easier; the Hybrid keeps a real — but narrow — power edge.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px">
+    <div style="background:#FDFCF6;border:2px solid #A3B02F;border-radius:12px;padding:20px 22px;position:relative">
+      <span style="position:absolute;top:-9px;left:20px;background:#D9E353;color:#3A3F14;font-family:'Martian Mono',monospace;font-size:8.5px;padding:3px 8px;border-radius:4px;font-weight:700;letter-spacing:.12em">OUR PICK</span>
+      <div style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:700">Get the Widebody if…</div>
+      <ul style="margin:10px 0 0;padding-left:18px;font-size:13px;line-height:1.7;color:#3F4430">
+        <li>you're newer and want the biggest sweet spot</li>
+        <li>you live at the kitchen — fastest hands of the two</li>
+        <li>arm comfort matters: lighter where it counts</li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:14px"><a href="#1c" style="background:#D9E353;border:1px solid rgba(34,50,43,.4);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;color:#22322B;text-decoration:none">Search Amazon</a><span style="font-size:11px;color:#8B887C">UPA-A approved · affiliate</span></div>
+    </div>
+    <div style="background:#FDFCF6;border:1px solid rgba(34,50,43,.15);border-radius:12px;padding:20px 22px">
+      <div style="font-family:'Source Serif 4',serif;font-size:20px;font-weight:700">Get the Hybrid if…</div>
+      <ul style="margin:10px 0 0;padding-left:18px;font-size:13px;line-height:1.7;color:#3F4430">
+        <li>you drive the ball and want plow-through</li>
+        <li>you're coming from tennis and like head weight</li>
+        <li>you'll trade some forgiveness for pop</li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:14px"><a href="#1c" style="border:1px solid rgba(34,50,43,.35);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;color:#22322B;text-decoration:none">Search Amazon</a><span style="font-size:11px;color:#8B887C">UPA-A approved · affiliate</span></div>
+    </div>
+  </div>
+  
+  <div style="display:grid;grid-template-columns:300px 1fr;gap:36px;margin-top:30px;align-items:center">
+    <div>
+      <div style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;color:#77762F;text-align:center">THE FINGERPRINT</div>
+      <svg viewBox="0 0 260 230" style="width: 319px; margin-top: 6px; height: 265px">
+        <polygon points="130,34 209.9,92 179.4,186 80.6,186 50.1,92" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+        <polygon points="130,62 183.3,100.7 162.9,163.3 97.1,163.3 76.7,100.7" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+        <polygon points="130,90 156.6,109.3 146.5,140.7 113.5,140.7 103.4,109.3" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+        <line x1="130" y1="118" x2="130" y2="34" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="209.9" y2="92" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="179.4" y2="186" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="80.6" y2="186" stroke="#DDD8C6" stroke-width="1"></line>
+        <line x1="130" y1="118" x2="50.1" y2="92" stroke="#DDD8C6" stroke-width="1"></line>
+        <polygon points="{{ hPoints }}" fill="rgba(23,89,74,.13)" stroke="#17594A" stroke-width="2"></polygon>
+        <polygon points="{{ wPoints }}" fill="rgba(163,176,47,.2)" stroke="#8C9A2B" stroke-width="2"></polygon>
+        <text x="130" y="24" text-anchor="middle" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">SPIN</text>
+        <text x="216" y="88" text-anchor="start" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">POWER</text>
+        <text x="186" y="201" text-anchor="start" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">FORGIVE</text>
+        <text x="74" y="201" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">HANDS</text>
+        <sc-if value="{{ isControlAxis }}" hint-placeholder-val="{{ true }}"><text x="48" y="88" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.02em">CONTROL</text></sc-if><sc-if value="{{ isLightAxis }}" hint-placeholder-val="{{ false }}"><text x="44" y="88" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">LIGHT</text></sc-if>
+      </svg>
+      <div style="text-align:center;font-family:'Martian Mono',monospace;font-size:9.5px;color:#8B887C;margin-top:4px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#17594A;margin-right:4px"></span>HYBRID&nbsp;&nbsp;<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#8C9A2B;margin-right:4px"></span>WIDEBODY</div>
+    </div>
+    <div>
+      <div style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;color:#77762F">WHERE THEY ACTUALLY DIFFER</div>
+      <div style="margin-top:8px">
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.12)"><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8B887C">METRIC</span><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#17594A;text-align:right">HYBRID</span><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8C9A2B;text-align:right">WIDEBODY</span><span style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8B887C;text-align:right">EDGE</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Hand speed<span class="tipbox">How quickly the paddle moves in fast kitchen exchanges — driven by swing weight.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;color:#8B887C;text-align:right">8.2</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:700;text-align:right">9.1</span><span style="font-size:11.5px;text-align:right;color:#4A4E1B">Widebody, clearly</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Forgiveness<span class="tipbox">Sweet-spot size and stability on off-center hits.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;color:#8B887C;text-align:right">9.0</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:700;text-align:right">9.5</span><span style="font-size:11.5px;text-align:right;color:#4A4E1B">Widebody</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Spin<span class="tipbox">How much RPM the surface generates on serves and rolls.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;color:#8B887C;text-align:right">9.2</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:700;text-align:right">9.4</span><span style="font-size:11.5px;text-align:right;color:#4A4E1B">Widebody, barely</span></div>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Power<span class="tipbox">Pop on drives and serves — how fast the ball leaves the face.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:700;text-align:right">8.6</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;color:#8B887C;text-align:right">8.1</span><span style="font-size:11.5px;text-align:right;color:#17594A">Hybrid</span></div>
+        <sc-if value="{{ showBalance }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">Balance point<span class="tipbox">Higher = head-heavy = more plow-through, slower hands.</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:700;text-align:right">238mm</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;color:#8B887C;text-align:right">232mm</span><span style="font-size:11.5px;text-align:right;color:#17594A">Hybrid, if you want power</span></div></sc-if>
+        <div style="display:grid;grid-template-columns:1fr 92px 92px 118px;gap:12px;align-items:baseline;padding:8px 0"><span class="tip" style="justify-self:start;font-size:12.5px;font-weight:500">{{ diffRowName }}<span class="tipbox">{{ diffRowTip }}</span></span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;color:#8B887C;text-align:right">{{ diffRowH }}</span><span style="font-family:'Martian Mono',monospace;font-size:11.5px;font-weight:700;text-align:right">{{ diffRowW }}</span><span style="font-size:11.5px;text-align:right;color:#4A4E1B">{{ diffRowEdge }}</span></div>
+      </div>
+      <div style="margin-top:10px;background:#EFEBDD;border-radius:8px;padding:10px 14px;font-family:'Martian Mono',monospace;font-size:10px;color:#77764F">IDENTICAL ON: PRICE ($220) · CORE (16MM) · SURFACE · WARRANTY</div>
+    </div>
+  </div><div style="margin-top:28px;border-top:1px solid rgba(34,50,43,.14);padding-top:20px">
+    <div style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.18em;color:#77762F">OTHER OPTIONS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
+      <div style="display:flex;gap:14px;align-items:flex-start;background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:14px 16px"><span style="background:#D9E353;color:#3A3F14;font-size:9px;padding:3px 7px;border-radius:4px;font-weight:700;letter-spacing:.1em;white-space:nowrap">TOP PICK</span><div style="font-size:12.5px;line-height:1.5"><b>Vatic Pro Prism Flash 16</b> <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#8B887C">$140</span><br><span style="color:#5C594C">Out-spun and out-powered both of these in our tests — our beginner benchmark.</span> <a href="#1c" style="font-weight:600;text-decoration:none">Details →</a></div></div>
+      <div style="display:flex;gap:14px;align-items:flex-start;background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:14px 16px"><span style="border:1px solid rgba(34,50,43,.3);color:#4A4E1B;font-size:9px;padding:3px 7px;border-radius:4px;font-weight:700;letter-spacing:.1em;white-space:nowrap">VALUE PICK</span><div style="font-size:12.5px;line-height:1.5"><b>Friday Original 16</b> <span style="font-family:'Martian Mono',monospace;font-size:10.5px;color:#8B887C">$99</span><br><span style="color:#5C594C">90% of the Widebody's forgiveness for less than half the price.</span> <a href="#1c" style="font-weight:600;text-decoration:none">Details →</a></div></div>
+    </div>
+    <p style="margin:16px 0 0;font-size:11.5px;line-height:1.6;color:#8B887C">One or more links are affiliate links — we may earn a commission at no extra cost to you. It never changes which paddle wins or how either is described. As an Amazon Associate I earn from qualifying purchases. <a href="#1c">How this works</a>.</p>
+  </div>
+</div>
+<div class="dv-card" style="width:375px;padding:22px 18px">
+  <div style="text-align:center">
+    <div style="font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#77762F">Six Zero Coral Pro · both $220</div>
+    <h2 style="margin:8px 0 0;font-family:'Source Serif 4',Georgia,serif;font-size:27px;font-weight:700;letter-spacing:-.01em;line-height:1.15">The verdict: get the <span style="box-shadow:inset 0 -9px 0 #D9E353">Widebody</span>.</h2>
+    <p style="margin:8px 0 0;font-size:12px;line-height:1.55;color:#5C594C">Identical shell, price and core. The Widebody wins everything that makes the game easier.</p>
+  </div>
+  <div style="margin-top:18px;background:#FDFCF6;border:2px solid #A3B02F;border-radius:12px;padding:16px;position:relative">
+    <span style="position:absolute;top:-8px;left:14px;background:#D9E353;color:#3A3F14;font-family:'Martian Mono',monospace;font-size:8px;padding:2px 7px;border-radius:4px;font-weight:700;letter-spacing:.12em">OUR PICK</span>
+    <div style="font-family:'Source Serif 4',serif;font-size:17px;font-weight:700">Get the Widebody if…</div>
+    <ul style="margin:8px 0 0;padding-left:16px;font-size:12px;line-height:1.65;color:#3F4430">
+      <li>you're newer and want the biggest sweet spot</li>
+      <li>you live at the kitchen — fastest hands</li>
+      <li>arm comfort matters</li>
+    </ul>
+    <a href="#1c" style="display:block;margin-top:12px;background:#D9E353;border:1px solid rgba(34,50,43,.4);border-radius:8px;padding:11px;font-size:13.5px;font-weight:700;color:#22322B;text-decoration:none;text-align:center">Search Amazon</a>
+  </div>
+  <div style="margin-top:10px;background:#FDFCF6;border:1px solid rgba(34,50,43,.15);border-radius:12px;padding:16px">
+    <div style="font-family:'Source Serif 4',serif;font-size:17px;font-weight:700">Get the Hybrid if…</div>
+    <ul style="margin:8px 0 0;padding-left:16px;font-size:12px;line-height:1.65;color:#3F4430">
+      <li>you drive the ball and want plow-through</li>
+      <li>you'll trade some forgiveness for pop</li>
+    </ul>
+    <a href="#1c" style="display:block;margin-top:12px;border:1px solid rgba(34,50,43,.35);border-radius:8px;padding:11px;font-size:13.5px;font-weight:600;color:#22322B;text-decoration:none;text-align:center">Search Amazon</a>
+  </div>
+  <div style="margin-top:6px;font-size:10.5px;color:#8B887C;text-align:center">UPA-A approved · affiliate links</div>
+  <div style="margin-top:20px;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.18em;color:#77762F;text-align:center">THE FINGERPRINT</div>
+  <svg viewBox="0 0 260 230" style="width: 375px; margin-top: 4px; height: 290px">
+    <polygon points="130,34 209.9,92 179.4,186 80.6,186 50.1,92" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+    <polygon points="130,62 183.3,100.7 162.9,163.3 97.1,163.3 76.7,100.7" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+    <polygon points="130,90 156.6,109.3 146.5,140.7 113.5,140.7 103.4,109.3" fill="none" stroke="#DDD8C6" stroke-width="1"></polygon>
+    <line x1="130" y1="118" x2="130" y2="34" stroke="#DDD8C6" stroke-width="1"></line>
+    <line x1="130" y1="118" x2="209.9" y2="92" stroke="#DDD8C6" stroke-width="1"></line>
+    <line x1="130" y1="118" x2="179.4" y2="186" stroke="#DDD8C6" stroke-width="1"></line>
+    <line x1="130" y1="118" x2="80.6" y2="186" stroke="#DDD8C6" stroke-width="1"></line>
+    <line x1="130" y1="118" x2="50.1" y2="92" stroke="#DDD8C6" stroke-width="1"></line>
+    <polygon points="{{ hPoints }}" fill="rgba(23,89,74,.13)" stroke="#17594A" stroke-width="2"></polygon>
+    <polygon points="{{ wPoints }}" fill="rgba(163,176,47,.2)" stroke="#8C9A2B" stroke-width="2"></polygon>
+    <text x="130" y="24" text-anchor="middle" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">SPIN</text>
+    <text x="216" y="88" text-anchor="start" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">POWER</text>
+    <text x="186" y="201" text-anchor="start" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">FORGIVE</text>
+    <text x="74" y="201" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">HANDS</text>
+    <sc-if value="{{ isControlAxis }}" hint-placeholder-val="{{ true }}"><text x="48" y="88" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.02em">CONTROL</text></sc-if><sc-if value="{{ isLightAxis }}" hint-placeholder-val="{{ false }}"><text x="44" y="88" text-anchor="end" style="font:700 9px 'Martian Mono',monospace;fill:#77762F;letter-spacing:.1em">LIGHT</text></sc-if>
+  </svg>
+  <div style="text-align:center;font-family:'Martian Mono',monospace;font-size:9px;color:#8B887C;margin-top:2px"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#17594A;margin-right:4px"></span>HYBRID&nbsp;&nbsp;<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#8C9A2B;margin-right:4px"></span>WIDEBODY</div>
+  <div style="margin-top:18px;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.18em;color:#77762F">WHERE THEY DIFFER</div>
+  <div style="margin-top:6px">
+    <div style="display:grid;grid-template-columns:1fr 58px 58px;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.12)"><span style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#8B887C">METRIC</span><span style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#17594A;text-align:right">HYBRID</span><span style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#8C9A2B;text-align:right">WIDEBODY</span></div>
+    <div style="display:grid;grid-template-columns:1fr 58px 58px;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Hand speed</span><span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">8.2</span><span style="font-family:'Martian Mono',monospace;font-size:11px;font-weight:700;text-align:right">9.1</span></div>
+    <div style="display:grid;grid-template-columns:1fr 58px 58px;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Forgiveness</span><span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">9.0</span><span style="font-family:'Martian Mono',monospace;font-size:11px;font-weight:700;text-align:right">9.5</span></div>
+    <div style="display:grid;grid-template-columns:1fr 58px 58px;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Spin</span><span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">9.2</span><span style="font-family:'Martian Mono',monospace;font-size:11px;font-weight:700;text-align:right">9.4</span></div>
+    <div style="display:grid;grid-template-columns:1fr 58px 58px;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Power</span><span style="font-family:'Martian Mono',monospace;font-size:11px;font-weight:700;text-align:right">8.6</span><span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">8.1</span></div>
+    <sc-if value="{{ showBalance }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:1fr 58px 58px;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px dashed rgba(34,50,43,.1)"><span style="font-size:12px;font-weight:500">Balance point</span><span style="font-family:'Martian Mono',monospace;font-size:11px;font-weight:700;text-align:right">238mm</span><span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">232mm</span></div></sc-if>
+    <div style="display:grid;grid-template-columns:1fr 58px 58px;gap:10px;align-items:baseline;padding:7px 0"><span style="font-size:12px;font-weight:500">{{ diffRowName }}</span><span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">{{ diffRowH }}</span><span style="font-family:'Martian Mono',monospace;font-size:11px;font-weight:700;text-align:right">{{ diffRowW }}</span></div>
+  </div>
+  <div style="margin-top:8px;background:#EFEBDD;border-radius:8px;padding:9px 12px;font-family:'Martian Mono',monospace;font-size:9px;line-height:1.6;color:#77764F">IDENTICAL ON: PRICE ($220) · CORE (16MM) · SURFACE · WARRANTY</div>
+  <div style="margin-top:18px;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.18em;color:#77762F">OTHER OPTIONS</div>
+  <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;gap:10px;align-items:baseline;background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:11px 13px"><span style="background:#D9E353;color:#3A3F14;font-size:8.5px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.1em;white-space:nowrap">TOP PICK</span><span style="font-size:12px;line-height:1.5"><b>Vatic Pro Prism Flash 16</b> <span style="font-family:'Martian Mono',monospace;font-size:10px;color:#8B887C">$140</span> <a href="#1c" style="font-weight:600;text-decoration:none">→</a></span></div>
+    <div style="display:flex;gap:10px;align-items:baseline;background:#FDFCF6;border:1px solid rgba(34,50,43,.13);border-radius:10px;padding:11px 13px"><span style="border:1px solid rgba(34,50,43,.3);color:#4A4E1B;font-size:8.5px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.1em;white-space:nowrap">VALUE</span><span style="font-size:12px;line-height:1.5"><b>Friday Original 16</b> <span style="font-family:'Martian Mono',monospace;font-size:10px;color:#8B887C">$99</span> <a href="#1c" style="font-weight:600;text-decoration:none">→</a></span></div>
+  </div>
+  <p style="margin:12px 0 0;font-size:10.5px;line-height:1.5;color:#8B887C">Affiliate links — we may earn a commission at no extra cost to you. <a href="#1c">How this works</a>.</p>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1d" data-screen-label="1d Duel poster">
+<div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Duel poster — dark masthead, center-spine tug bars (fill points at the winner)</div>
+<div class="dv-card" style="width:900px">
+  <div style="background:#12382F;padding:34px 44px 30px;text-align:center">
+    <div style="font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.22em;color:#D9E353">SIX ZERO CORAL PRO · $220 EITHER WAY</div>
+    <div style="margin-top:10px;font-family:'Source Serif 4',Georgia,serif;font-size:48px;font-weight:700;color:#F6F2E7;letter-spacing:-.015em;line-height:1.05">Hybrid <span style="font-style:italic;font-size:26px;color:#9DB8AD;vertical-align:6px">vs</span> Widebody</div>
+    <div style="margin-top:18px;display:flex;justify-content:center;align-items:center;gap:26px">
+      <div style="text-align:right"><div style="font-family:'Martian Mono',monospace;font-size:34px;font-weight:700;color:#F6F2E7">2</div><div style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.14em;color:#9DB8AD">HYBRID ROWS</div></div>
+      <div style="width:1px;height:38px;background:rgba(246,242,231,.25)"></div>
+      <div style="text-align:left"><div style="font-family:'Martian Mono',monospace;font-size:34px;font-weight:700;color:#D9E353">4</div><div style="font-family:'Martian Mono',monospace;font-size:8.5px;letter-spacing:.14em;color:#9DB8AD">WIDEBODY ROWS</div></div>
+    </div>
+    <div style="margin-top:8px;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.14em;color:#9DB8AD">2 ROWS DEAD EVEN · FILL POINTS AT THE WINNER, LENGTH = MARGIN</div>
+  </div>
+  <div style="padding:26px 44px 8px">
+    <div style="display:grid;grid-template-columns:120px 1fr 120px;gap:16px;align-items:center;padding:12px 0;border-bottom:1px dashed rgba(34,50,43,.12)">
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">Very high · 9.2</span>
+      <div><div style="text-align:center;margin-bottom:6px"><span class="tip" style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#77762F">SPIN<span class="tipbox" style="left:50%;margin-left:-115px">How much RPM the surface generates on serves and rolls.</span></span></div>
+      <div style="position:relative;height:8px;background:#E7E2D1;border-radius:4px"><div style="position:absolute;left:50%;width:4%;height:8px;background:#8C9A2B;border-radius:0 4px 4px 0"></div><div style="position:absolute;left:calc(50% - 1px);top:-3px;width:2px;height:14px;background:#22322B"></div></div></div>
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700">Very high · 9.4</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr 120px;gap:16px;align-items:center;padding:12px 0;border-bottom:1px dashed rgba(34,50,43,.12)">
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700;text-align:right">High · 8.6</span>
+      <div><div style="text-align:center;margin-bottom:6px"><span class="tip" style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#77762F">POWER<span class="tipbox" style="left:50%;margin-left:-115px">Pop on drives and serves — how fast the ball leaves the face.</span></span></div>
+      <div style="position:relative;height:8px;background:#E7E2D1;border-radius:4px"><div style="position:absolute;left:calc(50% - 10%);width:10%;height:8px;background:#17594A;border-radius:4px 0 0 4px"></div><div style="position:absolute;left:calc(50% - 1px);top:-3px;width:2px;height:14px;background:#22322B"></div></div></div>
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">High · 8.1</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr 120px;gap:16px;align-items:center;padding:12px 0;border-bottom:1px dashed rgba(34,50,43,.12)">
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">Very high · 9.0</span>
+      <div><div style="text-align:center;margin-bottom:6px"><span class="tip" style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#77762F">FORGIVENESS<span class="tipbox" style="left:50%;margin-left:-115px">Sweet-spot size and stability on off-center hits.</span></span></div>
+      <div style="position:relative;height:8px;background:#E7E2D1;border-radius:4px"><div style="position:absolute;left:50%;width:10%;height:8px;background:#8C9A2B;border-radius:0 4px 4px 0"></div><div style="position:absolute;left:calc(50% - 1px);top:-3px;width:2px;height:14px;background:#22322B"></div></div></div>
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700">Very high · 9.5</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr 120px;gap:16px;align-items:center;padding:12px 0;border-bottom:1px dashed rgba(34,50,43,.12)">
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">High · 8.2</span>
+      <div><div style="text-align:center;margin-bottom:6px"><span class="tip" style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#77762F">HAND SPEED<span class="tipbox" style="left:50%;margin-left:-115px">How quickly the paddle moves in fast kitchen exchanges — driven by swing weight.</span></span></div>
+      <div style="position:relative;height:8px;background:#E7E2D1;border-radius:4px"><div style="position:absolute;left:50%;width:18%;height:8px;background:#8C9A2B;border-radius:0 4px 4px 0"></div><div style="position:absolute;left:calc(50% - 1px);top:-3px;width:2px;height:14px;background:#22322B"></div></div></div>
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700">Very high · 9.1</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr 120px;gap:16px;align-items:center;padding:12px 0;border-bottom:1px dashed rgba(34,50,43,.12)">
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">8.2 oz</span>
+      <div><div style="text-align:center;margin-bottom:6px"><span class="tip" style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#77762F">STATIC WEIGHT<span class="tipbox" style="left:50%;margin-left:-115px">Weight on a scale, unmodified. Lighter is easier on the arm.</span></span></div>
+      <div style="position:relative;height:8px;background:#E7E2D1;border-radius:4px"><div style="position:absolute;left:50%;width:3%;height:8px;background:#8C9A2B;border-radius:0 4px 4px 0"></div><div style="position:absolute;left:calc(50% - 1px);top:-3px;width:2px;height:14px;background:#22322B"></div></div></div>
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700">8.16 oz</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr 120px;gap:16px;align-items:center;padding:12px 0;border-bottom:1px dashed rgba(34,50,43,.12)">
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#22322B;font-weight:700;text-align:right">238mm</span>
+      <div><div style="text-align:center;margin-bottom:6px"><span class="tip" style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#77762F">BALANCE POINT<span class="tipbox" style="left:50%;margin-left:-115px">Higher = head-heavy = more plow-through, slower hands. A win here depends on what you want.</span></span></div>
+      <div style="position:relative;height:8px;background:#E7E2D1;border-radius:4px"><div style="position:absolute;left:calc(50% - 12%);width:12%;height:8px;background:#17594A;border-radius:4px 0 0 4px"></div><div style="position:absolute;left:calc(50% - 1px);top:-3px;width:2px;height:14px;background:#22322B"></div></div></div>
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">232mm</span>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr 120px;gap:16px;align-items:center;padding:12px 0">
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C;text-align:right">$220 · 16mm</span>
+      <div style="text-align:center"><span style="font-family:'Martian Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#8B887C">PRICE &amp; CORE — DEAD EVEN <span style="display:inline-block;width:8px;height:8px;background:#B8B4A4;transform:rotate(45deg);margin-left:6px;vertical-align:1px"></span></span></div>
+      <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#8B887C">$220 · 16mm</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-family:'Martian Mono',monospace;font-size:9px;letter-spacing:.12em;color:#8B887C;padding:2px 0 14px"><span>← HYBRID'S SIDE</span><span>WIDEBODY'S SIDE →</span></div>
+  </div>
+  <div style="margin:0 44px;background:#D9E353;border-radius:12px;padding:20px 24px;display:flex;align-items:center;gap:22px;flex-wrap:wrap">
+    <div style="flex:1;min-width:300px"><div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:700;color:#22322B">Get the Widebody.</div><div style="font-size:12.5px;color:#3A3F14;margin-top:2px">Unless you want maximum power — then it's the Hybrid, and it's close.</div></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><a href="#1d" style="background:#22322B;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:700;color:#F6F2E7;text-decoration:none">Search Amazon · Widebody</a><a href="#1d" style="border:1.5px solid #22322B;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:600;color:#22322B;text-decoration:none">· Hybrid</a></div>
+    <div style="width:100%;font-size:10.5px;color:#5A5F23">UPA-A approved · affiliate links</div>
+  </div>
+  <div style="margin:16px 44px 0;padding:14px 0;border-top:1px dashed rgba(34,50,43,.15);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;font-family:'Martian Mono',monospace;font-size:10px;color:#5C594C">
+    <span style="letter-spacing:.14em;color:#77762F">ALSO IN THIS CLASS:</span>
+    <span><b style="color:#22322B">TOP PICK</b> Vatic Pro Prism Flash 16 · $140 <a href="#1d" style="text-decoration:none">→</a></span>
+    <span style="color:#B8B4A4">/</span>
+    <span><b style="color:#22322B">VALUE</b> Friday Original 16 · $99 <a href="#1d" style="text-decoration:none">→</a></span>
+  </div>
+  <p style="margin:10px 44px 26px;font-size:11.5px;line-height:1.6;color:#8B887C">Affiliate links — we may earn a commission at no extra cost to you; it never changes who wins a row. As an Amazon Associate I earn from qualifying purchases. <a href="#1d">How this works</a>.</p>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "more like <a class="dv-oid" href="#1b">1b</a> but with <a class="dv-oid" href="#1c">1c</a>'s verdict cards" · "apply <a class="dv-oid" href="#1d">1d</a>'s tug bars inside <a class="dv-oid" href="#1a">1a</a>" · "mobile versions of <a class="dv-oid" href="#1b">1b</a>–<a class="dv-oid" href="#1d">1d</a>"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;radarAxis5&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Control&quot;, &quot;Lightness&quot;], &quot;default&quot;: &quot;Control&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;1c Editorial&quot;}, &quot;showBalancePoint&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;1c Editorial&quot;}}">
+class Component extends DCLogic {
+  P = {
+    hy: {short:'Hybrid', name:'Coral Pro Hybrid', price:220, badge:'', r:{spin:9.2, power:8.6, forgive:9.0, hands:8.2, control:8.8}, pc:{spin:88, power:79, forgive:76, hands:58, control:71}, weight:8.2, attrs:['16mm core','raw carbon face','UPA-A approved']},
+    wb: {short:'Widebody', name:'Coral Pro Widebody', price:220, badge:'', r:{spin:9.4, power:8.1, forgive:9.5, hands:9.1, control:9.2}, pc:{spin:93, power:62, forgive:95, hands:89, control:90}, weight:8.16, attrs:['16mm core','raw carbon face','UPA-A approved']},
+    va: {short:'Prism Flash', name:'Vatic Pro Prism Flash 16', price:140, badge:'TOP PICK', r:{spin:9.6, power:8.8, forgive:9.1, hands:8.9, control:9.0}, pc:{spin:97, power:85, forgive:81, hands:82, control:83}, weight:8.0, attrs:['16mm core','raw carbon face','UPA-A approved']},
+    fr: {short:'Friday', name:'Friday Original 16', price:99, badge:'VALUE', r:{spin:9.0, power:7.9, forgive:9.3, hands:9.0, control:8.9}, pc:{spin:74, power:48, forgive:88, hands:86, control:78}, weight:7.9, attrs:['16mm core','raw carbon face','UPA-A approved']}
+  };
+  M = [
+    {k:'spin', hi:true, get:p=>p.r.spin, fmt:v=>v.toFixed(1)},
+    {k:'power', hi:true, get:p=>p.r.power, fmt:v=>v.toFixed(1)},
+    {k:'forgive', hi:true, get:p=>p.r.forgive, fmt:v=>v.toFixed(1)},
+    {k:'hands', hi:true, get:p=>p.r.hands, fmt:v=>v.toFixed(1)},
+    {k:'control', hi:true, get:p=>p.r.control, fmt:v=>v.toFixed(1)},
+    {k:'weight', hi:false, get:p=>p.weight, fmt:v=>v+' oz'},
+    {k:'price', hi:false, get:p=>p.price, fmt:v=>'$'+v}
+  ];
+  pentagon(p) {
+    const vals=[p.pc.spin,p.pc.power,p.pc.forgive,p.pc.hands,p.pc.control], angs=[-90,-18,54,126,198];
+    return vals.map((v,i)=>{const r=v/100*84, a=angs[i]*Math.PI/180; return (130+r*Math.cos(a)).toFixed(1)+','+(118+r*Math.sin(a)).toFixed(1);}).join(' ');
+  }
+  ord(n) {
+    const t=n%100; if(t>=11&&t<=13) return n+'th pctl';
+    return n+({1:'st',2:'nd',3:'rd'}[n%10]||'th')+' pctl';
+  }
+  turn2Vals() {
+    const ids=['hy','wb','va','fr'], P=this.P, out={};
+    const duo=this.state.duo??['hy','wb'], [aId,bId]=duo, a=P[aId], b=P[bId];
+    const slot={}; slot[aId]='#17594A'; slot[bId]='#8C9A2B';
+    ids.forEach(id=>{
+      const inD=!!slot[id];
+      out['chip_'+id+'_bd']=inD?'1.5px solid '+slot[id]:'1px dashed rgba(34,50,43,.35)';
+      out['chip_'+id+'_bg']=inD?'#FDFCF6':'transparent';
+      out['chip_'+id+'_dot']=inD?slot[id]:'#C9C4B2';
+      out['pick_'+id]=()=>{ const cur=this.state.duo??['hy','wb']; if(!cur.includes(id)) this.setState({duo:[cur[1],id]}); };
+    });
+    let aW=0,bW=0;
+    this.M.forEach(m=>{
+      const av=m.get(a), bv=m.get(b);
+      const win=av===bv?0:((av>bv)===m.hi?1:2);
+      if(win===1)aW++; if(win===2)bW++;
+      const d=Math.abs(av-bv), q=(win&&m.k!=='weight'&&m.k!=='price')?(d>=0.5?', clearly':(d<=0.2?', barely':'')):'';
+      out[m.k+'_a']=m.fmt(av); out[m.k+'_b']=m.fmt(bv);
+      out[m.k+'_afw']=win===1?'700':'400'; out[m.k+'_bfw']=win===2?'700':'400';
+      out[m.k+'_ac']=win===1?'#22322B':'#8B887C'; out[m.k+'_bc']=win===2?'#22322B':'#8B887C';
+      out[m.k+'_e']=win===0?'Even':(win===1?a.short:b.short)+q;
+      out[m.k+'_ec']=win===0?'#8B887C':(win===1?'#17594A':'#4A4E1B');
+    });
+    out.aShort=a.short; out.bShort=b.short; out.aShortU=a.short.toUpperCase(); out.bShortU=b.short.toUpperCase();
+    out.aName=a.name; out.bName=b.name; out.aWins=String(aW); out.bWins=String(bW);
+    out.aPoints=this.pentagon(a); out.bPoints=this.pentagon(b);
+    if(aW===bW){ out.verdictShort='either'; out.verdictHead='Dead even.'; out.verdictBlurb='Same number of rows won — pick by feel, or by price.'; }
+    else {
+      const wIs=aW>bW?a:b, lIs=aW>bW?b:a, pd=lIs.price-wIs.price;
+      out.verdictShort=wIs.short; out.verdictHead='Get the '+wIs.short+'.';
+      out.verdictBlurb='Wins '+Math.max(aW,bW)+' rows to '+Math.min(aW,bW)+(pd>0?" — and it's $"+pd+' cheaper.':(pd===0?' at the same price.':' — if the $'+(-pd)+' premium fits.'));
+    }
+    const sel=this.state.sel??ids.slice();
+    ids.forEach(id=>{
+      const on=sel.includes(id);
+      out['show2_'+id]=on;
+      out['tchip_'+id+'_bg']=on?'#22322B':'transparent';
+      out['tchip_'+id+'_fg']=on?'#F6F2E7':'#22322B';
+      out['tchip_'+id+'_bd']=on?'1px solid #22322B':'1px dashed rgba(34,50,43,.35)';
+      out['tog_'+id]=()=>{ const cur=this.state.sel??ids.slice(); if(cur.includes(id)){ if(cur.length>2) this.setState({sel:cur.filter(x=>x!==id)}); } else this.setState({sel:ids.filter(x=>cur.includes(x)||x===id)}); };
+    });
+    const wins={hy:0,wb:0,va:0,fr:0};
+    this.M.forEach(m=>{
+      const vals=sel.map(id=>m.get(P[id]));
+      const best=m.hi?Math.max.apply(null,vals):Math.min.apply(null,vals);
+      ids.forEach(id=>{
+        const isB=sel.includes(id)&&m.get(P[id])===best;
+        if(isB)wins[id]++;
+        out[id+'_'+m.k+'_bg']=isB?'#D9E353':'transparent';
+      });
+    });
+    ids.forEach(id=>{ out[id+'_wins']=sel.includes(id)?String(wins[id]):'—'; });
+    const fv=sel.slice().sort((x,y)=>wins[y]-wins[x]||P[x].price-P[y].price)[0];
+    out.fieldName=P[fv].name; out.fieldBlurb='Takes '+wins[fv]+' of 7 rows at $'+P[fv].price+'.';
+    return out;
+  }
+  turn3Vals() {
+    const P=this.P, M=this.M, ids=['hy','wb','va','fr'], out={};
+    const duo=this.state.duo3??['hy','wb'], aId=duo[0], bId=duo[1], a=P[aId], b=P[bId];
+    const X={
+      hy:{desc:'Head-heavier Coral — more plow-through on drives, a touch slower at the net.',bullets:["you drive the ball and want plow-through","you're coming from tennis and like head weight","you'll trade some forgiveness for pop"]},
+      wb:{desc:'Bigger sweet spot and quicker hands — the easier Coral to learn on.',bullets:["you're newer and want the biggest sweet spot","you live at the kitchen — fastest hands here","arm comfort matters: lighter where it counts"]},
+      va:{desc:'Out-spun and out-powered both Corals in our tests — our beginner benchmark.',bullets:["you want the most spin and pop on this page","top-pick performance beats brand loyalty","you're happy with a standard all-court shape"]},
+      fr:{desc:"90% of the Widebody's forgiveness for less than half the price.",bullets:["budget is the deciding factor","you want most of the forgiveness for half the price","you play a soft, control-first game"]}
+    };
+    M.forEach(m=>{
+      const av=m.get(a), bv=m.get(b);
+      const win=av===bv?0:((av>bv)===m.hi?1:2);
+      out['m3_'+m.k+'_a']=m.fmt(av); out['m3_'+m.k+'_b']=m.fmt(bv);
+      out['m3_'+m.k+'_ap']=a.pc[m.k]!==undefined?this.ord(a.pc[m.k]):''; out['m3_'+m.k+'_bp']=b.pc[m.k]!==undefined?this.ord(b.pc[m.k]):'';
+      out['m3_'+m.k+'_afw']=win===1?'700':'400'; out['m3_'+m.k+'_bfw']=win===2?'700':'400';
+      out['m3_'+m.k+'_ac']=win===1?'#22322B':'#8B887C'; out['m3_'+m.k+'_bc']=win===2?'#22322B':'#8B887C';
+      out['m3_'+m.k+'_e']=win===0?'Even':(win===1?a.short:b.short);
+      out['m3_'+m.k+'_ec']=win===0?'#8B887C':(win===1?'#17594A':'#4A4E1B');
+    });
+    const f1=x=>x.toFixed(1);
+    const tot=id=>{const r=P[id].r; return r.spin+r.power+r.forgive+r.hands+r.control;};
+    const tA=tot(aId), tB=tot(bId), vA=tA/a.price*100, vB=tB/b.price*100;
+    const pair=(ka,x,y)=>{ const w=x===y?0:(x>y?1:2);
+      out[ka+'A']=f1(x); out[ka+'B']=f1(y);
+      out[ka+'Afw']=w===1?'700':'400'; out[ka+'Bfw']=w===2?'700':'400';
+      out[ka+'Ac']=w===1?'#22322B':'#8B887C'; out[ka+'Bc']=w===2?'#22322B':'#8B887C';
+      out[ka+'E']=w===0?'Even':(w===1?a.short:b.short); out[ka+'Ec']=w===0?'#8B887C':(w===1?'#17594A':'#4A4E1B');
+    };
+    pair('t3Tot',tA,tB); pair('t3Val',vA,vB);
+    out.h3aU=a.short.toUpperCase(); out.h3bU=b.short.toUpperCase();
+    const sh=a.attrs.filter(x=>b.attrs.indexOf(x)>=0);
+    out.t3Attrs=sh.length?('BOTH HAVE: '+sh.join(' · ').toUpperCase()):'FEW SHARED SPECS — SEE EACH REVIEW';
+    out.p3a=this.pentagon(a); out.p3b=this.pentagon(b);
+    out.v3Kicker=a.name+' ($'+a.price+') vs '+b.name+' ($'+b.price+')';
+    const wTot=tA>=tB?a:b, lTot=tA>=tB?b:a, vw=vA>=vB?a:b;
+    out.v3Name=wTot.short;
+    out.v3Blurb='Total score '+f1(Math.max(tA,tB))+'–'+f1(Math.min(tA,tB))+(vw===wTot?', and the better value at '+f1(Math.max(vA,vB))+' points per $100.':'; but the '+vw.short+' is the better value — '+f1(Math.max(vA,vB))+' vs '+f1(Math.min(vA,vB))+' points per $100.');
+    const wX=X[tA>=tB?aId:bId], lX=X[tA>=tB?bId:aId];
+    out.cw_title='Get the '+wTot.short+' if…'; out.cl_title='Get the '+lTot.short+' if…';
+    out.cw_b1=wX.bullets[0]; out.cw_b2=wX.bullets[1]; out.cw_b3=wX.bullets[2];
+    out.cl_b1=lX.bullets[0]; out.cl_b2=lX.bullets[1]; out.cl_b3=lX.bullets[2];
+    out.swapForA='Swap in for '+a.short; out.swapForB='Swap in for '+b.short;
+    ids.filter(id=>duo.indexOf(id)<0).forEach((oid,i)=>{
+      const o=P[oid], k='o3_'+(i+1);
+      out[k+'_name']=o.name; out[k+'_price']='$'+o.price; out[k+'_desc']=X[oid].desc; out[k+'_bdg']=o.badge;
+      out[k+'_bdg_d']=o.badge?'inline-block':'none';
+      out[k+'_bdg_bg']=o.badge==='TOP PICK'?'#D9E353':'transparent';
+      out[k+'_bdg_bd']=o.badge==='TOP PICK'?'1px solid #D9E353':'1px solid rgba(34,50,43,.3)';
+      out[k+'_bdg_fg']=o.badge==='TOP PICK'?'#3A3F14':'#4A4E1B';
+      out[k+'_swap_a']=()=>{const d=this.state.duo3??['hy','wb']; this.setState({duo3:[oid,d[1]]});};
+      out[k+'_swap_b']=()=>{const d=this.state.duo3??['hy','wb']; this.setState({duo3:[d[0],oid]});};
+    });
+    return out;
+  }
+  renderVals() {
+    const isControl = (this.props.radarAxis5 ?? 'Control') !== 'Lightness';
+    return {
+      isControlAxis: isControl,
+      isLightAxis: !isControl,
+      hPoints: '130,40.7 198.7,95.7 174.5,179.2 89.5,173.7 ' + (isControl ? '59.7,95.2' : '67.7,97.8'),
+      wPoints: '130,39 194.7,97 176.9,182.6 85.1,179.8 ' + (isControl ? '56.5,94.1' : '66.1,97.2'),
+      showBalance: this.props.showBalancePoint ?? false,
+      diffRowName: isControl ? 'Control' : 'Static weight',
+      diffRowTip: isControl ? 'Touch on resets, drops and dinks — how predictably the ball comes off the face.' : 'Weight on a scale, unmodified. Lighter is easier on the arm.',
+      diffRowH: isControl ? '8.8' : '8.2 oz',
+      diffRowW: isControl ? '9.2' : '8.16 oz',
+      diffRowEdge: isControl ? 'Widebody' : 'Even, really',
+      ...this.turn2Vals(),
+      ...this.turn3Vals(),
+    };
+  }
+}
+</script>
+</body>
+</html>
