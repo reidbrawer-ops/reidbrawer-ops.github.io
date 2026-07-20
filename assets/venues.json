@@ -443,7 +443,7 @@
   {
     "name": "Moscone Playground",
     "city": "San Francisco",
-    "address": "1800 Chestnut St, San Francisco, CA 94102",
+    "address": "1800 Chestnut St, San Francisco, CA 94123",
     "lat": 37.801298,
     "lon": -122.433128,
     "url": "/cities/san-francisco",
@@ -546,7 +546,7 @@
     "lat": 37.7833156,
     "lon": -122.4781116,
     "url": "/cities/san-francisco",
-    "indoor": "indoor",
+    "indoor": "both",
     "id": "richmond-rec-center",
     "confirmed": true
   },
@@ -570,7 +570,7 @@
     "url": "/cities/san-francisco",
     "indoor": "indoor",
     "id": "glen-park-rec-center",
-    "confirmed": false
+    "confirmed": true
   },
   {
     "name": "Paul Moore Park",
@@ -2269,6 +2269,28 @@
     "url": "/cities/vallejo",
     "indoor": "outdoor",
     "id": "in-shape-fitness-vallejo",
+    "confirmed": true
+  },
+  {
+    "name": "Jackson Playground",
+    "city": "San Francisco",
+    "address": "1500 Mariposa St, San Francisco, CA 94107",
+    "lat": 37.7638878,
+    "lon": -122.3993381,
+    "url": "/cities/san-francisco",
+    "indoor": "outdoor",
+    "id": "jackson-playground",
+    "confirmed": true
+  },
+  {
+    "name": "Willie \u201cWoo Woo\u201d Wong Playground",
+    "city": "San Francisco",
+    "address": "830 Sacramento St, San Francisco, CA 94108",
+    "lat": 37.7935538,
+    "lon": -122.4070968,
+    "url": "/cities/san-francisco",
+    "indoor": "outdoor",
+    "id": "willie-woo-woo-wong-playground",
     "confirmed": true
   }
 ]

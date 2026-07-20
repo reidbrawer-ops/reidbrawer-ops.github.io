@@ -460,6 +460,376 @@
   text-decoration: underline;
 }
 
+/* ==========================================================================
+   Results: #1 hero + refine chips + other strong matches
+   Added to bring the reference finder's hierarchy to the quiz: one dominant
+   best-match card, live re-rank chips, then the runners-up. The at-a-glance
+   panel is the licensing-safe substitute for the reference's numeric stat grid
+   — a bar positioned by the banded percentile plus a tier word, never the
+   number (PADDLE_DATA_SETUP.md). paddle-finder.css (which owns .pn-tag / the
+   .pn-bars renderer) is NOT loaded on this page, so the chip and bar styles are
+   restated here in the tokens the two surfaces share.
+   ========================================================================== */
+
+.pq-hero-pick {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--bay);
+  border-radius: var(--radius-m);
+  padding: clamp(20px, 3vw, 32px);
+  box-shadow: 0 2px 10px rgba(var(--ink-rgb), 0.07);
+  margin-bottom: 1.25rem;
+}
+
+.pq-hero-ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--bay-deep);
+  margin: 0 0 0.6rem;
+}
+
+.pq-hero-brand {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.pq-hero-name {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  line-height: 1.1;
+  margin: 0.15rem 0 0.6rem;
+}
+
+.pq-hero-tags,
+.pq-pick-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.9rem;
+}
+
+.pq-hero-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.pq-hero-price,
+.pq-hero-fit {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35em;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 1.6rem;
+}
+
+.pq-hero-price {
+  color: var(--ink);
+}
+
+.pq-hero-fit {
+  color: var(--bay-deep);
+}
+
+.pq-hero-price-note,
+.pq-hero-fit-note {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* The hero's buy button — full-width optic CTA, repeated top and foot of the
+   card like the reference. book-btn carries the base; this pins width + fill. */
+.pq-hero-buy {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  background: var(--optic);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-s);
+  font-weight: 700;
+}
+
+.pq-hero-buy:hover {
+  background: var(--ink);
+  color: var(--optic);
+}
+
+.pq-hero-buy--foot {
+  margin-top: 1.25rem;
+}
+
+.pq-hero-sub {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  margin: 1.4rem 0 0.5rem;
+}
+
+.pq-hero-lead {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--body-ink);
+  margin: 0 0 0.6rem;
+}
+
+.pq-why-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pq-why-list li {
+  position: relative;
+  padding-left: 1.35rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.pq-why-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--optic-text);
+  font-weight: 700;
+}
+
+.pq-why-term {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* At-a-glance stat panel — the same three-column bar grid the browse cards use
+   (.pn-bars). display:contents on the row lets label/track/word land straight
+   in the grid tracks. The fill is positioned by the banded percentile; the word
+   carries the tier. No numbers — see the section header. */
+.pq-stats {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem 0.6rem;
+  max-width: 440px;
+}
+
+.pq-stat {
+  display: contents;
+}
+
+.pq-stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.pq-stat-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(var(--ink-rgb), 0.1);
+  overflow: hidden;
+}
+
+.pq-stat-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.pq-stat-fill--spin {
+  background: var(--bay);
+}
+
+.pq-stat-fill--power {
+  background: var(--poppy);
+}
+
+.pq-stat-fill--control {
+  background: var(--bay-deep);
+}
+
+.pq-stat-fill--forgiveness {
+  background: var(--optic-text);
+}
+
+.pq-stat-word {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.pq-hero-specs {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  margin: 0.8rem 0 0;
+}
+
+.pq-nolab {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* Play-style / shape / skill chips — mirrors .pn-tag (paddle-finder.css), which
+   this page can't reach, in the tokens both surfaces share. */
+.pq-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2em 0.6em;
+  border: 1px solid var(--rule-16);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+  background: rgba(var(--ink-rgb), 0.04);
+}
+
+.pq-tag--power {
+  background: var(--poppy-tint);
+  border-color: transparent;
+  color: var(--poppy-deep);
+}
+
+.pq-tag--control {
+  background: var(--bay-tint);
+  border-color: transparent;
+  color: var(--bay-deep);
+}
+
+.pq-tag--allcourt {
+  background: var(--kitchen-tint);
+  border-color: transparent;
+  color: var(--optic-text);
+}
+
+.pq-tag--unrated {
+  background: rgba(var(--ink-rgb), 0.07);
+  border-color: transparent;
+  color: var(--ink-soft);
+}
+
+/* Refine — the live re-rank chips. One row per scored axis (shape, weight,
+   sweet spot); the lit chip is the current answer. */
+.pq-refine {
+  background: var(--fog-dim);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 18px 20px;
+  margin-bottom: 1.25rem;
+}
+
+.pq-refine-title {
+  font-size: 1.05rem;
+  margin: 0 0 0.2rem;
+}
+
+.pq-refine-note {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin: 0 0 0.9rem;
+}
+
+.pq-refine-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.6rem;
+}
+
+.pq-refine-label {
+  flex: none;
+  width: 5.5rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+}
+
+.pq-refine-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pq-refine-chip {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 0.35em 0.9em;
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.pq-refine-chip:hover {
+  border-color: var(--bay);
+}
+
+.pq-refine-chip.is-on {
+  background: var(--bay);
+  border-color: var(--bay);
+  color: var(--paper);
+}
+
+/* Other strong matches (#2, #3) */
+.pq-others-title {
+  font-size: 1.1rem;
+  margin: 0 0 0.75rem;
+}
+
+.pq-others {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .pq-others {
+    grid-template-columns: 1fr;
+  }
+
+  .pq-hero-meta {
+    gap: 1rem;
+  }
+}
+
 /* ---------- Hero media (skill-level illustration) ---------- */
 
 .pq-hero-inner {

@@ -80,23 +80,28 @@
 
     <a class="pd-back" href="/paddles/browse">&larr; All paddles</a>
 
+    <!-- Two grid children (.pd-main, .pd-aside); the reco/similar .pd-tail is a
+         SIBLING of the grid, not a third grid child, and that matters — see its
+         own comment below. The DOM order .pd-main → .pd-aside → .pd-tail is load
+         bearing twice over.
+
+         (1) Heading order. .pd-main opens with the <h1> naming the paddle;
+         every other heading on the page is an <h2> (Measured performance in
+         .pd-main, Full specifications in the aside, the reco and similar
+         sections in the tail). A screen-reader user must reach that <h1> before
+         any <h2>, so .pd-main has to be first in source — the desktop swap that
+         puts the aside in the LEFT column is done purely in CSS (`order: -1`,
+         see .pd-aside in assets/paddle-finder.css), which grid auto-placement
+         honours without touching source order.
+
+         (2) Mobile stack. Below 940px .pd-grid collapses to one column and the
+         visitor reads DOM order, so the source sequence IS the phone layout:
+         name/price/buy and the measured-performance bars, then the full spec
+         table, then the recommendations. The aside's `order: -1` is reset to 0
+         in the max-width:940px block, or the spec rail would hoist itself above
+         the paddle's own name on every phone. -->
     <div class="pd-grid">
 
-      <!-- .pd-main FIRST in the DOM, before .pd-aside, and that order is load
-           bearing twice over. (1) The aside carries a level-2 heading ("At a
-           glance"); if it came first, the first heading a screen-reader user
-           met on all 486 paddle pages would be a level 2, and the level-1
-           naming the paddle would arrive after it. Headings must step 1 then 2
-           with no skips, so the level 1 has to be reachable first in source
-           order. (2) Below 940px .pd-grid collapses to one column and
-           the visitor reads DOM order — so a phone gets the paddle's name,
-           price and buy button before the blueprint, instead of scrolling past
-           a drawing to find out which paddle it is a drawing of.
-           The desktop LEFT rail is restored purely in CSS: .pd-aside has
-           `order: -1` (see .pd-aside in assets/paddle-finder.css), which feeds
-           it to grid auto-placement first and so into column 1. That order is
-           explicitly reset to 0 in the max-width:940px block, or the mobile
-           stack would inherit the desktop swap and undo point (2). -->
       <div class="pd-main">
 
         <p class="eyebrow">{{BRAND}}</p>
@@ -130,31 +135,47 @@
           {{BARS}}
         </section>
 
-        <section class="pd-section">
-          <h2>Full specifications.</h2>
-          <table class="pd-table">
-            <tbody>{{SPECS}}</tbody>
-          </table>
-        </section>
-
-        {{RECOS}}
-
-        {{SIMILAR}}
-
       </div>
 
-      <!-- The left rail is the spec sidebar. It once opened with a dimensioned
-           paddle drawing; that was removed — there are no product photos, and
-           the schematic read as clutter rather than information next to the
-           real numbers. "At a glance" is now the whole aside: a sticky card of
-           the specs a shopper scans while reading the analysis on the right. -->
+      <!-- The left rail is the spec sheet. It once held a dimensioned paddle
+           drawing, then a redundant "At a glance" card whose six fields all
+           already appeared in the title chips and the blurb above. Both are
+           gone: the rail is now the full specification table itself, moved out
+           of .pd-main's vertical stack so it sits alongside the analysis
+           instead of below it — the numbers a shopper scans while reading the
+           bars, not another screen of scroll. Sticky, so they stay in view.
+           `.pd-table` already renders as a bordered card; the aside adds only
+           the mono section label above it. -->
       <aside class="pd-aside">
-        <div class="pd-glance">
-          <h2 class="pd-glance-head">At a glance</h2>
-          <dl class="pd-glance-grid">{{GLANCE}}</dl>
-        </div>
+        <h2 class="pd-aside-head">Full specifications</h2>
+        <table class="pd-table">
+          <tbody>{{SPECS}}</tbody>
+        </table>
       </aside>
     </div>
+
+    <!-- Recommendations and similar paddles, full width below both columns.
+         A SIBLING of .pd-grid, deliberately NOT a third grid child. The aside is
+         `position: sticky` and its containing block is whatever box it lives in:
+         as a grid child that box is .pd-grid, which would extend down PAST these
+         sections, so the pinned spec table would stay stuck and the full-width
+         tail — which reaches back into the left column — would scroll up
+         underneath it and collide (the "Where to go from here" heading printing
+         over the spec rows). Ending .pd-grid at the two columns bounds the
+         sticky range to the columns' own height, so the aside releases at the
+         grid's bottom and the tail flows cleanly beneath both.
+
+         Kept out of .pd-main for the same source-order reason as everything
+         else: on a phone the single column follows DOM order, so these land
+         after the spec table rather than before it. Either token can render
+         empty (a paddle with no clear pick, or none close enough to list); an
+         empty .pd-tail is harmless. -->
+    <div class="pd-tail">
+      {{RECOS}}
+
+      {{SIMILAR}}
+    </div>
+
   </div>
 </section>
 

@@ -31,28 +31,36 @@ const headerRe = /(?:[ \t]*<!-- site-header:start[\s\S]*?<!-- site-header:end --
 
 // Which nav link is "current" for a given page, by path. null = no active item
 // (homepage, privacy, affiliate-disclosure, 404).
+//
+// The three Paddles lanes each light their OWN item inside the "Paddles"
+// dropdown, and main() additionally lights the "Paddles" summary whenever the
+// active href is one of them — so the tab reads as current and the open menu
+// shows which lane you're on. Browse's children (the compare page, and the
+// generated detail pages, which the generator handles) count as the browse lane.
 function activeHref(rel) {
   if (rel.startsWith("cities/")) return "/cities/";
-  // The three Paddles & Gear lanes (/paddles, /paddles/browse, /paddles/rent)
-  // are one nav destination — the tab stays lit on all of them, and the pages
-  // link to each other with their own in-page section nav.
-  if (rel.startsWith("paddles/")) return "/paddles";
+  if (rel === "paddles/browse.html" || rel.startsWith("paddles/browse/")) return "/paddles/browse";
+  if (rel === "paddles/rent.html") return "/paddles/rent";
+  if (rel.startsWith("paddles/") || rel === "paddles.html") return "/paddles";
   return {
     "map.html": "/map",
     "rankings.html": "/rankings",
-    "paddles.html": "/paddles",
     "learn.html": "/learn",
     "corrections.html": "/corrections",
     "about.html": "/about",
   }[path.basename(rel)] || null;
 }
 
+// True for the three hrefs that live inside the "Paddles" dropdown, so their
+// pages also light the summary that contains them.
+const isPaddleLane = (href) => href === "/paddles" || href === "/paddles/browse" || href === "/paddles/rent";
+
 function targets() {
   const root = fs.readdirSync(ROOT).filter((f) => f.endsWith(".html"));
   // Any directory that holds pages carrying the shared header. Add one here and
   // its pages are synced — a page that silently misses the sync keeps a stale
   // nav forever, and nothing else would catch it.
-  const nested = ["cities", "paddles"].flatMap((dir) => {
+  const nested = ["cities", "paddles", "paddles/browse"].flatMap((dir) => {
     const abs = path.join(ROOT, dir);
     if (!fs.existsSync(abs)) return [];
     return fs
@@ -83,6 +91,12 @@ function main() {
       const marker = `<a href="${active}">`;
       if (!header.includes(marker)) throw new Error(`${rel}: nav link ${active} not in partial`);
       header = header.replace(marker, `<a href="${active}" aria-current="page">`);
+      // A paddle lane also lights the dropdown it lives in.
+      if (isPaddleLane(active)) {
+        const summary = "<summary>Paddles</summary>";
+        if (!header.includes(summary)) throw new Error(`${rel}: <summary>Paddles</summary> not in partial`);
+        header = header.replace(summary, `<summary aria-current="page">Paddles</summary>`);
+      }
     }
     const instance = `${START}\n${header}\n${END}`;
 

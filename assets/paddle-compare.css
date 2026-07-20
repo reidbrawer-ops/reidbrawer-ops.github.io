@@ -1,0 +1,624 @@
+/* Head-to-head compare — the verdict-first editorial module (design "3a").
+   Rendered by assets/paddle-compare.js into #paddle-compare-app on
+   /paddles/browse/compare.
+
+   Colours and spacing are the handoff's literal values (a self-contained
+   cream/green editorial palette, close kin to the site tokens but pitched a
+   shade warmer so the card reads as its own object). Fonts are the SITE faces —
+   the handoff's Martian Mono → Space Mono (--font-mono), DM Sans → Manrope
+   (--font-display/body), Source Serif 4 unchanged — so no third font family
+   loads. Everything is scoped under .h2h to keep the generic .tip class from
+   colliding with anything else. */
+
+/* The card floats on a sand ground so its #F6F2E7 face separates from the page;
+   the site's default --fog (#f7f2e7) is too close to the card to give an edge. */
+.h2h-section {
+  background: #e9e5d8;
+}
+
+/* Static page header (title + lede). Present for the empty/error/dead-module
+   cases; hidden once the module renders and its verdict becomes the H1. */
+.ph-wrap.h2h-mounted .h2h-fallback {
+  display: none;
+}
+
+.h2h {
+  max-width: 940px;
+  margin: 0 auto;
+  background: #f6f2e7;
+  border: 1px solid rgba(34, 50, 43, 0.14);
+  border-radius: 10px;
+  padding: 40px 44px 32px;
+  color: #22322b;
+  font-family: var(--font-body);
+}
+
+/* Swap fade — ~150ms, skipped under prefers-reduced-motion (handled in JS). */
+#paddle-compare-app {
+  transition: opacity 0.15s ease;
+}
+#paddle-compare-app.is-swapping {
+  opacity: 0;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.h2h-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.h2h-kicker {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #77762f;
+}
+.h2h-verdict {
+  margin: 10px 0 0;
+  font-family: var(--font-headline);
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  color: #22322b;
+}
+.h2h-mark {
+  box-shadow: inset 0 -12px 0 #d9e353;
+}
+.h2h-blurb {
+  margin: 12px auto 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #5c594c;
+}
+
+/* ---------------------------------------------------- recommendation cards */
+
+.h2h-recos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 26px;
+}
+.h2h-reco {
+  background: #fdfcf6;
+  border-radius: 12px;
+  padding: 20px 22px;
+  position: relative;
+}
+.h2h-reco--win {
+  border: 2px solid #a3b02f;
+}
+.h2h-reco--lose {
+  border: 1px solid rgba(34, 50, 43, 0.15);
+}
+.h2h-reco-badge {
+  position: absolute;
+  top: -9px;
+  left: 20px;
+  background: #d9e353;
+  color: #3a3f14;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.h2h-reco-title {
+  font-family: var(--font-headline);
+  font-size: 20px;
+  font-weight: 700;
+  color: #22322b;
+}
+.h2h-reco-bullets {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #3f4430;
+}
+
+/* CTA row — filled lime on the winner, outlined on the loser. */
+.h2h-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.h2h-cta {
+  display: inline-block;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: #22322b;
+  text-decoration: none;
+  border: 1px solid rgba(34, 50, 43, 0.4);
+}
+.h2h-cta--win {
+  background: #d9e353;
+}
+.h2h-cta--lose {
+  background: transparent;
+  border-color: rgba(34, 50, 43, 0.35);
+  font-weight: 600;
+}
+.h2h-cta:hover {
+  background: #22322b;
+  color: #f6f2e7;
+  border-color: #22322b;
+  text-decoration: none;
+}
+.h2h-cta-note {
+  font-size: 11px;
+  color: #8b887c;
+}
+
+/* ------------------------------------------------------ fingerprint + table */
+
+.h2h-analysis {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 36px;
+  margin-top: 30px;
+  align-items: center;
+}
+.h2h-radar-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #77762f;
+  text-align: center;
+}
+.h2h-radar-svg {
+  width: 100%;
+  margin-top: 6px;
+}
+.h2h-legend {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: #8b887c;
+  margin-top: 4px;
+}
+.h2h-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.h2h-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.h2h-dot--a {
+  background: #17594a;
+}
+.h2h-dot--b {
+  background: #8c9a2b;
+}
+
+.h2h-table-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #77762f;
+}
+.h2h-rows {
+  margin-top: 8px;
+}
+.h2h-row {
+  display: grid;
+  grid-template-columns: 1fr 92px 92px 118px;
+  gap: 12px;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(34, 50, 43, 0.1);
+}
+.h2h-row--head {
+  border-bottom: 1px dashed rgba(34, 50, 43, 0.12);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #8b887c;
+}
+.h2h-row--head span {
+  text-align: right;
+}
+.h2h-row--head span:first-child {
+  text-align: left;
+}
+.h2h-row--head .h2h-col-a {
+  color: #17594a;
+}
+.h2h-row--head .h2h-col-b {
+  color: #8c9a2b;
+}
+
+/* Metric label + its hover tooltip trigger. */
+.h2h-row > .tip,
+.h2h-score-label {
+  justify-self: start;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.h2h-score-label {
+  font-weight: 700;
+}
+
+/* Rating cell — two lines, right-aligned. Winner bold ink, loser light. */
+.h2h-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-self: end;
+  text-align: right;
+}
+.h2h-rating {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 400;
+  color: #8b887c;
+}
+.h2h-cell.is-win .h2h-rating {
+  font-weight: 700;
+  color: #22322b;
+}
+/* Spec cells (weight/price) are single-line: no .h2h-rating child, the value is
+   the cell's own text. */
+.h2h-cell:not(:has(.h2h-rating)) {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 400;
+  color: #8b887c;
+}
+.h2h-cell:not(:has(.h2h-rating)).is-win {
+  font-weight: 700;
+  color: #22322b;
+}
+.h2h-pctl {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: #b8b4a4;
+  margin-top: 1px;
+  font-weight: 400;
+}
+.h2h-edge {
+  font-size: 11.5px;
+  text-align: right;
+  justify-self: end;
+}
+.h2h-edge--a {
+  color: #17594a;
+}
+.h2h-edge--b {
+  color: #4a4e1b;
+}
+.h2h-edge--even {
+  color: #8b887c;
+}
+
+/* Total / Value rows. The Total row carries the divider from the rows above. */
+.h2h-row--total {
+  border-top: 1px solid rgba(34, 50, 43, 0.2);
+  border-bottom: none;
+  padding: 9px 0 3px;
+}
+.h2h-row--value {
+  border-bottom: none;
+  padding: 5px 0 8px;
+}
+.h2h-score-val {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  color: #8b887c;
+  text-align: right;
+  justify-self: end;
+}
+.h2h-score-val.is-win {
+  font-weight: 700;
+  color: #22322b;
+}
+
+.h2h-strip {
+  margin-top: 10px;
+  background: #efebdd;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  color: #77764f;
+}
+.h2h-caption {
+  margin: 8px 0 0;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: #8b887c;
+}
+
+/* ---------------------------------------------------------- other options */
+
+.h2h-others {
+  margin-top: 28px;
+  border-top: 1px solid rgba(34, 50, 43, 0.14);
+  padding-top: 20px;
+}
+.h2h-others-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #77762f;
+}
+.h2h-others-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+.h2h-option {
+  background: #fdfcf6;
+  border: 1px solid rgba(34, 50, 43, 0.13);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.h2h-option-head {
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.h2h-obadge {
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-right: 8px;
+  vertical-align: 1px;
+}
+.h2h-obadge--top {
+  background: #d9e353;
+  border: 1px solid #d9e353;
+  color: #3a3f14;
+}
+.h2h-obadge--value {
+  background: transparent;
+  border: 1px solid rgba(34, 50, 43, 0.3);
+  color: #4a4e1b;
+}
+.h2h-option-name {
+  color: #22322b;
+}
+.h2h-option-price {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: #8b887c;
+}
+.h2h-option-desc {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #5c594c;
+}
+.h2h-swap {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.h2h-swap-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  color: #8b887c;
+}
+.h2h-swap-btn {
+  cursor: pointer;
+  border: 1px solid rgba(34, 50, 43, 0.4);
+  border-radius: 7px;
+  padding: 6px 11px;
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 700;
+  background: transparent;
+  line-height: 1.2;
+}
+.h2h-swap-btn--a {
+  color: #17594a;
+}
+.h2h-swap-btn--b {
+  color: #8c9a2b;
+}
+.h2h-swap-btn:hover {
+  background: rgba(34, 50, 43, 0.05);
+}
+
+.h2h-disclosure {
+  margin: 16px 0 0;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: #8b887c;
+}
+
+/* ------------------------------------------------------------------ links */
+
+.h2h a:not(.h2h-cta):not(.btn) {
+  color: #17594a;
+  text-decoration: none;
+  font-weight: 600;
+}
+.h2h a:not(.h2h-cta):not(.btn):hover {
+  color: #0e3f34;
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------- tooltips */
+
+.h2h .tip {
+  position: relative;
+  cursor: help;
+  border-bottom: 1px dotted rgba(34, 50, 43, 0.45);
+}
+.h2h .h2h-tip {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 6px);
+  z-index: 20;
+  width: 230px;
+  background: #22322b;
+  color: #f6f2e7;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  padding: 9px 11px;
+  border-radius: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+  text-align: left;
+  border-bottom: none;
+}
+.h2h .tip:hover .h2h-tip,
+.h2h .tip:focus-within .h2h-tip,
+.h2h .tip.is-open .h2h-tip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ------------------------------------------------------- mobile (≤640px) */
+
+@media (max-width: 640px) {
+  .h2h {
+    padding: 22px 18px;
+    border-radius: 10px;
+  }
+  .h2h-kicker {
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+  }
+  .h2h-verdict {
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+  .h2h-mark {
+    box-shadow: inset 0 -9px 0 #d9e353;
+  }
+  .h2h-blurb {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .h2h-recos {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .h2h-reco {
+    padding: 16px;
+  }
+  .h2h-reco-title {
+    font-size: 17px;
+  }
+  .h2h-reco-bullets {
+    font-size: 12px;
+    line-height: 1.65;
+  }
+  /* Full-width block CTAs; note centred under the button. */
+  .h2h-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .h2h-cta {
+    display: block;
+    text-align: center;
+    padding: 11px;
+    font-size: 13.5px;
+  }
+  .h2h-cta-note {
+    text-align: center;
+    font-size: 10.5px;
+  }
+
+  .h2h-analysis {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 20px;
+    align-items: stretch;
+  }
+  .h2h-radar-label {
+    font-size: 9px;
+  }
+  .h2h-legend {
+    font-size: 9px;
+  }
+  .h2h-dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  /* EDGE column dropped; winner still bolds. */
+  .h2h-row {
+    grid-template-columns: 1fr 62px 62px;
+    gap: 8px;
+    padding: 7px 0;
+  }
+  .h2h-row--head .h2h-col-edge,
+  .h2h-row .h2h-edge {
+    display: none;
+  }
+  .h2h-rating {
+    font-size: 11px;
+  }
+  .h2h-cell:not(:has(.h2h-rating)) {
+    font-size: 11px;
+  }
+  .h2h-score-val {
+    font-size: 11.5px;
+  }
+  .h2h-row > .tip,
+  .h2h-score-label {
+    font-size: 12px;
+  }
+  .h2h-strip {
+    font-size: 9px;
+    line-height: 1.6;
+  }
+  .h2h-caption {
+    font-size: 10px;
+  }
+
+  .h2h-others-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .h2h-option {
+    padding: 12px 13px;
+  }
+  /* Hit targets ≥ 44px on the swap buttons. */
+  .h2h-swap-btn {
+    padding: 12px 12px;
+    font-size: 12px;
+  }
+  .h2h-disclosure {
+    font-size: 10.5px;
+  }
+  .h2h .h2h-tip {
+    width: min(230px, 72vw);
+  }
+}

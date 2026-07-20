@@ -204,30 +204,37 @@ diagonals. `.map-legend`'s `.legend-dot` **reuses the same `.pba-pin--*`
 classes** — recolor in one place or legend and pins desync.
 
 **Paddle comparison charts** — the `pc-` component (`assets/paddle-charts.js` +
-`assets/paddle-charts.css`): a "Your top 3" strip (`.pc-strip`) plus three
-inline-SVG charts — an axis-adjustable catalog scatter (`.pc-plot`), a
-price-vs-overall-score value chart with a pareto `.pc-frontier`, and a
-preset-reweighted stress-test whose `.pc-row`s re-sort. One module, two
-surfaces, chosen with a `components:[…]` option: the **quiz results**
-(`paddle-quiz.js`) render `["value","stress"]` under the buy-first pick cards
-(`.pq-picks`, which replaced the old trait comparison table); **browse**
-(`paddle-grid.js`) renders the full set — `strip`+`explorer`+`value`(+`stress`
-at ≥2 picks) — as its consolidated analytics view, driven by a compare tray
-(`.pg-compare`/`.pg-tray`, cap 3) fed by per-card `.pg-compare-btn` toggles and
-by clicking dots in the scatter (`mode:"browse"` makes cloud dots
-hover-inspectable and click-to-add; `onDotClick`). The featured paddles get the
-site's three real accents by rank — teal `--bay`, clay `--poppy-deep`, olive
-`--kitchen` — via `seriesColorFor()` (shared with the pick cards so a card
-matches its dot). The charts read the four real ratings from
+`assets/paddle-charts.css`): a "Your top 3" strip (`.pc-strip`), a shopping
+recommender (`.pc-shop`), and a preset-reweighted stress-test whose `.pc-row`s
+re-sort. **One surface uses it: the quiz results** (`paddle-quiz.js`), which
+render `["recommend","stress"]` under the buy-first pick cards (`.pq-picks`,
+which replaced the old trait comparison table). The `components:[…]` option
+survives from when there were two surfaces; `strip` currently has no caller.
+
+Three things this paragraph used to describe are gone, so don't go looking for
+them: the axis-adjustable catalog scatter (`.pc-plot`, with its `onDotClick`
+click-to-add and pareto `.pc-frontier`) was removed; the price-vs-score value
+chart was replaced by the recommender; and **browse no longer mounts this module
+at all** — `/paddles/browse` is `assets/paddle-finder.js`, comparing two paddles
+happens on the dedicated `/paddles/browse/compare` page, and the old
+`.pg-compare`/`.pg-tray` panel and its `.pg-compare-btn` toggles no longer exist.
+The browse tray is now `pt-*` (`assets/paddle-tray.js`), cap **2**, FIFO.
+
+The featured paddles get the site's three real accents by rank — teal `--bay`,
+clay `--poppy-deep`, olive `--kitchen` — via `seriesColorFor()` (shared with the
+pick cards so a card matches its row). The charts read the four real ratings from
 `paddle-ratings.js`: there is deliberately **no fabricated "match %"** (the quiz
 score is an integer dot-sum) — every headline figure is the transparent
-`overallScore`. The scatter looks tiered because `power/spin/control/
-forgiveness` derive from percentiles `rebuild_paddle_data.py` coarsens to four
-quartile bands (a PickleballEffect licensing firewall — never un-coarsen);
-`dodgeCloud()` spreads coincident dots a few px for legibility without changing
-any value. The 2c preset syncs to a `?preset=` param (`replaceState`). Its
-segmented pill group (`.pc-pillgroup`/`.pc-pill`) matches the quiz options'
-control, active pill on `--ink`.
+`overallScore`. `power/spin/control/forgiveness` derive from percentiles
+`rebuild_paddle_data.py` coarsens to bands (a PickleballEffect licensing
+firewall — never un-coarsen, and never render a band as a number: segment
+tooltips carry the factor label only, for exactly this reason). The 2c preset
+syncs to a `?preset=` param (`replaceState`) **on `/paddles` only** — note
+`paddle-finder.js` deliberately refuses to read `?preset=`, because four of the
+five preset keys collide with its collection keys and a pasted chart URL would
+silently filter the catalog; collections there are `?c=`. The preset's segmented
+pill group (`.pc-pillgroup`/`.pc-pill`) matches the quiz options' control, active
+pill on `--ink`.
 
 ## Conventions
 

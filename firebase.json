@@ -103,6 +103,8 @@
       "design_handoff_pickleball_redesign/**",
       "design_handoff_paddle_comparison/**",
       "design_handoff_favicon/**",
+      "design_handoff_paddle_finder/**",
+      "design_handoff_head_to_head_swap/**",
       "_pc-test.html",
       "**/*.md",
       "firestore.rules",

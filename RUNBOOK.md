@@ -39,6 +39,34 @@ New venue also needs lat/lon: add `lat`/`lon` to its `venues.json` entry
    `scripts/paddle-vendor-map.json`.
 5. `npm run validate` → confirms unique ids and that percentiles are still
    coarsened tiers.
+6. `npm run generate-paddles` → rewrites the 486 detail pages and the sitemap's
+   paddle region from the new data. **Skipping this leaves every detail page
+   showing the old specs and prices**, and any paddle dropped from the export
+   keeps a live page until the generator prunes it.
+7. `npm run hash` → the regenerated pages need a current import map.
+
+## Paddle detail pages (486 of them, one template)
+
+`/paddles/browse/p/<id>` is a real prerendered file per paddle, not a client
+route — that is what makes them indexable and what makes an unknown slug a hard
+404 instead of a soft one. `<id>` is the paddle's `id` from `assets/paddles.json`
+verbatim; never re-derive a slug from brand+name, because `id` is also the ASIN
+lookup key in `assets/affiliate-map.json`.
+
+Edit **`partials/paddle-detail-template.html`**, never a generated page — every
+file under `paddles/browse/p/` is overwritten on the next run. Then:
+`npm run generate-paddles && npm run hash`.
+
+Two things that bite:
+
+- **`scripts/sync-header.js` cannot reach these pages.** Its `targets()` is not
+  recursive, so a header change followed by `npm run sync` updates 53 pages and
+  silently leaves 486 with the old nav. The generator inlines the header itself,
+  so **after any edit to `partials/site-header.html` you must also re-run
+  `npm run generate-paddles`.** `npm run check` catches the drift if you forget.
+- **Never create `paddles/browse/index.html`.** A directory index shadows the
+  sibling `paddles/browse.html` and `/paddles/browse` starts serving the wrong
+  page with no error anywhere. The `paddles/browse/` directory itself is fine.
 
 ## Refresh Google ratings (monthly, optional — needs an API key)
 
@@ -61,7 +89,9 @@ ratings from `assets/paddle-ratings.js`. Neither is duplicated — don't.
 
 - Header: edit `partials/site-header.html` → `node scripts/sync-header.js`
   (covers root pages + `cities/*` + `paddles/*`; add a directory to `targets()`
-  when you add one, or its pages silently keep a stale nav forever).
+  when you add one, or its pages silently keep a stale nav forever). **It does
+  not recurse**, so the 486 pages under `paddles/browse/p/` need
+  `npm run generate-paddles` as well — see the paddle detail pages section.
 - "Before you head out" block: edit `partials/lane-router.html` →
   `node scripts/sync-lane-router.js`.
 - (`scripts/build.mjs` regenerates head/header/footer from a template but its

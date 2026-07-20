@@ -2,36 +2,34 @@
    The Rent -> Quiz -> Buy funnel. The quiz itself keeps paddle-quiz.css, and
    the affiliate disclosure lives there too, at the links it discloses. */
 
-/* Two-way "Find your paddle / Rent & try" chooser in the hero — the quiz
-   (primary) and renting, presented as an either/or, not a 1-2-3 sequence. */
+/* The three Paddles lanes as one compact tab strip, not a stack of tall cards.
+   The global "Paddles" nav dropdown now carries the same three destinations
+   with their descriptions, so this in-page row only has to be a quick lateral
+   switch between the lanes — label-only pills on a single line, the current one
+   tinted. The per-lane copy still lives in the markup's .pf-choice-note spans
+   (kept in sync across all three pages); it is hidden here rather than deleted
+   so the pages stay byte-identical and the note is still read by assistive tech. */
 .pf-choose {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.9rem;
-  margin-top: var(--space-3);
+  gap: 0.5rem;
+  margin-top: var(--space-2);
 }
 
-/* 14px is the design's radius for a thing you click, as against 16px for a
-   card you read — these are choices, so they take the control radius and the
-   same lift the quiz's options do. */
 .pf-choice {
-  flex: 1 1 260px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  padding: 1.1rem 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.9rem;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 10px;
   background: var(--paper);
   text-decoration: none;
   color: var(--ink);
-  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
 }
 
 .pf-choice:hover {
   border-color: var(--bay);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px -12px rgba(var(--bay-rgb), 0.5);
 }
 
 .pf-choice--primary {
@@ -42,14 +40,26 @@
 .pf-choice-label {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 0.9375rem;
   color: var(--bay-deep);
 }
 
+/* Descriptions collapse into the nav dropdown; the strip stays one line tall. */
 .pf-choice-note {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink-soft);
+  display: none;
+}
+
+/* Pull the catalog up under its hero. The consolidated lane strip already
+   shortened the hero, so the standard hero-bottom + section-top rhythm now
+   leaves a dead band before the search. Scoped with :has so it only tightens the
+   Paddles hubs (the strip) and the finder section (#paddle-finder-app), never
+   the shared .page-hero / .section rhythm elsewhere. */
+.page-hero:has(.pf-choose) {
+  padding-bottom: var(--space-2);
+}
+
+.section:has(#paddle-finder-app) {
+  padding-top: var(--space-2);
 }
 
 /* Funnel-stage section header, so the stages read as one sequence rather than
@@ -85,96 +95,12 @@
   letter-spacing: 0.06em;
 }
 
-/* ---------- Browsable catalog (#browse, assets/paddle-grid.js) ---------- */
+/* ---------- Rent & try callout ---------- */
 
-/* The grid is the quiz's opposite number: the quiz narrows 486 paddles to 3,
-   this hands over all 486 and gets out of the way. Everything below is the
-   design's paddle-grid spec; the markup is generated, so these selectors are
-   the contract with paddle-grid.js. */
-
-/* Search leads the controls: it's the fastest path when you already know the
-   paddle's name, and the filters below are for when you don't. */
-.pg-search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--paper);
-  border: 1.5px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 10px 18px;
-  margin-bottom: 10px;
-  max-width: 460px;
-}
-
-.pg-search:focus-within {
-  border-color: var(--bay);
-}
-
-.pg-search-icon {
-  flex: none;
-  color: var(--ink-soft);
-}
-
-.pg-search input {
-  flex: 1;
-  min-width: 0;
-  border: none;
-  background: none;
-  outline: none;
-  font-family: var(--font-display);
-  font-size: 0.875rem;
-  color: var(--ink);
-}
-
-/* The UA's own clear affordance — no need to draw a second one. */
-.pg-search input::-webkit-search-cancel-button {
-  cursor: pointer;
-}
-
-.pg-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.pg-select {
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 1.5px solid var(--line-strong);
-  background: var(--paper);
-  font-family: var(--font-display);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-/* Clay text on bare paper, no chrome — Reset is a way out, not a third
-   choice competing with the filters beside it. */
-.pg-reset {
-  margin-left: auto;
-  padding: 10px 16px;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.8125rem;
-  color: var(--poppy-deep);
-  background: none;
-  border: none;
-}
-
-.pg-reset:hover {
-  text-decoration: underline;
-}
-
-.pg-count {
-  font-family: var(--font-display);
-  font-size: 0.84375rem;
-  color: var(--ink-faint);
-  margin: 0 0 0.5rem;
-}
-
+/* The only survivor of the old browsable-catalog block. The rest of that
+   section styled assets/paddle-grid.js, which the faceted finder replaced —
+   its styles now live in assets/paddle-finder.css under the pn-* prefix. This
+   callout stayed because paddle-finder.js still renders it above the grid. */
 .pg-rent {
   display: flex;
   align-items: center;
@@ -208,386 +134,6 @@
   color: var(--bay-deep);
   margin-left: auto;
   white-space: nowrap;
-}
-
-/* ---------- Compare & explore panel (tray + consolidated analytics) ---------- */
-
-/* The axis explorer over the whole catalog, plus the value chart and
-   stress-test once paddles are picked into the tray. The charts themselves are
-   the pc-* component (paddle-charts.css); this panel only frames them and
-   holds the tray.
-
-   A <details>, closed by default: open it is ~900px — taller than the viewport
-   — and it sits above the grid, so the browse page opened on a chart and the
-   paddles it is named for began below the fold. Closed it costs one header row
-   and the cards start immediately after the filters. */
-.pg-compare {
-  margin-bottom: 28px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-m);
-  background: var(--paper);
-}
-
-.pg-compare-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 16px 20px;
-  cursor: pointer;
-  list-style: none;
-  border-radius: var(--radius-m);
-}
-
-/* Safari draws its own disclosure triangle through a pseudo-element that
-   list-style:none alone doesn't reach. */
-.pg-compare-summary::-webkit-details-marker {
-  display: none;
-}
-
-.pg-compare-summary:hover .pg-compare-title {
-  color: var(--bay-deep);
-}
-
-.pg-compare-summary:focus-visible {
-  outline: 2px solid var(--bay);
-  outline-offset: 2px;
-}
-
-.pg-compare-head {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.pg-compare-title {
-  font-size: 1.375rem;
-  margin: 0;
-  transition: color 0.15s var(--ease);
-}
-
-/* Carries what the tray would say if it were visible — the selection count —
-   plus the affordance that this opens. */
-.pg-compare-state {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-display);
-  font-size: 0.8125rem;
-  color: var(--ink-faint);
-  white-space: nowrap;
-}
-
-.pg-compare-state.has-picks {
-  font-weight: 700;
-  color: var(--bay-deep);
-}
-
-.pg-compare-state::after {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
-  transition: transform 0.15s var(--ease);
-}
-
-.pg-compare[open] .pg-compare-state::after {
-  transform: translateY(2px) rotate(-135deg);
-}
-
-.pg-compare-body {
-  padding: 0 20px 20px;
-  border-top: 1px solid var(--rule-08);
-}
-
-.pg-compare-body .pg-tray {
-  padding-top: 16px;
-}
-
-.pg-tray {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* Shown in place of the charts when the filters leave fewer than two paddles —
-   there is no distribution to plot and no frontier to draw. */
-.pg-analytics-empty {
-  margin: 0;
-  padding: 20px 0;
-  font-family: var(--font-body);
-  font-size: 0.8125rem;
-  color: var(--ink-soft);
-}
-
-.pg-tray-hint {
-  font-family: var(--font-display);
-  font-size: 0.8125rem;
-  color: var(--ink-faint);
-  max-width: 44ch;
-}
-
-.pg-tray-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 8px 6px 11px;
-  border-radius: 999px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.78125rem;
-  color: var(--ink);
-  max-width: 240px;
-}
-
-.pg-tray-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  flex: none;
-  background: var(--pick, var(--ink));
-}
-
-.pg-tray-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.pg-tray-x {
-  flex: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: none;
-  background: var(--fog-dim);
-  color: var(--ink-soft);
-  font-size: 0.7rem;
-  line-height: 1;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pg-tray-x:hover {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.pg-tray-clear {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.78125rem;
-  color: var(--poppy-deep);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px 8px;
-}
-
-.pg-tray-clear:hover {
-  text-decoration: underline;
-}
-
-/* auto-FILL, not auto-fit: a filter that leaves two results should show two
-   240px cards, not two half-width ones. */
-.pg-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.pg-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-m);
-  padding: 18px;
-}
-
-.pg-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-/* The rank rides the brand line rather than taking its own row — it's an
-   ordering cue, not a title, and the card is already dense. */
-.pg-brand {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.65625rem;
-  color: var(--ink-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.pg-model {
-  font-size: 1.0625rem;
-  font-weight: 600;
-  color: var(--ink);
-  margin: 0;
-  line-height: 1.2;
-}
-
-.pg-price {
-  font-family: var(--font-mono);
-  font-size: 0.9375rem;
-  font-weight: 700;
-  color: var(--ink);
-  white-space: nowrap;
-}
-
-.pg-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.pg-chip {
-  padding: 3px 9px;
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  font-weight: 700;
-  background: var(--fog-dim);
-  color: var(--ink-soft);
-}
-
-.pg-brand .rank-badge {
-  flex: none;
-}
-
-.pg-specs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px 10px;
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  color: var(--body-ink);
-}
-
-.pg-specs b {
-  color: var(--ink);
-}
-
-/* The card's bottom action stack: the compare toggle over the note+buy row.
-   It owns the margin-top:auto that pins actions to the card foot, so the three
-   stay aligned across a row whatever the specs above them run to. */
-.pg-actions {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Approval note over the buy button, always — not a note/button row that wraps
-   when it runs out of width. Wrapping-on-demand meant the foot's shape depended
-   on how long the note and the label happened to be: 481 of 486 cards stacked
-   and 5 stayed inline, so the rare card was the odd one out. Stacking every
-   card makes the foot one fixed height across the grid. */
-.pg-foot {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  padding-top: 10px;
-  border-top: 1px solid var(--rule-08);
-}
-
-/* Compare toggle — an outlined pill that fills teal once the paddle is in the
-   tray, and dims to disabled when three are already chosen. */
-.pg-compare-btn {
-  width: 100%;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1.5px solid var(--line-strong);
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.78125rem;
-  cursor: pointer;
-  transition: border-color 0.15s var(--ease), background 0.15s var(--ease), color 0.15s var(--ease);
-}
-
-.pg-compare-btn:hover:not(:disabled) {
-  border-color: var(--bay);
-  color: var(--bay-deep);
-}
-
-.pg-compare-btn.is-on {
-  background: var(--bay);
-  border-color: var(--bay);
-  color: var(--paper);
-}
-
-.pg-compare-btn:disabled {
-  opacity: 0.45;
-  cursor: default;
-}
-
-.pg-note {
-  font-family: var(--font-display);
-  font-size: 0.625rem;
-  color: var(--ink-faint);
-  font-style: italic;
-}
-
-/* .btn carries the optic ground + ink border + hover invert; only the
-   proportions differ at card scale.
-
-   Sized to its label, capped at the card's content box. The cap plus wrappable
-   text is the backstop for a label the card can't hold: labels are kept short
-   at the source (shortLabel in affiliate-links.js), but a nowrap button in a
-   fixed-width card overhangs the border rather than reflowing, which is how
-   "Search Honolulu Pickleball" used to break 34 cards. A long label added
-   later now costs a second line instead. */
-.pg-buy.btn {
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 0.78125rem;
-  text-align: center;
-  flex: 0 0 auto;
-  max-width: 100%;
-}
-
-.pg-empty {
-  background: var(--paper);
-  border: 1px dashed var(--rule-25);
-  border-radius: var(--radius-m);
-  padding: 40px;
-  text-align: center;
-}
-
-.pg-empty p {
-  font-family: var(--font-headline);
-  font-size: 1.25rem;
-  color: var(--ink);
-  margin: 0 0 1rem;
-}
-
-/* The design's fixed 1fr 1fr spec grid never collapses; below ~380px its two
-   columns can't hold a label plus a mono value. */
-@media (max-width: 380px) {
-  .pg-specs {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* The #rent section opens with the thin .rent-note. Its full 80px section-top

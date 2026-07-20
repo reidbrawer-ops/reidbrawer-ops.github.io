@@ -251,7 +251,21 @@ built, is:
 - The proprietary lab-tested numbers (spin RPM, power/pop MPH, swing/
   twist weight, the "Firepower" tier) are used **internally only** — to
   rank and categorize paddles — and are **never displayed** anywhere on
-  the site, not even as a chip or in a tooltip.
+  the site, not even as a chip or in a tooltip. **One documented
+  exception (added 2026-07-19): the head-to-head compare page
+  (`/paddles/browse/compare`, `assets/paddle-compare.js`).** By explicit
+  product decision it prints derived 0–10 ratings, percentile ordinals
+  ("93rd pctl") and Total/Value scores — all computed from the
+  *already-banded* percentiles in `assets/paddles.json`, so nothing is
+  republished beyond the bucket that public file already exposes, but it
+  is *shown* there. This is deliberately contained to that one file: the
+  grid, detail pages, quiz/finder and the page generator keep the
+  word-tier firewall (tier words + `bandPhrase()`, never a number), and
+  `scripts/check-redesign-invariants.mjs` still enforces it on all four
+  of those surfaces while carving out the compare page (which it instead
+  requires to keep its `LICENSING NOTE`). Do **not** widen this exception
+  to another surface, or lift the number-printing logic out of
+  `paddle-compare.js`, without a fresh decision.
 - No page anywhere credits, links to, or names PickleballEffect.
 - The dataset itself (`assets/paddles.json`) is still a public, fetchable
   static file. To avoid republishing PickleballEffect's *exact* lab

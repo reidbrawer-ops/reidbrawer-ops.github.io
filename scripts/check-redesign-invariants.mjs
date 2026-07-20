@@ -71,22 +71,45 @@ group('Paddles — revenue + legal');
 
   const js = read('assets/paddle-quiz.js');
   const links = read('assets/affiliate-links.js');
-  const grid = read('assets/paddle-grid.js');
+  // The buy-link surfaces. assets/paddle-grid.js was the second one until the
+  // faceted catalog replaced it; there are now four, because a paddle can be
+  // bought from the quiz, the catalog, a prerendered detail page or the
+  // head-to-head. Every one of them is a place a mis-declared rel or a dropped
+  // data-pq-* attribute costs money or breaks an FTC disclosure, so every one of
+  // them is asserted. The generator is a Node script rather than a browser
+  // module, which is exactly why it is easy to forget.
+  const finder = read('assets/paddle-finder.js');
+  const detail = read('assets/paddle-detail.js');
+  const cmp = read('assets/paddle-compare.js');
+  const gen = read('scripts/generate-paddle-pages.mjs');
+  const linkSurfaces = [
+    ['paddle-quiz.js', js],
+    ['paddle-finder.js', finder],
+    ['paddle-compare.js', cmp],
+    ['generate-paddle-pages.mjs', gen],
+  ];
 
-  // vendorLinkFor now lives in the shared module both the quiz and the grid
-  // import. There must be exactly ONE definition — a second copy would drift
-  // from affiliate-map.json and pay nothing, invisibly.
+  // vendorLinkFor lives in the shared module every surface imports. There must
+  // be exactly ONE definition — a second copy would drift from
+  // affiliate-map.json and pay nothing, invisibly.
   check(/export function vendorLinkFor/.test(links), 'affiliate-links.js: vendorLinkFor() gone');
   check(/export function appendParams/.test(links), 'affiliate-links.js: appendParams() gone');
-  check(!/function vendorLinkFor/.test(js) && !/function vendorLinkFor/.test(grid),
-    'vendorLinkFor is DUPLICATED — it must exist only in affiliate-links.js');
-  for (const [f, src] of [['paddle-quiz.js', js], ['paddle-grid.js', grid]]) {
-    check(/import \{[^}]*\bvendorLinkFor\b[^}]*\} from "\/assets\/affiliate-links\.js"/.test(src),
+  for (const [f, src] of linkSurfaces) {
+    check(!/function vendorLinkFor/.test(src),
+      `${f}: vendorLinkFor is DUPLICATED — it must exist only in affiliate-links.js`);
+    // Two accepted shapes. The browser modules use a static
+    //   import { vendorLinkFor } from "/assets/affiliate-links.js"
+    // which only resolves under the page's import map. The page generator runs
+    // in Node, where that specifier is meaningless, so it destructures the same
+    // symbol off a file:// dynamic import instead. Both are "sourced from the
+    // shared module"; only a local re-definition is the thing being banned, and
+    // the !/function vendorLinkFor/ check above is what actually bans it.
+    check(/\bvendorLinkFor\b[^}]*\}\s*(?:from|=)\s*.*affiliate-links\.js/.test(src),
       `${f}: must import vendorLinkFor from the shared module, not redefine it`);
   }
 
-  // Revenue attribution: both surfaces must emit the same data-pq-* contract.
-  for (const [f, src] of [['paddle-quiz.js', js], ['paddle-grid.js', grid]]) {
+  // Revenue attribution: every surface must emit the same data-pq-* contract.
+  for (const [f, src] of linkSurfaces) {
     for (const a of ['data-pq-paddle', 'data-pq-brand', 'data-pq-link-type', 'data-pq-affiliate', 'data-pq-position']) {
       check(src.includes(a), `${f}: ${a} dropped — this is the ONLY revenue attribution`);
     }
@@ -106,7 +129,11 @@ group('Paddles — revenue + legal');
   // importers can't double-count.
   check(/vendorClicksBound/.test(links), 'affiliate-links.js: trackVendorClicks lost its idempotence guard — two surfaces would double-count');
   check(/surface: a\.dataset\.pqSurface/.test(links), 'affiliate-links.js: affiliate_click no longer reports which surface fired it');
-  for (const [f, src] of [['paddle-quiz.js', js], ['paddle-grid.js', grid]]) {
+  // Includes paddle-detail.js, which renders no links itself — the generator
+  // baked them into the HTML — but is the only script on those 486 pages, so it
+  // is the only thing that can bind their attribution.
+  for (const [f, src] of [...linkSurfaces, ['paddle-detail.js', detail]]) {
+    if (f === 'generate-paddle-pages.mjs') continue; // build-time; no listeners to bind
     check(/import \{[^}]*\btrackVendorClicks\b[^}]*\}/.test(src) && /trackVendorClicks\(\)/.test(src),
       `${f}: must import AND call trackVendorClicks — its buy clicks are otherwise unattributed`);
   }
@@ -116,7 +143,7 @@ group('Paddles — revenue + legal');
   // mount still attributes any buy links it rendered.
   for (const [f, src, guard] of [
     ['paddle-quiz.js', js, 'const root = document.getElementById("paddle-quiz-app")'],
-    ['paddle-grid.js', grid, 'const root = document.getElementById("paddle-grid-app")'],
+    ['paddle-finder.js', finder, 'document.getElementById("paddle-finder-app")'],
   ]) {
     const guardAt = src.indexOf(guard);
     const trackAt = src.indexOf('trackVendorClicks();', src.indexOf('DOMContentLoaded'));
@@ -128,15 +155,39 @@ group('Paddles — revenue + legal');
   // (RUNBOOK), and the site paraphrases rather than citing them. Strip comments
   // first — the file *discusses* "88th pct" in the comment explaining why it
   // must never render one.
-  const gridCode = grid.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
-  check(!/th pct|thpct/.test(gridCode), 'paddle-grid.js: renders a raw percentile — violates the data-licensing firewall');
-  // Asserts the PARAPHRASING FUNCTION, not the lookup table it used to be. The
-  // old form keyed on the four quartile midpoints; when the data widened to 20
-  // bands that table would have matched nothing and every Power chip would have
-  // silently vanished, so it became a range test. Pinning the old constant name
-  // here would have blocked exactly the fix the widening required.
-  check(/function tierWord|tierWord\s*=/.test(gridCode), 'paddle-grid.js: tierWord() paraphrasing for powerPercentile gone');
-  check(/Very high|Medium/.test(gridCode), 'paddle-grid.js: tier words gone — percentiles would render as bare numbers');
+  //
+  // paddle-compare.js is the ONE documented exception, by explicit product
+  // decision: the head-to-head page prints the derived 0–10 ratings, percentile
+  // ordinals and Total/Value scores that the verdict-first design is built on.
+  // Those numbers are all derived from the already-banded percentiles in
+  // paddles.json, so nothing is republished beyond the bucket the public file
+  // exposes — but it IS displayed there, unlike everywhere else. The firewall
+  // below still guards the three word-tier surfaces (grid, detail, quiz/finder,
+  // and the page generator); the compare page is carved out and instead required
+  // to keep its LICENSING NOTE, so the exception can never go undocumented.
+  const model = read('assets/paddle-model.js');
+  const stripComments = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  for (const [f, src] of [['paddle-model.js', model], ['paddle-finder.js', finder],
+                          ['generate-paddle-pages.mjs', gen]]) {
+    const code = stripComments(src);
+    check(!/th pct|thpct|percentile`|st percentile|\bord\(/.test(code),
+      `${f}: renders a raw percentile — violates the data-licensing firewall`);
+  }
+  check(/LICENSING NOTE/.test(cmp),
+    'paddle-compare.js: the licensing-exception note is gone — the head-to-head page is the one place that DISPLAYS percentiles/derived scores, and that departure from the firewall must stay documented in the file');
+  // Asserts the PARAPHRASING FUNCTIONS, not the lookup table tierWord used to
+  // be. The old form keyed on the four quartile midpoints; when the data widened
+  // to 20 bands that table would have matched nothing and every Power chip would
+  // have silently vanished, so it became a range test. Pinning the old constant
+  // name here would have blocked exactly the fix the widening required.
+  //
+  // Both now live in paddle-model.js, which the browser modules AND the page
+  // generator import — one definition, so a detail page and a card can never
+  // describe the same paddle differently.
+  const modelCode = stripComments(model);
+  check(/export function tierWord/.test(modelCode), 'paddle-model.js: tierWord() paraphrasing gone');
+  check(/export function bandPhrase/.test(modelCode), 'paddle-model.js: bandPhrase() gone — the detail page would have to print a percentile to say where a paddle sits');
+  check(/Very high|Medium/.test(modelCode), 'paddle-model.js: tier words gone — percentiles would render as bare numbers');
 
   // Content-hashed module graph. Any page loading a module entry must pin the
   // whole graph with an import map, and must not reference a module by its
@@ -154,7 +205,7 @@ group('Paddles — revenue + legal');
   // placeholder on screen forever — that took the quiz down in production when a
   // shared export moved between modules and browsers held a stale sibling. The
   // watchdog turns that hang into an honest error + Reload.
-  for (const [f, mount] of [['paddles.html', 'paddle-quiz-app'], ['paddles/browse.html', 'paddle-grid-app']]) {
+  for (const [f, mount] of [['paddles.html', 'paddle-quiz-app'], ['paddles/browse.html', 'paddle-finder-app']]) {
     const src = read(f);
     check(/data-mount-pending=/.test(src), `${f}: mount placeholder lost data-mount-pending — a failed module would hang on "Loading…" forever`);
     check(/mount-watchdog\.js/.test(src), `${f}: no mount-watchdog.js — nothing would report a dead ${mount}`);
@@ -174,8 +225,11 @@ group('Paddles — revenue + legal');
   // /paddles#quiz is the CTA on 43 pages (lane-router) — the anchor has to
   // survive on whichever page the quiz lives on.
   check(/id="quiz"/.test(ph), 'paddles.html missing #quiz — the money CTA on 43 pages targets it');
-  check(/id="paddle-grid-app"/.test(pb), 'paddles/browse.html missing #paddle-grid-app (grid mount)');
-  check(/paddle-grid\.js/.test(pb), 'paddles/browse.html no longer loads paddle-grid.js');
+  // The faceted catalog replaced the eight-<select> grid on 2026-07-19; the
+  // mount id and entry module moved with it (assets/paddle-grid.js ->
+  // assets/paddle-finder.js).
+  check(/id="paddle-finder-app"/.test(pb), 'paddles/browse.html missing #paddle-finder-app (catalog mount)');
+  check(/paddle-finder\.js/.test(pb), 'paddles/browse.html no longer loads paddle-finder.js');
   check(/id="rent"/.test(pr), 'paddles/rent.html missing #rent');
   // Each lane must reach the other two, or the split strands them.
   for (const [f, src] of [['paddles.html', ph], ['paddles/browse.html', pb], ['paddles/rent.html', pr]]) {
@@ -210,7 +264,7 @@ group('City pages — venue-card guard + JS hooks');
     check(/<!-- lane-router:start/.test(h), `cities/${f}: lane-router markers gone`);
     check(/<footer class="site-footer">/.test(h), `cities/${f}: literal <footer class="site-footer"> anchor gone — breaks sync-lane-router`);
   }
-  check(cards === 169, `city venue-cards matching check-venue-cards CARD_RE: expected 169, got ${cards}`);
+  check(cards === 171, `city venue-cards matching check-venue-cards CARD_RE: expected 171, got ${cards}`);
 
   // direct-child combinator city-top-pick.js relies on
   const pa = read('cities/palo-alto.html');

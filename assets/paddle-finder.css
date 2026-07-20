@@ -1,0 +1,1986 @@
+/* Paddle Finder — scoped styles layered on top of style.css.
+
+   Covers the four surfaces of the /paddles/browse section: the faceted catalog
+   (pn-), the 486 prerendered detail pages (pd-), head-to-head (ph-) and the
+   compare tray (pt-, markup already written in assets/paddle-tray.js).
+
+   ONE file, not four, because three of the four surfaces are the same handful
+   of primitives wearing different sizes: a metric bar (5px on a card, 9px on
+   detail, mirrored on head-to-head), a tinted play-style chip (.pn-tag, which
+   the detail title block and the head-to-head summary cards both reuse), and a
+   paper card with a hairline and a lift. Split four ways, the chip would have
+   been redefined three times and drifted the first time someone changed a tint
+   — which is exactly how the .legal-* shell went wrong (see DESIGN.md).
+
+   The handoff prototype's forest green (#2c4f27), its gold, and its v3-era
+   mono stand-in are NOT this site: production is teal (--bay), optic olive
+   (--optic-text), clay (--poppy) and Space Mono. Geometry, type scale and
+   interaction timing follow the handoff; every colour comes from style.css's
+   :root. No new tokens are defined here — the existing ramp already expressed
+   everything this design needed.
+
+   Two markup expectations this file cannot enforce, both stated in the class
+   contract's spirit rather than its letter:
+     - Buy CTAs (.pd-cta, .pt-go) carry `.btn` as well. paddle-tray.js already
+       emits `class="btn pt-go"`; the rules here are modifiers on top of it, so
+       there is one primary-button definition on the site, not two.
+     - .pd-wrap / .ph-wrap sit INSIDE a `.container`. They own vertical rhythm
+       only, so the 1120px measure stays defined in exactly one place.
+
+   Breakpoint is 940px, not the site's 900px nav breakpoint. They are unrelated
+   questions: 900px is where six nav links stop fitting on one line, 940px is
+   where a 264px rail plus a 236px card minimum stops leaving room for two
+   cards. Moving either to match the other breaks the one it was measured for.
+*/
+
+/* The tray is `position: fixed` at the bottom of the viewport and it overlaps
+   the end of the document. paddle-tray.js measures its own height into
+   --pt-tray-h on <body>; without this padding the last row of cards and the
+   footer's final link sit underneath it, unreachable by mouse. The 0px
+   fallback matters — an unmounted tray must not leave a gap, and
+   `var(--pt-tray-h)` with no fallback would make the whole declaration
+   invalid-at-computed-value-time rather than zero. */
+body {
+  padding-bottom: var(--pt-tray-h, 0px);
+}
+
+/* ==========================================================================
+   Shared primitives — the reason this is one file
+   ========================================================================== */
+
+/* Play-style / spec chip. Base is the OUTLINED variant, because that is what
+   the detail title block needs for its USAP and year chips; the tinted
+   play-style variants below fill it in. Both live on .pn-tag so a chip looks
+   identical whether it is on a catalog card, a detail title, or a
+   head-to-head summary card. */
+.pn-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.2em 0.6em;
+  /* --rule-16, not --line-strong: a chip is a label, not a form control, and
+     the 0.22 step is reserved for boundaries you can click into. */
+  border: 1px solid var(--rule-16);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* Tint background + -deep text is the sitewide badge pairing (.level-badge,
+   .badge-most-loved). The border goes transparent rather than being removed so
+   a tinted and an outlined chip in the same row stay the same height. */
+.pn-tag--power {
+  background: var(--poppy-tint);
+  border-color: transparent;
+  color: var(--poppy-deep);
+}
+
+.pn-tag--control {
+  background: var(--bay-tint);
+  border-color: transparent;
+  color: var(--bay-deep);
+}
+
+.pn-tag--allcourt {
+  background: var(--kitchen-tint);
+  border-color: transparent;
+  color: var(--optic-text);
+}
+
+/* "Unrated" is the absence of a play style, not a fourth play style, so it
+   gets ink at low alpha rather than a fourth accent — nine paddles should not
+   introduce a colour to the palette. */
+.pn-tag--unrated {
+  background: rgba(var(--ink-rgb), 0.07);
+  border-color: transparent;
+  color: var(--ink-soft);
+}
+
+/* ==========================================================================
+   Catalog — /paddles/browse
+   ========================================================================== */
+
+.pn-app {
+  margin-top: var(--space-2);
+}
+
+/* Search + collection chips. Sits under the hero copy, above the split. */
+.pn-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: var(--space-3);
+}
+
+/* The pill owns the border and the focus ring, not the <input> — same pattern
+   as .global-search in style.css. That is what lets an optional magnifier icon
+   and the clear button sit inside the box without the input needing to reserve
+   left padding for an icon that may not be rendered. */
+.pn-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 30rem;
+  min-height: 46px;
+  padding: 0 0.75rem;
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-s);
+  transition: border-color 0.15s var(--ease);
+}
+
+.pn-search:focus-within {
+  border-color: var(--bay);
+  outline: 3px solid var(--bay);
+  outline-offset: 2px;
+}
+
+.pn-search svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--ink-faint);
+}
+
+.pn-search-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  padding: 0.6rem 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--ink);
+}
+
+.pn-search-input::placeholder {
+  color: var(--ink-faint);
+}
+
+/* See .pn-search:focus-within — the pill draws the ring, so the input must not
+   draw a second one inside it. This beats the sitewide :focus-visible rule by
+   coming later in the cascade at equal specificity. */
+.pn-search-input:focus,
+.pn-search-input:focus-visible {
+  outline: none;
+}
+
+.pn-search-clear {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-faint);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.pn-search-clear:hover {
+  background: var(--fog-dim);
+  color: var(--ink);
+}
+
+.pn-collections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pn-chip {
+  padding: 0.42em 0.85em;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper);
+  font-family: var(--font-display);
+  font-size: 0.78125rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease), color 0.15s var(--ease),
+    box-shadow 0.15s var(--ease);
+}
+
+.pn-chip:hover {
+  border-color: var(--bay);
+  color: var(--bay-deep);
+  box-shadow: 0 2px 8px -4px rgba(var(--ink-rgb), 0.35);
+}
+
+/* A collection is a saved filter set, so the active one has to read as a
+   *state*, not a hover. Solid teal, and the border goes with it so the pill
+   doesn't gain a visible seam. */
+.pn-chip.is-on {
+  background: var(--bay);
+  border-color: var(--bay);
+  color: var(--fog);
+}
+
+/* ---------- layout split ---------- */
+
+.pn-layout {
+  display: grid;
+  grid-template-columns: 264px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+/* min-width:0 on the results column, without which a long paddle name inside
+   the grid sets a min-content floor and pushes the whole layout wider than the
+   container instead of wrapping. */
+.pn-results {
+  min-width: 0;
+}
+
+/* ---------- filter rail ---------- */
+
+/* --header-h is kept live by nav.js's ResizeObserver on .site-header, so the
+   rail stays clear of the sticky header even when it wraps to two lines at
+   900-983px. The 130px fallback covers the frame before that JS runs. */
+.pn-rail {
+  position: sticky;
+  top: calc(var(--header-h, 130px) + 12px);
+  /* The tray is fixed to the viewport, so body's padding-bottom does not move
+     it off a sticky element — the rail has to reserve that height itself or
+     its last two facets sit behind the tray with no way to scroll to them. */
+  max-height: calc(100vh - var(--header-h, 130px) - var(--pt-tray-h, 0px) - 24px);
+  overflow-y: auto;
+  padding: 1rem 1.1rem 1.25rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+
+.pn-rail-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--rule-08);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* Clay, not teal: "Reset all" undoes work, and the site reserves teal for
+   links that take you somewhere. It only appears when something is active, so
+   it is never a permanently-shouting control. */
+.pn-reset {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--poppy-deep);
+  cursor: pointer;
+}
+
+.pn-reset:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pn-facet {
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--rule-08);
+}
+
+.pn-facet:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* Works as a plain heading or as a <summary> — if the facet is a <details>,
+   the default triangle would collide with the caps label. */
+.pn-facet-head {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.78125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  cursor: default;
+}
+
+summary.pn-facet-head {
+  cursor: pointer;
+  list-style: none;
+}
+
+summary.pn-facet-head::-webkit-details-marker {
+  display: none;
+}
+
+.pn-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The row is a <label>, so the whole line including the count is a click
+   target for the checkbox. */
+.pn-opt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 28px;
+  padding: 0.15rem 0;
+  cursor: pointer;
+  color: var(--body-ink);
+}
+
+/* accent-color rather than a hand-rolled ::before checkmark: it gives the
+   design's filled-teal box with a light tick, keeps the native focus ring the
+   rest of the site uses, and cannot desync from the input's real state. */
+.pn-opt input[type="checkbox"] {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--bay);
+  cursor: pointer;
+}
+
+.pn-opt-label {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.pn-opt-count {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.65625rem;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Greyed, never hidden. A zero option that vanishes makes the facet list
+   reflow under the cursor on every checkbox click, and it hides the fact that
+   the combination you just built has no widebody paddles left in it. */
+.pn-opt.is-zero {
+  color: var(--ink-faint);
+}
+
+.pn-opt.is-zero .pn-opt-count {
+  opacity: 0.6;
+}
+
+.pn-more {
+  margin-top: 0.35rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--bay);
+  cursor: pointer;
+}
+
+.pn-more:hover {
+  color: var(--bay-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* The lab-coverage footnote. It is the rail's only prose and it is load-
+   bearing honesty — 133 of 486 paddles have no bench numbers, and the facet
+   counts are meaningless without it. */
+.pn-rail-note {
+  margin: 1rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule-08);
+  font-family: var(--font-body);
+  font-size: 0.71875rem;
+  line-height: 1.5;
+  color: var(--ink-faint);
+}
+
+/* Desktop has no toggle and no sheet close — both are the bottom-sheet's
+   controls and only exist below 940px. */
+.pn-rail-toggle,
+.pn-sheet-close {
+  display: none;
+}
+
+/* ---------- results toolbar ---------- */
+
+.pn-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule-08);
+}
+
+.pn-count {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.pn-count strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.pn-active {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.pn-active-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.22em 0.5em 0.22em 0.7em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--bay-tint);
+  font-family: var(--font-display);
+  font-size: 0.71875rem;
+  font-weight: 700;
+  color: var(--bay-deep);
+  cursor: pointer;
+}
+
+.pn-active-chip:hover {
+  background: var(--bay);
+  color: var(--fog);
+}
+
+/* margin-left:auto rather than justify-content:space-between, so the sort
+   stays hard right whether or not there are active-filter chips between it and
+   the count. */
+.pn-sort {
+  margin-left: auto;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-s);
+  background: var(--paper);
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* ---------- card grid ---------- */
+
+/* auto-FILL, not auto-fit. auto-fit collapses the empty tracks, so a filter
+   that leaves one result renders one card stretched across the full row — the
+   same trap paddles.css already documents at .pg-grid. */
+.pn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(236px, 1fr));
+  gap: 14px;
+}
+
+/* position:relative is load-bearing: it is the containing block for
+   .pn-card-link's stretched overlay and for the compare toggle. */
+.pn-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 14px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  transition: transform 0.15s var(--ease), border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+
+/* :focus-within as well as :hover — the whole card is one tab stop for the
+   stretched link, so a keyboard user must see the same lift a mouse user does
+   or the card gives no feedback at all. */
+.pn-card:hover,
+.pn-card:focus-within {
+  transform: translateY(-2px);
+  border-color: rgba(var(--bay-rgb), 0.45);
+  box-shadow: 0 4px 14px -4px rgba(var(--ink-rgb), 0.22);
+}
+
+/* There is deliberately NO art well on a catalog card. The handoff put a 118px
+   silhouette here, but there are no product photos and none are coming, so the
+   well could only ever hold a drawing of a paddle that is not this paddle. At
+   30 cards a page that is ~3,500px of decoration carrying no information, and
+   it pushed the specs people actually shop on below the fold. The card leads
+   with type instead; the dimensioned blueprint lives on the detail page, where
+   it is drawn from the paddle's own measurements.
+
+   Removing it also fixed a real bug: the well was position:relative with
+   overflow:hidden, so .pn-card-link::after resolved against IT rather than the
+   card and was clipped to the top 118px — roughly three quarters of each card
+   was not actually clickable. */
+.pn-card-brand {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--optic-text);
+}
+
+.pn-card-name {
+  margin: 0;
+  font-family: var(--font-headline);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.pn-card-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* THE STRETCHED LINK. The card is not wrapped in an <a> because it contains
+   two other independent controls (buy, compare) and nested interactive content
+   is invalid HTML and unusable with a screen reader. Instead this pseudo-
+   element covers the card, so the accessible name stays "11SIX24 Vaquero" and
+   not the card's entire text content. */
+.pn-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.pn-card-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pn-card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.pn-card-specs {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--ink-faint);
+}
+
+/* ---------- card metric bars ---------- */
+
+/* The three bars share ONE grid so their tracks line up, which means the grid
+   lives on the container and each row is display:contents. A per-row grid with
+   a fixed 42px label column let "FORGIVENESS" (11 characters of mono) overrun
+   into its own bar; sizing the column to `auto` only works if every row is
+   measured together, otherwise each row picks its own label width and the three
+   tracks start at three different x positions. */
+.pn-bars {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.3rem 0.4rem;
+}
+
+.pn-bar {
+  display: contents;
+}
+
+.pn-bar-label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.pn-track {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(var(--ink-rgb), 0.1);
+  overflow: hidden;
+}
+
+/* Width is set inline by the renderer from a banded percentile. A bar POSITION
+   is a legal use of the licensed lab data; a printed percentile is not — see
+   PADDLE_DATA_SETUP.md. .pn-bar-word carries the word instead. */
+/* display:block is load-bearing. A <span> is inline by default, and an inline
+   box ignores both width and height — every bar on all 486 cards rendered at
+   zero width, which read as "we measured this paddle at nothing". */
+.pn-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.pn-fill--spin {
+  background: var(--bay);
+}
+
+.pn-fill--power {
+  background: var(--poppy);
+}
+
+/* Control's site identity is teal — the Control play-style chip is
+   --bay-tint/--bay-deep — so its bar is teal-family too. --bay-deep, a shade
+   down from Spin's --bay, so the two teals stay distinct across the Power bar
+   that sits between them. */
+.pn-fill--control {
+  background: var(--bay-deep);
+}
+
+.pn-fill--forgiveness {
+  background: var(--optic-text);
+}
+
+.pn-bar-word {
+  font-family: var(--font-display);
+  font-size: 0.65625rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* 133 paddles have no bench numbers. Saying so in italics beats three empty
+   tracks, which read as "measured at zero". */
+.pn-nolab {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--ink-faint);
+}
+
+/* ---------- card foot ---------- */
+
+/* margin-top:auto pins the price row to the bottom, so prices line up across a
+   row of cards whose names wrap to different heights. */
+/* Wraps, because the foot holds three things of wildly unequal width — a
+   4-character price, a button whose label runs from "Buy on Amazon" to
+   "Visit brand site", and an approval note. Held on one nowrap line at a 236px
+   card, the button was squeezed to 67px and its label broke mid-word. The note
+   is allowed to fall to its own line instead. */
+.pn-card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.5rem;
+  margin-top: auto;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--rule-08);
+}
+
+/* The note takes the full width once it wraps, so it reads as a caption under
+   the price row rather than as a third column fighting for space. */
+.pn-card-foot .pn-note {
+  flex: 1 0 100%;
+}
+
+.pn-buy {
+  white-space: nowrap;
+}
+
+.pn-price {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* z-index above .pn-card-link::after, or the stretched overlay swallows the
+   click and every buy button navigates to the detail page instead of the
+   vendor — silently costing every affiliate click on the catalog. */
+.pn-buy {
+  position: relative;
+  z-index: 2;
+  padding: 0.3em 0.7em;
+  border: 1px solid rgba(var(--bay-rgb), 0.4);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.71875rem;
+  font-weight: 700;
+  color: var(--bay-deep);
+  text-decoration: none;
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.pn-buy:hover {
+  background: var(--bay);
+  border-color: var(--bay);
+  color: var(--fog);
+  text-decoration: none;
+}
+
+/* The "· affiliate" note, which is conditional on the link actually being one
+   (see assets/affiliate-links.js). */
+.pn-note {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+
+/* Same z-index reasoning as .pn-buy. */
+.pn-compare {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  right: 8px;
+  padding: 0.28em 0.6em;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(var(--fog-rgb), 0.92);
+  font-family: var(--font-display);
+  font-size: 0.65625rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.pn-compare:hover {
+  border-color: var(--bay);
+  color: var(--bay-deep);
+}
+
+.pn-compare.is-on {
+  background: var(--bay);
+  border-color: var(--bay);
+  color: var(--fog);
+}
+
+/* ---------- empty state & pagination ---------- */
+
+.pn-empty {
+  padding: var(--space-3) var(--space-2);
+  border: 1px dashed var(--rule-25);
+  border-radius: var(--radius-m);
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.pn-empty h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.375rem;
+}
+
+.pn-empty p {
+  margin: 0 0 1.1rem;
+  font-size: 0.875rem;
+}
+
+.pn-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: var(--space-3);
+}
+
+.pn-page {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0 0.55rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--ink);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.pn-page:hover {
+  border-color: var(--bay);
+  color: var(--bay-deep);
+}
+
+.pn-page.is-current {
+  background: var(--bay);
+  border-color: var(--bay);
+  color: var(--fog);
+  font-weight: 700;
+}
+
+/* Prev/Next at the ends of the range. Kept in the DOM rather than removed so
+   the pager's width doesn't jump between page 1 and page 2. */
+.pn-page[disabled],
+.pn-page[aria-disabled="true"] {
+  color: var(--ink-faint);
+  cursor: default;
+}
+
+.pn-page[disabled]:hover,
+.pn-page[aria-disabled="true"]:hover {
+  border-color: var(--line-strong);
+  color: var(--ink-faint);
+}
+
+.pn-pager-note {
+  flex-basis: 100%;
+  margin: 0.5rem 0 0;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.71875rem;
+  color: var(--ink-faint);
+}
+
+/* ==========================================================================
+   Detail — /paddles/browse/p/<id>
+   ========================================================================== */
+
+/* Vertical rhythm only — the 1120px measure belongs to .container, which this
+   sits inside. */
+.pd-wrap {
+  padding-block: var(--space-2) var(--space-4);
+}
+
+.pd-back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--bay);
+  text-decoration: none;
+}
+
+.pd-back:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Two columns on desktop: the sticky spec rail (.pd-aside, pulled left by
+   order:-1) and the analysis (.pd-main). The reco/similar sections live in
+   .pd-tail, a SIBLING of this grid rather than a child — see the template
+   comment on .pd-tail for why the sticky aside forces that. */
+.pd-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+
+/* Sticky, so the specification numbers stay on screen while you read the
+   performance bars and picks beside them.
+
+   order:-1 is what puts this rail in the LEFT column even though .pd-main is
+   ahead of it in the DOM. The source order is deliberate — the aside opens with
+   an <h2> ("Full specifications"), so if it came first the <h1> naming the
+   paddle would not be the first heading on the page — and grid auto-placement
+   honours `order`, so the visual two-column layout survives the accessible
+   source order with one declaration and no explicit grid-column on either
+   child. This is reset to 0 in the max-width:940px block; leaving it at -1 there
+   would put the spec table above the paddle's name on every phone. */
+.pd-aside {
+  order: -1;
+  position: sticky;
+  top: calc(var(--header-h, 130px) + 12px);
+}
+
+/* The rail's section label. A real <h2> for the heading outline, but sized like
+   the site's other rail labels — a mono uppercase eyebrow — so the spec card
+   below it stays the visual anchor rather than a heavy serif heading. */
+.pd-aside-head {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* Recommendations + similar paddles, full width under both columns. A sibling
+   of .pd-grid (not a grid child — see the .pd-tail template comment), so it is
+   already a full-width block; min-width:0 only keeps the similar row's
+   horizontal scroller from forcing the page wider than the viewport. Its
+   children (.pd-recos, .pd-similar) bring their own margin-top. */
+.pd-tail {
+  min-width: 0;
+}
+
+.pd-main {
+  min-width: 0;
+}
+
+.pd-title {
+  margin: 0.2rem 0 0.5rem;
+  font-size: clamp(1.625rem, 3.4vw, 2.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+.pd-title-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.pd-blurb {
+  margin: 0 0 var(--space-2);
+  font-size: 0.90625rem;
+  line-height: 1.55;
+  color: var(--body-ink);
+}
+
+/* ---------- price + single CTA ---------- */
+
+/* One card, one CTA. The design is explicit that a paddle shows EITHER a buy
+   link or a "search the brand" fallback, never both — two buttons here would
+   make the affiliate link look like the paid option next to a free one. */
+.pd-buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem var(--space-2);
+  padding: 1rem 1.1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+
+.pd-price {
+  font-family: var(--font-mono);
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+/* Expects to sit with .pd-price inside an unclassed wrapper, so the caption
+   tucks under the number rather than beside it. */
+.pd-price-note {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  color: var(--ink-faint);
+}
+
+/* Fallback for the wrapper-less case: as a direct flex child the caption would
+   otherwise sit inline between the price and the CTA. `order` pushes it below
+   the button rather than letting it break the row and drop the CTA to line
+   two, which is the one arrangement that reads as broken. */
+.pd-buy > .pd-price-note {
+  flex-basis: 100%;
+  order: 1;
+}
+
+/* Modifier on .btn — expects `class="btn pd-cta"`, matching what
+   paddle-tray.js already does with .pt-go. Only the placement is new. */
+.pd-cta {
+  margin-left: auto;
+}
+
+/* The affiliate disclosure, full width under the CTA. flex-basis:100% forces
+   its own row so it can never end up beside the button and get skimmed past. */
+.pd-disclosure {
+  flex-basis: 100%;
+  order: 2;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--ink-faint);
+}
+
+/* ---------- sections ---------- */
+
+.pd-section {
+  margin-top: var(--space-3);
+}
+
+.pd-section > h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.3125rem;
+}
+
+.pd-caption {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* ---------- detail metric bars ---------- */
+
+.pd-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: 1.1rem 1.2rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+
+/* min-width:0 so a long note under a bar wraps instead of setting a min-content
+   floor that widens .pd-bars past the column. */
+.pd-bar {
+  min-width: 0;
+}
+
+.pd-bar-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.pd-bar-label {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* The tier word ("High", "Very high") stands in for the number that licensing
+   forbids printing, so it carries the emphasis a numeral would have had. */
+.pd-bar-word {
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* bandPhrase() — "top quarter of the catalog". A qualitative position, never a
+   percentile. */
+.pd-bar-band {
+  font-family: var(--font-body);
+  font-size: 0.71875rem;
+  color: var(--ink-faint);
+}
+
+/* position:relative so .pd-median can be placed against it. */
+.pd-track {
+  position: relative;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(var(--ink-rgb), 0.09);
+  overflow: hidden;
+}
+
+.pd-fill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+/* Terciles, so the colour says "where this lands" without printing where. */
+.pd-fill--high {
+  background: var(--bay);
+}
+
+.pd-fill--mid {
+  background: var(--optic-text);
+}
+
+.pd-fill--low {
+  background: var(--poppy-deep);
+}
+
+/* Hand speed only. A heavy paddle is slower, not worse, so colouring it clay
+   would assert a judgement the data does not support. */
+.pd-fill--neutral {
+  background: var(--ink-soft);
+}
+
+/* The catalog median. transform, not `left: calc(50% - 0.75px)`, because a
+   subpixel left offset lands the tick a hair off centre at some zoom levels
+   and the whole point of the tick is that it is exactly the middle. */
+.pd-median {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1.5px;
+  transform: translateX(-50%);
+  background: rgba(var(--ink-rgb), 0.35);
+}
+
+.pd-bar-note {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--ink-faint);
+}
+
+.pd-nolab {
+  padding: 1.1rem 1.2rem;
+  border: 1px dashed var(--rule-25);
+  border-radius: var(--radius-m);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ---------- spec table ---------- */
+
+/* border-collapse: SEPARATE, deliberately. `collapse` merges the cell borders
+   into the table box and the rounded corners stop clipping — the stripes then
+   square off the bottom two corners of the card. */
+.pd-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+}
+
+/* Stripe is ink at 3%, not --fog-dim at low alpha: there is no --fog-dim-rgb
+   triplet in :root and this file does not add tokens. Ink-on-paper at 3% lands
+   within a hair of the intended warm tint and cannot drift from the palette. */
+.pd-table tbody tr:nth-child(even) {
+  background: rgba(var(--ink-rgb), 0.03);
+}
+
+.pd-table th,
+.pd-table td {
+  padding: 0.5rem 0.85rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.pd-table th {
+  width: 44%;
+  font-family: var(--font-display);
+  font-size: 0.78125rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.pd-table td {
+  font-family: var(--font-mono);
+  font-size: 0.78125rem;
+  color: var(--ink);
+}
+
+/* ---------- recommendations ---------- */
+
+.pd-recos {
+  margin-top: var(--space-3);
+}
+
+/* Capped, not full-bleed: .pd-tail spans the whole 1120px container, but two
+   content-heavy reco cards stretched that wide read as sparse. The max-width
+   holds them near the width they had inside the old .pd-main column and lets the
+   pair left-align under the section heading. The similar row below is a
+   horizontal scroller and deliberately keeps the full width. */
+.pd-reco-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 720px;
+}
+
+/* The extra top padding clears the badge overhanging the corner. Nothing here
+   may set overflow — a clipped badge is the whole effect gone. */
+.pd-reco {
+  position: relative;
+  padding: 1.35rem 1.1rem 1.1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+
+.pd-reco--top {
+  border-color: rgba(var(--bay-rgb), 0.5);
+}
+
+.pd-reco--value {
+  border-color: rgba(var(--kitchen-rgb), 0.5);
+}
+
+.pd-reco-badge {
+  position: absolute;
+  top: -9px;
+  left: 14px;
+  padding: 0.25em 0.6em;
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fog);
+}
+
+.pd-reco--top .pd-reco-badge {
+  background: var(--bay);
+}
+
+/* Olive, not the raw optic: this is text on a fill and --optic fails contrast
+   at ~2.6:1. --optic-text is the only optic that passes. */
+.pd-reco--value .pd-reco-badge {
+  background: var(--optic-text);
+}
+
+.pd-reco-name {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.pd-reco-name a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.pd-reco-name a:hover {
+  color: var(--bay-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pd-reco-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Direction is in the class, not only the colour — "−$70" already reads as
+   cheaper for a sighted user, and .is-down/.is-up keep the sign meaningful for
+   anyone who cannot separate teal from clay. */
+.pd-reco-delta {
+  font-size: 0.71875rem;
+  font-weight: 700;
+}
+
+.pd-reco-delta.is-down {
+  color: var(--bay);
+}
+
+.pd-reco-delta.is-up {
+  color: var(--poppy-deep);
+}
+
+.pd-reco-reason {
+  margin: 0.5rem 0 0.8rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--body-ink);
+}
+
+.pd-reco-go {
+  font-family: var(--font-display);
+  font-size: 0.78125rem;
+  font-weight: 700;
+  color: var(--bay);
+  text-decoration: none;
+}
+
+.pd-reco-go:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- similar row ---------- */
+
+.pd-similar {
+  margin-top: var(--space-3);
+}
+
+/* A horizontal scroller with a VISIBLE scrollbar. Hiding it would leave six
+   cards with the sixth clipped and no affordance saying the row moves — the
+   overflow itself is the only cue that there is more. */
+.pd-similar-row {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-faint) var(--fog-dim);
+  overscroll-behavior-x: contain;
+}
+
+.pd-similar-row::-webkit-scrollbar {
+  height: 8px;
+}
+
+.pd-similar-row::-webkit-scrollbar-track {
+  background: var(--fog-dim);
+  border-radius: 999px;
+}
+
+.pd-similar-row::-webkit-scrollbar-thumb {
+  background: rgba(var(--ink-rgb), 0.3);
+  border-radius: 999px;
+}
+
+.pd-similar-card {
+  flex: 0 0 172px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 10px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.15s var(--ease), border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+
+.pd-similar-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--bay-rgb), 0.45);
+  box-shadow: 0 4px 14px -4px rgba(var(--ink-rgb), 0.22);
+  text-decoration: none;
+}
+
+/* The card's contents mirror a catalog card (.pn-card-brand / -name / -foot /
+   -price) so a paddle reads the same wherever it appears — just tuned smaller
+   for a 172px scroller tile. */
+.pd-similar-brand {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--optic-text);
+}
+
+/* Clamped to two lines: the closest-six can include a paddle with a long name,
+   and a horizontal row stretches every card to the tallest, so one three-line
+   name would pad five other cards with dead space. The clamp keeps the row
+   short and the price rows aligned. */
+.pd-similar-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-family: var(--font-headline);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+/* margin-top:auto pins the foot to the bottom, so the price/chip line sits on
+   the same baseline across a row of uneven-length names. */
+.pd-similar-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--rule-08);
+}
+
+.pd-similar-price {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* The chip can't shrink below its text or a long play-style label would crush
+   the price; the price gives way first (it is short and never wraps). */
+.pd-similar-foot .pn-tag {
+  flex: none;
+}
+
+/* ==========================================================================
+   Head to head — /paddles/browse/compare
+   ========================================================================== */
+
+.ph-wrap {
+  padding-block: var(--space-2) var(--space-4);
+}
+
+.ph-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: var(--space-3);
+}
+
+.ph-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1rem 1.1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+
+.ph-card-brand {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--optic-text);
+}
+
+.ph-card-name {
+  margin: 0;
+  font-family: var(--font-headline);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.ph-card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.ph-card-price {
+  font-family: var(--font-mono);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ph-card-go {
+  margin-top: auto;
+  font-family: var(--font-display);
+  font-size: 0.78125rem;
+  font-weight: 700;
+  color: var(--bay);
+  text-decoration: none;
+}
+
+.ph-card-go:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ph-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.2rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+
+/* Mirrored bars growing outward from a centred label — the shape of the row is
+   the comparison, so the label column is fixed and the two sides are equal
+   fractions no matter how long the values are. */
+.ph-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(96px, 140px) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ph-row-label {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.ph-side {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+/* `order` rather than flex-direction, so the row renders correctly whichever
+   order the template writes .ph-val and .ph-track in. Side A reads outward to
+   the LEFT (value at the far edge, bar hugging the centre label); side B
+   mirrors it. Getting this from DOM order alone would silently invert one side
+   the first time the two are emitted from one shared template. */
+.ph-side--a .ph-val {
+  order: 0;
+}
+
+.ph-side--a .ph-track {
+  order: 1;
+}
+
+.ph-side--b .ph-track {
+  order: 0;
+}
+
+.ph-side--b .ph-val {
+  order: 1;
+}
+
+.ph-val {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.78125rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Bold as well as teal. Colour alone must not carry "this one won" — the
+   footnote under the table says bold is the winner for exactly that reason. */
+.ph-val.is-win {
+  font-weight: 700;
+  color: var(--bay-deep);
+}
+
+.ph-track {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(var(--ink-rgb), 0.08);
+  overflow: hidden;
+}
+
+/* The fill is anchored to the centre-facing end of its own track, so both bars
+   grow away from the label rather than both starting on the left. */
+.ph-side--a .ph-fill {
+  margin-left: auto;
+}
+
+.ph-side--b .ph-fill {
+  margin-right: auto;
+}
+
+.ph-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: rgba(var(--ink-rgb), 0.3);
+}
+
+.ph-fill.is-win {
+  background: var(--bay);
+}
+
+.ph-note {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--ink-faint);
+}
+
+.ph-empty {
+  padding: var(--space-3) var(--space-2);
+  border: 1px dashed var(--rule-25);
+  border-radius: var(--radius-m);
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+/* ==========================================================================
+   Compare tray — markup in assets/paddle-tray.js
+   ========================================================================== */
+
+/* z-index 90 sits under the sticky .site-header (100) and under the mobile
+   filter sheet (1000). The tray and the header never touch — one is pinned to
+   each end of the viewport — so the header keeps precedence, and the sheet has
+   to be able to cover the tray when it opens over it. */
+.pt-tray {
+  position: fixed;
+  z-index: 90;
+  inset: auto 0 0 0;
+  background: var(--ink);
+  color: var(--fog);
+  border-top: 1px solid rgba(var(--fog-rgb), 0.14);
+  box-shadow: 0 -6px 24px -8px rgba(var(--ink-rgb), 0.5);
+}
+
+/* paddle-tray.js toggles el.hidden, and a class selector beats the UA's
+   `[hidden] { display: none }` — without this the tray stays visible with an
+   empty body and pins a blank ink bar to the bottom of every page. */
+.pt-tray[hidden] {
+  display: none;
+}
+
+/* Matches .section--dark / .site-footer: the teal ring is invisible on ink. */
+.pt-tray :focus-visible {
+  outline-color: var(--optic);
+}
+
+.pt-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0.7rem var(--space-3);
+}
+
+/* The one place on the site where the pickleball optic is the accent. It is a
+   label on ink, not text on paper, so bare --optic is safe here. */
+.pt-label {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--optic);
+}
+
+.pt-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.pt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 15rem;
+  padding: 0.28rem 0.35rem 0.28rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(var(--fog-rgb), 0.12);
+}
+
+.pt-chip-name {
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.pt-chip-x {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--footer-body);
+  font-size: 0.9375rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.pt-chip-x:hover {
+  background: rgba(var(--fog-rgb), 0.18);
+  color: var(--fog);
+}
+
+.pt-hint {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--footer-muted);
+}
+
+.pt-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: auto;
+}
+
+.pt-clear {
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgba(var(--fog-rgb), 0.28);
+  border-radius: var(--radius-s);
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--footer-body);
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.pt-clear:hover {
+  border-color: var(--fog);
+  color: var(--fog);
+}
+
+/* Modifier on .btn, which already gives optic-on-ink. Only the border changes:
+   .btn's 2px ink border is invisible against the tray's ink ground and eats
+   2px off every edge of the button for nothing. */
+.pt-go {
+  border-color: var(--optic);
+  white-space: nowrap;
+}
+
+/* Rendered as a real <button disabled> at one or three selections, with
+   .pt-hint saying why. Greyed rather than removed so the target of the whole
+   tray stays in the same place while you build a shortlist.
+
+   It used to be a <span aria-disabled="true">, which is why every property a
+   <button> would otherwise get from the UA is nailed down here or in .btn:
+   font-family/size/weight and padding come from .btn (a <button> inherits none
+   of them from <body>), and the three below re-state the disabled look because
+   the UA's `button:disabled { color: graytext }` would otherwise be the only
+   thing colouring it. Without these the CTA renders as a tiny system-font
+   button in the middle of the tray. (No :disabled selector needed — author
+   styles beat UA styles regardless of specificity.) */
+.pt-go.is-off {
+  background: rgba(var(--fog-rgb), 0.12);
+  border-color: rgba(var(--fog-rgb), 0.2);
+  color: var(--footer-muted);
+  cursor: not-allowed;
+}
+
+.pt-go.is-off:hover {
+  background: rgba(var(--fog-rgb), 0.12);
+  color: var(--footer-muted);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+/* 620px: the reco pair and the two head-to-head summary cards stack. Below
+   this a two-column card is narrower than its own badge plus price row. */
+@media (max-width: 620px) {
+  .pd-reco-grid,
+  .ph-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The mirrored bars have nowhere left to mirror into — the label column
+     alone is 96px of a 300px row. Collapse to a stacked label + two rows,
+     which still reads as a comparison because the winner is still bold. */
+  .ph-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+
+  .ph-row-label {
+    text-align: left;
+  }
+
+  .ph-side--a .ph-val,
+  .ph-side--b .ph-val {
+    order: 1;
+  }
+
+  .ph-side--a .ph-track,
+  .ph-side--b .ph-track {
+    order: 0;
+  }
+
+  .ph-side--a .ph-fill,
+  .ph-side--b .ph-fill {
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+
+/* 940px: the rail becomes a bottom sheet and both grids go single-column.
+   See the file header for why this is not the 900px nav breakpoint. */
+@media (max-width: 940px) {
+  .pn-layout,
+  .pd-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Unstick, or the spec rail pins itself to the top of a one-column page and
+     the rest of the content scrolls past a table that never moves.
+
+     order back to 0 so the single column follows DOM order: title, price, CTA
+     and the performance bars first, then the full spec table, then the picks.
+     The desktop rule sets -1 only to pull this into the left column; carried
+     into one column that same -1 would hoist the spec table above the paddle's
+     own name. */
+  .pd-aside {
+    order: 0;
+    position: static;
+  }
+
+  /* The sheet's opener. Full width and 44px tall — it is the ONLY way to reach
+     the facets at this size, so it cannot be a 30px pill. */
+  .pn-rail-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0 1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-s);
+    background: var(--paper);
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  /* The rail leaves the flow entirely: as a sheet it must not reserve a row of
+     the grid above the results while closed. `bottom: var(--pt-tray-h)` parks
+     it on top of the compare tray rather than under it. */
+  .pn-rail {
+    position: fixed;
+    z-index: 1000;
+    inset: auto 0 var(--pt-tray-h, 0px) 0;
+    max-height: 78vh;
+    border-radius: var(--radius-m) var(--radius-m) 0 0;
+    border-width: 1px 0 0;
+    box-shadow: 0 -14px 34px -12px rgba(var(--ink-rgb), 0.4);
+    transform: translateY(101%);
+    visibility: hidden;
+    transition: transform 0.22s var(--ease), visibility 0.22s var(--ease);
+  }
+
+  /* visibility, not display: a display swap cannot be transitioned, and
+     leaving it visible off-screen puts ten facets' worth of checkboxes in the
+     tab order behind a closed sheet. 101% clears the shadow too. */
+  .pn-rail.is-open {
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  .pn-rail-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin: -1rem -1.1rem 0.9rem;
+    padding: 1rem 1.1rem 0.7rem;
+    background: var(--paper);
+  }
+
+  .pn-sheet-close {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin: -0.6rem -0.6rem -0.6rem 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  /* 44px minimum on every option row — a 15px checkbox is a 15px target
+     without it, and the label is what people actually tap. */
+  .pn-opt {
+    min-height: 44px;
+  }
+
+  .pn-opt-label {
+    font-size: 0.875rem;
+  }
+
+  /* The active-filter chips are desktop-only by design: at this size the
+     "Filters (n)" button already carries the count and the sheet carries Reset
+     all, so a second wrapping row of chips would push the first card below the
+     fold to say the same thing twice. */
+  .pn-active {
+    display: none;
+  }
+
+  .pn-page {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 560px) {
+  .pn-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(236px, 100%), 1fr));
+  }
+
+  /* The CTA drops to its own full-width row rather than squeezing beside a
+     26px price. */
+  .pd-cta {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .pt-inner {
+    padding: 0.6rem var(--space-2);
+  }
+
+  .pt-actions {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .pt-go {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+
+/* style.css's global block already flattens every transition-duration, but it
+   cannot undo a transform that only exists in a :hover rule — the lift lands
+   instantly instead of not at all. These rules match the base hover selectors
+   exactly and win on source order. */
+@media (prefers-reduced-motion: reduce) {
+  .pn-card:hover,
+  .pn-card:focus-within,
+  .pd-similar-card:hover {
+    transform: none;
+  }
+
+  .pd-similar-row {
+    scroll-snap-type: none;
+  }
+}

@@ -84,7 +84,6 @@ const {
   pickRecos,
   similarPaddles,
   blurbFor,
-  glanceRows,
   specRows,
   metricRows,
 } = await dep("assets/paddle-model.js");
@@ -94,20 +93,28 @@ const { tiebreakByTrait, controlRating } = await dep("assets/paddle-ratings.js")
 /* ------------------------------------------------------------------ header */
 
 // Byte-identical to what sync-header.js would have written for a page under
-// paddles/, because activeHref() maps every paddles/* path to the /paddles tab.
-// The two throws mirror sync-header.js's: a partial that already carries
-// aria-current, or whose nav link grew an attribute, breaks the string match
-// there too, and finding out here is cheaper than shipping 486 dead navs.
+// paddles/browse/, because these detail pages ARE browse children: its
+// activeHref maps paddles/browse/* to the "/paddles/browse" lane and lights the
+// "Paddles" dropdown summary that contains it. The three throws mirror
+// sync-header.js's: a partial that already carries aria-current, or whose nav
+// link/summary grew an attribute, breaks the string match there too, and finding
+// out here is cheaper than shipping dead navs on every detail page.
 function headerBlock(partial) {
   const base = partial.trim();
   if (base.includes("aria-current")) {
     throw new Error("partials/site-header.html must not contain aria-current");
   }
-  const marker = '<a href="/paddles">';
+  const marker = '<a href="/paddles/browse">';
   if (!base.includes(marker)) {
     throw new Error(`partials/site-header.html: nav link ${marker} not found (attribute added?)`);
   }
-  return `${HEADER_START}\n${base.replace(marker, '<a href="/paddles" aria-current="page">')}\n${HEADER_END}`;
+  const summary = "<summary>Paddles</summary>";
+  if (!base.includes(summary)) {
+    throw new Error(`partials/site-header.html: ${summary} not found (nav dropdown changed?)`);
+  }
+  return `${HEADER_START}\n${base
+    .replace(marker, '<a href="/paddles/browse" aria-current="page">')
+    .replace(summary, '<summary aria-current="page">Paddles</summary>')}\n${HEADER_END}`;
 }
 
 const HEADER_REGION_RE = /<!-- site-header:start[\s\S]*?<!-- site-header:end -->/;
@@ -223,12 +230,6 @@ function jsonLd(p, canonical, buyHref) {
 /* -------------------------------------------------------------------- body */
 
 const detailHref = (p) => `${BASE_PATH}/${encodeURIComponent(p.id)}`;
-
-function glanceHtml(p) {
-  return glanceRows(p)
-    .map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`)
-    .join("\n            ");
-}
 
 function specsHtml(p) {
   return specRows(p)
@@ -460,7 +461,6 @@ function renderPage(p, ctx) {
     CANONICAL: esc(canonical),
     JSONLD: jsonLd(p, canonical, cta.hasVendor ? cta.href : null),
     SITE_HEADER: ctx.header,
-    GLANCE: glanceHtml(p),
     BRAND: esc(p.brand),
     NAME: esc(p.name),
     TITLE_CHIPS: chipsHtml(p),
