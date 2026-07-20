@@ -1,0 +1,80 @@
+[
+  {
+    "brand": "Onix",
+    "officialSite": "https://www.onixpickleball.com/",
+    "paddles": [
+      {"name":"Evoke Premier 14mm","shape":"Widebody","paddleType":"Power","coreThicknessMm":14.0,"weightOz":8.0,"gripLengthIn":5.0,"gripSizeIn":4.13,"price":149.99,"yearReleased":2020,"approvalBody":"USAP"},
+      {"name":"Evoke Premier CT-16","shape":"Widebody","paddleType":"All-Court","coreThicknessMm":16.0,"weightOz":8.0,"gripLengthIn":5.0,"gripSizeIn":4.25,"price":99.99,"yearReleased":2023,"approvalBody":"USAP"},
+      {"name":"Malice DB Open Throat 14mm","shape":"Widebody","paddleType":"All-Court","coreThicknessMm":14.0,"weightOz":8.0,"gripLengthIn":5.0,"gripSizeIn":4.25,"price":124.99,"yearReleased":2024,"approvalBody":"USAP"},
+      {"name":"Malice DB Open Throat 16mm","shape":"Widebody","paddleType":"Control","coreThicknessMm":16.0,"weightOz":8.0,"gripLengthIn":5.0,"gripSizeIn":4.25,"price":124.99,"yearReleased":2024,"approvalBody":"USAP"},
+      {"name":"Z5 Graphite","shape":"Widebody","paddleType":"All-Court","coreThicknessMm":null,"weightOz":7.9,"gripLengthIn":5.0,"gripSizeIn":4.0,"price":89.99,"yearReleased":2016,"approvalBody":"USAP"},
+      {"name":"Summit C1","shape":"Elongated","paddleType":"All-Court","coreThicknessMm":14.0,"weightOz":8.0,"gripLengthIn":4.0,"gripSizeIn":4.5,"price":89.99,"yearReleased":2020,"approvalBody":"USAP"}
+    ]
+  },
+  {
+    "brand": "Electrum",
+    "officialSite": "https://www.electrumpickleball.com/",
+    "paddles": [
+      {"name":"Model E","shape":"Elongated","paddleType":"All-Court","coreThicknessMm":16.0,"weightOz":8.25,"gripLengthIn":5.25,"gripSizeIn":4.5,"price":179.99,"yearReleased":2021,"approvalBody":"USAP"},
+      {"name":"Model E Elite","shape":"Elongated","paddleType":"All-Court","coreThicknessMm":16.0,"weightOz":8.2,"gripLengthIn":5.25,"gripSizeIn":4.25,"price":209.99,"yearReleased":2023,"approvalBody":"USAP"},
+      {"name":"Pro II","shape":"Widebody","paddleType":"All-Court","coreThicknessMm":11.0,"weightOz":8.0,"gripLengthIn":5.25,"gripSizeIn":4.25,"price":159.99,"yearReleased":2023,"approvalBody":"USAP"}
+    ]
+  },
+  {
+    "brand": "Legacy",
+    "officialSite": "https://legacypickleball.com/",
+    "paddles": [
+      {"name":"Pro","shape":"Elongated","paddleType":"All-Court","coreThicknessMm":16.0,"weightOz":8.2,"gripLengthIn":5.3,"gripSizeIn":4.13,"price":150.00,"yearReleased":2023,"approvalBody":"USAP"},
+      {"name":"Pro S","shape":"Widebody","paddleType":"All-Court","coreThicknessMm":16.0,"weightOz":8.2,"gripLengthIn":4.85,"gripSizeIn":4.13,"price":150.00,"yearReleased":2023,"approvalBody":"USAP"},
+      {"name":"Pro Air 16mm","shape":"Elongated","paddleType":"All-Court","coreThicknessMm":16.0,"weightOz":8.2,"gripLengthIn":5.5,"gripSizeIn":4.13,"price":150.00,"yearReleased":null,"approvalBody":"USAP"},
+      {"name":"Pro Air 14mm","shape":"Elongated","paddleType":"All-Court","coreThicknessMm":14.0,"weightOz":8.2,"gripLengthIn":5.5,"gripSizeIn":4.13,"price":150.00,"yearReleased":null,"approvalBody":"USAP"},
+      {"name":"Velocity","shape":"Hybrid","paddleType":"Control","coreThicknessMm":14.0,"weightOz":7.95,"gripLengthIn":5.0,"gripSizeIn":4.13,"price":69.95,"yearReleased":null,"approvalBody":null}
+    ]
+  },
+  {
+    "brand": "Recess",
+    "officialSite": "https://clubrecess.com/",
+    "paddles": [
+      {"name":"Rec (12mm)","shape":"Widebody","paddleType":"All-Court","coreThicknessMm":12.0,"weightOz":7.7,"gripLengthIn":null,"gripSizeIn":4.25,"price":52.00,"yearReleased":null,"approvalBody":"Unapproved"},
+      {"name":"Classic (14mm)","shape":"Hybrid","paddleType":"All-Court","coreThicknessMm":14.0,"weightOz":7.8,"gripLengthIn":null,"gripSizeIn":4.25,"price":68.00,"yearReleased":null,"approvalBody":"USAP"},
+      {"name":"Advanced 512 (16mm)","shape":"Elongated","paddleType":"Power","coreThicknessMm":16.0,"weightOz":7.9,"gripLengthIn":5.6,"gripSizeIn":4.38,"price":98.00,"yearReleased":null,"approvalBody":"USAP"}
+    ]
+  },
+  {
+    "brand": "Yonex",
+    "officialSite": "https://us.yonex.com/collections/pickleball",
+    "paddles": [
+      {"name":"EZONE Midweight","shape":"Widebody","paddleType":"All-Court","coreThicknessMm":15.0,"weightOz":8.1,"gripLengthIn":4.5,"gripSizeIn":4.25,"price":139.00,"yearReleased":2022,"approvalBody":"USAP"},
+      {"name":"VCORE Midweight","shape":"Widebody","paddleType":"Control","coreThicknessMm":15.0,"weightOz":8.1,"gripLengthIn":4.5,"gripSizeIn":4.25,"price":139.00,"yearReleased":2022,"approvalBody":"USAP"},
+      {"name":"EZONE Plus","shape":"Elongated","paddleType":"Power","coreThicknessMm":15.0,"weightOz":7.9,"gripLengthIn":5.0,"gripSizeIn":4.25,"price":199.99,"yearReleased":2024,"approvalBody":"USAP"},
+      {"name":"VCORE Plus","shape":"Elongated","paddleType":"Control","coreThicknessMm":15.0,"weightOz":7.9,"gripLengthIn":5.0,"gripSizeIn":4.25,"price":199.99,"yearReleased":2024,"approvalBody":"USAP"}
+    ]
+  },
+  {
+    "brand": "Prince",
+    "officialSite": "https://princepickleball.com/",
+    "paddles": [
+      {"name":"Response Pro","shape":"Widebody","paddleType":"Control","coreThicknessMm":14.3,"weightOz":8.0,"gripLengthIn":5.5,"gripSizeIn":4.13,"price":169.99,"yearReleased":2020,"approvalBody":"USAP"}
+    ]
+  },
+  {
+    "brand": "Nettie",
+    "officialSite": "https://playnettie.com/",
+    "paddles": [
+      {"name":"Performance","shape":"Hybrid","paddleType":"All-Court","coreThicknessMm":null,"weightOz":8.0,"gripLengthIn":5.0,"gripSizeIn":4.25,"price":89.99,"yearReleased":null,"approvalBody":null},
+      {"name":"Recreation","shape":"Hybrid","paddleType":"All-Court","coreThicknessMm":13.0,"weightOz":7.9,"gripLengthIn":5.0,"gripSizeIn":4.25,"price":59.99,"yearReleased":null,"approvalBody":null}
+    ]
+  },
+  {
+    "brand": "Master Athletics",
+    "officialSite": "https://www.master-athletics.com/",
+    "paddles": [
+      {"name":"P3","shape":"Hybrid","paddleType":"All-Court","coreThicknessMm":16.0,"weightOz":8.0,"gripLengthIn":null,"gripSizeIn":null,"price":249.00,"yearReleased":2024,"approvalBody":"USAP"},
+      {"name":"P3XL","shape":"Elongated","paddleType":"Power","coreThicknessMm":16.0,"weightOz":8.2,"gripLengthIn":null,"gripSizeIn":null,"price":249.00,"yearReleased":2024,"approvalBody":"USAP"},
+      {"name":"P2 RAW","shape":"Widebody","paddleType":"All-Court","coreThicknessMm":14.0,"weightOz":8.1,"gripLengthIn":5.0,"gripSizeIn":null,"price":229.00,"yearReleased":null,"approvalBody":"USAP"},
+      {"name":"P2XL RAW","shape":"Elongated","paddleType":"Power","coreThicknessMm":14.0,"weightOz":8.1,"gripLengthIn":5.5,"gripSizeIn":null,"price":229.00,"yearReleased":null,"approvalBody":"USAP"},
+      {"name":"P2 V2","shape":"Widebody","paddleType":"All-Court","coreThicknessMm":null,"weightOz":8.1,"gripLengthIn":4.0,"gripSizeIn":null,"price":189.00,"yearReleased":null,"approvalBody":"USAP"},
+      {"name":"P2XL","shape":"Elongated","paddleType":"Power","coreThicknessMm":null,"weightOz":8.1,"gripLengthIn":4.0,"gripSizeIn":null,"price":189.00,"yearReleased":null,"approvalBody":"USAP"}
+    ]
+  }
+]

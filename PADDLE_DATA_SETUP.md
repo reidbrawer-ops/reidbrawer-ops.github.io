@@ -200,6 +200,46 @@ ever hand-edit this file, re-minify it before committing** — pretty-
 printing it inflates the file from ~210KB to ~1MB+ for no benefit, and a
 future `git diff` on it becomes unreadable either way since it's one line.
 
+## Manually-added paddles (brands the export doesn't carry)
+
+The PickleballEffect export isn't a complete market — it's missing several
+prominent brands (Onix, Yonex, Legacy, Electrum, Recess, Prince, Nettie, Master
+Athletics, …). Those paddles were researched from the manufacturers' own sites
+and live in **`scripts/manual-paddles.json`**. `rebuild_paddle_data.py` merges
+them back in on every run (`load_manual_paddles` → `build_manual_records` →
+`merge_manual_into_catalog`), so **a refresh no longer silently drops them** —
+which is exactly what would happen if they only existed in the built
+`assets/paddles.json`.
+
+Rules of the road:
+
+- **`manual-paddles.json` holds only raw manufacturer facts** — name, brand,
+  price, shape, paddle type, core thickness, weight, grip length/size, year,
+  and USA-Pickleball approval. It carries **none** of PickleballEffect's
+  lab-tested fields (twist/power/spin/swing percentiles, balance point, impact
+  feel), because these paddles genuinely haven't been through that bench. The
+  site already renders such rows as **"specs only"** and degrades every view
+  rather than drawing an empty chart (see `hasLab()` in
+  `assets/paddle-model.js`). So there's no licensing question here — nothing
+  proprietary is reproduced. Don't add a percentile/lab field to this file.
+- **Shape/type/approval must match the same enums the rest of the file uses:**
+  `shape` ∈ {Elongated, Widebody, Hybrid, Extra-elongated}; `paddleType` ∈
+  {Power, Control, All-Court}; `approvalBody` ∈ {USAP, USAP/UPA-A, UPA-A,
+  Unapproved} — or omit/null it if the paddle isn't on the USA Pickleball list
+  (Nettie, e.g., is manufacturer-claimed but not on the list, so its approval is
+  left null rather than asserted). Any missing spec is left null and dropped,
+  exactly like the export path.
+- **Every manual brand still needs a `paddle-vendor-map.json` entry** (step 5) —
+  the rebuild warns about an unmapped manual brand the same way it does an
+  export one.
+- **The export always wins a collision.** If PickleballEffect later tests one of
+  these paddles, its row (with real lab data) is produced from the export and
+  the manual copy with the same id is skipped automatically — no edit needed.
+- To add another paddle: append it to `manual-paddles.json`, add the brand to
+  `paddle-vendor-map.json` if new, then run the rebuild (or, if you're editing
+  `assets/paddles.json` directly without a fresh `.numbers` file, run
+  `npm run generate-paddles && npm run hash && npm run check`).
+
 ## Data licensing — read this before changing what's stored or shown
 
 PickleballEffect's terms say the data on their site is proprietary,

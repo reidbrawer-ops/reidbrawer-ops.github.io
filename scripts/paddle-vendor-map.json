@@ -42,6 +42,10 @@
   "vendorUrl": "https://us.dunlopsports.com/dunlop/pickleball.html",
   "searchVerified": true
  },
+ "Electrum": {
+  "vendorUrl": "https://www.electrumpickleball.com/",
+  "searchVerified": true
+ },
  "Element6": {
   "vendorUrl": "https://e6pickleball.com/"
  },
@@ -103,12 +107,19 @@
   "vendorUrl": "https://joola.com/pages/pickleball",
   "searchVerified": true
  },
+ "Legacy": {
+  "vendorUrl": "https://legacypickleball.com/"
+ },
  "Luzz": {
   "vendorUrl": "https://luzzpickleball.com/",
   "searchVerified": true
  },
  "Mark": {
   "vendorUrl": "https://markpickleball.com/",
+  "searchVerified": true
+ },
+ "Master Athletics": {
+  "vendorUrl": "https://www.master-athletics.com/",
   "searchVerified": true
  },
  "Maverix": {
@@ -123,6 +134,13 @@
   "vendorUrl": "https://neonicpickleball.com/",
   "searchVerified": true
  },
+ "Nettie": {
+  "vendorUrl": "https://playnettie.com/"
+ },
+ "Onix": {
+  "vendorUrl": "https://www.onixpickleball.com/",
+  "searchVerified": true
+ },
  "PIKKL": {
   "vendorUrl": "https://pikkl.com/",
   "searchVerified": true
@@ -134,6 +152,9 @@
  "Pickleball Apes": {
   "vendorUrl": "https://www.pickleballapes.com/",
   "searchVerified": true
+ },
+ "Prince": {
+  "vendorUrl": "https://princepickleball.com/"
  },
  "ProXR": {
   "vendorUrl": "https://proxrpickleball.com/",
@@ -150,6 +171,9 @@
  "RPM": {
   "vendorUrl": "https://rpmpb.com/",
   "searchVerified": true
+ },
+ "Recess": {
+  "vendorUrl": "https://clubrecess.com/"
  },
  "Reload": {
   "vendorUrl": "https://www.reloadpaddle.com/",
@@ -215,5 +239,9 @@
  },
  "Wilson": {
   "vendorUrl": "https://www.wilson.com/en-us/pickleball"
+ },
+ "Yonex": {
+  "vendorUrl": "https://us.yonex.com/collections/pickleball",
+  "searchVerified": true
  }
 }

@@ -22,6 +22,11 @@ from urllib.parse import urlparse
 SCRIPT_DIR = Path(__file__).parent
 OUTPUT_PATH = SCRIPT_DIR.parent / "assets" / "paddles.json"
 VENDOR_MAP_PATH = SCRIPT_DIR / "paddle-vendor-map.json"
+# Manufacturer-sourced paddles for prominent brands the PickleballEffect export
+# does NOT carry (Onix, Yonex, Legacy, etc.). Merged back in on every rebuild so
+# a data refresh doesn't silently drop them. See "Manually-added paddles" in
+# PADDLE_DATA_SETUP.md and load_manual_paddles() / build_manual_records() below.
+MANUAL_PADDLES_PATH = SCRIPT_DIR / "manual-paddles.json"
 
 # ---------------------------------------------------------------------------
 # Step 1 — parse the .numbers export.
@@ -354,6 +359,127 @@ def vendor_fields(brand, vendor_map):
     return vendor_url, search_base
 
 
+# ---------------------------------------------------------------------------
+# Manually-added paddles — the durability layer.
+#
+# The PickleballEffect export doesn't carry every prominent brand (it's missing
+# Onix, Yonex, Legacy, Electrum, Recess, Prince, Nettie, Master Athletics, …).
+# Those paddles were researched from the manufacturers' own sites and live in
+# scripts/manual-paddles.json. Without this merge, every rebuild would wipe them.
+#
+# manual-paddles.json holds ONLY raw manufacturer facts — name, brand, price,
+# shape, type, core thickness, weight, grip dims, year, USA-Pickleball approval.
+# It deliberately carries NONE of PickleballEffect's lab-tested fields (twist/
+# power/spin/swing percentiles, balance point, impact feel), because these
+# paddles genuinely haven't been through that bench — the site already renders
+# them as "specs only" (see assets/paddle-model.js hasLab()). So there's no
+# licensing question here: nothing proprietary is being reproduced.
+#
+# A manual paddle whose id the export ALSO produces is dropped in favour of the
+# export's row — if PickleballEffect later tests one of these, its real lab data
+# wins automatically and the manual stub steps aside with no edit needed.
+# ---------------------------------------------------------------------------
+
+
+def load_manual_paddles():
+    """Parsed scripts/manual-paddles.json, or [] if it's absent. Shape: a list
+    of {"brand", "officialSite"?, "paddles": [ {name, shape, paddleType,
+    coreThicknessMm, weightOz, gripLengthIn, gripSizeIn, price, yearReleased,
+    approvalBody} ]}. Any missing/null spec is simply omitted from the record,
+    exactly as the export path drops nulls."""
+    if not MANUAL_PADDLES_PATH.exists():
+        return []
+    return json.loads(MANUAL_PADDLES_PATH.read_text())
+
+
+def build_manual_records(manual_groups, vendor_map, export_ids):
+    """Turn manual-paddles.json's raw facts into paddle records in the SAME
+    shape (and field order) main() emits for export rows. Skips any paddle whose
+    id already came from the export. skillLevel is derived with a neutral
+    (unknown) twist weight — these paddles have no measured forgiveness — via the
+    same skill_level() the export path uses; every lab field is left absent."""
+    seen = {}
+    records = []
+    for group in manual_groups:
+        brand = clean_brand(group["brand"])
+        vendor_url, search_base = vendor_fields(brand, vendor_map)
+        for pin in group.get("paddles", []):
+            name = clean_name(pin.get("name")) or "Unnamed paddle"
+            base_id = slugify(f"{brand} {name}")
+            if base_id in export_ids:
+                # The export already carries this exact paddle (with real lab
+                # data). Don't shadow it with a spec-only manual copy.
+                continue
+            paddle_id = base_id
+            n = 1
+            while paddle_id in seen:
+                n += 1
+                paddle_id = f"{base_id}--dup{n}"
+            seen[paddle_id] = True
+
+            core = num(pin.get("coreThicknessMm"), 1)
+            paddle_type = pin.get("paddleType")
+            paddle = {
+                "id": paddle_id,
+                "name": name,
+                "brand": brand,
+                "price": num(pin.get("price"), 2),
+                "approvalBody": pin.get("approvalBody"),
+                "shape": pin.get("shape"),
+                "paddleType": paddle_type,
+                "coreThicknessMm": core,
+                "weightOz": num(pin.get("weightOz"), 2),
+                "skillLevel": skill_level(None, core, paddle_type),
+                "gripLengthIn": num(pin.get("gripLengthIn"), 2),
+                "gripSizeIn": num(pin.get("gripSizeIn"), 2),
+                "yearReleased": whole(pin.get("yearReleased")),
+            }
+            paddle = {k: v for k, v in paddle.items() if v is not None}
+            if vendor_url:
+                paddle["vendorUrl"] = vendor_url
+                if search_base:
+                    paddle["vendorSearchBase"] = search_base
+            records.append(paddle)
+    return records
+
+
+def merge_manual_into_catalog(paddles, manual_records):
+    """Insert manual records into the export-built catalog, keeping brand groups
+    contiguous. A brand already in the export gets its manual paddles appended;
+    a brand new to the catalog is inserted as a fresh group at its
+    case-insensitive-alphabetical position (matching the export's own brand
+    order). Within a brand, manual paddles are ordered by name so the output is
+    deterministic run to run."""
+    groups = []
+    for p in paddles:
+        if groups and groups[-1][0] == p["brand"]:
+            groups[-1][1].append(p)
+        else:
+            groups.append([p["brand"], [p]])
+
+    by_brand = {}
+    for r in manual_records:
+        by_brand.setdefault(r["brand"], []).append(r)
+
+    existing_brands = {b for b, _ in groups}
+    for brand, recs in by_brand.items():
+        recs = sorted(recs, key=lambda r: r["name"].lower())
+        if brand in existing_brands:
+            for g in groups:
+                if g[0] == brand:
+                    g[1].extend(recs)
+                    break
+        else:
+            idx = len(groups)
+            for i, (b, _) in enumerate(groups):
+                if brand.lower() < b.lower():
+                    idx = i
+                    break
+            groups.insert(idx, [brand, recs])
+
+    return [p for _, lst in groups for p in lst]
+
+
 def main():
     if len(sys.argv) != 2:
         sys.exit(__doc__)
@@ -431,6 +557,17 @@ def main():
 
         paddles.append(paddle)
 
+    # Merge the manufacturer-sourced paddles the export doesn't carry (Onix,
+    # Yonex, …). Done before the unmapped-brand warning so a manual brand with
+    # no vendor-map entry is surfaced the same way an export brand would be.
+    export_ids = {p["id"] for p in paddles}
+    manual_groups = load_manual_paddles()
+    for group in manual_groups:
+        if clean_brand(group["brand"]) not in vendor_map:
+            unmapped_brands.add(clean_brand(group["brand"]))
+    manual_records = build_manual_records(manual_groups, vendor_map, export_ids)
+    paddles = merge_manual_into_catalog(paddles, manual_records)
+
     if unmapped_brands:
         print(
             f"WARNING: {len(unmapped_brands)} brand(s) have no entry in "
@@ -449,7 +586,7 @@ def main():
 
     paddle_count = len(paddles)
     searchable_count = sum(1 for p in paddles if "vendorSearchBase" in p)
-    print(f"Wrote {paddle_count} paddles to {OUTPUT_PATH}")
+    print(f"Wrote {paddle_count} paddles to {OUTPUT_PATH} ({len(manual_records)} merged from manual-paddles.json)")
     print(f"Skill level distribution: {dict(Counter(p['skillLevel'] for p in paddles))}")
     print(f"Paddles with a verified on-site search link: {searchable_count}/{paddle_count}")
 
