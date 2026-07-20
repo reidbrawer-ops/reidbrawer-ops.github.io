@@ -196,7 +196,7 @@ function jsonLd(p, canonical, buyHref) {
     "@type": "BreadcrumbList",
     itemListElement: [
       ["Home", `${ORIGIN}/`],
-      ["Paddles & Gear", `${ORIGIN}/paddles`],
+      ["Paddles", `${ORIGIN}/paddles`],
       ["Browse all paddles", `${ORIGIN}/paddles/browse`],
       [`${p.brand} ${p.name}`, canonical],
     ].map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })),

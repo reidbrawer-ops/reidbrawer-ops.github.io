@@ -56,7 +56,7 @@ const HEAD_BOILERPLATE = `<link rel="preconnect" href="https://fonts.googleapis.
 <link rel="icon" href="/favicon.ico" sizes="any">
 <meta name="theme-color" content="#ffffff">`;
 
-// Nav shape: Find courts · Cities · Rankings · Paddles & Gear ·
+// Nav shape: Find courts · Cities · Rankings · Paddles ·
 // More(Learn, Corrections) · About. "Find courts" (/map) is now the single
 // search + map + filter + list hub — the standalone Directory page was folded
 // into it (its filters live behind a show/hide panel there), so /directory is
@@ -67,7 +67,7 @@ const NAV_ITEMS = [
   { href: '/map', label: 'Find courts' },
   { href: '/cities/', label: 'Cities' },
   { href: '/rankings', label: 'Rankings' },
-  { href: '/paddles', label: 'Paddles &amp; Gear' },
+  { href: '/paddles', label: 'Paddles' },
 ];
 const DROPDOWN_ITEMS = [
   { href: '/learn', label: 'Learn to play' },
@@ -170,7 +170,7 @@ function renderFooter({ popularLines, footerNote }) {
           <li><a href="/map">Find courts</a></li>
           <li><a href="/rankings">Rankings</a></li>
           <li><a href="/learn">Learn to play</a></li>
-          <li><a href="/paddles">Paddles &amp; Gear</a></li>
+          <li><a href="/paddles">Paddles</a></li>
           <li><a href="/corrections">Report a correction</a></li>
           <li><a href="/privacy">Privacy Policy</a></li>
         </ul>

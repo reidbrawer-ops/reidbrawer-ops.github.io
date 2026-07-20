@@ -75,7 +75,7 @@ Two things that bite:
 2. Commit the file. Badges show a hardcoded `fetchedAt` date; this is a manual
    refresh, not a live sync (see `GOOGLE_RATINGS_SETUP.md`).
 
-## Paddles & Gear (three pages)
+## Paddles (three pages)
 
 `/paddles` is the quiz, `/paddles/browse` the catalog, `/paddles/rent` the shop
 directory — `paddles.html`, `paddles/browse.html`, `paddles/rent.html`. The

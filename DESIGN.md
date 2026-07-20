@@ -262,7 +262,7 @@ pill on `--ink`.
   `rel="sponsored"` and the disclosure), `assets/paddle-ratings.js` (the four
   0-1 trait ratings, so "the most powerful paddle" is one claim site-wide), and
   `assets/dom-utils.js` (`escapeHtml`/`citySlug`). Import them; don't re-roll.
-- **Paddles & Gear is three pages**, one per lane: `/paddles` (the quiz —
+- **Paddles is three pages**, one per lane: `/paddles` (the quiz —
   keeps the `#quiz` anchor that 43 pages target via the lane-router),
   `/paddles/browse` (the 486-paddle catalog) and `/paddles/rent`. They share a
   section nav built from `.pf-choose`/`.pf-choice`, inlined on each of the three

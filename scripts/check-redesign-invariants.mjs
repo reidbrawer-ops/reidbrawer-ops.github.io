@@ -217,7 +217,7 @@ group('Paddles — revenue + legal');
       `${f}: mount-watchdog.js must not be type="module"`);
   }
 
-  // Paddles & Gear is three pages: /paddles (quiz), /paddles/browse, /paddles/rent.
+  // Paddles is three pages: /paddles (quiz), /paddles/browse, /paddles/rent.
   const ph = read('paddles.html');
   const pb = read('paddles/browse.html');
   const pr = read('paddles/rent.html');
