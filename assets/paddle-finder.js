@@ -454,9 +454,14 @@ class PaddleFinder {
         <div class="pn-tools-row">
           <div class="pn-search">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"></circle><path d="M11 11L14.5 14.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+            <!-- The placeholder drops "or brands" that the label above still
+                 spells out: brand search works exactly as before, and the label
+                 is what a screen reader announces, so nothing is lost by keeping
+                 the visible hint short. The count stays because it is the only
+                 place the catalog's size shows before you scroll. -->
             <label class="visually-hidden" for="pn-q">Search paddles by brand or model</label>
             <input id="pn-q" class="pn-search-input" type="search" autocomplete="off"
-                   placeholder="Search ${this.total} paddles or brands…" data-role="q">
+                   placeholder="Search ${this.total} paddles…" data-role="q">
             <button type="button" class="pn-search-clear" data-act="clear-q">Clear</button>
           </div>
           <!-- Kept from production, pg-rent-* classes intact so paddles.css
