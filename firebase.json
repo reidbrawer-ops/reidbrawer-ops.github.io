@@ -7,6 +7,7 @@
     "cleanUrls": true,
     "predeploy": [
       "node scripts/validate.mjs",
+      "node scripts/check-redesign-invariants.mjs",
       "node scripts/hash-modules.mjs --check"
     ],
     "redirects": [

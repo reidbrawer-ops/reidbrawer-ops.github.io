@@ -12,8 +12,14 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = process.argv[2] || '/Users/reidbrawer/Developer/Money/pickleball-bay-area';
+// Defaults to the repo this script lives in, NOT a machine-specific absolute
+// path. firebase's predeploy hook invokes it with no argument, so a hardcoded
+// /Users/<someone>/... would silently check the wrong tree — or crash — the
+// moment the repo moved, was cloned, or ran anywhere but one laptop. The
+// explicit argv[2] override is kept for callers that want a different tree.
+const ROOT = process.argv[2] || path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const cityPages = fs.readdirSync(path.join(ROOT, 'cities')).filter((f) => f.endsWith('.html') && f !== 'index.html');
 const rootPages = fs.readdirSync(ROOT).filter((f) => f.endsWith('.html'));
