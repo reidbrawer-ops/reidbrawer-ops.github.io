@@ -428,6 +428,19 @@ class PaddleCharts {
     return { up, down };
   }
 
+  // The pool a recommendation or a "best at this price" claim may draw from.
+  //
+  // In quiz mode that is fitCatalog — the paddles the quiz actually scored,
+  // which is the catalog minus whatever the visitor's tournament-approval
+  // answer excluded (see the fitCatalog comment above; the mechanism was
+  // already here, this panel just wasn't using it). These two methods read
+  // this.catalog directly before, so the panel under a USAP-only podium could
+  // recommend, and put a buy button on, a UPA-A-only paddle the visitor had
+  // just told us they can't play with.
+  get recoPool() {
+    return this.fitCatalog || this.catalog;
+  }
+
   // What the anchor is genuinely the best at, for its money.
   //
   // Scoped to paddles at or below its price, so the claim is "nothing cheaper
@@ -435,7 +448,7 @@ class PaddleCharts {
   // counted, not hidden: with banded data a top spot is often shared, and
   // "best spin under $200 (tied with 3 others)" is the honest version.
   anchorStrengths(anchor) {
-    const cheaperOrSame = this.catalog.filter((d) => d.price <= anchor.price);
+    const cheaperOrSame = this.recoPool.filter((d) => d.price <= anchor.price);
     const out = [];
     for (const k of RATING_KEYS) {
       let better = 0;
@@ -464,7 +477,7 @@ class PaddleCharts {
 
     card.appendChild(this.anchorPanel(anchor));
 
-    const pool = this.catalog.filter((d) => d.id !== anchor.id);
+    const pool = this.recoPool.filter((d) => d.id !== anchor.id);
     const cheaper = pool
       .filter((d) => d.price < anchor.price && this.givesUpNothing(d, anchor))
       .sort((a, b) => this.bandDistance(a, anchor) - this.bandDistance(b, anchor) || a.price - b.price)

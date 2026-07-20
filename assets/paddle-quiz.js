@@ -260,6 +260,17 @@ function twistWeightPrefScore(paddle, pref) {
 // same four states, and one definition means the two surfaces can never
 // disagree about whether a dual-certified paddle counts as USAP.
 
+// The same four answers in words, for the charts' scopeLabel. Reads as a clause
+// inside both of the panel's sentences ("Every other paddle THAT'S USAP-
+// APPROVED, compared against…" / "Nothing THAT'S USAP-APPROVED costs less
+// than…"). "no" has no entry: that answer excludes nothing, so the panel's
+// default "in the catalog" is already accurate.
+const APPROVAL_SCOPE = {
+  usap: "that's USAP-approved",
+  upa: "that's UPA-A approved",
+  either: "that's approved by either body",
+};
+
 
 
 // ---------- Comparison-table dimension ratings ----------
@@ -775,6 +786,11 @@ class PaddleQuizApp {
         featured: this.matches.top.map((m) => m.paddle),
         mode: "quiz",
         answers: this.matches.fullAnswers,
+        // The recommendation panel draws from the paddles this quiz actually
+        // scored, which the tournament answer narrows. Name that set, so
+        // "every other paddle …" and "nothing … costs less" read as claims
+        // about the visitor's pool and not about the whole catalog.
+        scopeLabel: APPROVAL_SCOPE[this.matches.fullAnswers.tournament === "yes" ? "usap" : this.matches.fullAnswers.tournament] || null,
         // The real scorer's output, handed over rather than re-derived: the
         // per-paddle fit scores the value chart plots against price, on the
         // same 0–100 scale as the pick cards above.
