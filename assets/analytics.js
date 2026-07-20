@@ -31,6 +31,35 @@ function pbaAnalyticsOptedOut() {
   return false;
 }
 
+// Our own traffic. The reports are only useful if they count strangers, and
+// two large sources of non-stranger traffic were landing in them:
+//
+//   1. Non-production hosts. Every local dev reload (localhost, 127.0.0.1,
+//      file://) and every Firebase preview channel (*.web.app,
+//      *.firebaseapp.com) fired a page_view under the same measurement ID as
+//      the live site. GA4 does not filter by hostname on its own.
+//   2. Automated browsers. The Claude Code in-app browser is an Electron shell
+//      — its UA carries "Claude/" and "Electron/", and notably its
+//      navigator.webdriver is FALSE, so the usual automation check does not see
+//      it. Headless Chrome and WebDriver-driven browsers are checked too.
+//
+// This is done in code rather than as a GA4 console filter because a code gate
+// travels with the repo, needs no console state to re-create, and drops the hit
+// before it is ever sent. It deliberately does NOT try to detect the site owner
+// browsing normally in Safari/Chrome — that is what the /privacy opt-out toggle
+// (per browser) and a GA4 internal-traffic IP filter (per network) are for.
+function pbaOwnTraffic() {
+  try {
+    var host = location.hostname;
+    if (host !== "pickleball-bay-area.com" && host !== "www.pickleball-bay-area.com") return true;
+    if (navigator.webdriver === true) return true;
+    if (/Headless|Electron|Claude\//i.test(navigator.userAgent || "")) return true;
+  } catch (e) {
+    /* signal unreadable — fall through and treat as a normal visit */
+  }
+  return false;
+}
+
 // Shared event helper. Defined unconditionally and OUTSIDE the load gate, so
 // callers never have to know whether GA is on: when the visitor has opted out,
 // or the ID is a placeholder, this is a no-op that still returns cleanly.
@@ -51,7 +80,7 @@ window.pbaTrack = function (name, params) {
   }
 };
 
-if (GA_MEASUREMENT_ID.indexOf("XXXXXXXXXX") === -1 && !pbaAnalyticsOptedOut()) {
+if (GA_MEASUREMENT_ID.indexOf("XXXXXXXXXX") === -1 && !pbaAnalyticsOptedOut() && !pbaOwnTraffic()) {
   var gaScript = document.createElement("script");
   gaScript.async = true;
   gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_MEASUREMENT_ID;
