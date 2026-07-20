@@ -278,8 +278,9 @@ pill on `--ink`.
   `partials/site-header.html` → `node scripts/sync-header.js`; the "Before you
   head out" block from `partials/lane-router.html` → `node
   scripts/sync-lane-router.js`. Never hand-edit the marked regions in the 53
-  pages. **`scripts/build.mjs` is stale and fails extraction on every page —
-  don't run it** (see RUNBOOK).
+  pages. `scripts/build.mjs` — a second generator that also claimed the header —
+  was **retired** (see RUNBOOK); the `sync-*` scripts are the only chrome
+  generators now.
 - **Two markup rules the build scripts enforce by throwing**: nav links in the
   partial must be exactly `<a href="/x">` with **no other attributes**
   (sync-header string-matches them to inject `aria-current`), and every page

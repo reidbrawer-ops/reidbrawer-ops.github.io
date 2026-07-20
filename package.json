@@ -4,7 +4,6 @@
   "private": true,
   "description": "Bay Area pickleball courts directory (static site, Firebase Hosting). Node scripts: .mjs = ES modules, .js = CommonJS (do not add \"type\":\"module\").",
   "scripts": {
-    "build": "node scripts/build.mjs",
     "sync": "node scripts/sync-header.js && node scripts/sync-lane-router.js",
     "generate-venues": "node scripts/generate-venues.mjs",
     "generate-paddles": "node scripts/generate-paddle-pages.mjs",
