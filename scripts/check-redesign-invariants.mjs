@@ -75,6 +75,21 @@ group('Paddles — revenue + legal');
   check(/id="paddle-quiz-app"/.test(h), 'paddles.html missing #paddle-quiz-app (quiz mount)');
   check(/id="quiz"/.test(h), 'paddles.html missing #quiz (money CTA target from 43 pages)');
 
+  // The catalog size is hand-written into paddles.html's lede AND its three
+  // social/SERP descriptions, because this page is static — the generated detail
+  // pages read a {{CATALOG_TOTAL}} token instead and self-correct. It sat at 486
+  // through 28 paddles' worth of data refreshes, understating the catalog in
+  // every search result and social card for the site's main funnel page.
+  // Nothing was watching it, so this is the watch.
+  {
+    const total = JSON.parse(read('assets/paddles.json')).length;
+    const stated = [...h.matchAll(/scored against (?:all )?(\d+) paddles/g)].map((m) => Number(m[1]));
+    check(stated.length === 4, `paddles.html: expected 4 "scored against N paddles" claims, found ${stated.length}`);
+    for (const n of stated) {
+      check(n === total, `paddles.html claims ${n} paddles; assets/paddles.json holds ${total}`);
+    }
+  }
+
   const js = read('assets/paddle-quiz.js');
   const links = read('assets/affiliate-links.js');
   // The buy-link surfaces. assets/paddle-grid.js was the second one until the
