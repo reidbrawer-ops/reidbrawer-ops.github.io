@@ -446,12 +446,27 @@ class PaddleFinder {
   mount() {
     this.root.innerHTML = `
       <div class="pn-tools">
-        <div class="pn-search">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"></circle><path d="M11 11L14.5 14.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-          <label class="visually-hidden" for="pn-q">Search paddles by brand or model</label>
-          <input id="pn-q" class="pn-search-input" type="search" autocomplete="off"
-                 placeholder="Search ${this.total} paddles or brands…" data-role="q">
-          <button type="button" class="pn-search-clear" data-act="clear-q">Clear</button>
+        <!-- Search and the rent callout share a row. The callout used to sit
+             above the grid, between the count line and the first card, where it
+             pushed the actual catalog down a full block for a message most
+             visitors have already read. Beside the search it stays available
+             without costing the results any vertical space. -->
+        <div class="pn-tools-row">
+          <div class="pn-search">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"></circle><path d="M11 11L14.5 14.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+            <label class="visually-hidden" for="pn-q">Search paddles by brand or model</label>
+            <input id="pn-q" class="pn-search-input" type="search" autocomplete="off"
+                   placeholder="Search ${this.total} paddles or brands…" data-role="q">
+            <button type="button" class="pn-search-clear" data-act="clear-q">Clear</button>
+          </div>
+          <!-- Kept from production, pg-rent-* classes intact so paddles.css
+               still styles it. The href is /paddles/rent: the old "#rent"
+               anchor only exists on the rent page. -->
+          <div class="pg-rent">
+            <span class="pg-rent-label">New to the game?</span>
+            <span class="pg-rent-body">Rent before you buy &mdash; most courts run $5&ndash;10 a session.</span>
+            <a class="pg-rent-link" href="/paddles/rent">Rent or demo first &rarr;</a>
+          </div>
         </div>
         <div class="pn-collections" role="group" aria-label="Paddle collections">
           ${COLLECTIONS.map(
@@ -487,18 +502,17 @@ class PaddleFinder {
               </select>
             </div>
           </div>
-          <div data-role="disclosure"></div>
-          <!-- Kept from production, pg-rent-* classes intact so paddles.css
-               still styles it. The href moved from "#rent" to /paddles/rent:
-               that anchor only exists on the rent page, so on this one the
-               link had been going nowhere since the three-lane split. -->
-          <div class="pg-rent">
-            <span class="pg-rent-label">New to the game?</span>
-            <span class="pg-rent-body">Rent a paddle at a beginner-friendly court before you buy — most run $5–10 for the session.</span>
-            <a class="pg-rent-link" href="/paddles/rent">Rent or demo first →</a>
-          </div>
           <div data-role="body"></div>
           <div data-role="pager"></div>
+          <!-- The affiliate disclosure sits BELOW the results, not above them.
+               What carries the FTC "clear and conspicuous, close to the link"
+               burden is the per-card "· affiliate" note that cardHtml() renders
+               beside every affiliate buy button — that is the disclosure at the
+               point of the link, and it must not be removed. This block is the
+               page-level statement, and it is the ONLY place the verbatim Amazon
+               Associates sentence appears on the catalog, so it has to stay on
+               the page even though it no longer sits above the fold. -->
+          <div data-role="disclosure"></div>
         </div>
       </div>`;
 

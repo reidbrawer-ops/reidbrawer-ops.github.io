@@ -122,11 +122,25 @@ body {
    as .global-search in style.css. That is what lets an optional magnifier icon
    and the clear button sit inside the box without the input needing to reserve
    left padding for an icon that may not be rendered. */
+/* Search + the rent callout, side by side. Both wrap to their own line below
+   ~640px of available width, so the callout never squeezes the search field. */
+.pn-tools-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+}
+
 .pn-search {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  max-width: 30rem;
+  /* 24rem, not the old 30rem. The clear button pins to the pill's right edge,
+     so every extra rem of pill is another rem between the text you typed and
+     the control that clears it — at 30rem that gap was 402px. Narrower also
+     leaves the row width for the rent callout beside it. */
+  flex: 1 1 18rem;
+  max-width: 24rem;
   min-height: 46px;
   padding: 0 0.75rem;
   background: var(--paper);
@@ -171,19 +185,24 @@ body {
   outline: none;
 }
 
+/* Sized to its own label. This was `width: 26px; font-size: 1rem` — an icon
+   button's box — while the markup has always said the word "Clear", which needs
+   39px. The text overflowed the box by 13px, so it sat outside its own hit area
+   and its hover pill clipped the word. Auto width + padding makes the button
+   the shape of what it contains. */
 .pn-search-clear {
   flex: none;
   display: grid;
   place-items: center;
-  width: 26px;
   height: 26px;
-  padding: 0;
+  padding: 0 0.55rem;
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: var(--ink-faint);
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
   line-height: 1;
   cursor: pointer;
   transition: background 0.15s var(--ease), color 0.15s var(--ease);
@@ -198,6 +217,12 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+/* The disclosure now CLOSES the results instead of opening them, so its spacing
+   flips: it needs air above it, separating it from the pager, not below it. */
+.pn-results [data-role="disclosure"] .affiliate-disclosure {
+  margin: var(--space-2) 0 0;
 }
 
 .pn-chip {

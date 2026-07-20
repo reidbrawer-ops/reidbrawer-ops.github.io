@@ -101,15 +101,20 @@
    section styled assets/paddle-grid.js, which the faceted finder replaced —
    its styles now live in assets/paddle-finder.css under the pn-* prefix. This
    callout stayed because paddle-finder.js still renders it above the grid. */
+/* On /paddles/browse this rides beside the search field (see .pn-tools-row in
+   paddle-finder.css) instead of sitting as a full-width band between the count
+   line and the first card. Compact enough to match the 46px search pill, and it
+   brings no bottom margin of its own — the row owns the spacing. */
 .pg-rent {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 0.55rem;
   flex-wrap: wrap;
+  flex: 1 1 22rem;
+  min-height: 46px;
   background: var(--bay-tint);
-  border-radius: 14px;
-  padding: 18px 22px;
-  margin-bottom: 24px;
+  border-radius: 10px;
+  padding: 0.5rem 0.9rem;
 }
 
 .pg-rent-label {
@@ -127,12 +132,15 @@
   color: var(--ink);
 }
 
+/* No `margin-left: auto` any more. Pushing the link to the far edge was right
+   when this was a full-width band; inside the compact callout beside the search
+   it forced the link onto a second line and made the block taller than the
+   search pill it sits next to. Flowing inline keeps it to one line. */
 .pg-rent-link {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.8125rem;
   color: var(--bay-deep);
-  margin-left: auto;
   white-space: nowrap;
 }
 
